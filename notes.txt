@@ -1,0 +1,29 @@
+Current Project:
+components/userEntry
+components/header
+
+06. 20. 2022
+@0900 logic for checking when isLoggedIn becomes filled
+	  and to switch to home works!
+
+	  need to put functions for creating the dated header
+	  outside of the header/home component
+
+@0842 userLogin part of userEntry works :D !
+	  once isLoggedIn becomes set, within app.js,
+	  to unmount userEntry and switch to home
+
+06. 19. 2022
+@1522 Added some more things x'D
+	  Further develop userEntry....
+
+06.18.2022
+@1100 Wrote out initial skeleton for the forms, and not much else.
+	  Will write out header component next.
+	  Can connect app to API while its running on my phone.
+	  Ensure userEntry component works as intended:
+	    - user sign up should return user to user log in
+	    - successful user login should take user to 'home'
+	    	- for now, header will change to signify successful entry
+
+	  After all this is done - then, css :D

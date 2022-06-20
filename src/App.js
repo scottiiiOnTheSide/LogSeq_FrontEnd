@@ -1,23 +1,34 @@
-import logo from './logo.svg';
+import React, { useState, useReducer, useEffect } from 'react';
 import './App.css';
 
+import Header from './components/header/header';
+import UserEntry from './components/userEntry/userEntry';
+
 function App() {
+
+  //section state variables
+  const [login, setLogin] = useReducer(state => !state, true);
+  const [home, setHome] = useReducer(state => !state, false);
+
+  const [isLoggedIn, set_isLoggedIn] = useState({});
+
+  // if(isLoggedIn) {
+  //   setLogin(false);
+  //   setHome(true);
+  // }
+
+  useEffect(()=> {
+    setLogin(false);
+    setHome(true);
+  }, [isLoggedIn]);
+  //isLoggedIn is the dependency this func watches for, as for when to run
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div className="">
+      <Header login={login} home={home}/>
+      {login && 
+          <UserEntry login={login} setLogin={setLogin} set_isLoggedIn={set_isLoggedIn}/>
+      }
     </div>
   );
 }
