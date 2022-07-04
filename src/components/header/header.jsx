@@ -16,42 +16,19 @@ function Login() {
 	)
 }
 
-function Home() {
-	let calendar = new Date();
-	let date = calendar.getDate();
-	//function to return either th, nd, rd with number
-	let dateED = (date) => {
-
-	}
-	let mon = calendar.getMonth();
-	let month = (mon) => {
-		let months = [
-			"January",
-			"February",
-			"March",
-			"April",
-			"May",
-			"June",
-			"July",
-			"August",
-			"September",
-			"November",
-			"December"
-		]
-		return months[mon];
-	}
-	let year = calendar.getFullYear();
+function Home({calendar}) {
 
 	//function to change Day from 'today' to weekday name
 	//when no longer looking at current posts
+	// console.log(month)
 
 	return (
 		<div>
 			<h2>Today</h2>
 			<h2>
-				<span id="month">{month}</span>
-				<span id="date">{dateED}</span> 
-				<span id="year">{year}</span>
+				<span id="month">{calendar['currentMonth']}</span>
+				<span id="date">{calendar['currentDate']}</span> 
+				<span id="year">{calendar['currentYear']}</span>
 			</h2>
 		</div>
 	)
@@ -61,15 +38,15 @@ function Home() {
 //need to have overaching 'state management' that tells component
 //when certain section is active, thus setting corresponding header component
 //to be active
-export default function header({login, home}) {
+export default function header({loggedIn, home, calendar}) {
 	return (
 		<header>
-			{login &&
+			{!loggedIn &&
 				<Login />
 			}
 
-			{home &&
-				<Home />
+			{(loggedIn || home) &&
+				<Home calendar={calendar}/>
 			}
 		</header>
 	)

@@ -1,33 +1,47 @@
-import React, { useState, useReducer, useEffect } from 'react';
+
+import React, { useState, useReducer, useEffect, useRef } from 'react';
+import Calendar from './components/calendar';
 import './App.css';
 
 import Header from './components/header/header';
 import UserEntry from './components/userEntry/userEntry';
 
 function App() {
-
   //section state variables
+  const cal = Calendar();
+  const [calendar, setCalendar] = useState({
+    currentMonth: cal.currentMonth,
+    currentDate: cal.currentDate,
+    currentDay: cal.currentDay,
+    currentYear: cal.currentYear,
+    year_inView: null,
+    month_inView: null,
+    date_inView: null
+  });
   const [login, setLogin] = useReducer(state => !state, true);
   const [home, setHome] = useReducer(state => !state, false);
-
   const [isLoggedIn, set_isLoggedIn] = useState({});
 
-  // if(isLoggedIn) {
-  //   setLogin(false);
-  //   setHome(true);
-  // }
+  const loggedIn_set = (status) => sessionStorage.setItem('userOnline', JSON.parse(status)); 
+  const loggedIn = sessionStorage.getItem('userOnline');
 
-  useEffect(()=> {
-    setLogin(false);
-    setHome(true);
-  }, [isLoggedIn]);
-  //isLoggedIn is the dependency this func watches for, as for when to run
 
   return (
     <div className="">
-      <Header login={login} home={home}/>
-      {login && 
-          <UserEntry login={login} setLogin={setLogin} set_isLoggedIn={set_isLoggedIn}/>
+      <Header 
+        loggedIn={loggedIn} 
+        home={home} 
+        calendar={calendar} 
+        setCalendar={setCalendar}/>
+
+      {!loggedIn && 
+          <UserEntry 
+            login={login} 
+            loggedIn_set={loggedIn_set}
+            set_isLoggedIn={set_isLoggedIn}
+            // setLogin={setLogin}
+            // loggedIn={loggedIn}
+          />
       }
     </div>
   );

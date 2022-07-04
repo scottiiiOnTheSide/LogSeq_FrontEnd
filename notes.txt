@@ -2,12 +2,73 @@ Current Project:
 components/userEntry
 components/header
 
+07. 04. 2022
+@1028 Header date functionality is workinggg. 
+	  State variable for date info also implemented
+
+07. 03. 2022
+@1144 Made some headway in getting date info into state variables.
+	  Would be redundant to have to make individual hooks for each T- T Will see
+	  if I can add them all into on state object....
+
+@1110 Current objective is to create a state object with the current Date info
+	 and updateable currently view Date info.
+	 When user logs in and is active - current Month, Day, Year is logged, displayed.
+	 once scrolling through older posts, currentlyViewed Month, Day and Year is displayed
+
+	 unsure how to implement this currently, 
+	 react wont take functions as element child (as variable for innerHTML)
+
+@0833 User now stays loggedIn upon successful log in 
+
+07. 01. 2022
+@1205 App not remaining within home upon refresh. useEffect within App.js will run the
+	console.log function if the dependency has a value, but not the setState functions.
+	may have something to do with those functions inherently being asynchronous?
+
+@1107 App running useEffect ... twice ... due to sessionStorage. a success, i suppose
+		Could look up already working methods of keeping track of a loggedIn user online
+
+@1011 Need use of sessionStorage in order to keep user signed in (especially during dev)
+
+@0958 Fixed that issue with a prevent default with the switching button
+
+@0921 Switching from login to signup causes the form to be submitted and make an API call.
+	  I've currently no idea why and it seems like a potential security concern :/
+
+06. 30. 2022
+@1045 the sequence after a successful signup FINALLY works
+	  Not even sure what I was doing incorrectly beforehand, regarding
+	  useEffect. However, having both the dependancy variable for the 
+	  function and another for an if variable to be dependant on was 
+	  necessary for it to work correctly.
+
+	  As of now, returning a clearTimeout doesnt seem to be necessary +
+	  causes the script to then work incorrectly
+
+	  Next steps:
+	  - have button underneath submit that allows user to switch to
+	  	other component section (userSignUp has switch for userLogIn) ✔️ (07.01.2022) 
+	  - disable text fields and submit button while awaiting API feedback
+	  - fix functionality for header, to properly display days n such ✔️ (07.04.2022)
+
+	  - then, CSS !
+
+06. 27. 2022
+@1739 having trouble within setTimeout and the pattern that runs after successful
+	  user signup.
+	  should the different timeouts be seperated?
+
 06. 20. 2022
 @0900 logic for checking when isLoggedIn becomes filled
 	  and to switch to home works!
 
 	  need to put functions for creating the dated header
 	  outside of the header/home component
+
+	  next, when user is successfully created using userSignUp,
+	  userSignUp should go false, then userSignIn opens
+	  also, disable submit button and inputs during submit
 
 @0842 userLogin part of userEntry works :D !
 	  once isLoggedIn becomes set, within app.js,

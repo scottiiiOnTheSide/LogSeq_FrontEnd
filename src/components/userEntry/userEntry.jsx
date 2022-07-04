@@ -1,9 +1,8 @@
-
 //06. 18. 2022
 //Intention for this component is for it to switch between a user signup form and login 
 //in form depending on the button pressed
 
-import React, { useReducer, useState } from 'react';
+import React, { useReducer, useState, useEffect, useRef } from 'react';
 import './userEntry.css';
 
 const formReducer = (state, event) => {
@@ -13,14 +12,46 @@ const formReducer = (state, event) => {
 		}
 	}
 
-function UserSignUp() {
+async function signupUser(loginCredentials) {
+	return fetch('http://192.168.1.12:3333/users/newuser', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'Accept': 'application/json'
+		},
+		body: JSON.stringify(loginCredentials)
+	}).then(data => data.json());
+}
+
+/**
+ * First Component 
+ * */
+function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set}) {
 
 	//is placeholder function for now, will wait till response is given from API
 	const [formData, setFormData] = useReducer(formReducer, {});
 	const [submitting, setSubmission] = useState(false);
-	const handleSubmit = (event) => {
+	const [isSignedUp, isSignedUp_set] = useState(false);
+	const [signUpSuccess, signUpSuccess_set] = useState(false);
+	const [isSwitched, isSwitched_set] = useState(false);
+
+	const handleSubmit = async (event) => {
 		event.preventDefault();
 		//setSubmission(true);
+
+		let signedUp = await signupUser({
+			firstName: formData.firstName,
+			lastName: formData.lastName,
+			emailAddr: formData.emailAddr,
+			userName: formData.userName,
+			password: formData.password
+		})
+
+		console.log(signedUp);
+		isSignedUp_set(signedUp);
+		// signUpSuccess_set(true);
+
+		// sessionStorage.setItem('userStatus', 'online');
 	}
 	//a component internal function for getting the specific data, 
 	//to then pass to the higher level function
@@ -29,6 +60,34 @@ function UserSignUp() {
 			name: event.target.name,
 			value: event.target.value
 		})
+	}
+
+	useEffect(() => {
+		if(signUpSuccess) {
+			console.log("before first");
+
+			let first = setTimeout(() => {
+				userSignUp_set(false)
+			}, 100);
+			let second = setTimeout(() => {
+				confirmSignUp_set(true)
+			}, 300);
+			let third = setTimeout(() => {
+				confirmSignUp_set(false)
+			}, 1000);
+			let last = setTimeout(() => {
+				userLogIn_set(true)
+			}, 1300);
+		}
+	}, [isSignedUp]);
+
+	const onSwitch = () => {
+		const first = setTimeout(()=> {
+			userSignUp_set(false)
+		}, 100);
+		const second = setTimeout(()=> {
+			userLogIn_set(true)
+		}, 1000);
 	}
 
 	return (
@@ -42,6 +101,7 @@ function UserSignUp() {
 				<input name="password" placeholder="Create a Password" onChange={handleChange}/>
 			</fieldset>
 			<button type="submit">Submit</button>
+			<button id="switch" onClick={(e)=> {onSwitch(); e.preventDefault();}}>Log In</button>
 			{/*{submitting &&
 				<p>Submitting...</p>
 				//put this in button to change text during submission
@@ -56,7 +116,7 @@ function UserSignUp() {
 //when this is run, set data to state variable that is passed up to App.js
 // once data is recieved, set login to false, so userEntry can unmount
 async function loginUser(loginCredentials) {
-	return fetch('http://192.168.1.8:3333/users/login', {
+	return fetch('http://192.168.1.12:3333/users/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -66,34 +126,32 @@ async function loginUser(loginCredentials) {
 	}).then(data => data.json());
 }
 
-function UserLogIn({set_isLoggedIn}) {
+/**
+ * Second Component 
+ * */
+function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set}) {
 
 	// const [loginCredentials, set_loginCredentials] = useState({});
 	const [formData, setFormData] = useReducer(formReducer, {});
 	const [submitting, setSubmission] = useState(false);
+	const [isSwitched, isSwitched_set] = useReducer(state => !state, false);
+
 	const handleSubmit = async (event) => {
 		event.preventDefault();
 
-		// set_loginCredentials({
-		// 	...loginCredentials,
-		// 	emailAddr: formData.emailAddr,
-		// 	password: formData.password
-		// })
-
-		let loginCredentials = {
-			emailAddr: formData.emailAddr,
-			password: formData.password
-		}
-
-		console.log(loginCredentials);
-		const loggedIn = await loginUser({
+		let loggedIn = await loginUser({
 			emailAddr: formData.emailAddr,
 			password: formData.password
 		});
-
+		// 07. 03. 2022 returns user auth token to be kept in sessionStorage, downTheLine
+		loggedIn = JSON.stringify(loggedIn);
+		console.log(loggedIn);
 		//when top level app.js reads this variable has data,
 		//userEntry.js will unmount and home components mount
 		set_isLoggedIn(loggedIn);
+		loggedIn_set(true);
+		
+		//Not necessary to have them both
 
 		//setSubmission(true);
 	}
@@ -106,6 +164,14 @@ function UserLogIn({set_isLoggedIn}) {
 		})
 	}
 
+	const onSwitch = () => {
+		const first = setTimeout(()=> {
+			userLogIn_set(false)
+		}, 100);
+		const second = setTimeout(()=> {
+			userSignUp_set(true)
+		}, 1000);
+	}
 
 	return (
 		<form onSubmit={handleSubmit}>
@@ -115,6 +181,7 @@ function UserLogIn({set_isLoggedIn}) {
 				<input name="password" placeholder="Your Password" onChange={handleChange}/>
 			</fieldset>
 			<button type="submit">Submit</button>
+			<button id="switch" onClick={(e)=> {onSwitch(); e.preventDefault();}}>Sign Up</button>
 			{/*{submitting &&
 				<p>Submitting...</p>
 				//put this in button to change text during submission
@@ -123,28 +190,58 @@ function UserLogIn({set_isLoggedIn}) {
 	)
 }
 
-export default function UserEntry({login, set_isLoggedIn}) {
+export default function UserEntry({login, set_isLoggedIn, userState_set, loggedIn_set}) {
 
 	//upon successful login, setLogin to unmount component
 
 	const [userSignUp, userSignUp_set] = useReducer(state => !state, false);
 	const [userLogIn, userLogIn_set] = useReducer(state => !state, false);
+	const [confirmSignUp, confirmSignUp_set] = useReducer(state => !state, false);
+	const [selected, setSelected] = useReducer(state => !state, false);
+
+	useEffect(()=> {
+		if(selected) {
+			let buttons = Array.from(document.getElementsByClassName("initial"));
+			buttons.forEach((element)=> {
+				element.style.display = 'none';
+			})
+		}
+	})
 
 	return (
 		<div id="userEntry">
 
 			<div id="buttonWrapper">
-				<button onClick={userSignUp_set}>Sign Up</button>
-				<button onClick={userLogIn_set}>Log In</button>
+				<button className="initial" 
+					onClick={()=> {userSignUp_set(); setSelected(true);}}>
+					Sign Up
+				</button>
+				<button className="initial" 
+					onClick={()=> {userLogIn_set(); setSelected(true);}}>
+					Log In
+				</button>
 			</div>
 
 			{userSignUp &&
-				<UserSignUp />
+				<UserSignUp 
+					userSignUp_set={userSignUp_set} 
+					userLogIn_set={userLogIn_set}
+					confirmSignUp_set={confirmSignUp_set}/>
+			}
+			{confirmSignUp &&
+				<div id="confirmSignUp">
+					<p>Account Created!
+					<br/>
+					Now please log in</p>
+				</div>
 			}
 			{userLogIn &&
-				<UserLogIn set_isLoggedIn={set_isLoggedIn}/>
+				<UserLogIn 
+					set_isLoggedIn={set_isLoggedIn}
+					userSignUp_set={userSignUp_set} 
+					userLogIn_set={userLogIn_set}
+					loggedIn_set={loggedIn_set}/>
 			}
-
 		</div>
 	)
 }
