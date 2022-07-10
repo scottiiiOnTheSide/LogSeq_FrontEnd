@@ -13,7 +13,7 @@ const formReducer = (state, event) => {
 	}
 
 async function signupUser(loginCredentials) {
-	return fetch('http://192.168.1.12:3333/users/newuser', {
+	return fetch('http://192.168.1.5:3333/users/newuser', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -116,7 +116,7 @@ function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set}) {
 //when this is run, set data to state variable that is passed up to App.js
 // once data is recieved, set login to false, so userEntry can unmount
 async function loginUser(loginCredentials) {
-	return fetch('http://192.168.1.12:3333/users/login', {
+	return fetch('http://192.168.1.5:3333/users/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -145,11 +145,12 @@ function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set}
 		});
 		// 07. 03. 2022 returns user auth token to be kept in sessionStorage, downTheLine
 		loggedIn = JSON.stringify(loggedIn);
+		// loggedIn = loggedIn;
 		console.log(loggedIn);
 		//when top level app.js reads this variable has data,
 		//userEntry.js will unmount and home components mount
 		set_isLoggedIn(loggedIn);
-		loggedIn_set(true);
+		loggedIn_set(loggedIn);
 		
 		//Not necessary to have them both
 

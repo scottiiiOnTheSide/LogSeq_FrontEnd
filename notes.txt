@@ -1,3 +1,59 @@
+Currently Working On:
+components/BlogLog
+
+07. 09. 2022
+@2050 Currently, during dev mode, useEffect runs twice. Well, this isn't exactly use effect,
+but the console.log within DayLog runs twice. on first run, it's empty. Second run, elements appear.
+Well, I can access the data within Daylog, so well consider this a success...
+
+@2020 the loadlog function is now working as intended (the user auth token wasn't being passed correctly this whole time). However, data isn't showing up within state variable (._. )
+Probably has something to do with the async of it all T- T
+
+07. 07. 2022
+@1018 Initial set up for BlogLog. 
+			Now testing API endpoint, but is currently not working
+
+07. 06. 2022
+@1209 Added new fields to posts model. need to write psuedocode sequence for getting posts within specific month and year range.
+Will need to know how to pass variables into url for api requests.
+
+@1130 using .createdAt isnt sufficient. Will have to create new 'postedOn' fields to posts
+	  that are automatically created for each entry. 
+	  boolean for 'usePostedByDate' for entries and events being posted in the present
+	  so that 'postedOn' fields get created and filled out 
+
+@1102 have to design the API controller for returning all posts from a specific month.
+	  As of now, posts automatically have a creation date stamp, we'll start with that.
+
+07. 05. 2022
+Gonna work on parts of certain components first so that we can pull together a cohesive 
+project / product 'sooner'
+
+Main component: BlogLog
+SubComponents:
+- DayLog
+- WeekList
+- Month Chart
+- Toggle Button (switch between states)
+
+Main component gets all posts from/with API and stores them in object (current month's posts)
+- Daylog displays all posts chronologically, most recent to least. 
+  - Will need to implement logic to add header with date above all posts with corresponding date.
+    - If current date is July 5th, but most recent post was June 25th, header with June 25th, 2022 appears above all posts with that date. Continues
+- For current implementation of Daylog, simply build component as long list. Will attend to swiping functionality and css later
+
+After:
+component for displaying full post (may need to start using Router around this point)
+LogCRUD for creating new posts.
+
+First part of LogCRUD - create:
+Make menu button which toggles LogCRUD menu, 
+"Create" being first section developed. 
+(especially as creating entries and events has series of steps T- T)
+
+
+
+
 Current Project:
 components/userEntry
 components/header

@@ -1,8 +1,8 @@
-import React, {useState, useReducer} from 'react';
-import './header.css';
-
 //Multi purpose header element that changes styles depending on which part of 
-//site is currently active 
+//site is currently active
+
+import React, {useState, useReducer} from 'react';
+import './header.css'; 
 
 function Login() {
 	return (

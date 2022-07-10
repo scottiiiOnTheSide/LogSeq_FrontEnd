@@ -5,6 +5,7 @@ import './App.css';
 
 import Header from './components/header/header';
 import UserEntry from './components/userEntry/userEntry';
+import BlogLog from './components/blogLog/blogLog';
 
 function App() {
   //section state variables
@@ -22,8 +23,11 @@ function App() {
   const [home, setHome] = useReducer(state => !state, false);
   const [isLoggedIn, set_isLoggedIn] = useState({});
 
-  const loggedIn_set = (status) => sessionStorage.setItem('userOnline', JSON.parse(status)); 
+  //07. 07. 2022 These two should honestly be one in the same. Will couple them later
   const loggedIn = sessionStorage.getItem('userOnline');
+  // const user = sessionStorage.getItem('user');
+  const loggedIn_set = (status) => sessionStorage.setItem('userOnline', JSON.parse(status)); 
+  // const user_set = (token) => sessionStorage.setItem('user', JSON.parse(token));
 
 
   return (
@@ -39,9 +43,12 @@ function App() {
             login={login} 
             loggedIn_set={loggedIn_set}
             set_isLoggedIn={set_isLoggedIn}
-            // setLogin={setLogin}
-            // loggedIn={loggedIn}
           />
+      }
+      {loggedIn &&
+        <BlogLog
+          loggedIn={loggedIn}
+          calendar={calendar}/>
       }
     </div>
   );

@@ -73,6 +73,9 @@ export default function Calendar() {
   	currentMonth: currentMnth(month),
   	currentDate: currentDate(dateNumber),
   	currentDay: currentDay(dayNumber),
-  	currentYear: fullDate.getFullYear()
+  	currentYear: fullDate.getFullYear(),
+    getCurrentMonth: currentMnth(),
+    getCurrentDate: currentDate()
+    // intention is to export these functions so that they can be used without set values
   }
 }
