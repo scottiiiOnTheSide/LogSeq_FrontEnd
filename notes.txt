@@ -1,6 +1,9 @@
 Currently Working On:
 components/BlogLog
 
+07. 10. 2022
+@1532 data from api call is now displaying correctly upon login. React really is a different beast . . .
+
 07. 09. 2022
 @2050 Currently, during dev mode, useEffect runs twice. Well, this isn't exactly use effect,
 but the console.log within DayLog runs twice. on first run, it's empty. Second run, elements appear.

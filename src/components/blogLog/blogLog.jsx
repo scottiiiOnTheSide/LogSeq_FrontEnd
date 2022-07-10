@@ -17,11 +17,11 @@ import Calendar from '../../components/calendar';
 import './blogLog.css';
 
 
-async function loadLog (user,year) {
+async function loadLog (user,year,state) {
 	let blogs = [];
 	let month = new Date().getMonth();
 
-	return fetch(`http://192.168.1.5:3333/posts/log?month=${month}&year=${year}`, {
+	await fetch(`http://192.168.1.13:3333/posts/log?month=${month}&year=${year}`, {
 		method: 'GET',
 		headers: {
 			'Content-Type': 'application/json',
@@ -30,11 +30,16 @@ async function loadLog (user,year) {
 			'Host': 'http://192.168.1.5:3333',
 			'auth-token': user
 		}
-	}).then(data => {
-		// return data.json();
-		blogs = data.json();
-		return blogs;
+	}).then((data) => {
+		data.json()
+	})
+	.then((result) => {
+		state(result);
+		console.log(result);
 	}).catch(err => console.log(err));
+	// return data.json();
+		// blogs = data.json();
+		// return blogs;
 	/*
 		call this func within useEffect within main component, 
 		assign it to state? variable containing all posts
@@ -43,11 +48,17 @@ async function loadLog (user,year) {
 
 function DayLog({log}) {
 
-	console.log(log);
+	/* The logic: 
+		If there are no posts from today, display h1 No posts today
+		For each subsequent post with a different day, display h1 date
+		before new post
+	*/
 
 	return (
 		<div id='daylog'>
-			<h1>{log[0].title}</h1>
+		{log.length > 0 &&
+		 	<h1>{log[0].title}</h1>
+		}
 		</div>
 	)
 }
@@ -63,14 +74,29 @@ export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChar
 	//automatically runs whenever BlogLog mounts, only if log is empty
 	let [log, setLog] = useState([]);
 
+	const fetchData = async () => {
+		let month = new Date().getMonth(),
+			year = calendar['currentYear'],
+			user = loggedIn;
+
+		const response = await fetch(`http://192.168.1.13:3333/posts/log?month=${month}&year=${year}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+				'Content-length': 0,
+				'Accept': 'application/json',
+				'Host': 'http://192.168.1.5:3333',
+				'auth-token': user
+			}
+		})
+
+		const data = await response.json();
+		setLog(data);
+		console.log(data);
+	}
+
 	useEffect( ()=> {
-		const load_and_set = async () => {
-			let year = calendar['currentYear'],
-				user = loggedIn;
-			let blog = await loadLog(user, year);
-			setLog(blog);
-		}
-		load_and_set();
+		fetchData();
 	}, [])
 
 	//quick control to make sure only Daylog loads
