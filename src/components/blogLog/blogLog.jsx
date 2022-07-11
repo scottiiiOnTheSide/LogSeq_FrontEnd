@@ -48,19 +48,77 @@ async function loadLog (user,year,state) {
 
 function DayLog({log}) {
 
-	/* The logic: 
-		If there are no posts from today, display h1 No posts today
-		For each subsequent post with a different day, display h1 date
-		before new post
-	*/
+	let postsFromToday = (posts) => {
+		let postsFromToday;
+		let today = new Date().getDate();
+		for (let i = 0; i < posts.length; i++) {
+				if(posts[i].postedBy_date == today) {
+					postsFromToday = true;
+				} else {
+					postsFromToday = false;
+				}
+			}
+			return postsFromToday;
+	}
 
-	return (
-		<div id='daylog'>
-		{log.length > 0 &&
-		 	<h1>{log[0].title}</h1>
+	let returnPostElement = (postObject) => {
+			let title = postObject.title;
+			let content = postObject.content; //this needs to be parsed
+			let tags = postObject.tags.length;
+			let id = postObject._id;
+
+			return (
+				<div className="entry" key={id}>
+					<h2>{title}</h2>
+					<p>{content}</p>
+					<ul>
+						<li>{tags} tags</li>
+					</ul>
+				</div>
+			)
 		}
-		</div>
-	)
+
+	let currentDay = new Date().getDate();
+	let [loaded, setLoaded] = useState(false);
+	let blogs = [];
+	let today;
+
+	useEffect(() => {
+		if(log.length > 0) {
+
+			log.forEach((post, index) => {
+				let entry = returnPostElement(post);
+				blogs.push(entry);
+			});
+		}
+		setLoaded(true);
+		let today = postsFromToday(log);
+		console.log(blogs);
+
+	}, [log.length > 0])
+
+	//conditional rendering statement
+	if(loaded == true) {
+
+		if(today) {
+			return (
+				<div id='daylog'>
+					{log.map((post, index) => (
+						returnPostElement(post)
+					))}
+				</div>
+			)
+		} else if (!today) {
+			return (
+				<div id='daylog'>
+					<h1>No Posts Today</h1>
+					{log.map((post, index) => (
+						returnPostElement(post)
+					))}
+				</div>
+			)
+		}	
+	}
 }
 
 function WeekList() {
@@ -79,7 +137,7 @@ export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChar
 			year = calendar['currentYear'],
 			user = loggedIn;
 
-		const response = await fetch(`http://192.168.1.13:3333/posts/log?month=${month}&year=${year}`, {
+		const response = await fetch(`http://192.168.1.5:3333/posts/log?month=${month}&year=${year}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

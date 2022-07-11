@@ -116,7 +116,7 @@ function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set}) {
 //when this is run, set data to state variable that is passed up to App.js
 // once data is recieved, set login to false, so userEntry can unmount
 async function loginUser(loginCredentials) {
-	return fetch('http://192.168.1.13:3333/users/login', {
+	return fetch('http://192.168.1.5:3333/users/login', {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',

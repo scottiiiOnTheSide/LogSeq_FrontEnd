@@ -1,6 +1,12 @@
 Currently Working On:
 components/BlogLog
 
+07. 11. 2022
+@1656 Posts now display correctly and conditionally renders No Posts Today h1
+		  - need to find way to post add header with date between posts
+
+@1521 Working on getting posts to be displayed now ...
+
 07. 10. 2022
 @1532 data from api call is now displaying correctly upon login. React really is a different beast . . .
 
