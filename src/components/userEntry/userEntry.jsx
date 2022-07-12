@@ -12,8 +12,8 @@ const formReducer = (state, event) => {
 		}
 	}
 
-async function signupUser(loginCredentials) {
-	return fetch('http://192.168.1.5:3333/users/newuser', {
+async function signupUser(loginCredentials, apiAddr) {
+	return fetch(`${apiAddr}/users/newuser`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -26,7 +26,7 @@ async function signupUser(loginCredentials) {
 /**
  * First Component 
  * */
-function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set}) {
+function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set, apiAddr}) {
 
 	//is placeholder function for now, will wait till response is given from API
 	const [formData, setFormData] = useReducer(formReducer, {});
@@ -45,7 +45,7 @@ function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set}) {
 			emailAddr: formData.emailAddr,
 			userName: formData.userName,
 			password: formData.password
-		})
+		}, apiAddr)
 
 		console.log(signedUp);
 		isSignedUp_set(signedUp);
@@ -115,8 +115,8 @@ function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set}) {
 
 //when this is run, set data to state variable that is passed up to App.js
 // once data is recieved, set login to false, so userEntry can unmount
-async function loginUser(loginCredentials) {
-	return fetch('http://192.168.1.5:3333/users/login', {
+async function loginUser(loginCredentials, apiAddr) {
+	return fetch(`${apiAddr}/users/login`, {
 		method: 'POST',
 		headers: {
 			'Content-Type': 'application/json',
@@ -129,7 +129,7 @@ async function loginUser(loginCredentials) {
 /**
  * Second Component 
  * */
-function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set}) {
+function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set, apiAddr}) {
 
 	// const [loginCredentials, set_loginCredentials] = useState({});
 	const [formData, setFormData] = useReducer(formReducer, {});
@@ -142,7 +142,7 @@ function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set}
 		let loggedIn = await loginUser({
 			emailAddr: formData.emailAddr,
 			password: formData.password
-		});
+		}, apiAddr);
 		// 07. 03. 2022 returns user auth token to be kept in sessionStorage, downTheLine
 		loggedIn = JSON.stringify(loggedIn);
 		// loggedIn = loggedIn;
@@ -191,7 +191,7 @@ function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set}
 	)
 }
 
-export default function UserEntry({login, set_isLoggedIn, userState_set, loggedIn_set}) {
+export default function UserEntry({login, set_isLoggedIn, userState_set, loggedIn_set, apiAddr}) {
 
 	//upon successful login, setLogin to unmount component
 
@@ -227,7 +227,8 @@ export default function UserEntry({login, set_isLoggedIn, userState_set, loggedI
 				<UserSignUp 
 					userSignUp_set={userSignUp_set} 
 					userLogIn_set={userLogIn_set}
-					confirmSignUp_set={confirmSignUp_set}/>
+					confirmSignUp_set={confirmSignUp_set}
+					apiAddr={apiAddr}/>
 			}
 			{confirmSignUp &&
 				<div id="confirmSignUp">
@@ -241,7 +242,8 @@ export default function UserEntry({login, set_isLoggedIn, userState_set, loggedI
 					set_isLoggedIn={set_isLoggedIn}
 					userSignUp_set={userSignUp_set} 
 					userLogIn_set={userLogIn_set}
-					loggedIn_set={loggedIn_set}/>
+					loggedIn_set={loggedIn_set}
+					apiAddr={apiAddr}/>
 			}
 		</div>
 	)

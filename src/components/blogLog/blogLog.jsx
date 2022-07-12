@@ -46,19 +46,20 @@ async function loadLog (user,year,state) {
 	*/
 }
 
-function DayLog({log}) {
+function DayLog({log, setLog}) {
 
 	let postsFromToday = (posts) => {
-		let postsFromToday;
+		let fromToday;
 		let today = new Date().getDate();
 		for (let i = 0; i < posts.length; i++) {
-				if(posts[i].postedBy_date == today) {
-					postsFromToday = true;
+				if(posts[i].postedOn_day == today) {
+					fromToday = true;
+					break;
 				} else {
-					postsFromToday = false;
+					fromToday = false;
 				}
 			}
-			return postsFromToday;
+			return fromToday;
 	}
 
 	let returnPostElement = (postObject) => {
@@ -81,26 +82,19 @@ function DayLog({log}) {
 	let currentDay = new Date().getDate();
 	let [loaded, setLoaded] = useState(false);
 	let blogs = [];
-	let today;
 
 	useEffect(() => {
-		if(log.length > 0) {
-
-			log.forEach((post, index) => {
-				let entry = returnPostElement(post);
-				blogs.push(entry);
-			});
-		}
 		setLoaded(true);
-		let today = postsFromToday(log);
-		console.log(blogs);
-
 	}, [log.length > 0])
 
-	//conditional rendering statement
+
+
+//conditional rendering statement
 	if(loaded == true) {
 
-		if(today) {
+		// console.log(blogs);
+
+		if(postsFromToday(log) == true) {
 			return (
 				<div id='daylog'>
 					{log.map((post, index) => (
@@ -108,7 +102,7 @@ function DayLog({log}) {
 					))}
 				</div>
 			)
-		} else if (!today) {
+		} else if (postsFromToday(log) !== true) {
 			return (
 				<div id='daylog'>
 					<h1>No Posts Today</h1>
@@ -127,7 +121,7 @@ function WeekList() {
 function MonthChart() {
 }
 
-export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChart}) {
+export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChart, apiAddr}) {
 
 	//automatically runs whenever BlogLog mounts, only if log is empty
 	let [log, setLog] = useState([]);
@@ -135,9 +129,10 @@ export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChar
 	const fetchData = async () => {
 		let month = new Date().getMonth(),
 			year = calendar['currentYear'],
-			user = loggedIn;
+			user = loggedIn,
+			api = apiAddr
 
-		const response = await fetch(`http://192.168.1.5:3333/posts/log?month=${month}&year=${year}`, {
+		const response = await fetch(`${api}/posts/log?month=${month}&year=${year}`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',
@@ -149,7 +144,13 @@ export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChar
 		})
 
 		const data = await response.json();
-		setLog(data);
+
+		let reorder = [];
+		for(let i = data.length; i >= 0; i--) {
+			reorder.push(data[i]);
+		}
+		reorder.splice(0, 1);
+		setLog(reorder);
 		console.log(data);
 	}
 
@@ -164,7 +165,7 @@ export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChar
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
 
 			{active &&
-				<DayLog log={log}/>
+				<DayLog log={log} setLog={setLog}/>
 			}
 			{!active &&
 				<WeekList />
