@@ -1,5 +1,42 @@
 Currently Working On:
-components/BlogLog
+components/UserMenu
+components/MenuToggle
+
+07. 12. 2022
+@2053 Barebones structure now works as intended!
+@2043 Fixed previous issue - now form for createPost is only reading the tags :/
+
+@2031 Begun building skeletons for menuButton and userMenu
+			for some reason, some functions are being intepreted as strings within userMenu :/
+
+@1153 No Posts Today H1 still loads before blog posts do. Hmm, would like to fix
+
+@1104 Plan for UserMenu
+
+UserMenu is an overarching component that (will) include(s):
+- Buttons for switching site sections (myLog, theirLog, user settings and tags)
+- Buttons for managing posts (create, update, delete)
+- Forms for Entries and Events
+	(perhaps actual forms will be seperate 'pages' done with Router. For now, within UserMenu)
+
+MenuButton
+- Toggles the UserMenu to open
+- Should be interesting to figure out / learn how to have the text shift from 'Menu' to X
+
+Will need to begin implementing some CSS styling for these two components
+
+
+Currently Working On:
+components/BlogLog/Daylog
+
+07. 12. 2022
+@1100 blog posts now load in correct fashion
+			- As of now, plan to build out initial version of Daylog complete. Very barebones, as with everything else
+
+@1029 fixed the issue with No Posts Today h1. It (should) now be working correctly
+
+@0946 Just noticed that posts are loading oldest first - we need newest first. Should be fun to right whatever script I need to change that.
+
 
 07. 11. 2022
 @1656 Posts now display correctly and conditionally renders No Posts Today h1
