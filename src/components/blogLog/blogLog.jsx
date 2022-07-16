@@ -14,6 +14,7 @@
 
 import React, { useState, useEffect } from 'react';
 import Calendar from '../../components/calendar';
+import bodyParse from '../bodyParse';
 import './blogLog.css';
 
 
@@ -64,14 +65,20 @@ function DayLog({log, setLog}) {
 
 	let returnPostElement = (postObject) => {
 			let title = postObject.title;
-			let content = postObject.content; //this needs to be parsed
 			let tags = postObject.tags.length;
 			let id = postObject._id;
+			let content;
+
+			if(postObject.content.match(/\((.*?)\)/g)) {
+				content = bodyParse(postObject.content)
+			} else {
+				content = postObject.content
+			}
 
 			return (
 				<div className="entry" key={id}>
 					<h2>{title}</h2>
-					<p>{content}</p>
+					<p dangerouslySetInnerHTML={{ __html: content }}></p> 
 					<ul>
 						<li>{tags} tags</li>
 					</ul>

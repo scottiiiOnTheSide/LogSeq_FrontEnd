@@ -2,6 +2,33 @@ Currently Working On:
 components/UserMenu
 components/MenuToggle
 
+07. 16. 2022
+
+@1130 bodyParse now works p e r f e c t l y . . .
+			gotta add css for the spans with the data attr's
+
+@1043 Two roadbloacks:
+			React seems to 'escape' text, therefore turning the embedded tags from bodyParse into regular text (._. )
+			Also, undefined is STILL showing up
+			Aaand, the i, b and u tags actually need closing tags :,D
+
+@0951 Have been working on the bodyParse function externally on Codepen. Importing code now
+
+07. 13. 2022
+@1053 Using 
+			let italics = text.replace(/\((.*?)\)/g, (_, match) => `<${match}>`);
+			will work for bolding, italics and underline.
+
+			However, need different implementation for colors and nl
+
+@1005 Currently working on developing bodyParser function.
+			Initial implementation checks for:
+			(i) italics
+			(b) bold
+			(u) underline
+			(nl) new line
+			(color) colors text
+
 07. 12. 2022
 @2053 Barebones structure now works as intended!
 @2043 Fixed previous issue - now form for createPost is only reading the tags :/
