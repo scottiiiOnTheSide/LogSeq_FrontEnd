@@ -11,7 +11,7 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.10:3333'
+  const apiAddr = 'http://192.168.1.187:3333'
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -29,9 +29,42 @@ function App() {
 
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
   const loggedIn = sessionStorage.getItem('userOnline');
-  // const user = sessionStorage.getItem('user');
   const loggedIn_set = (status) => sessionStorage.setItem('userOnline', JSON.parse(status)); 
-  // const user_set = (token) => sessionStorage.setItem('user', JSON.parse(token));
+
+  let [log, setLog] = useState([]);
+
+  const updateLog = async () => {
+    let month = new Date().getMonth(),
+      year = new Date().getFullYear(),
+      user = loggedIn,
+      api = apiAddr
+
+    const response = await fetch(`${apiAddr}/posts/log?month=${month}&year=${year}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-length': 0,
+        'Accept': 'application/json',
+        'Host': 'http://192.168.1.5:3333',
+        'auth-token': user
+      }
+    })
+
+    const data = await response.json();
+
+    let reorder = [];
+    for(let i = data.length; i >= 0; i--) {
+      reorder.push(data[i]);
+    }
+    reorder.splice(0, 1);
+    setLog(reorder);
+    // console.log(data);
+  }
+  const userBlog = {
+    log: log,
+    setLog: setLog,
+    updateLog: updateLog
+  }
 
 
   return (
@@ -53,11 +86,15 @@ function App() {
       {loggedIn &&
         <BlogLog
           loggedIn={loggedIn}
-          calendar={calendar}
-          apiAddr={apiAddr}/>
+          // calendar={calendar}
+          // apiAddr={apiAddr}
+          userBlog={userBlog}/>
       }
       {(loggedIn && mainMenu) && 
-        <UserMenu />
+        <UserMenu 
+          apiAddr={apiAddr}
+          user={loggedIn}
+          userBlog={userBlog}/>
       }
       {loggedIn &&
         <MenuButton 

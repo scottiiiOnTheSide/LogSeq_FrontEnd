@@ -31,7 +31,7 @@ function LogControls({toggleCreateForm, toggleUpdateList, toggleDeleteList}) {
 	)
 }
 
-function CreateForm() {
+function CreateForm({apiAddr, user, updateLog}) {
 
 	const [formData, setFormData] = useReducer(formReducer, {});
 
@@ -57,6 +57,24 @@ function CreateForm() {
 		event.preventDefault();
 
 		console.log(formData);
+
+		const response = await fetch(`${apiAddr}/posts/createPost`, {
+			method: "POST",
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'auth-token': user
+			},
+			body: JSON.stringify({
+				title: formData.title,
+				content: formData.content,
+				tags: formData.tags,
+				usePostedByDate: true
+			})
+		})
+
+		const newPost = await response.json();
+		updateLog();
 	}
 
 	return (
@@ -78,7 +96,7 @@ function UpdateList() {}
 
 function DeleteList() {}
 
-export default function UserMenu() {
+export default function UserMenu({apiAddr, user, userBlog}) {
 
 	const [is_createFormOpen, toggleCreateForm] = useReducer(state => !state, false);
 	const [is_updateListOpen, toggleUpdateList] = useReducer(state => !state, false);
@@ -95,7 +113,7 @@ export default function UserMenu() {
 				toggleDeleteList={toggleDeleteList}/>
 
 			{is_createFormOpen &&
-				<CreateForm />
+				<CreateForm apiAddr={apiAddr} user={user} updateLog={userBlog.updateLog}/>
 			}
 			{is_updateListOpen &&
 				<UpdateList />

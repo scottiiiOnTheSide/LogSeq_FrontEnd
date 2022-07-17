@@ -2,7 +2,29 @@ Currently Working On:
 components/UserMenu
 components/MenuToggle
 
+07. 17. 2022
+@1245 おめでとうございます !!!
+			Combined the log and updateLog function into an object, moved to the App.js file
+			for central access.
+			The createForm in the userMenu successfully submits posts to the api
+			and updates the log. Thanks to react magic, the daylog is automatically updated 
+			when user makes a post.
+
+			Amazing development and progress.
+
+			For the createPost menu,
+			include UI functions where fields become faded / unusable during submission,
+			and clear upon successful submission 
+			(full UI animations will have the menu dissappear once user confirms upload anyways)
+
+			Next -
+			implement initial CSS stylings.
+			Update and Delete API routes,
+			editContent List for Updating and Deleting posts...
+
 07. 16. 2022
+
+@1145 code for spans added :D 
 
 @1130 bodyParse now works p e r f e c t l y . . .
 			gotta add css for the spans with the data attr's

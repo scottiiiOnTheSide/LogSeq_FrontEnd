@@ -1,0 +1,9 @@
+div.entry p span[data-code="u"] {
+	text-decoration: underline;
+}
+
+div.entry p span[data-code="color"] {
+	background: linear-gradient(90deg, rgba(27,86,181,1) 0%, rgba(31,209,178,1) 100%);
+	-webkit-background-clip: text;
+  	-webkit-text-fill-color: transparent;
+}

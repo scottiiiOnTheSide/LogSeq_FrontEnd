@@ -47,7 +47,7 @@ async function loadLog (user,year,state) {
 	*/
 }
 
-function DayLog({log, setLog}) {
+function DayLog({log}) {
 
 	let postsFromToday = (posts) => {
 		let fromToday;
@@ -128,41 +128,44 @@ function WeekList() {
 function MonthChart() {
 }
 
-export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChart, apiAddr}) {
+export default function BlogLog({loggedIn, userBlog, Daylog, WeekList, MonthChart}) {
 
 	//automatically runs whenever BlogLog mounts, only if log is empty
-	let [log, setLog] = useState([]);
+	// let [log, setLog] = useState([]);
 
-	const fetchData = async () => {
-		let month = new Date().getMonth(),
-			year = calendar['currentYear'],
-			user = loggedIn,
-			api = apiAddr
+	// const fetchData = async () => {
+	// 	let month = new Date().getMonth(),
+	// 		year = new Date().getFullYear(),
+	// 		user = loggedIn,
+	// 		api = apiAddr
 
-		const response = await fetch(`${api}/posts/log?month=${month}&year=${year}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				'Content-length': 0,
-				'Accept': 'application/json',
-				'Host': 'http://192.168.1.5:3333',
-				'auth-token': user
-			}
-		})
+	// 	const response = await fetch(`${api}/posts/log?month=${month}&year=${year}`, {
+	// 		method: 'GET',
+	// 		headers: {
+	// 			'Content-Type': 'application/json',
+	// 			'Content-length': 0,
+	// 			'Accept': 'application/json',
+	// 			'Host': 'http://192.168.1.5:3333',
+	// 			'auth-token': user
+	// 		}
+	// 	})
 
-		const data = await response.json();
+	// 	const data = await response.json();
 
-		let reorder = [];
-		for(let i = data.length; i >= 0; i--) {
-			reorder.push(data[i]);
-		}
-		reorder.splice(0, 1);
-		setLog(reorder);
-		console.log(data);
-	}
+	// 	let reorder = [];
+	// 	for(let i = data.length; i >= 0; i--) {
+	// 		reorder.push(data[i]);
+	// 	}
+	// 	reorder.splice(0, 1);
+	// 	setLog(reorder);
+	// 	console.log(data);
+	// }
+
+	let log = userBlog.log,	
+		setLog = userBlog.setLog;
 
 	useEffect( ()=> {
-		fetchData();
+		userBlog.updateLog();
 	}, [])
 
 	//quick control to make sure only Daylog loads
@@ -172,7 +175,7 @@ export default function BlogLog({calendar, loggedIn, Daylog, WeekList, MonthChar
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
 
 			{active &&
-				<DayLog log={log} setLog={setLog}/>
+				<DayLog log={log} />
 			}
 			{!active &&
 				<WeekList />
