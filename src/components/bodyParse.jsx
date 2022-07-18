@@ -26,7 +26,7 @@ export default function bodyParse(string) {
 	      return 1;
 	    }
 	});
-	console.log(newset)
+	// console.log(newset)
 
 	elementArray = elementArray.map((element, index) => {
 		if(index % 2 == 0) {
@@ -37,7 +37,7 @@ export default function bodyParse(string) {
 			return thing;
 		}
 	})
-	console.log(elementArray);
+	// console.log(elementArray);
 
 	spanArray = spanArray.map((element, index) => {
 	  if(index % 2 == 0) {
@@ -64,7 +64,7 @@ export default function bodyParse(string) {
 	    return element;
 	  }
 	});
-	console.log(newsetTwo);
+	// console.log(newsetTwo);
 
 	let iter2 = 0;
 	let setText = splitText.map((element, index) => {

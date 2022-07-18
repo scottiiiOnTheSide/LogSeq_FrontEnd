@@ -2,6 +2,15 @@ Currently Working On:
 components/UserMenu
 components/MenuToggle
 
+07. 18. 2022
+@1836 Barebones CSS added for the menuButton, userMenu and createPost page
+			
+			Next, page for independant posts.
+			- Have post edit and delete options within page
+			(should start reading up on React Router)
+
+			Update and Delete Routes for API
+
 07. 17. 2022
 @1245 おめでとうございます !!!
 			Combined the log and updateLog function into an object, moved to the App.js file

@@ -7,3 +7,7 @@ div.entry p span[data-code="color"] {
 	-webkit-background-clip: text;
   	-webkit-text-fill-color: transparent;
 }
+
+div#daylog {
+	margin-bottom: 60px;
+}

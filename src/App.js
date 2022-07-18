@@ -11,7 +11,7 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.187:3333'
+  const apiAddr = 'http://192.168.1.11:3333'
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,

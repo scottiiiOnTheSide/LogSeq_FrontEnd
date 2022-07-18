@@ -31,7 +31,7 @@ function LogControls({toggleCreateForm, toggleUpdateList, toggleDeleteList}) {
 	)
 }
 
-function CreateForm({apiAddr, user, updateLog}) {
+function CreateForm({apiAddr, user, updateLog, toggleCreateForm}) {
 
 	const [formData, setFormData] = useReducer(formReducer, {});
 
@@ -83,11 +83,18 @@ function CreateForm({apiAddr, user, updateLog}) {
 			<form onSubmit={handleSubmit}>
 				<fieldset>
 					<input name="title" placeholder="Title" onChange={handleChange}/>
-					<input name="content" placeholder="Content" onChange={handleChange}/>
+					<textarea 
+						name="content" 
+						placeholder="Content" 
+						onChange={handleChange}
+						rows="10"
+						cols="30"></textarea>
 					<input name="tags" placeholder="tags" onChange={handleChange}/>
 				</fieldset>
 				<button type="submit">Submit</button>
 			</form>
+
+			<button onClick={toggleCreateForm}>Close</button>
 		</div>
 	)
 }
@@ -113,7 +120,11 @@ export default function UserMenu({apiAddr, user, userBlog}) {
 				toggleDeleteList={toggleDeleteList}/>
 
 			{is_createFormOpen &&
-				<CreateForm apiAddr={apiAddr} user={user} updateLog={userBlog.updateLog}/>
+				<CreateForm 
+					apiAddr={apiAddr} 
+					user={user} 
+					updateLog={userBlog.updateLog}
+					toggleCreateForm={toggleCreateForm}/>
 			}
 			{is_updateListOpen &&
 				<UpdateList />
