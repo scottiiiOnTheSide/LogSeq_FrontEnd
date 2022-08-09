@@ -1,3 +1,10 @@
+
+07. 27. 2022
+@1430 social log endpoint is functional on API. Just need to adjust code slightly (create a new state variable for the social log for the component to draw from)
+also include user name above post title
+
+@1217 In array for tags, make check to remove any empty strings
+
 Currently Working On:
 components/UserMenu
 components/MenuToggle

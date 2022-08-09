@@ -49,7 +49,7 @@ function UserSignUp({userSignUp_set, userLogIn_set, confirmSignUp_set, apiAddr})
 
 		console.log(signedUp);
 		isSignedUp_set(signedUp);
-		// signUpSuccess_set(true);
+		signUpSuccess_set(true);
 
 		// sessionStorage.setItem('userStatus', 'online');
 	}
