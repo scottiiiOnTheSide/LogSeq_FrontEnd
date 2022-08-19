@@ -18,6 +18,9 @@ import bodyParse from '../bodyParse';
 import './blogLog.css';
 
 
+/* 08. 19. 2022 
+   this for socialLog,
+   but replaced in App.js */
 async function loadLog (user,year,state) {
 	let blogs = [];
 	let month = new Date().getMonth();
@@ -45,7 +48,7 @@ async function loadLog (user,year,state) {
 		call this func within useEffect within main component, 
 		assign it to state? variable containing all posts
 	*/
-}
+} 
 
 function DayLog({log, setLog}) {
 
@@ -203,7 +206,62 @@ function WeekList() {
 function MonthChart() {
 }
 
-export default function BlogLog({loggedIn, userBlog, Daylog, WeekList, MonthChart}) {
+
+function UserLog({userBlog, DayLog, WeekList, MonthChart}) {
+	let log = userBlog.log,
+		setLog = userBlog.setLog;
+
+	/*will run whenever socialLog mounts*/
+	useEffect( ()=> {
+		setLog();
+	}, []);
+
+
+	/*function to set one as true, the rest as false*/
+	return (
+		<div id='userLog'>
+			{active &&
+				<DayLog log={log} setLog={log} />
+			}
+			{!active &&
+				<Weeklist log={log} setLog={log} />
+			}
+			{!active &&
+				<MonthChart log={log} setLog={log} />
+			}
+		</div>
+	)
+}
+
+function SocialLog({socialBlog, DayLog, WeekList, MonthChart}) {
+
+	let log = socialBlog.log,
+		setLog = socialBlog.setLog;
+
+	/*will run whenever socialLog mounts*/
+	useEffect( ()=> {
+		setLog();
+	}, []);
+
+
+	/*function to set one as true, the rest as false*/
+	return (
+		<div id='socialLog'>
+			{active &&
+				<DayLog log={log} setLog={log} />
+			}
+			{!active &&
+				<Weeklist log={log} setLog={log} />
+			}
+			{!active &&
+				<MonthChart log={log} setLog={log} />
+			}
+		</div>
+	)
+}
+
+
+export default function BlogLog({loggedIn, userBlog, socialBlog, Daylog, WeekList, MonthChart}) {
 
 	let log = userBlog.log,	
 		setLog = userBlog.setLog;
@@ -212,6 +270,16 @@ export default function BlogLog({loggedIn, userBlog, Daylog, WeekList, MonthChar
 		userBlog.updateLog();
 	}, [])
 
+	/* 08. 19. 2022
+		run function in here to allow swiping between User.Log & Social.Log
+		heirachy should be
+		BlogLog
+		  -User.log
+		    - Day, Week and Month views
+		  -Social.log
+		     - Day, Week and Month Views
+	*/
+
 	//quick control to make sure only Daylog loads
 	const active = true;
 	return (
@@ -219,17 +287,11 @@ export default function BlogLog({loggedIn, userBlog, Daylog, WeekList, MonthChar
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
 
 			{active &&
-				<DayLog log={log} setLog={setLog}/>
+				<UserLog userBLog={userBlog}/>
 			}
 			{!active &&
-				<SocialLog_exp log={log} setLog={setLog}/>
+				<SocialLog socialBlog={log} />
 			}
-			{!active &&
-				<WeekList />
-			}
-			{!active &&
-				<MonthChart />
-			}	
 			
 		</div>
 	)

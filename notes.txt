@@ -1,4 +1,12 @@
 
+08. 17. 2022
+@0718 sucks a lil that my last addition to this project was close to a month ago,
+			but within BlogLog, i've created container divs for User and Social logs,
+			wrapping their own variations of the DayLog, WeekList and MonthChart.
+
+			to implement the slider, will need those wrapped
+			- not sure if it does currently work as is, will confirm as a proceed
+
 07. 27. 2022
 @1430 social log endpoint is functional on API. Just need to adjust code slightly (create a new state variable for the social log for the component to draw from)
 also include user name above post title

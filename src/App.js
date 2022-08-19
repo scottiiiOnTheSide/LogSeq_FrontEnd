@@ -31,13 +31,17 @@ function App() {
   const loggedIn = sessionStorage.getItem('userOnline');
   const loggedIn_set = (status) => sessionStorage.setItem('userOnline', JSON.parse(status)); 
 
-  let [log, setLog] = useState([]);
 
+  /* 
+      U S E R  &  S O C I A L  L o G s 
+  */
+  let [log, setLog] = useState([]);
+  let [socialLog, set_socialLog] = useState([]);
   const updateLog = async () => {
     let month = new Date().getMonth(),
       year = new Date().getFullYear(),
       user = loggedIn,
-      api = apiAddr
+      api = apiAddr;
 
     const response = await fetch(`${apiAddr}/posts/log?month=${month}&year=${year}`, {
       method: 'GET',
@@ -58,12 +62,41 @@ function App() {
     }
     reorder.splice(0, 1);
     setLog(reorder);
-    // console.log(data);
+  }
+  const updateSocialLog = async () => {
+    let month = new Date().getMonth(),
+        year = new Date().getFullYear(),
+        user = loggedIn,
+        api = apiAddr;
+
+    const response = fetch(`http://192.168.1.13:3333/posts/social?month=${month}&year=${year}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        'Content-length': 0,
+        'Accept': 'application/json',
+        'Host': 'http://192.168.1.5:3333',
+        'auth-token': user
+      }
+    })
+    const data = await response.json();
+
+    let reorder = [];
+    for(let i = data.length; i >= 0; i--) {
+      reorder.push(data[i]);
+    }
+    reorder.splice(0, 1);
+    set_socialLog(reorder);
   }
   const userBlog = {
     log: log,
     setLog: setLog,
     updateLog: updateLog
+  }
+  const socialBlog = {
+    log: socialLog,
+    setLog: set_socialLog,
+    updateLog: updateSocialLog
   }
 
 
@@ -88,7 +121,8 @@ function App() {
           loggedIn={loggedIn}
           // calendar={calendar}
           // apiAddr={apiAddr}
-          userBlog={userBlog}/>
+          userBlog={userBlog}
+          socialBlog={socialBlog}/>
       }
       {(loggedIn && mainMenu) && 
         <UserMenu 
