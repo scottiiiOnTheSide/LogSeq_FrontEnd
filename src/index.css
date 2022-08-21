@@ -1,6 +1,19 @@
+/*
+  08. 20. 2022
+  As of now, the topmost CSS file
+*/
+
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600&family=Roboto:wght@900&display=swap');
 /*Roboto, 900 Black */
-/*Open Sans 300 light, 400 Regular and 500 medium*/
+/*Open Sans 300 light, 400 Regular and 600 medium*/
+
+:root {
+  --site-gray-dark: rgba(0, 0, 0, 0.5);
+  --site-gray-mid: rgba(0, 0, 0, 0.25);
+  --site-gray-light: rgba(0, 0, 0, 0.1);
+  --initial-color: royalblue;
+}
+
 
 
 body {

@@ -207,54 +207,49 @@ function MonthChart() {
 }
 
 
-function UserLog({userBlog, DayLog, WeekList, MonthChart}) {
-	let log = userBlog.log,
-		setLog = userBlog.setLog;
-
-	/*will run whenever socialLog mounts*/
-	useEffect( ()=> {
-		setLog();
-	}, []);
-
+function UserLog({userLog, DayLog, WeekList, MonthChart}) {
 
 	/*function to set one as true, the rest as false*/
+	const active = true;
 	return (
 		<div id='userLog'>
+
+			<div id="sidebar">
+				<p>USER <br/>.<br/>LOG</p>
+			</div>
+
 			{active &&
-				<DayLog log={log} setLog={log} />
+				<DayLog log={userLog}/>
 			}
 			{!active &&
-				<Weeklist log={log} setLog={log} />
+				<WeekList log={userLog} />
 			}
 			{!active &&
-				<MonthChart log={log} setLog={log} />
+				<MonthChart log={userLog} />
 			}
 		</div>
 	)
 }
 
-function SocialLog({socialBlog, DayLog, WeekList, MonthChart}) {
-
-	let log = socialBlog.log,
-		setLog = socialBlog.setLog;
-
-	/*will run whenever socialLog mounts*/
-	useEffect( ()=> {
-		setLog();
-	}, []);
-
+function SocialLog({socialLog, DayLog, WeekList, MonthChart}) {
 
 	/*function to set one as true, the rest as false*/
+	const active = true;
 	return (
 		<div id='socialLog'>
+
+			<div id="sidebar">
+				<p>SOCIAL <br />.<br />LOG</p>
+			</div>
+
 			{active &&
-				<DayLog log={log} setLog={log} />
+				<DayLog log={socialLog} />
 			}
 			{!active &&
-				<Weeklist log={log} setLog={log} />
+				<WeekList log={socialLog} />
 			}
 			{!active &&
-				<MonthChart log={log} setLog={log} />
+				<MonthChart log={socialLog} />
 			}
 		</div>
 	)
@@ -263,12 +258,17 @@ function SocialLog({socialBlog, DayLog, WeekList, MonthChart}) {
 
 export default function BlogLog({loggedIn, userBlog, socialBlog, Daylog, WeekList, MonthChart}) {
 
-	let log = userBlog.log,	
-		setLog = userBlog.setLog;
-
 	useEffect( ()=> {
 		userBlog.updateLog();
+		socialBlog.updateLog();
+
+		const userLog = document.getElementById('userlog');
+		// const userLog_sideBar = window.getComputedStyle(userLog, "::before");
+		console.log(userLog);
 	}, [])
+
+	let userLog = userBlog.log,	
+		socialLog = socialBlog.log;
 
 	/* 08. 19. 2022
 		run function in here to allow swiping between User.Log & Social.Log
@@ -280,6 +280,7 @@ export default function BlogLog({loggedIn, userBlog, socialBlog, Daylog, WeekLis
 		     - Day, Week and Month Views
 	*/
 
+
 	//quick control to make sure only Daylog loads
 	const active = true;
 	return (
@@ -287,10 +288,16 @@ export default function BlogLog({loggedIn, userBlog, socialBlog, Daylog, WeekLis
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
 
 			{active &&
-				<UserLog userBLog={userBlog}/>
+				<UserLog userLog={userLog} 
+						 DayLog={DayLog}
+						 WeekList={WeekList}
+						 MonthChart={MonthChart} />
 			}
 			{!active &&
-				<SocialLog socialBlog={log} />
+				<SocialLog socialLog={socialLog}
+						   DayLog={DayLog}
+						   WeekList={WeekList}
+						   MonthChart={MonthChart} />
 			}
 			
 		</div>

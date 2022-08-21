@@ -1,0 +1,23 @@
+
+header {
+	width: 92%;
+	margin: 0 auto;
+	border-bottom: 2px solid var(--site-gray-mid);
+}
+
+header h2 {
+	font-weight: 600;
+	line-height: 40px;
+	font-size: 1.75em;
+	color: var(--site-gray-mid);
+
+	margin: 20px 0 20px 0px;
+}
+
+header h2 span {
+	margin: 0 4px;
+}
+
+header h2 span:first-of-type {
+	margin-left: 0px;
+}

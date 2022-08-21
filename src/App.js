@@ -11,7 +11,7 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.142:3333'
+  const apiAddr = 'http://192.168.1.187:3333'
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -69,7 +69,7 @@ function App() {
         user = loggedIn,
         api = apiAddr;
 
-    const response = fetch(`http://192.168.1.13:3333/posts/social?month=${month}&year=${year}`, {
+    const response = fetch(`${apiAddr}/posts/social?month=${month}&year=${year}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',

@@ -15,3 +15,97 @@ div#daylog {
 div.entry_SL {
 	text-align: right;
 }
+
+
+
+
+div#blogLog {}
+
+div#blogLog div#userLog {
+}
+
+div#blogLog div#userLog::before {
+	content: '';
+	display: block;
+	width: 40px;
+	height: 100vh;
+	background-color: transparent;
+	transition: all 0.3s ease-out;
+	position: absolute;
+	z-index: 2;
+}
+
+	div#blogLog div#userLog::before:hover {
+		background-color: rgba(25, 41, 88, 0.25);
+	}
+
+	div#blogLog div#userLog div#sidebar {
+		position: absolute;
+		border-right: 2px solid var(--site-gray-mid);
+		height: 100%;
+		transition: all 0.2s ease-out;
+		color: var(--site-gray-mid);
+	}
+
+		div#blogLog div#userLog div#sidebar:hover {
+			color: royalblue;
+			border-color: royalblue;
+		}
+
+	div#blogLog div#userLog div#sidebar p {
+		display: block;
+		word-break: break-all;
+		text-align: center;
+		line-height: 60px;
+		font-size: 1.5em;
+		width: 20px;
+		margin: 0 10px;
+		position: relative;
+		/*top: 50%;
+		transform: translateY(-50%);*/
+	}
+
+
+	div#blogLog div#userLog div#daylog {
+		margin-left: 60px;
+	}
+
+
+div#blogLog div#socialLog {}
+
+div#blogLog div#socialLog::before {
+	content: '';
+	display: block;
+	width: 40px;
+	height: 100vh;
+	background-color: transparent;
+	transition: all 0.3s ease-out;
+	position: absolute;
+	right: 0;
+	z-index: 2;
+}
+
+	div#blogLog div#socialLog div#sidebar {
+		position: absolute;
+		right: 0;
+		border-left: 2px solid var(--site-gray-mid);
+		height: 100%;
+		transition: all 0.2s ease-out;
+		color: var(--site-gray-mid);
+	}
+
+	div#blogLog div#socialLog div#sidebar p {
+		word-break: break-all;
+		width: 20px;
+		display: block;
+		text-align: center;
+		line-height: 60px;
+		font-size: 1.5em;
+		margin: 0 10px;
+		position: relative;
+	}
+
+div#blogLog div#socialLog div#daylog {
+	margin-right: 60px;
+	text-align: right;
+}

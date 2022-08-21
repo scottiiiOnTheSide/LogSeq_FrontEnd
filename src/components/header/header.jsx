@@ -24,10 +24,10 @@ function Home({calendar}) {
 
 	return (
 		<div>
-			<h2>Today</h2>
-			<h2>
+			<h2>Today
+				<br />
 				<span id="month">{calendar['currentMonth']}</span>
-				<span id="date">{calendar['currentDate']}</span> 
+				<span id="date">{calendar['currentDate']},</span> 
 				<span id="year">{calendar['currentYear']}</span>
 			</h2>
 		</div>

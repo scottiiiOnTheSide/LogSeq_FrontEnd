@@ -1,4 +1,25 @@
 
+08. 20. 2022
+@1512 for my the slider, the li's are passed as the highest level
+		  parameter, and for the actual movements, those are done on
+		  the image.
+		  an equivalent for this project would be 'userlog' & 'socialLog' as
+		  the top level array, and the sidebars as the first element
+		  gotten and used.
+		  However, the issue is that moving sidebar doesnt also move it's
+		  respective log, wrapper element.
+
+		  idea: move the loaded subelement, daylog or whatev
+		  when sidebar is moved?
+
+		  running low on enery now (._. )
+
+@1246 I dont feel like it was Wednesday that I made my previous update...
+			But maybe...?
+
+			Anyways, gonna have to set the daylog to scroll within it's container,
+			similar to the albums list in the portfolio site
+
 08. 17. 2022
 @0718 sucks a lil that my last addition to this project was close to a month ago,
 			but within BlogLog, i've created container divs for User and Social logs,
