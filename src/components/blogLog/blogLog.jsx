@@ -12,9 +12,11 @@
 	may need to move loadLog to App.css and use context further down the road
 */
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import Calendar from '../../components/calendar';
 import bodyParse from '../bodyParse';
+import classNames from 'classnames'
+// import componentSlide_UserSocial from '../componentSlide';
 import './blogLog.css';
 
 
@@ -209,13 +211,31 @@ function MonthChart() {
 
 function UserLog({userLog, DayLog, WeekList, MonthChart}) {
 
+	const [entry, setEntry] = useReducer(state => !state, true);
+	const [exit, setExit] = useReducer(state => !state, false);
+
+	const classNames = classNames({
+		'entry': entry == true && exit == false;
+		'exit': exit == true && entry == false;
+	})
+
+	const transition = (event) => {
+		/*
+			setExit true so animation plays.
+			then set state for UserLog to false.
+			then set state for SocialLog to true + 
+				setEntry
+		*/ 
+	}
+
 	/*function to set one as true, the rest as false*/
 	const active = true;
 	return (
-		<div id='userLog'>
+		<div id='userLog' className={classNames}>
 
 			<div id="sidebar">
-				<p>USER <br/>.<br/>LOG</p>
+				<p>USER</p>
+				<button onClick={tranisition}><p>SOCIAL</p></button>
 			</div>
 
 			{active &&
@@ -239,7 +259,8 @@ function SocialLog({socialLog, DayLog, WeekList, MonthChart}) {
 		<div id='socialLog'>
 
 			<div id="sidebar">
-				<p>SOCIAL <br />.<br />LOG</p>
+				<p>SOCIAL</p>
+				<button >USER</button>
 			</div>
 
 			{active &&
@@ -270,18 +291,9 @@ export default function BlogLog({loggedIn, userBlog, socialBlog, Daylog, WeekLis
 	let userLog = userBlog.log,	
 		socialLog = socialBlog.log;
 
-	/* 08. 19. 2022
-		run function in here to allow swiping between User.Log & Social.Log
-		heirachy should be
-		BlogLog
-		  -User.log
-		    - Day, Week and Month views
-		  -Social.log
-		     - Day, Week and Month Views
-	*/
-
-
 	//quick control to make sure only Daylog loads
+	//08. 27. 2022
+	// change active const to props to be toggle-able within User and Social Log
 	const active = true;
 	return (
 		

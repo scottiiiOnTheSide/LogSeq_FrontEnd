@@ -1,4 +1,22 @@
 
+08. 27. 2022
+@0115 added set up notes for what to do next
+
+@0048	New plan is to simply implement button on sidebar in order to switch between
+			User and Social logs. 
+			For code concerning transitions:
+			onClick must:
+				- add animation class via state
+				- unmount component via state
+				- mount new component via state
+					- mounting the next component with it's entry animation class
+
+08. 22. 2022
+@1506 current working idea is to add the slider code to both User and Social log
+componenets, and have the div element be the target element that slides. 
+would then just implement react logic where necessary to make the changes,
+such as unmounting the current log and mounting the next after a slide
+
 08. 20. 2022
 @1512 for my the slider, the li's are passed as the highest level
 		  parameter, and for the actual movements, those are done on

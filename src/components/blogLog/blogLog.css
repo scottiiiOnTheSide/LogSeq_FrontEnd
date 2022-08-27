@@ -24,6 +24,17 @@ div#blogLog {}
 div#blogLog div#userLog {
 }
 
+div#bloglog div#userlog.switch {
+	animation-name: leftToRight;
+	animation-fill-mode: forwards;
+	animation-duration: 0.2s;
+	animation-timing-function: ease;
+}
+
+@keyframes leftToRight {
+
+}
+
 div#blogLog div#userLog::before {
 	content: '';
 	display: block;
@@ -32,7 +43,7 @@ div#blogLog div#userLog::before {
 	background-color: transparent;
 	transition: all 0.3s ease-out;
 	position: absolute;
-	z-index: 2;
+	/*z-index: 2;*/
 }
 
 	div#blogLog div#userLog::before:hover {
@@ -44,13 +55,9 @@ div#blogLog div#userLog::before {
 		border-right: 2px solid var(--site-gray-mid);
 		height: 100%;
 		transition: all 0.2s ease-out;
-		color: var(--site-gray-mid);
+		z-index: 2;
+		/*color: var(--site-gray-mid);*/
 	}
-
-		div#blogLog div#userLog div#sidebar:hover {
-			color: royalblue;
-			border-color: royalblue;
-		}
 
 	div#blogLog div#userLog div#sidebar p {
 		display: block;
@@ -61,8 +68,37 @@ div#blogLog div#userLog::before {
 		width: 20px;
 		margin: 0 10px;
 		position: relative;
+		color: black;
 		/*top: 50%;
 		transform: translateY(-50%);*/
+	}
+
+	div#blogLog div#userLog div#sidebar button {
+		background-color: transparent;
+		border: none;
+
+		display: block;
+		width: 20px;
+		margin: 20px 0 0 5px;
+		position: relative;
+	}
+
+	div#blogLog div#userLog div#sidebar button:hover p {
+		color: royalblue;
+	}
+
+	div#blogLog div#userLog div#sidebar:hover {
+			border-color: royalblue;
+	}
+
+	div#blogLog div#userLog div#sidebar button p{
+		text-align: center;
+		line-height: 60px;
+		font-size: 1.5em;
+		width: 18px;
+		word-break: break-all;
+		color: var(--site-gray-mid);
+		margin: 0;
 	}
 
 
@@ -103,6 +139,10 @@ div#blogLog div#socialLog::before {
 		font-size: 1.5em;
 		margin: 0 10px;
 		position: relative;
+	}
+
+	div#blogLog div#socialLog div#sidebar button {
+
 	}
 
 div#blogLog div#socialLog div#daylog {

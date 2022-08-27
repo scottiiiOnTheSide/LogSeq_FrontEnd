@@ -6,6 +6,7 @@ div#userMenu {
 	top: 0;
 
 	background-color: white;
+	z-index: 5;
 }
 
 ul#logControls {
