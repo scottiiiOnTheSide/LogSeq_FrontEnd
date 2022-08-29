@@ -12,10 +12,10 @@
 	may need to move loadLog to App.css and use context further down the road
 */
 
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect, useReducer, useRef } from 'react';
 import Calendar from '../../components/calendar';
 import bodyParse from '../bodyParse';
-import classNames from 'classnames'
+import classNames from 'classnames';
 // import componentSlide_UserSocial from '../componentSlide';
 import './blogLog.css';
 
@@ -202,21 +202,22 @@ function SocialLog_exp({log, setLog}) {
 		}
 	}
 
-function WeekList() {
+function WeekList({log}) {
 }
 
-function MonthChart() {
+function MonthChart({log}) {
 }
 
 
-function UserLog({userLog, DayLog, WeekList, MonthChart}) {
+function UserLog({userLog}) {
 
 	const [entry, setEntry] = useReducer(state => !state, true);
 	const [exit, setExit] = useReducer(state => !state, false);
 
-	const classNames = classNames({
-		'entry': entry == true && exit == false;
-		'exit': exit == true && entry == false;
+	// let classNames = require('classnames');
+	const classes = classNames({
+		'entry': entry == true && exit == false,
+		'exit': exit == true && entry == false
 	})
 
 	const transition = (event) => {
@@ -231,15 +232,15 @@ function UserLog({userLog, DayLog, WeekList, MonthChart}) {
 	/*function to set one as true, the rest as false*/
 	const active = true;
 	return (
-		<div id='userLog' className={classNames}>
+		<div id='userlog' className={classes}>
 
 			<div id="sidebar">
 				<p>USER</p>
-				<button onClick={tranisition}><p>SOCIAL</p></button>
+				<button ><p>SOCIAL</p></button>
 			</div>
 
 			{active &&
-				<DayLog log={userLog}/>
+				<DayLog log={userLog} />
 			}
 			{!active &&
 				<WeekList log={userLog} />
@@ -251,7 +252,7 @@ function UserLog({userLog, DayLog, WeekList, MonthChart}) {
 	)
 }
 
-function SocialLog({socialLog, DayLog, WeekList, MonthChart}) {
+function SocialLog({socialLog}) {
 
 	/*function to set one as true, the rest as false*/
 	const active = true;
@@ -276,28 +277,102 @@ function SocialLog({socialLog, DayLog, WeekList, MonthChart}) {
 	)
 }
 
+let reducer = (state, action) => {
+		let newState;
+		switch(action.type) {
+			case 'rightToLeft':
+				newState = {
+					rightActive: false,
+					rightNonActive: true,
+					leftActive: true,
+					leftNonActive: false
+				}
+				break;
+			case 'leftToRight':
+				newState = {
+					rightActive: true,
+					rightNonActive: false,
+					leftActive: false,
+					leftNonActive: true
+				}
+		}
+		return newState;
+	}
 
-export default function BlogLog({loggedIn, userBlog, socialBlog, Daylog, WeekList, MonthChart}) {
+const initialState = {
+		rightActive: true,
+		rightNonActive: false,
+		leftActive: false,
+		leftNonActive: true
+	}
 
-	useEffect( ()=> {
+function Switch({}) {
+
+	/*
+		Goal for the switch:
+		upon selecting one button, 
+		  - it's current class is removed,
+		  - it gets a new class
+		  - the other button get's it's current class removed
+		  - new class then added
+
+		will use useReducer to help manage all the variables and toggling
+	*/
+
+	const [activity, setActivity] = useReducer(reducer, initialState);
+
+	const leftButtonClasses = classNames({
+		'active': activity.leftActive,
+		'nonActive': activity.leftNonActive,
+	})
+
+	const rightButtonClasses = classNames({
+		'active': activity.rightActive,
+		'nonActive': activity.rightNonActive,
+	})
+
+	useEffect(() => {
+		console.log(activity.rightActive);
+	}, [])
+
+	return (
+		<div id="switch">
+			<button id="right" 
+					className={rightButtonClasses} 
+					onClick={()=> setActivity({type:'leftToRight'})}>User</button>
+			<button id="left" 
+					className={leftButtonClasses}
+					onClick={()=> setActivity({type:'rightToLeft'})}>Social</button>
+		</div>
+	)
+}
+
+
+export default function BlogLog({loggedIn, userBlog, socialBlog, DayLog, WeekList, MonthChart}) {
+
+	useEffect(()=> {
 		userBlog.updateLog();
 		socialBlog.updateLog();
-
-		const userLog = document.getElementById('userlog');
-		// const userLog_sideBar = window.getComputedStyle(userLog, "::before");
-		console.log(userLog);
 	}, [])
 
 	let userLog = userBlog.log,	
 		socialLog = socialBlog.log;
 
-	//quick control to make sure only Daylog loads
-	//08. 27. 2022
-	// change active const to props to be toggle-able within User and Social Log
+	/*
+		quick control to make sure only Daylog loads
+	    08. 29. 2022
+	    create state functions for each log
+	    use useEffect for when state changes to
+	    - add transition classes to log
+	  	- then, toggle it's designated active var to unmount it
+	*/
+
 	const active = true;
 	return (
 		
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
+
+			<Switch />
 
 			{active &&
 				<UserLog userLog={userLog} 

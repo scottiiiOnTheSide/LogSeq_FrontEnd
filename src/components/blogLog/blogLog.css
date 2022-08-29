@@ -19,9 +19,68 @@ div.entry_SL {
 
 
 
-div#blogLog {}
+div#blogLog {
+	position: relative;
+}
 
-div#blogLog div#userLog {
+
+
+
+div#blogLog div#switch {
+	position: relative;
+	margin: 40px auto;
+}
+
+	div#blogLog div#switch button {
+		border: none;
+		background-color: transparent;
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		transition: all 0.2s ease;
+
+		font-size: 1.5em;
+	}
+
+	div#blogLog div#switch button#right {}
+
+		div#blogLog div#switch button#right.active {
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		div#blogLog div#switch button#right.nonActive {
+			left: 70%;
+			transform: translate(-50%, -50%);
+			font-size: 1em;
+			color: var(--site-gray-mid);
+		}
+
+	div#blogLog div#switch button#left {}
+
+		div#blogLog div#switch button#left.active {
+			left: 50%;
+			transform: translate(-50%, -50%);
+		}
+
+		div#blogLog div#switch button#left.nonActive {
+			left: 30%;
+			transform: translate(-50%, -50%);
+			font-size: 1em;
+			color: var(--site-gray-mid);
+		}	
+
+
+
+
+div#blogLog div#userlog,
+div#blogLog div#sociallog {
+	margin-top: 30px;
+	padding-top: 30px;
+}
+
+
+div#blogLog div#userlog {
 }
 
 div#bloglog div#userlog.switch {
@@ -35,7 +94,21 @@ div#bloglog div#userlog.switch {
 
 }
 
-div#blogLog div#userLog::before {
+
+/*
+	08. 29. 2022
+	3 class states for the logs: 
+	- Initial state:  is the first log that loads, so it's front and center
+	- slide states: right to center  (user entry)
+					center to right. (user leave)
+
+	  				left to center.	 (social entry)
+	  				center to left.  (social leave)
+
+	by default, each log will be offscreen to it's respective side
+*/
+
+div#blogLog div#userlog::before {
 	content: '';
 	display: block;
 	width: 40px;
@@ -46,11 +119,11 @@ div#blogLog div#userLog::before {
 	/*z-index: 2;*/
 }
 
-	div#blogLog div#userLog::before:hover {
+	div#blogLog div#userlog::before:hover {
 		background-color: rgba(25, 41, 88, 0.25);
 	}
 
-	div#blogLog div#userLog div#sidebar {
+	div#blogLog div#userlog div#sidebar {
 		position: absolute;
 		border-right: 2px solid var(--site-gray-mid);
 		height: 100%;
@@ -59,7 +132,7 @@ div#blogLog div#userLog::before {
 		/*color: var(--site-gray-mid);*/
 	}
 
-	div#blogLog div#userLog div#sidebar p {
+	div#blogLog div#userlog div#sidebar p {
 		display: block;
 		word-break: break-all;
 		text-align: center;
@@ -73,7 +146,7 @@ div#blogLog div#userLog::before {
 		transform: translateY(-50%);*/
 	}
 
-	div#blogLog div#userLog div#sidebar button {
+	div#blogLog div#userlog div#sidebar button {
 		background-color: transparent;
 		border: none;
 
@@ -83,15 +156,15 @@ div#blogLog div#userLog::before {
 		position: relative;
 	}
 
-	div#blogLog div#userLog div#sidebar button:hover p {
+	div#blogLog div#userlog div#sidebar button:hover p {
 		color: royalblue;
 	}
 
-	div#blogLog div#userLog div#sidebar:hover {
+	div#blogLog div#userlog div#sidebar:hover {
 			border-color: royalblue;
 	}
 
-	div#blogLog div#userLog div#sidebar button p{
+	div#blogLog div#userlog div#sidebar button p{
 		text-align: center;
 		line-height: 60px;
 		font-size: 1.5em;
@@ -102,7 +175,7 @@ div#blogLog div#userLog::before {
 	}
 
 
-	div#blogLog div#userLog div#daylog {
+	div#blogLog div#userlog div#daylog {
 		margin-left: 60px;
 	}
 

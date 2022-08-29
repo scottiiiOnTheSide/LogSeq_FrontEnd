@@ -1,4 +1,17 @@
 
+08. 29. 2022
+@1244 Implemented new component for switching between User and Social logs
+			Next steps:
+			- upon toggle, useEffect to set log styles then setTimeout it's active variable
+
+
+@0954 redesigning the element responsible for switching between logs.
+			Two buttons, the default in the middle, the next at the respective
+			side that the section it toggles slides in from.
+			Upon pressing one button,
+			both have their classes changed so that the toggled button
+			comes into the center, and the other moves to the side.
+
 08. 27. 2022
 @0115 added set up notes for what to do next
 
