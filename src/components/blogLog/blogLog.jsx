@@ -209,15 +209,20 @@ function MonthChart({log}) {
 }
 
 
-function UserLog({userLog}) {
+function UserLog({userLog, logClasses}) {
 
 	const [entry, setEntry] = useReducer(state => !state, true);
 	const [exit, setExit] = useReducer(state => !state, false);
 
-	// let classNames = require('classnames');
+	// className changes need to be intiated by state var
+	// from parent component, that's then accessible by Switch component
+	// const classes = classNames({
+	// 	'userEntry': entry == true && exit == false,
+	// 	'userLeave': exit == true && entry == false
+	// })
 	const classes = classNames({
-		'entry': entry == true && exit == false,
-		'exit': exit == true && entry == false
+		'userEntry': logClasses.userEntry,
+		'userLeave': logClasses.userLeave
 	})
 
 	const transition = (event) => {
@@ -236,7 +241,6 @@ function UserLog({userLog}) {
 
 			<div id="sidebar">
 				<p>USER</p>
-				<button ><p>SOCIAL</p></button>
 			</div>
 
 			{active &&
@@ -252,16 +256,20 @@ function UserLog({userLog}) {
 	)
 }
 
-function SocialLog({socialLog}) {
+function SocialLog({socialLog, logClasses}) {
+
+	const classes = classNames({
+		'socialEntry': logClasses.socialEntry,
+		'socialLeave': logClasses.socialLeave
+	})
 
 	/*function to set one as true, the rest as false*/
 	const active = true;
 	return (
-		<div id='socialLog'>
+		<div id='socialLog' className={classes}>
 
 			<div id="sidebar">
 				<p>SOCIAL</p>
-				<button >USER</button>
 			</div>
 
 			{active &&
@@ -306,7 +314,7 @@ const initialState = {
 		leftNonActive: true
 	}
 
-function Switch({}) {
+function Switch({setLogClasses}) {
 
 	/*
 		Goal for the switch:
@@ -339,14 +347,45 @@ function Switch({}) {
 		<div id="switch">
 			<button id="right" 
 					className={rightButtonClasses} 
-					onClick={()=> setActivity({type:'leftToRight'})}>User</button>
+					onClick={()=> {setActivity({type:'leftToRight'}) 
+								setLogClasses({type:'socialOut_userIn'})}}>User</button>
 			<button id="left" 
 					className={leftButtonClasses}
-					onClick={()=> setActivity({type:'rightToLeft'})}>Social</button>
+					onClick={()=> {setActivity({type:'rightToLeft'}) 
+									setLogClasses({type:'userOut_socialIn'})}}>Social</button>
 		</div>
 	)
 }
 
+let logStateReducer = (state, action) => {
+	let newState;
+	switch(action.type) {
+		case 'userOut_socialIn':
+			newState = {
+				userEntry: false,
+				userLeave: true,
+				socialEntry: true,
+				socialLeave: false
+			}
+			break;
+		case 'socialOut_userIn':
+			newState = {
+				userEntry: true,
+				userLeave: false,
+				socialEntry: false,
+				socialLeave: true
+			}
+		break;
+	}
+	return newState;
+}
+
+const logStates = {
+	userEntry: true,
+	userLeave: false,
+	socialEntry: false,
+	socialLeave: false,
+}
 
 export default function BlogLog({loggedIn, userBlog, socialBlog, DayLog, WeekList, MonthChart}) {
 
@@ -367,25 +406,20 @@ export default function BlogLog({loggedIn, userBlog, socialBlog, DayLog, WeekLis
 	  	- then, toggle it's designated active var to unmount it
 	*/
 
+	const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
+
 	const active = true;
 	return (
 		
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
 
-			<Switch />
+			<Switch setLogClasses={setLogClasses}/>
 
-			{active &&
-				<UserLog userLog={userLog} 
-						 DayLog={DayLog}
-						 WeekList={WeekList}
-						 MonthChart={MonthChart} />
-			}
-			{!active &&
-				<SocialLog socialLog={socialLog}
-						   DayLog={DayLog}
-						   WeekList={WeekList}
-						   MonthChart={MonthChart} />
-			}
+			<UserLog userLog={userLog}  
+					 logClasses={logClasses}/>
+
+			<SocialLog socialLog={socialLog}
+					 	logClasses={logClasses}/>
 			
 		</div>
 	)

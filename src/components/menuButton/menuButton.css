@@ -3,7 +3,7 @@ div#buttonWrapper_userMenu {
     justify-content: center;
     align-content: center;	
     width: 100%;
-    position: fixed;
+    position: absolute;
     bottom: 0px;
     background-color: white;
     z-index: 10;

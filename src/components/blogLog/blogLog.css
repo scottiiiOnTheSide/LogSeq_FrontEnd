@@ -74,24 +74,48 @@ div#blogLog div#switch {
 
 
 div#blogLog div#userlog,
-div#blogLog div#sociallog {
+div#blogLog div#socialLog {
 	margin-top: 30px;
-	padding-top: 30px;
+	position: absolute;
+	/*padding-top: 30px;*/
 }
 
 
 div#blogLog div#userlog {
+	left: 100%;
 }
 
-div#bloglog div#userlog.switch {
-	animation-name: leftToRight;
+div#blogLog div#userlog.userEntry {
+	animation-name: userEntry;
 	animation-fill-mode: forwards;
 	animation-duration: 0.2s;
 	animation-timing-function: ease;
 }
 
-@keyframes leftToRight {
+@keyframes userEntry {
+	from {
+		left: 100%;
+	}
 
+	to {
+		left: 0%;
+	}
+}
+
+div#blogLog div#userlog.userLeave {
+	animation-name: userLeave;
+	animation-fill-mode: forwards;
+	animation-duration: 0.2s;
+	animation-timing-function: ease;
+}
+
+@keyframes userLeave {
+	from {
+		left: 0%;
+	}
+	to {
+		left: 100%;
+	}
 }
 
 
@@ -180,7 +204,48 @@ div#blogLog div#userlog::before {
 	}
 
 
-div#blogLog div#socialLog {}
+div#blogLog div#socialLog {
+	left: -100%;
+}
+
+
+div#blogLog div#socialLog.socialEntry {
+	animation-name: socialEntry;
+	animation-fill-mode: forwards;
+	animation-duration: 0.2s;
+	animation-timing-function: ease;
+}
+
+@keyframes socialEntry {
+	from {
+		left: -100%;
+	}
+
+	to {
+		left: 0%;
+		right: 0%;
+	}
+}
+
+div#blogLog div#socialLog.socialLeave {
+	animation-name: socialLeave;
+	animation-fill-mode: forwards;
+	animation-duration: 0.2s;
+	animation-timing-function: ease;
+}
+
+@keyframes socialLeave {
+	from {
+		left: 0%;
+	}
+
+	to {
+		left: -100%;
+	}
+}
+
+
+
 
 div#blogLog div#socialLog::before {
 	content: '';
@@ -212,11 +277,29 @@ div#blogLog div#socialLog::before {
 		font-size: 1.5em;
 		margin: 0 10px;
 		position: relative;
+		color: black;
 	}
 
 	div#blogLog div#socialLog div#sidebar button {
+		background-color: transparent;
+		border: none;
 
+		display: block;
+		width: 20px;
+		margin: 20px 10px 0 0;
+		position: relative;
 	}
+
+	div#blogLog div#socialLog div#sidebar button p{
+		text-align: center;
+		line-height: 60px;
+		font-size: 1.5em;
+		width: 18px;
+		word-break: break-all;
+		color: var(--site-gray-mid);
+		margin: 0;
+	}
+
 
 div#blogLog div#socialLog div#daylog {
 	margin-right: 60px;

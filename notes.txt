@@ -1,5 +1,15 @@
 
 08. 29. 2022
+@2336 fixed the menu thing
+
+@2331 Toggling between User Log and Social Log now successfully implemented!
+			Gonna play around with the transition, as it currently looks abit choppy
+			also, the menu button at the botton of the page dissappears upon switching to
+			Social Log. Naze desu?
+
+@2224 So the blogpost component was made on the desktop and I neglected, or forgot, to sync
+			the github repos. So, I'll have to manually copy that code over :P
+
 @1244 Implemented new component for switching between User and Social logs
 			Next steps:
 			- upon toggle, useEffect to set log styles then setTimeout it's active variable
