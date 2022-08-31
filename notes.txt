@@ -1,4 +1,24 @@
 
+08. 30. 2022
+@1534 Added in the blogpost functionality :D Got alot of clean up to do on that . . .
+post from the update that didn't get pushed:
+
+Initial Skeleton complete for blogpost page
+	    - need to properly get date and timezone data 
+
+	    - Routes already exist for edit and delete 
+	    	- edit takes user back to original menu for creating post
+	    	  with data prefilled
+	    	  - prompts user if theyre sure about update before sending request
+	    	  - goes back to bloglog after response recieved (should have loading indicator)
+	    	- modal appears, background grayed out, confirming whether user wishes to delete
+	    	  post. 
+	    	  - waits until response recieved, then returns to bloglog
+
+	    - convert tags to send object on back end,
+	      then configure properly here
+	    - (tagging users is some further future edition)
+
 08. 29. 2022
 @2336 fixed the menu thing
 

@@ -20,39 +20,26 @@ import classNames from 'classnames';
 import './blogLog.css';
 
 
-/* 08. 19. 2022 
-   this for socialLog,
-   but replaced in App.js */
-async function loadLog (user,year,state) {
-	let blogs = [];
-	let month = new Date().getMonth();
 
-	await fetch(`http://192.168.1.13:3333/posts/social?month=${month}&year=${year}`, {
-		method: 'GET',
-		headers: {
-			'Content-Type': 'application/json',
-			'Content-length': 0,
-			'Accept': 'application/json',
-			'Host': 'http://192.168.1.5:3333',
-			'auth-token': user
+function DayLog({log, userID, set_isReading, isReading}) {
+
+	const openPost = (postID, userID, owner) => {
+		if(userID == owner) {
+			set_isReading({
+					// ...isReading,
+					blogpostId: postID,
+					isOwner: true,
+					postOpen: true
+			})
+		} else {
+			set_isReading({
+					// ...isReading,
+					blogpostId: postID,
+					isOwner: false,
+					postOpen: true
+			})
 		}
-	}).then((data) => {
-		data.json()
-	})
-	.then((result) => {
-		state(result);
-		console.log(result);
-	}).catch(err => console.log(err));
-	// return data.json();
-		// blogs = data.json();
-		// return blogs;
-	/*
-		call this func within useEffect within main component, 
-		assign it to state? variable containing all posts
-	*/
-} 
-
-function DayLog({log, setLog}) {
+	}
 
 	let postsFromToday = (posts) => {
 		let fromToday;
@@ -69,9 +56,11 @@ function DayLog({log, setLog}) {
 	}
 
 	let returnPostElement = (postObject) => {
+			let user = userID;
 			let title = postObject.title;
 			let tags = postObject.tags.length;
 			let id = postObject._id;
+			let owner = postObject.owner;
 			let content;
 
 			if(postObject.content.match(/\((.*?)\)/g)) {
@@ -81,7 +70,7 @@ function DayLog({log, setLog}) {
 			}
 
 			return (
-				<div className="entry" key={id}>
+				<div className="entry" key={id} onClick={() => openPost(id, user, owner)}>
 					<h2>{title}</h2>
 					<p dangerouslySetInnerHTML={{ __html: content }}></p> 
 					<ul>
@@ -127,80 +116,6 @@ function DayLog({log, setLog}) {
 		}
 	}
 
-function SocialLog_exp({log, setLog}) {
-
-	let postsFromToday = (posts) => {
-		let fromToday;
-		let today = new Date().getDate();
-		for (let i = 0; i < posts.length; i++) {
-				if(posts[i].postedOn_day == today) {
-					fromToday = true;
-					break;
-				} else {
-					fromToday = false;
-				}
-			}
-			return fromToday;
-	}
-
-	let returnPostElement = (postObject) => {
-			let title = postObject.title;
-			let tags = postObject.tags.length;
-			let id = postObject._id;
-			let content;
-
-			if(postObject.content.match(/\((.*?)\)/g)) {
-				content = bodyParse(postObject.content)
-			} else {
-				content = postObject.content
-			}
-
-			return (
-				<div className="entry_SL" key={id}>
-					<h2>{title}</h2>
-					<p dangerouslySetInnerHTML={{ __html: content }}></p> 
-					<ul>
-						<li>{tags} tags</li>
-					</ul>
-				</div>
-			)
-		}
-
-	let currentDay = new Date().getDate();
-	let [loaded, setLoaded] = useState(false);
-	let blogs = [];
-
-	useEffect(() => {
-		setLoaded(true);
-	}, [log.length > 0])
-
-
-
-	//conditional rendering statement
-		if(loaded == true) {
-
-			// console.log(blogs);
-
-			if(postsFromToday(log) == true) {
-				return (
-					<div id='daylog'>
-						{log.map((post, index) => (
-							returnPostElement(post)
-						))}
-					</div>
-				)
-			} else if (postsFromToday(log) !== true) {
-				return (
-					<div id='daylog'>
-						<h1>No Posts Today</h1>
-						{log.map((post, index) => (
-							returnPostElement(post)
-						))}
-					</div>
-				)
-			}	
-		}
-	}
 
 function WeekList({log}) {
 }
@@ -209,7 +124,7 @@ function MonthChart({log}) {
 }
 
 
-function UserLog({userLog, logClasses}) {
+function UserLog({userLog, logClasses, userID, set_isReading, isReading}) {
 
 	const [entry, setEntry] = useReducer(state => !state, true);
 	const [exit, setExit] = useReducer(state => !state, false);
@@ -237,14 +152,18 @@ function UserLog({userLog, logClasses}) {
 	/*function to set one as true, the rest as false*/
 	const active = true;
 	return (
-		<div id='userlog' className={classes}>
+		<div id='userlog' className={classes} >
 
 			<div id="sidebar">
 				<p>USER</p>
 			</div>
 
 			{active &&
-				<DayLog log={userLog} />
+				<DayLog 
+					log={userLog} 
+					userID={userID}
+					set_isReading={set_isReading} 
+					isReading={isReading} />
 			}
 			{!active &&
 				<WeekList log={userLog} />
@@ -256,7 +175,7 @@ function UserLog({userLog, logClasses}) {
 	)
 }
 
-function SocialLog({socialLog, logClasses}) {
+function SocialLog({socialLog, logClasses, userID, set_isReading, isReading}) {
 
 	const classes = classNames({
 		'socialEntry': logClasses.socialEntry,
@@ -285,7 +204,7 @@ function SocialLog({socialLog, logClasses}) {
 	)
 }
 
-let reducer = (state, action) => {
+	let reducer = (state, action) => {
 		let newState;
 		switch(action.type) {
 			case 'rightToLeft':
@@ -307,7 +226,7 @@ let reducer = (state, action) => {
 		return newState;
 	}
 
-const initialState = {
+	const initialState = {
 		rightActive: true,
 		rightNonActive: false,
 		leftActive: false,
@@ -357,7 +276,7 @@ function Switch({setLogClasses}) {
 	)
 }
 
-let logStateReducer = (state, action) => {
+	let logStateReducer = (state, action) => {
 	let newState;
 	switch(action.type) {
 		case 'userOut_socialIn':
@@ -378,16 +297,17 @@ let logStateReducer = (state, action) => {
 		break;
 	}
 	return newState;
-}
+	}
 
-const logStates = {
+	const logStates = {
 	userEntry: true,
 	userLeave: false,
 	socialEntry: false,
-	socialLeave: false,
-}
+	socialLeave: false,	
+	}
 
-export default function BlogLog({loggedIn, userBlog, socialBlog, DayLog, WeekList, MonthChart}) {
+export default function BlogLog(
+	{loggedIn, userBlog, socialBlog, DayLog, WeekList, MonthChart, userID, set_isReading, isReading}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
@@ -416,10 +336,16 @@ export default function BlogLog({loggedIn, userBlog, socialBlog, DayLog, WeekLis
 			<Switch setLogClasses={setLogClasses}/>
 
 			<UserLog userLog={userLog}  
-					 logClasses={logClasses}/>
+					 logClasses={logClasses}
+					 userID={userID}
+					 set_isReading={set_isReading} 
+					 isReading={isReading}/>
 
 			<SocialLog socialLog={socialLog}
-					 	logClasses={logClasses}/>
+					 	logClasses={logClasses}
+					 	userID={userID}
+						set_isReading={set_isReading} 
+						isReading={isReading}/>
 			
 		</div>
 	)

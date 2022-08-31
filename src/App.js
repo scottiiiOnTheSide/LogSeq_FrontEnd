@@ -6,12 +6,13 @@ import './App.css';
 import Header from './components/header/header';
 import UserEntry from './components/userEntry/userEntry';
 import BlogLog from './components/blogLog/blogLog';
+import Blogpost from './components/blogpost/blogpost';
 import UserMenu from './components/userMenu/userMenu';
 import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.17:3333';
+  const apiAddr = 'http://192.168.1.5:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -25,11 +26,20 @@ function App() {
   const [login, setLogin] = useReducer(state => !state, true);
   const [home, setHome] = useReducer(state => !state, false);
   const [mainMenu, toggleMainMenu] = useReducer(state => !state, false);
-  const [isLoggedIn, set_isLoggedIn] = useState({});
-
+  
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
-  const loggedIn = sessionStorage.getItem('userOnline');
-  const loggedIn_set = (status) => sessionStorage.setItem('userOnline', JSON.parse(status)); 
+  const [isLoggedIn, set_isLoggedIn] = useState({});
+  const [loggedIn, loggedIn_set] = useState(() => {
+    if(sessionStorage.getItem('userOnline')) {
+      return true;
+    } else {
+      return false;
+    }
+  })
+
+  const userID = sessionStorage.getItem('userKey');
+  const userKey = sessionStorage.getItem('userOnline');
+
 
 
   /* 
@@ -40,7 +50,7 @@ function App() {
   const updateLog = async () => {
     let month = new Date().getMonth(),
       year = new Date().getFullYear(),
-      user = loggedIn,
+      user = userKey,
       api = apiAddr;
 
     const response = await fetch(`${apiAddr}/posts/log?month=${month}&year=${year}`, {
@@ -99,6 +109,13 @@ function App() {
     updateLog: updateSocialLog
   }
 
+  const [isReading, set_isReading] = useState({
+    blogpostID: '',
+    isOwner: null,
+    postOpen: null,
+  });
+
+
 
   return (
     <div className="">
@@ -116,13 +133,15 @@ function App() {
             apiAddr={apiAddr}
           />
       }
-      {loggedIn &&
+      {(loggedIn && !isReading.postOpen) &&
         <BlogLog
           loggedIn={loggedIn}
-          // calendar={calendar}
-          // apiAddr={apiAddr}
           userBlog={userBlog}
-          socialBlog={socialBlog}/>
+          socialBlog={socialBlog}
+          isReading={isReading}
+          set_isReading={set_isReading}
+          userID={userID}
+          userBlog={userBlog}/>
       }
       {(loggedIn && mainMenu) && 
         <UserMenu 
@@ -130,9 +149,17 @@ function App() {
           user={loggedIn}
           userBlog={userBlog}/>
       }
-      {loggedIn &&
+      {(loggedIn && !isReading.postOpen) &&
         <MenuButton 
           toggleMainMenu={toggleMainMenu}/>
+      }
+      {(loggedIn && isReading.postOpen) &&
+        <Blogpost
+          userID={userID}
+          isReading={isReading}
+          set_isReading={set_isReading}
+          userBlog={userBlog}
+        />
       }
     </div>
   );

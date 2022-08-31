@@ -129,7 +129,7 @@ async function loginUser(loginCredentials, apiAddr) {
 /**
  * Second Component 
  * */
-function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set, apiAddr}) {
+function UserLogIn({userSignUp_set, userLogIn_set, loggedIn_set, apiAddr}) {
 
 	// const [loginCredentials, set_loginCredentials] = useState({});
 	const [formData, setFormData] = useReducer(formReducer, {});
@@ -143,18 +143,26 @@ function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set,
 			emailAddr: formData.emailAddr,
 			password: formData.password
 		}, apiAddr);
-		// 07. 03. 2022 returns user auth token to be kept in sessionStorage, downTheLine
+		
+		let parseJwt = (token) => {
+		    let base64Url = token.split('.')[1],
+		        base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'),
+		        jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+		        	return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+		        }).join(''));
+
+		    return JSON.parse(jsonPayload);
+		};
+
 		loggedIn = JSON.stringify(loggedIn);
-		// loggedIn = loggedIn;
-		console.log(loggedIn);
+		sessionStorage.setItem('userOnline', JSON.parse(loggedIn));
+
+		let userKey = parseJwt(loggedIn);
+		sessionStorage.setItem('userKey', userKey._id);
+
 		//when top level app.js reads this variable has data,
 		//userEntry.js will unmount and home components mount
-		set_isLoggedIn(loggedIn);
-		loggedIn_set(loggedIn);
-		
-		//Not necessary to have them both
-
-		//setSubmission(true);
+		loggedIn_set(true);
 	}
 	//a component internal function for getting the specific data, 
 	//to then pass to the higher level function
@@ -191,7 +199,7 @@ function UserLogIn({userSignUp_set, userLogIn_set, set_isLoggedIn, loggedIn_set,
 	)
 }
 
-export default function UserEntry({login, set_isLoggedIn, userState_set, loggedIn_set, apiAddr}) {
+export default function UserEntry({login, userState_set, loggedIn_set, apiAddr, userKey_set}) {
 
 	//upon successful login, setLogin to unmount component
 
@@ -239,11 +247,11 @@ export default function UserEntry({login, set_isLoggedIn, userState_set, loggedI
 			}
 			{userLogIn &&
 				<UserLogIn 
-					set_isLoggedIn={set_isLoggedIn}
 					userSignUp_set={userSignUp_set} 
 					userLogIn_set={userLogIn_set}
 					loggedIn_set={loggedIn_set}
-					apiAddr={apiAddr}/>
+					apiAddr={apiAddr}
+					userKey_set={userKey_set}/>
 			}
 		</div>
 	)
