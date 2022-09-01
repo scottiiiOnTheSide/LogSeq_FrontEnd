@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useReducer } from 'react';
 import Calendar from '../../components/calendar';
 import bodyParse from '../bodyParse';
 import './blogpost.css';
@@ -26,6 +26,20 @@ export default function Blogpost({userID, isReading, set_isReading, userBlog}) {
 	// let postDateInfo = dateFromObjectId(isReading.blogpostID);
 	let postInfo = userBlog.log.find(post => post.id == isReading.blogpostID);
 
+	let dateInfo = new Date(postInfo.createdAt.slice(0, -1));
+	let date = dateInfo.toString().slice(4, 15);
+
+	let hour = dateInfo.toString().slice(16, 18);
+	let minute = dateInfo.toString().slice(19, 21);
+	let AoP;
+	if(hour > 12) {
+		AoP = 'pm';
+		hour = hour - 12;
+	} else {
+		AoP = 'am';
+	}
+	let timestamp = hour+ ":" +minute+ " " +AoP;
+
 	let title = postInfo.title;
 	let tags = postInfo.tags.map((tag) => <li key="tag">{tag}</li>);
 	//key should be tag.id while it's name is displayed
@@ -45,24 +59,35 @@ export default function Blogpost({userID, isReading, set_isReading, userBlog}) {
 			...isReading,
 			postOpen: false
 		})
-	}
+	}	
 
-	//where does isReading get read which prompts this component to display/mount?
+	const [revealInfo, setRevealInfo] = useReducer(state => !state, false);
+
 	return (
-		<article id='aBlogpost'>
+		<article id='blogpost'>
 
 			<ul id="postDetails"> {/*has an onClick to open menu*/}
-				<li>Post Details</li> {/*also has an onClick, but dissappears when open*/}
-				<li>
-					Entry Posted <span></span> &#38; <span></span>
+				<li id="toggle">
+					<button onClick={setRevealInfo}>Post Details</button> {/*also has an onClick, but dissappears when open*/}
 				</li>
-				{/*use whitespace: pre-line for first span element in mobile*/}
-				<li className="ownerControls">
-					<button>Edit</button>
-				</li>
-				<li className="ownerControls"> 
-					<button>Delete</button>
-				</li>
+
+				{revealInfo &&
+					<ul id="info">
+						<li>
+							Entry Posted
+						</li>
+						<li>
+							<span>{date}</span> &#64; <span>{timestamp}</span>
+						</li>
+						{/*use whitespace: pre-line for first span element in mobile*/}
+						<li className="ownerControls">
+							<button>Edit</button>
+						</li>
+						<li className="ownerControls"> 
+							<button>Delete</button>
+						</li>
+					</ul>
+				}
 			</ul>
 
 			<h1>{postInfo.title}</h1>

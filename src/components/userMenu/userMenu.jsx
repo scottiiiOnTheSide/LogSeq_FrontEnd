@@ -2,13 +2,6 @@
 import React, {useState, useReducer} from 'react';
 import './userMenu.css';
 
-const formReducer = (state, event) => {
-	return {
-		...state,
-		[event.name]: event.value
-	}
-}
-
 function LogControls({toggleCreateForm, toggleUpdateList, toggleDeleteList}) {
 
 	//Later, will add read variables from these states so that
@@ -29,6 +22,13 @@ function LogControls({toggleCreateForm, toggleUpdateList, toggleDeleteList}) {
 			</li>
 		</ul>
 	)
+}
+
+const formReducer = (state, event) => {
+	return {
+		...state,
+		[event.name]: event.value
+	}
 }
 
 function CreateForm({apiAddr, user, updateLog, toggleCreateForm}) {

@@ -1,5 +1,23 @@
 
-08. 30. 2022
+
+09. 01. 2022
+@0046 fixed the issue with making blog posts. 
+			conversion of the time stamp still needs work, I made most recent post
+			at 12am, it's saying 4am
+
+			- Post details CSS and such adequate for now. 
+				- Gotta plug stuffs, remake the createPost component
+					for the update component, inputs prefilled
+				- a double check for when user selects to delete post
+
+			- reminder to implement change for tags over on API side
+
+@0036 Was finishing up the toggle for post info, edit and delete, buttons, but the date changed and content dissappeared. Now, we find out, there's some issue with submitting new posts (._.
+
+08. 31. 2022
+@1115 in future update, add to blogpost function to discern user's timezone, and then
+			add the abbreviation to the end
+
 @1534 Added in the blogpost functionality :D Got alot of clean up to do on that . . .
 post from the update that didn't get pushed:
 
