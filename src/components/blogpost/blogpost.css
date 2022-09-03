@@ -1,6 +1,15 @@
 
 article#blogpost {}
 
+
+
+article#blogpost div#delete {
+	width: 100%;
+	height: 100vh;
+}
+
+
+
 article#blogpost ul#postDetails {
 	margin: 0;
 	padding: 0;

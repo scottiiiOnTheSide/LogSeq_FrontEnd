@@ -16,15 +16,64 @@ import './blogpost.css';
 	fail request
 */
 
+function DeletePost ({apiAddr, userKey, postID, title, date, openDelete, backToBlogLog}) {
 
+	userKey = userKey;
+	postID = postID;
+	const [deleteConfirmation, setConfirmation] = useReducer(state => !state, false);
+	const deletePost = async(event) => {
+		event.preventDefault();
 
-export default function Blogpost({userID, isReading, set_isReading, userBlog}) {
+		const response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
+			method: "DELETE",
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'auth-token': userKey
+			}
+		})
+
+		let setIt = await response.json();
+		setConfirmation(setIt);
+		console.log(deleteConfirmation);
+	}
+	
+	return (
+		<div id="delete">
+
+			{!deleteConfirmation &&
+				<div id="alert">
+					<span>operation:</span>
+					<h2>Delete Post</h2>
+					<h3>"{title}"</h3>
+					<p>Posted on: {date}</p>
+
+					<div id="optionsWrapper">
+						<p>Are you sure you wish to delete this post?</p>
+						<button onClick={openDelete}>Cancel</button>
+						<button onClick={deletePost}>Delete Post</button>
+					</div>
+				</div>
+			}
+			{deleteConfirmation &&
+				<div id="confirmed">
+					<h2>It's Gone</h2>
+					<button onClick={backToBlogLog}>Return</button>
+				</div>
+			}
+
+		</div>
+	)
+}
+
+export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, toggleMainMenu}) {
 
 	// let dateFromObjectId = function (objectId) {
 	// 	return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
 	// };
 	// let postDateInfo = dateFromObjectId(isReading.blogpostID);
 	let postInfo = userBlog.log.find(post => post.id == isReading.blogpostID);
+	let postID = postInfo._id;
 
 	let dateInfo = new Date(postInfo.createdAt.slice(0, -1));
 	let date = dateInfo.toString().slice(4, 15);
@@ -47,7 +96,6 @@ export default function Blogpost({userID, isReading, set_isReading, userBlog}) {
 	let id = postInfo._id;
 	let owner = postInfo.owner;
 	let content;
-
 	if(postInfo.content.match(/\((.*?)\)/g)) {
 		content = bodyParse(postInfo.content);
 	} else {
@@ -62,9 +110,26 @@ export default function Blogpost({userID, isReading, set_isReading, userBlog}) {
 	}	
 
 	const [revealInfo, setRevealInfo] = useReducer(state => !state, false);
+	const [deleteOpen, openDelete] = useReducer(state => !state, false);
+	/*
+		09. 02. 2022
+		Will need to use toggleMainMenu in functions for toggling edit and delete pages
+	*/
 
 	return (
 		<article id='blogpost'>
+
+			{deleteOpen &&
+				<DeletePost 
+					postID={postID}
+					title={title}
+					date={date}
+					apiAddr={apiAddr}
+					userKey={userKey}
+					openDelete={openDelete}
+					backToBlogLog={backToBlogLog}/>
+			}
+
 
 			<ul id="postDetails"> {/*has an onClick to open menu*/}
 				<li id="toggle">
@@ -84,7 +149,7 @@ export default function Blogpost({userID, isReading, set_isReading, userBlog}) {
 							<button>Edit</button>
 						</li>
 						<li className="ownerControls"> 
-							<button>Delete</button>
+							<button onClick={openDelete}>Delete</button>
 						</li>
 					</ul>
 				}
@@ -109,6 +174,8 @@ export default function Blogpost({userID, isReading, set_isReading, userBlog}) {
 			</div>
 
 			{/*Will possibly create an outside function for comments, ITF (in the future)*/}
+
+
 		</article> 
 	)
 }

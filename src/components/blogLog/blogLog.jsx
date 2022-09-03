@@ -117,9 +117,6 @@ function DayLog({log, userID, set_isReading, isReading}) {
 	}
 
 
-function WeekList({log}) {
-}
-
 function MonthChart({log}) {
 }
 
@@ -166,9 +163,6 @@ function UserLog({userLog, logClasses, userID, set_isReading, isReading}) {
 					isReading={isReading} />
 			}
 			{!active &&
-				<WeekList log={userLog} />
-			}
-			{!active &&
 				<MonthChart log={userLog} />
 			}
 		</div>
@@ -193,9 +187,6 @@ function SocialLog({socialLog, logClasses, userID, set_isReading, isReading}) {
 
 			{active &&
 				<DayLog log={socialLog} />
-			}
-			{!active &&
-				<WeekList log={socialLog} />
 			}
 			{!active &&
 				<MonthChart log={socialLog} />
@@ -277,33 +268,33 @@ function Switch({setLogClasses}) {
 }
 
 	let logStateReducer = (state, action) => {
-	let newState;
-	switch(action.type) {
-		case 'userOut_socialIn':
-			newState = {
-				userEntry: false,
-				userLeave: true,
-				socialEntry: true,
-				socialLeave: false
-			}
+		let newState;
+		switch(action.type) {
+			case 'userOut_socialIn':
+				newState = {
+					userEntry: false,
+					userLeave: true,
+					socialEntry: true,
+					socialLeave: false
+				}
+				break;
+			case 'socialOut_userIn':
+				newState = {
+					userEntry: true,
+					userLeave: false,
+					socialEntry: false,
+					socialLeave: true
+				}
 			break;
-		case 'socialOut_userIn':
-			newState = {
-				userEntry: true,
-				userLeave: false,
-				socialEntry: false,
-				socialLeave: true
-			}
-		break;
-	}
-	return newState;
+		}
+		return newState;
 	}
 
 	const logStates = {
-	userEntry: true,
-	userLeave: false,
-	socialEntry: false,
-	socialLeave: false,	
+		userEntry: true,
+		userLeave: false,
+		socialEntry: false,
+		socialLeave: false,	
 	}
 
 export default function BlogLog(

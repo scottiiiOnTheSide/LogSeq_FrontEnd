@@ -1,4 +1,31 @@
 
+09. 03. 2022
+@0434 Finished implementing delete functionality!
+			React takes a lil bit of time to remove the post from the bloglog,
+			however adding in the animations may add room / time for that 
+			removal to happen beforehand? (bloglog should remount before it's visible,
+			so user doesn't see old post disappear)
+
+			Next, implement update :D!
+
+			Then, next big milestone - adding search for other users!
+
+			But beforehand, Edit UserMenu to include
+			- Direction for uploading post
+			- Direction for Switching to Social Side
+
+				When on social side, menu should show social options (use of states)
+				- direction for returning to userSide
+				- direction for managing connections 
+
+@0231 Both the Edit and Delete buttons need to send the post ID (and the body, for Edit)
+		  to the userMenu in order to further operate on those posts...
+
+		  Now noticing that I had not created any layouts for a delete or update page.
+		  Live and learn . . . 
+		  Will use barebones options for now...
+
+		  Also, will eventually remove 'Update' and 'Delete' options from userMenu
 
 09. 01. 2022
 @0046 fixed the issue with making blog posts. 
