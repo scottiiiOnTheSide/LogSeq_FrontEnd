@@ -27,14 +27,14 @@ function DayLog({log, userID, set_isReading, isReading}) {
 		if(userID == owner) {
 			set_isReading({
 					// ...isReading,
-					blogpostId: postID,
+					blogpostID: postID,
 					isOwner: true,
 					postOpen: true
 			})
 		} else {
 			set_isReading({
 					// ...isReading,
-					blogpostId: postID,
+					blogpostID: postID,
 					isOwner: false,
 					postOpen: true
 			})
@@ -61,6 +61,7 @@ function DayLog({log, userID, set_isReading, isReading}) {
 			let tags = postObject.tags.length;
 			let id = postObject._id;
 			let owner = postObject.owner;
+			let author = postObject.author;
 			let content;
 
 			if(postObject.content.match(/\((.*?)\)/g)) {
@@ -71,6 +72,9 @@ function DayLog({log, userID, set_isReading, isReading}) {
 
 			return (
 				<div className="entry" key={id} onClick={() => openPost(id, user, owner)}>
+					{(userID !== postObject.owner) &&  
+						<span id="username">&#64;{postObject.author}</span>
+					}
 					<h2>{title}</h2>
 					<p dangerouslySetInnerHTML={{ __html: content }}></p> 
 					<ul>
@@ -186,7 +190,10 @@ function SocialLog({socialLog, logClasses, userID, set_isReading, isReading}) {
 			</div>
 
 			{active &&
-				<DayLog log={socialLog} />
+				<DayLog log={socialLog}
+					userID={userID}
+					set_isReading={set_isReading} 
+					isReading={isReading} />
 			}
 			{!active &&
 				<MonthChart log={socialLog} />

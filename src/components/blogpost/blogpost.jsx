@@ -16,7 +16,7 @@ import './blogpost.css';
 	fail request
 */
 
-function DeletePost ({apiAddr, userKey, postID, title, date, openDelete, backToBlogLog}) {
+function DeletePost ({apiAddr, userKey, postID, title, date, openDelete, backToBlogLog, userBlog}) {
 
 	userKey = userKey;
 	postID = postID;
@@ -27,8 +27,8 @@ function DeletePost ({apiAddr, userKey, postID, title, date, openDelete, backToB
 		const response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
 			method: "DELETE",
 			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
+				// 'Content-Type': 'application/json',
+				// 'Accept': 'application/json',
 				'auth-token': userKey
 			}
 		})
@@ -66,14 +66,150 @@ function DeletePost ({apiAddr, userKey, postID, title, date, openDelete, backToB
 	)
 }
 
-export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, toggleMainMenu}) {
+
+const formReducer = (state, event) => {
+	return {
+		...state,
+		[event.name]: event.value
+	}}
+function UpdatePost ({apiAddr, userKey, postID, title, date, openUpdate, backToBlogLog, userBlog, postInfo}) {
+
+	userKey = userKey;
+	postID = postID;
+	const [updateConfirmation, setConfirmation] = useReducer(state => !state, false);
+	const [formData, setFormData] = useReducer(formReducer, {});
+
+	const [inputValues, setInputValues] = useState({
+		title: '',
+		content: '',
+		tags: ''
+	})
+
+	const handleChange = (event) => {
+
+		if(event.target.name == 'tags') {
+			let value = event.target.value;
+			let array = value.split(/[, ]+/);
+			setFormData({
+				name: event.target.name,
+				value: array
+			})
+			setInputValues({
+				...inputValues,
+				tags: event.target.value,
+			})
+
+		} else if (event.target.name == 'title') {
+			setFormData({
+				name: event.target.name,
+				value: event.target.value
+			})
+			setInputValues({
+				...inputValues,
+				title: event.target.value,
+			})
+		} else if (event.target.name == 'content') {
+			setFormData({
+				name: event.target.name,
+				value: event.target.value
+			})
+			setInputValues({
+				...inputValues,
+				content: event.target.value,
+			})
+		}
+		else {
+			setFormData({
+				name: event.target.name,
+				value: event.target.value
+			})
+		}
+	}
+	const updatePost = async(event) => {
+
+		event.preventDefault()
+
+		const response = await fetch(`${apiAddr}/posts/updatePost?id=${postID}`, {
+			method: "PATCH",
+			headers: {
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+				'auth-token': userKey
+			},
+			body: JSON.stringify({
+				title: formData.title,
+				content: formData.content,
+				tags: formData.tags,
+				usePostedByDate: true
+			})
+		})
+
+		let setIt = await response.json();
+		setConfirmation(setIt);
+		userBlog.updateLog();
+		console.log(updateConfirmation);
+	}
+
+	const taglist = () => {
+		let tags = '';
+		for(let i = 0; i < postInfo.tags.length; i++) {
+			tags = tags+ ' ' +postInfo.tags[i];
+		}
+		return tags;
+	}
+	let tags = taglist();
+	
+
+	return (
+		<div id="update">
+			{!updateConfirmation &&
+				<div id="alert">
+					<span>operation:</span>
+					<h2>Delete Post</h2>
+					<h3>"{title}"</h3>
+					<p>Posted on: {date}</p>
+
+					<form onSubmit={updatePost}>
+						<fieldset>
+							<input name="title" defaultValue={postInfo.title} 
+							onChange={(event) => handleChange(event)}/>
+							<textarea 
+								name="content" 
+								defaultValue={postInfo.content} 
+								onChange={handleChange}
+								rows="10"
+								cols="30"></textarea>
+							<input name="tags" defaultValue={tags} onChange={handleChange}/>
+						</fieldset>
+						<button type="submit">Submit</button>
+						<button onClick={(event) => {openUpdate(); event.preventDefault()}}>Cancel</button>
+					</form>
+				</div>
+			}
+			{updateConfirmation &&
+				<div id="confirmed">
+					<h2>Post Updated!</h2>
+					<button onClick={backToBlogLog}>Return</button>
+				</div>
+			}
+		</div>
+	)
+}
+
+export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, socialBlog, toggleMainMenu}) {
 
 	// let dateFromObjectId = function (objectId) {
 	// 	return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
 	// };
 	// let postDateInfo = dateFromObjectId(isReading.blogpostID);
-	let postInfo = userBlog.log.find(post => post.id == isReading.blogpostID);
-	let postID = postInfo._id;
+	let postInfo; 
+	if (isReading.isOwner == true) {
+		postInfo = userBlog.log.find(post => post._id == isReading.blogpostID);
+	} else if (isReading.isOwner == false) {
+		postInfo = socialBlog.log.find(post => post._id == isReading.blogpostID);
+	}
+	let postIDlength = postInfo._id.length;
+	let postID = postInfo._id.slice(0, postIDlength);
 
 	let dateInfo = new Date(postInfo.createdAt.slice(0, -1));
 	let date = dateInfo.toString().slice(4, 15);
@@ -105,12 +241,15 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 	let backToBlogLog = () => {
 		set_isReading({
 			...isReading,
+			blogpostID: null,
 			postOpen: false
 		})
+		userBlog.updateLog();
 	}	
 
 	const [revealInfo, setRevealInfo] = useReducer(state => !state, false);
 	const [deleteOpen, openDelete] = useReducer(state => !state, false);
+	const [updateOpen, openUpdate] = useReducer(state => !state, false);
 	/*
 		09. 02. 2022
 		Will need to use toggleMainMenu in functions for toggling edit and delete pages
@@ -127,9 +266,21 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 					apiAddr={apiAddr}
 					userKey={userKey}
 					openDelete={openDelete}
-					backToBlogLog={backToBlogLog}/>
+					backToBlogLog={backToBlogLog}
+					userBlog={userBlog}/>
 			}
-
+			{updateOpen &&
+				<UpdatePost 
+					postID={postID}
+					title={title}
+					date={date}
+					apiAddr={apiAddr}
+					userKey={userKey}
+					openUpdate={openUpdate}
+					backToBlogLog={backToBlogLog}
+					userBlog={userBlog}
+					postInfo={postInfo}/>
+			}
 
 			<ul id="postDetails"> {/*has an onClick to open menu*/}
 				<li id="toggle">
@@ -144,13 +295,19 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 						<li>
 							<span>{date}</span> &#64; <span>{timestamp}</span>
 						</li>
-						{/*use whitespace: pre-line for first span element in mobile*/}
-						<li className="ownerControls">
-							<button>Edit</button>
-						</li>
-						<li className="ownerControls"> 
-							<button onClick={openDelete}>Delete</button>
-						</li>
+						
+						{isReading.isOwner &&
+							<li>
+								<ul>
+									<li className="ownerControls">
+										<button onClick={openUpdate}>Edit</button>
+									</li>
+									<li className="ownerControls"> 
+										<button onClick={openDelete}>Delete</button>
+									</li>
+								</ul>
+							</li>
+						}
 					</ul>
 				}
 			</ul>

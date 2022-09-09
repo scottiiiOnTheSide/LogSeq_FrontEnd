@@ -1,5 +1,38 @@
 
+09. 04. 2022
+@0422 the updatePost functionality works !
+			Need to implement the change concerning tags, however, as upon trying
+			to update the post with the tags in their id form isn't gonna work.
+
+			After that:
+			- Implement changes to userMenu
+				- for now: 
+					when Userside is active: 'create post'
+					when Socialside is active: 'manage connections'
+
+			Question: is removing the userOnline + userKey session storage items enough
+			to sign out the user 🤔??
+			May wish to add 'sign out' option to userMenu side.
+			I don't wish to add userSetting features this early in development
+
 09. 03. 2022
+@2103 fixed issue with post deleting, adding update functionality
+			need to create a state object so that the original content
+			can prepopulate the input values, but so that they can also
+			be editted - as of rn, they can't be
+
+@1622 issue with post deleting - post will only delete after a page refresh
+
+@1554 Remember to have createPost route send boolean so that
+			front end can present a confirmation alert then return
+			to the log
+
+@1533 Fixed some kinks here and there with UI code / css.
+			options to edit or delete post do not show for other user's posts
+
+@0200 Exiting from a social log post returns user to the userlog.
+			May have to dismount each side
+
 @0434 Finished implementing delete functionality!
 			React takes a lil bit of time to remove the post from the bloglog,
 			however adding in the animations may add room / time for that 

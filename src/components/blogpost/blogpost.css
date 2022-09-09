@@ -1,9 +1,16 @@
 
-article#blogpost {}
+article#blogpost {
+	height: 100vh;
+	position: relative;
+	top: -100%;
+	background-color: white;
+	z-index: 5;
+}
 
 
 
-article#blogpost div#delete {
+article#blogpost div#delete,
+article#blogpost div#update {
 	width: 100%;
 	height: 100vh;
 }
@@ -50,4 +57,10 @@ article#blogpost ul#postDetails ul#info {
 	article#blogpost ul#postDetails ul#info li.ownerControls {
 		display: inline-block;
 		margin: 0 auto;
+	}
+
+	article#blogpost ul#postDetails ul#info li ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
 	}

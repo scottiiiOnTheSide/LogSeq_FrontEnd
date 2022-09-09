@@ -12,7 +12,7 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.5:3333';
+  const apiAddr = 'http://192.168.1.142:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -73,22 +73,23 @@ function App() {
     reorder.splice(0, 1);
     setLog(reorder);
   }
+
   const updateSocialLog = async () => {
     let month = new Date().getMonth(),
         year = new Date().getFullYear(),
-        user = loggedIn,
+        user = userKey,
         api = apiAddr;
 
-    const response = fetch(`${apiAddr}/posts/social?month=${month}&year=${year}`, {
+    const response = await fetch(`${apiAddr}/posts/socialLog?month=${month}&year=${year}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
         'Content-length': 0,
         'Accept': 'application/json',
-        'Host': 'http://192.168.1.5:3333',
+        'Host': apiAddr,
         'auth-token': user
       }
-    })
+    });
     const data = await response.json();
 
     let reorder = [];
@@ -133,7 +134,7 @@ function App() {
             apiAddr={apiAddr}
           />
       }
-      {(loggedIn && !isReading.postOpen) &&
+      {loggedIn  &&
         <BlogLog
           loggedIn={loggedIn}
           userBlog={userBlog}
@@ -160,8 +161,11 @@ function App() {
           userID={userID}
           isReading={isReading}
           set_isReading={set_isReading}
+          isReading={isReading}
           userBlog={userBlog}
           toggleMainMenu={toggleMainMenu}
+          userBlog={userBlog}
+          socialBlog={socialBlog}
         />
       }
     </div>

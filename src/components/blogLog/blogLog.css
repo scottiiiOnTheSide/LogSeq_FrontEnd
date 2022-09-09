@@ -21,6 +21,8 @@ div.entry_SL {
 
 div#blogLog {
 	position: relative;
+	height: 100%;
+	overflow-y: hidden;
 }
 
 
@@ -29,6 +31,19 @@ div#blogLog {
 div#blogLog div#switch {
 	position: relative;
 	margin: 40px auto;
+	background-color: white;
+	z-index: 2;
+}
+
+div#blogLog div#switch::before {
+	content: '';
+	display: block;
+	top: -50px;
+	width: 100%;
+	height: 80px;
+	background-color: white;
+	transition: all 0.3s ease-out;
+	position: absolute;
 }
 
 	div#blogLog div#switch button {
@@ -75,10 +90,40 @@ div#blogLog div#switch {
 
 div#blogLog div#userlog,
 div#blogLog div#socialLog {
-	margin-top: 30px;
+	/*margin-top: 30px;*/
 	position: absolute;
-	/*padding-top: 30px;*/
+	height: 100%;
+	overflow-y: scroll;
+	padding-top: 30px;
+	-ms-overflow-style: none; 
+  	scrollbar-width: none; 
 }
+
+div#blogLog div#userlog::-webkit-scrollbar ,
+div#blogLog div#socialLog::-webkit-scrollbar  {
+	display: none;
+}
+
+div#blogLog div.entry {
+	margin: 20px 0;
+}
+
+div#blogLog div.entry h2 {
+	margin-top: 5px;
+}
+
+div#blogLog div.entry span#username {
+
+}
+
+div#blogLog div.entry ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+div#blogLog div.entry ul li {}
+
 
 
 div#blogLog div#userlog {
@@ -95,10 +140,12 @@ div#blogLog div#userlog.userEntry {
 @keyframes userEntry {
 	from {
 		left: 100%;
+		opacity: 0;
 	}
 
 	to {
 		left: 0%;
+		opacity: 1;
 	}
 }
 
@@ -112,9 +159,11 @@ div#blogLog div#userlog.userLeave {
 @keyframes userLeave {
 	from {
 		left: 0%;
+		opacity: 1;
 	}
 	to {
 		left: 100%;
+		opacity: 0;
 	}
 }
 
@@ -148,7 +197,7 @@ div#blogLog div#userlog::before {
 	}
 
 	div#blogLog div#userlog div#sidebar {
-		position: absolute;
+		position: fixed;
 		border-right: 2px solid var(--site-gray-mid);
 		height: 100%;
 		transition: all 0.2s ease-out;
@@ -166,8 +215,7 @@ div#blogLog div#userlog::before {
 		margin: 0 10px;
 		position: relative;
 		color: black;
-		/*top: 50%;
-		transform: translateY(-50%);*/
+		transform: translateY(50%);
 	}
 
 	div#blogLog div#userlog div#sidebar button {
@@ -201,11 +249,14 @@ div#blogLog div#userlog::before {
 
 	div#blogLog div#userlog div#daylog {
 		margin-left: 60px;
+		position: relative;
+		height: 100%;
 	}
 
 
 div#blogLog div#socialLog {
 	left: -100%;
+	opacity: 0;
 }
 
 
@@ -219,11 +270,13 @@ div#blogLog div#socialLog.socialEntry {
 @keyframes socialEntry {
 	from {
 		left: -100%;
+		opacity: 0;
 	}
 
 	to {
 		left: 0%;
 		right: 0%;
+		opacity: 1;
 	}
 }
 
@@ -237,10 +290,12 @@ div#blogLog div#socialLog.socialLeave {
 @keyframes socialLeave {
 	from {
 		left: 0%;
+		opacity: 1;
 	}
 
 	to {
 		left: -100%;
+		opacity: 0;
 	}
 }
 
@@ -259,8 +314,23 @@ div#blogLog div#socialLog::before {
 	z-index: 2;
 }
 
+
+	div#blogLog div#userlog div#sidebar p {
+		display: block;
+		word-break: break-all;
+		text-align: center;
+		line-height: 60px;
+		font-size: 1.5em;
+		width: 20px;
+		margin: 0 10px;
+		position: relative;
+		color: black;
+		transform: translateY(50%);
+	}
+
+
 	div#blogLog div#socialLog div#sidebar {
-		position: absolute;
+		position: fixed;
 		right: 0;
 		border-left: 2px solid var(--site-gray-mid);
 		height: 100%;
@@ -278,6 +348,7 @@ div#blogLog div#socialLog::before {
 		margin: 0 10px;
 		position: relative;
 		color: black;
+		transform: translateY(20%);
 	}
 
 	div#blogLog div#socialLog div#sidebar button {
@@ -304,4 +375,6 @@ div#blogLog div#socialLog::before {
 div#blogLog div#socialLog div#daylog {
 	margin-right: 60px;
 	text-align: right;
+	position: relative;
+	height: 100%;
 }
