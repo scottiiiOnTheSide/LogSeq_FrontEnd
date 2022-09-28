@@ -274,38 +274,9 @@ function Switch({setLogClasses}) {
 	)
 }
 
-	let logStateReducer = (state, action) => {
-		let newState;
-		switch(action.type) {
-			case 'userOut_socialIn':
-				newState = {
-					userEntry: false,
-					userLeave: true,
-					socialEntry: true,
-					socialLeave: false
-				}
-				break;
-			case 'socialOut_userIn':
-				newState = {
-					userEntry: true,
-					userLeave: false,
-					socialEntry: false,
-					socialLeave: true
-				}
-			break;
-		}
-		return newState;
-	}
-
-	const logStates = {
-		userEntry: true,
-		userLeave: false,
-		socialEntry: false,
-		socialLeave: false,	
-	}
 
 export default function BlogLog(
-	{loggedIn, userBlog, socialBlog, DayLog, WeekList, MonthChart, userID, set_isReading, isReading}) {
+	{loggedIn, userBlog, socialBlog, DayLog, WeekList, MonthChart, userID, set_isReading, isReading, setLogClasses, logClasses}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
@@ -324,7 +295,7 @@ export default function BlogLog(
 	  	- then, toggle it's designated active var to unmount it
 	*/
 
-	const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
+	
 
 	const active = true;
 	return (

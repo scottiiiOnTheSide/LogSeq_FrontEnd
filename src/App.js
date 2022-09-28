@@ -7,12 +7,13 @@ import Header from './components/header/header';
 import UserEntry from './components/userEntry/userEntry';
 import BlogLog from './components/blogLog/blogLog';
 import Blogpost from './components/blogpost/blogpost';
+import ConnectList from './components/connections/connectList';
 import UserMenu from './components/userMenu/userMenu';
 import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.142:3333';
+  const apiAddr = 'http://192.168.1.5:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -26,6 +27,7 @@ function App() {
   const [login, setLogin] = useReducer(state => !state, true);
   const [home, setHome] = useReducer(state => !state, false);
   const [mainMenu, toggleMainMenu] = useReducer(state => !state, false);
+  const [connections, toggleConnections] = useReducer(state => !state, false);
   
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
   const [isLoggedIn, set_isLoggedIn] = useState({});
@@ -109,13 +111,52 @@ function App() {
     setLog: set_socialLog,
     updateLog: updateSocialLog
   }
-
   const [isReading, set_isReading] = useState({
     blogpostID: '',
     isOwner: null,
     postOpen: null,
   });
 
+    let logStateReducer = (state, action) => {
+      let newState;
+      switch(action.type) {
+        case 'userOut_socialIn':
+          newState = {
+            userEntry: false,
+            userLeave: true,
+            socialEntry: true,
+            socialLeave: false
+          }
+          break;
+        case 'socialOut_userIn':
+          newState = {
+            userEntry: true,
+            userLeave: false,
+            socialEntry: false,
+            socialLeave: true
+          }
+        break;
+      }
+      return newState;
+    }
+    const logStates = {
+    userEntry: true,
+    userLeave: false,
+    socialEntry: false,
+    socialLeave: false, 
+    }
+
+  const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
+
+  /*
+      09. 26. 2022
+
+      for userMenu,
+      if logClasses: userEntry = true,
+        - then menu has userSide options
+      if logClasses: socialEntry = true,
+        - menu has socialEntry options visible
+  */
 
 
   return (
@@ -142,13 +183,25 @@ function App() {
           isReading={isReading}
           set_isReading={set_isReading}
           userID={userID}
-          userBlog={userBlog}/>
+          userBlog={userBlog}
+          setLogClasses={setLogClasses}
+          logClasses={logClasses}/>
       }
       {(loggedIn && mainMenu) && 
         <UserMenu 
           apiAddr={apiAddr}
           user={userKey}
-          userBlog={userBlog}/>
+          userBlog={userBlog}
+          toggleConnections={toggleConnections}
+          logClasses={logClasses}/>
+      }
+      {(loggedIn && connections) &&
+        <ConnectList
+          apiAddr={apiAddr}
+          userID={userID}
+          toggleMainMenu={toggleMainMenu}
+          toggleConnections={toggleConnections}
+        />
       }
       {(loggedIn && !isReading.postOpen) &&
         <MenuButton 
@@ -168,6 +221,7 @@ function App() {
           socialBlog={socialBlog}
         />
       }
+      
     </div>
   );
 }

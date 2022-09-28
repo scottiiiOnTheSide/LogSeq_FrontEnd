@@ -1,25 +1,37 @@
 
-import React, {useState, useReducer} from 'react';
+import React, {useState, useReducer, useEffect} from 'react';
 import './userMenu.css';
 
-function LogControls({toggleCreateForm, toggleUpdateList, toggleDeleteList}) {
+function LogControls({toggleCreateForm, toggleConnections, logClasses}) {
 
 	//Later, will add read variables from these states so that
 	//classes can be added / removed upon toggling
 
 	let toggleOne = toggleCreateForm;
+	let right, left;
+
+	// useEffect(()=> {
+		if(logClasses.userEntry == true) {
+			right = true;
+			left = false;
+		} else if (logClasses.socialEntry == true) {
+			left = true;
+			right = false;
+		}
+	// }, [])
 
 	return (
 		<ul id="logControls">
-			<li>
-				<button onClick={toggleCreateForm}>Create</button>
-			</li> 
-			<li>
-				<button onClick={toggleUpdateList}>Update</button>
-			</li>
-			<li>
-				<button onClick={toggleDeleteList}>Delete</button>
-			</li>
+			{(right && !left) &&
+				<li>
+					<button onClick={toggleCreateForm}>Create Post</button>
+				</li> 
+			}
+			{(left && !right) &&
+				<li>
+					<button onClick={toggleConnections}>Manage Connections</button>
+				</li> 
+			}
 		</ul>
 	)
 }
@@ -99,15 +111,12 @@ function CreateForm({apiAddr, user, updateLog, toggleCreateForm}) {
 	)
 }
 
-function UpdateList() {}
 
-function DeleteList() {}
-
-export default function UserMenu({apiAddr, user, userBlog}) {
+export default function UserMenu({apiAddr, user, userBlog, toggleConnections, logClasses}) {
 
 	const [is_createFormOpen, toggleCreateForm] = useReducer(state => !state, false);
-	const [is_updateListOpen, toggleUpdateList] = useReducer(state => !state, false);
-	const [is_deleteListOpen, toggleDeleteList] = useReducer(state => !state, false);
+	// const [is_updateListOpen, toggleUpdateList] = useReducer(state => !state, false);
+	// const [is_deleteListOpen, toggleDeleteList] = useReducer(state => !state, false);
 
 	//will pass the read var from State to components, 
 	//so that classes / css rules can be added upon change
@@ -116,8 +125,8 @@ export default function UserMenu({apiAddr, user, userBlog}) {
 		<div id="userMenu">
 			<LogControls 
 				toggleCreateForm={toggleCreateForm}
-				toggleUpdateList={toggleUpdateList}
-				toggleDeleteList={toggleDeleteList}/>
+				toggleConnections={toggleConnections}
+				logClasses={logClasses}/>
 
 			{is_createFormOpen &&
 				<CreateForm 
@@ -125,12 +134,6 @@ export default function UserMenu({apiAddr, user, userBlog}) {
 					user={user} 
 					updateLog={userBlog.updateLog}
 					toggleCreateForm={toggleCreateForm}/>
-			}
-			{is_updateListOpen &&
-				<UpdateList />
-			}
-			{is_deleteListOpen &&
-				<DeleteList />
 			}
 		</div>		
 	)

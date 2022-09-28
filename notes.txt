@@ -1,4 +1,22 @@
 
+09. 28. 2022
+@1610 Connected the connectList component to the rest of the App.
+
+09. 26. 2022
+
+@1410 Expanded the skeleton a little, should just be some plug in play...
+
+@1321 Finding it hard to focus. Have something of a skeleton started for the page.
+
+			- connectionSection is whole page section, like post upload
+
+			- where / when to get the users connections list?
+
+@1202 moved state variables for toggling between Social and User to App.JS.
+
+
+@1056 Commencing the build of the 'connections section' 
+
 09. 04. 2022
 @0422 the updatePost functionality works !
 			Need to implement the change concerning tags, however, as upon trying
