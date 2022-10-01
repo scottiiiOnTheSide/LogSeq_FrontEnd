@@ -8,7 +8,7 @@ import React, { useState, useEffect, useReducer, useRef } from 'react';
 import './connectList.css';
 
 
-export default function ConnectList({apiAddr, userID, toggleMainMenu, toggleConnections}) {
+export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, toggleConnections}) {
 
 	const updateConnections = async() => {
 		/*
@@ -16,12 +16,19 @@ export default function ConnectList({apiAddr, userID, toggleMainMenu, toggleConn
 			to get their connections list as a var 
 			use api endpoint for getting single user
 		*/
-		const response = await fetch(`${apiAddr}/getuser/:${userID}`, {
-			'Content-Type': 'application/json',
-        	'Content-length': 0,
-        	'Accept': 'application/json',
-        	'Host': apiAddr,
-        	'auth-token': user
+
+		let api = apiAddr,
+			token = userKey;
+
+		const response = await fetch(`${api}/users/getuser/${userID}?sendConnects=true`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+        		'Content-length': 0,
+        		'Accept': 'application/json',
+        		'Host': api,
+        		'auth-token': token
+			}
 		})
 
 		const user = await response.json()
@@ -38,7 +45,7 @@ export default function ConnectList({apiAddr, userID, toggleMainMenu, toggleConn
 	}
 
 	useEffect(() => {
-		//call updateConnection on mount
+		updateConnections()
 	}, [])
 
 	return (

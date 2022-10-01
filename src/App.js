@@ -13,7 +13,7 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.5:3333';
+  const apiAddr = 'http://192.168.1.6:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -199,6 +199,7 @@ function App() {
         <ConnectList
           apiAddr={apiAddr}
           userID={userID}
+          userKey={userKey}
           toggleMainMenu={toggleMainMenu}
           toggleConnections={toggleConnections}
         />
