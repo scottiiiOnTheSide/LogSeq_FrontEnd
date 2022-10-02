@@ -1,4 +1,15 @@
 
+10. 01. 2022
+@2334 Upon opening the connections section, successfully gets and displays user connections.
+		  Now need to plug in the search endpoint and function so that when a 
+		  search is made, the results become active and the default list is inactive
+
+		  Also need to edit endpoint on API side so that we can remove users from 
+		  this list as well.
+
+		  ALSO need to eventually go back and fix whatever is wrong with adding friends(?)
+		  I think there was some issue that still needed to be resolved
+
 09. 28. 2022
 @1610 Connected the connectList component to the rest of the App.
 

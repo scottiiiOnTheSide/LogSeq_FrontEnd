@@ -10,12 +10,9 @@ import './connectList.css';
 
 export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, toggleConnections}) {
 
+	let [connections, setConnections] = useState([]);
+
 	const updateConnections = async() => {
-		/*
-			get the user, using userKey
-			to get their connections list as a var 
-			use api endpoint for getting single user
-		*/
 
 		let api = apiAddr,
 			token = userKey;
@@ -31,8 +28,8 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 			}
 		})
 
-		const user = await response.json()
-		console.log(user);
+		const usersConnections = await response.json()
+		setConnections(usersConnections);
 	}
 
 	const [searchfocus, setSearchFocus] = useReducer(state => !state, false);
@@ -45,7 +42,8 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 	}
 
 	useEffect(() => {
-		updateConnections()
+		updateConnections();
+		console.log(connections);
 	}, [])
 
 	return (
@@ -62,9 +60,10 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 					<h2>My Connections</h2>
 						
 					<ul>
-						{/*connections.map((item,i) => 
-	        				<li key={i}>item.name</li>
-	      				) */}
+						{connections.map((user, i) => (
+							<li key={i} data-id={user.id}>{user.username}</li>
+							/*use dataset.id to get and use it*/
+						))}
 					</ul>
 				</div>
 			}
