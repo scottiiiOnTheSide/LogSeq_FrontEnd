@@ -11,6 +11,7 @@ import './connectList.css';
 export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, toggleConnections}) {
 
 	let [connections, setConnections] = useState([]);
+	let [searchresults, setSearchresults] = useState([]);
 
 	const updateConnections = async() => {
 
@@ -32,12 +33,36 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 		setConnections(usersConnections);
 	}
 
+	const runSearch = async(query) => {
+
+		let	api = apiAddr,
+			token = userKey;
+
+		const search = await fetch(`${api}/users/search/?query=${query}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+	        	'Content-length': 0,
+	        	'Accept': 'application/json',
+	        	'Host': api,
+	        	'auth-token': token
+			}
+		});
+
+		let results = await search.json();
+		setSearchresults(results);
+	}
+
 	const [searchfocus, setSearchFocus] = useReducer(state => !state, false);
 	let [results, toggleResults] = useReducer(state => !state, false);
 
 	const handleSubmit = async(event) => {
 		if(event.key === 'Enter') {
 
+			let query = event.target.value;
+			runSearch(query);
+			console.log(searchresults);
+			// toggleResults();
 		}
 	}
 
@@ -53,7 +78,8 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 				   id="search" 
 				   placeholder="Search Users" 
 				   onKeyDown={handleSubmit}
-				   onFocus={setSearchFocus}/>
+				   onFocus={setSearchFocus}
+				   onBlur={setSearchFocus}/>
 
 			{!searchfocus &&
 				<div id="currentConnections">
@@ -74,9 +100,10 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 					<button>Exit</button>
 
 					<ul>
-						{/*results.map((item,i) => 
-        					<li key={i}>item.name</li>
-      					) */}
+						{searchresults.map((user, i) => (
+							<li key={i} data-id={user.id}>{user.username}</li>
+							/*use dataset.id to get and use it*/
+						))}
 					</ul>
 				</div>
 			}

@@ -1,4 +1,12 @@
 
+10. 04. 2022
+@1008 When making search for users, first search returns empty string - despite server returning results. Second research returns object. So, need to figure that out...
+
+Also, cant have the unfocusing of the search bar remove the results div lol.
+ - will most likely have to connect that state toggle to a button within the results div
+ 	 or a cancel / clear results button next to the search bar
+
+
 10. 01. 2022
 @2334 Upon opening the connections section, successfully gets and displays user connections.
 		  Now need to plug in the search endpoint and function so that when a 
