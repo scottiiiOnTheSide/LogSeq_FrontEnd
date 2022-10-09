@@ -1,4 +1,13 @@
 
+10. 08. 2022
+@0000 Not much change. Upon making search within connectList, results now display
+			afterwards. I would like for the results panel to pop up 'after' the search
+			has been made however. Simple fix.
+			Next step, the notifications list!
+
+			After that, the app ***should*** be at the bare functioning minimum of a 
+			social media platform. Which, would definitely be PRETTY cool
+
 10. 04. 2022
 @1008 When making search for users, first search returns empty string - despite server returning results. Second research returns object. So, need to figure that out...
 

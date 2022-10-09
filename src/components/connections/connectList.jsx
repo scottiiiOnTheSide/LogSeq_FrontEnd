@@ -78,8 +78,8 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 				   id="search" 
 				   placeholder="Search Users" 
 				   onKeyDown={handleSubmit}
-				   onFocus={setSearchFocus}
-				   onBlur={setSearchFocus}/>
+				   onFocus={()=> {setSearchFocus(); toggleResults()}}
+				   onBlur={()=> {setSearchFocus(); toggleResults()}}/>
 
 			{!searchfocus &&
 				<div id="currentConnections">
@@ -97,11 +97,11 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 			{results &&
 				<div id="results">
 					<h2>Results</h2>
-					<button>Exit</button>
+					// put exit button here
 
 					<ul>
 						{searchresults.map((user, i) => (
-							<li key={i} data-id={user.id}>{user.username}</li>
+							<li key={i} data-id={user.id}>{user.username} <i>{user.name}</i></li>
 							/*use dataset.id to get and use it*/
 						))}
 					</ul>
