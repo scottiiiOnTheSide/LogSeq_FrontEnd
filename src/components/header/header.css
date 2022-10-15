@@ -5,6 +5,10 @@ header {
 	border-bottom: 2px solid var(--site-gray-mid);
 }
 
+header div {
+	position: relative;
+}
+
 header h2 {
 	font-weight: 600;
 	line-height: 40px;
@@ -21,3 +25,19 @@ header h2 span {
 header h2 span:first-of-type {
 	margin-left: 0px;
 }
+
+header div button#menuToggle {
+	position: absolute;
+	top: 15%;
+	right: -10px;
+
+	background: none;
+	border: none;
+	/*border-bottom: 2px solid var(--site-gray-mid);*/
+	font-size: 2.75em;
+	color: var(--site-gray-mid);
+}
+
+	header div button#menuToggle.active {
+		color: black;
+	}

@@ -16,11 +16,13 @@ function Login() {
 	)
 }
 
-function Home({calendar}) {
+function Home({calendar, toggleMenuFlip}) {
 
 	//function to change Day from 'today' to weekday name
 	//when no longer looking at current posts
 	// console.log(month)
+
+	let [active, setActive] = useReducer(state => !state, false);
 
 	return (
 		<div>
@@ -30,6 +32,12 @@ function Home({calendar}) {
 				<span id="date">{calendar['currentDate']},</span> 
 				<span id="year">{calendar['currentYear']}</span>
 			</h2>
+
+			<button 
+				id="menuToggle"	
+				className={active ? 'active' : null}
+				onClick={()=> {toggleMenuFlip(); setActive()}}>!!!
+			</button>
 		</div>
 	)
 }
@@ -38,7 +46,7 @@ function Home({calendar}) {
 //need to have overaching 'state management' that tells component
 //when certain section is active, thus setting corresponding header component
 //to be active
-export default function header({loggedIn, home, calendar}) {
+export default function header({loggedIn, home, calendar, toggleMenuFlip}) {
 	return (
 		<header>
 			{!loggedIn &&
@@ -46,7 +54,9 @@ export default function header({loggedIn, home, calendar}) {
 			}
 
 			{(loggedIn || home) &&
-				<Home calendar={calendar}/>
+				<Home 
+					calendar={calendar}
+					toggleMenuFlip={toggleMenuFlip}/>
 			}
 		</header>
 	)

@@ -16,3 +16,21 @@ button#menuToggle {
 	font-size:  1.5em;
 	padding:  10px 15px;
 }
+
+div#buttonWrapper_userMenu ul#altMenu {
+    list-style-type: none;
+    margin: 20px 0;
+    padding: 0;
+    /*position: ;*/
+}
+
+    ul#altMenu li {
+        display: inline-block;
+    }
+
+    ul#altMenu li button {
+        margin: 0 20px;
+        background: none;
+        border: none;
+        font-size: 1.5em;
+    }

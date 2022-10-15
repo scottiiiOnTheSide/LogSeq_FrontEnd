@@ -18,7 +18,7 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 		let api = apiAddr,
 			token = userKey;
 
-		const response = await fetch(`${api}/users/getuser/${userID}?sendConnects=true`, {
+		const response = await fetch(`${api}/users/getuser/${userID}/?query=sendConnects`, {
 			method: 'GET',
 			headers: {
 				'Content-Type': 'application/json',

@@ -13,7 +13,7 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.7:3333';
+  const apiAddr = 'http://192.168.1.8:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -27,6 +27,7 @@ function App() {
   const [login, setLogin] = useReducer(state => !state, true);
   const [home, setHome] = useReducer(state => !state, false);
   const [mainMenu, toggleMainMenu] = useReducer(state => !state, false);
+  const [menuHeadsOrTails, toggleMenuFlip] = useReducer(state => !state, true);
   const [connections, toggleConnections] = useReducer(state => !state, false);
   
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
@@ -140,10 +141,10 @@ function App() {
       return newState;
     }
     const logStates = {
-    userEntry: true,
-    userLeave: false,
-    socialEntry: false,
-    socialLeave: false, 
+      userEntry: true,
+      userLeave: false,
+      socialEntry: false,
+      socialLeave: false, 
     }
 
   const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
@@ -165,7 +166,8 @@ function App() {
         loggedIn={loggedIn} 
         home={home} 
         calendar={calendar} 
-        setCalendar={setCalendar}/>
+        setCalendar={setCalendar}
+        toggleMenuFlip={toggleMenuFlip}/>
 
       {!loggedIn && 
           <UserEntry 
@@ -206,7 +208,8 @@ function App() {
       }
       {(loggedIn && !isReading.postOpen) &&
         <MenuButton 
-          toggleMainMenu={toggleMainMenu}/>
+          toggleMainMenu={toggleMainMenu}
+          headsOrTails={menuHeadsOrTails}/>
       }
       {(loggedIn && isReading.postOpen) &&
         <Blogpost

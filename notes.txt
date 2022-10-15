@@ -1,4 +1,8 @@
 
+10. 15. 2022
+@0025 Set up skeleton (html + bare css) for alt menu, allowing users to toggle the 
+			notifications list and logout
+
 10. 08. 2022
 @0000 Not much change. Upon making search within connectList, results now display
 			afterwards. I would like for the results panel to pop up 'after' the search

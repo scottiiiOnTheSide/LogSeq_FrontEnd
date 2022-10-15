@@ -1,0 +1,39 @@
+
+notification body requests cheatsheet
+
+send request {
+	sender: sender's ID
+	recipient: recipient's ID
+	status: sent
+}
+
+original send request in user's notif list to be considered 'read'
+
+accept request {
+	notifID: the ID of the recipient's original notification
+		thus, the notif they recieve when sender sends request
+	sender: user who sent the request (original notif recieved includes it)
+	recipient: recipients ID
+	twinID: the sender's notification
+	status: accepted or ignored
+}
+
+once accepted OR ignored, notif is to be considered 'read' on front end
+notification of sender's request being accepted has status: accepted,
+  but also has 'read' key. Can be set to 'true' in order to be marked read
+
+
+
+tag alert {
+	sender: original poster
+	postID: 
+	invited: [array of IDs for all invited users]
+}
+
+tagged alert {
+	senderID: original poster's id
+	postID:
+	read: false
+}
+users can mark this notif as 'read' simply by reading the post
+or (perhaps) selecting a check 
