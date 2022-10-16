@@ -1,0 +1,18 @@
+
+div#interactions {
+	position: absolute;
+	width: 100%;
+	height: 100vh;
+	top: 0;
+
+	background-color: white;
+	z-index: 11;
+}
+
+	div#interactions.mute {
+		display: none;
+	}
+
+	div#interactions.active {
+		display: block;
+	}

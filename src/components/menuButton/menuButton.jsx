@@ -2,7 +2,7 @@
 import React from 'react';
 import './menuButton.css';
 
-export default function MenuButton({toggleMainMenu, headsOrTails}) {
+export default function MenuButton({toggleMainMenu, headsOrTails, toggleNotifList}) {
 
 	return (
 		<div id="buttonWrapper_userMenu">
@@ -12,7 +12,7 @@ export default function MenuButton({toggleMainMenu, headsOrTails}) {
 			{!headsOrTails &&
 				<ul id='altMenu'>
 					<li>
-						<button>Interactions</button>
+						<button onClick={toggleNotifList}>Interactions</button>
 						<span id="notifCount"></span>
 					</li>
 					<li>

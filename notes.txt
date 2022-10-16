@@ -1,4 +1,15 @@
 
+10. 16. 2022
+
+@1425 Added the interactions list :D !
+			However, the notif objects are filled with id's D:
+
+			need to adjust ... how notifs are made for connection requests.
+
+@1200 Added functions for requesting connections and removing connections to the connect list.
+			Requesting connections seems to work well on the first try!
+			Now to build the interactions list ...
+
 10. 15. 2022
 @0025 Set up skeleton (html + bare css) for alt menu, allowing users to toggle the 
 			notifications list and logout

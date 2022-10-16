@@ -8,10 +8,7 @@ import React, { useState, useEffect, useReducer, useRef } from 'react';
 import './connectList.css';
 
 
-export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, toggleConnections}) {
-
-	let [connections, setConnections] = useState([]);
-	let [searchresults, setSearchresults] = useState([]);
+export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, toggleConnections, updateNotifs}) {
 
 	const updateConnections = async() => {
 
@@ -31,6 +28,53 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 
 		const usersConnections = await response.json()
 		setConnections(usersConnections);
+	}
+
+	const requestConnection = async(to) => {
+
+		let api = apiAddr,
+			token = userKey,
+			from = userID;
+
+		const request = await fetch(`${api}/users/notif/connection`, {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+        		'Content-length': 0,
+        		'Accept': 'application/json',
+        		'Host': api,
+        		'auth-token': token
+			},
+			body: JSON.stringify({
+				sender: from,
+				recipient: to,
+				status: "sent"
+			})
+		});
+
+		let response = await request.json();
+		updateNotifs();
+	}
+
+	const removeConnection = async(remove) => {
+
+		let api = apiAddr,
+			token = userKey;
+
+		const request = 
+		await fetch(`${api}/users/getuser/${userID}/?query=removeConnect&remove=${remove}`, {
+			method: 'GET',
+			headers: {
+				'Content-Type': 'application/json',
+        		'Content-length': 0,
+        		'Accept': 'application/json',
+        		'Host': api,
+        		'auth-token': token
+			}
+		})
+
+		const response = await request.json();
+		updateConnections();
 	}
 
 	const runSearch = async(query) => {
@@ -53,8 +97,10 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 		setSearchresults(results);
 	}
 
+	const [connections, setConnections] = useState([]);
+	const [searchresults, setSearchresults] = useState([]);
 	const [searchfocus, setSearchFocus] = useReducer(state => !state, false);
-	let [results, toggleResults] = useReducer(state => !state, false);
+	const [results, toggleResults] = useReducer(state => !state, false);
 
 	const handleSubmit = async(event) => {
 		if(event.key === 'Enter') {
@@ -79,7 +125,8 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 				   placeholder="Search Users" 
 				   onKeyDown={handleSubmit}
 				   onFocus={()=> {setSearchFocus(); toggleResults()}}
-				   onBlur={()=> {setSearchFocus(); toggleResults()}}/>
+				   // onBlur={()=> {setSearchFocus(); toggleResults()}}
+			/>
 
 			{!searchfocus &&
 				<div id="currentConnections">
@@ -87,7 +134,10 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 						
 					<ul>
 						{connections.map((user, i) => (
-							<li key={i} data-id={user.id}>{user.username}</li>
+							<li key={i} data-id={user.id}>
+								{user.username}
+								<button onClick={() => removeConnection(user.id)}>&#x2716;</button>
+							</li>
 							/*use dataset.id to get and use it*/
 						))}
 					</ul>
@@ -97,14 +147,19 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 			{results &&
 				<div id="results">
 					<h2>Results</h2>
-					// put exit button here
+					
 
 					<ul>
 						{searchresults.map((user, i) => (
-							<li key={i} data-id={user.id}>{user.username} <i>{user.name}</i></li>
+							<li key={i} data-id={user.id}>
+								{user.username} <i>{user.name}</i>
+								<button onClick={()=> requestConnection(user.id)}>Connect</button>
+							</li>
 							/*use dataset.id to get and use it*/
 						))}
 					</ul>
+
+					<button onClick={toggleResults}> Close Search</button>
 				</div>
 			}
 

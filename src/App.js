@@ -8,12 +8,13 @@ import UserEntry from './components/userEntry/userEntry';
 import BlogLog from './components/blogLog/blogLog';
 import Blogpost from './components/blogpost/blogpost';
 import ConnectList from './components/connections/connectList';
+import InteractionList from './components/notifList/interactions';
 import UserMenu from './components/userMenu/userMenu';
 import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.8:3333';
+  const apiAddr = 'http://192.168.1.5:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -29,6 +30,14 @@ function App() {
   const [mainMenu, toggleMainMenu] = useReducer(state => !state, false);
   const [menuHeadsOrTails, toggleMenuFlip] = useReducer(state => !state, true);
   const [connections, toggleConnections] = useReducer(state => !state, false);
+  const [notifList, toggleNotifList] = useReducer(state => !state, false);
+  const [newNotif, updateNotifs] = useReducer(state => !state, false);
+  /*
+      10. 16. 2022
+      with 'newNotif', once a request is made to backend which prompts a
+      new notification being added to the user's list, newNotif gets updated.
+      when newNotif changes, the interactionList component also updates
+  */ 
   
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
   const [isLoggedIn, set_isLoggedIn] = useState({});
@@ -149,17 +158,6 @@ function App() {
 
   const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
 
-  /*
-      09. 26. 2022
-
-      for userMenu,
-      if logClasses: userEntry = true,
-        - then menu has userSide options
-      if logClasses: socialEntry = true,
-        - menu has socialEntry options visible
-  */
-
-
   return (
     <div id="MAIN">
       <Header 
@@ -189,6 +187,16 @@ function App() {
           setLogClasses={setLogClasses}
           logClasses={logClasses}/>
       }
+      {loggedIn &&
+        <InteractionList
+          newNotif={newNotif}
+          apiAddr={apiAddr}
+          userKey={userKey}
+          userID={userID}
+          notifList={notifList}
+          toggleNotifList={toggleNotifList}
+        />
+      }
       {(loggedIn && mainMenu) && 
         <UserMenu 
           apiAddr={apiAddr}
@@ -204,12 +212,14 @@ function App() {
           userKey={userKey}
           toggleMainMenu={toggleMainMenu}
           toggleConnections={toggleConnections}
+          updateNotifs={updateNotifs}
         />
       }
       {(loggedIn && !isReading.postOpen) &&
         <MenuButton 
           toggleMainMenu={toggleMainMenu}
-          headsOrTails={menuHeadsOrTails}/>
+          headsOrTails={menuHeadsOrTails}
+          toggleNotifList={toggleNotifList}/>
       }
       {(loggedIn && isReading.postOpen) &&
         <Blogpost

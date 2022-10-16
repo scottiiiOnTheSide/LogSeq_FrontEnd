@@ -36,7 +36,7 @@ function Home({calendar, toggleMenuFlip}) {
 			<button 
 				id="menuToggle"	
 				className={active ? 'active' : null}
-				onClick={()=> {toggleMenuFlip(); setActive()}}>!!!
+				onClick={()=> {toggleMenuFlip(); setActive()}}>!!
 			</button>
 		</div>
 	)
