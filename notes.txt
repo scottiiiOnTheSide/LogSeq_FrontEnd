@@ -1,4 +1,26 @@
 
+
+10. 19. 2022
+
+@2045 Will run through both front end and back end to ensure all functions are working correctly.
+	    Some things on the front end need cleaning up - perhaps start implementing better organization
+	    But, as of now - a pivotal point in development has been reached!
+
+@1945 Replace !! with ascending vertical lines, like stairs
+
+@1930 SO FOR THE MOST PART -
+			Adding new connections through the use of the connections section + interactions list
+			works. However, MUST implement a check for multiple / repeat additions
+			this can achieved through the front end...
+
+@1930 Have some sort of change after a connection request is made
+
+@1905 Interactions list now able to actually list data from user's notifications
+			yet, for some reason, an empty notif remains at the top of the list...?
+
+10. 18. 2022
+@2305 app making requests for user notifications everytime the interactions list opens OR closes...
+
 10. 16. 2022
 
 @1425 Added the interactions list :D !

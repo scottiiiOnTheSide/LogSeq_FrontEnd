@@ -159,7 +159,7 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 						))}
 					</ul>
 
-					<button onClick={toggleResults}> Close Search</button>
+					<button onClick={()=> {toggleResults(); setSearchFocus()}}> Close Search</button>
 				</div>
 			}
 
