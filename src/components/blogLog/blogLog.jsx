@@ -90,7 +90,7 @@ function DayLog({log, userID, set_isReading, isReading}) {
 
 	useEffect(() => {
 		setLoaded(true);
-	}, [log.length > 0])
+	}, [log, log.length > 0])
 
 
 
@@ -231,7 +231,7 @@ function SocialLog({socialLog, logClasses, userID, set_isReading, isReading}) {
 		leftNonActive: true
 	}
 
-function Switch({setLogClasses}) {
+function Switch({setLogClasses, socialBlog}) {
 
 	/*
 		Goal for the switch:
@@ -260,6 +260,8 @@ function Switch({setLogClasses}) {
 		console.log(activity.rightActive);
 	}, [])
 
+	let updateSocialLog = socialBlog.updateLog;
+
 	return (
 		<div id="switch">
 			<button id="right" 
@@ -269,7 +271,8 @@ function Switch({setLogClasses}) {
 			<button id="left" 
 					className={leftButtonClasses}
 					onClick={()=> {setActivity({type:'rightToLeft'}) 
-									setLogClasses({type:'userOut_socialIn'})}}>Social</button>
+									setLogClasses({type:'userOut_socialIn'})
+									updateSocialLog()}}>Social</button>
 		</div>
 	)
 }
@@ -302,7 +305,8 @@ export default function BlogLog(
 		
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
 
-			<Switch setLogClasses={setLogClasses}/>
+			<Switch setLogClasses={setLogClasses}
+					socialBlog={socialBlog}/>
 
 			<UserLog userLog={userLog}  
 					 logClasses={logClasses}

@@ -14,7 +14,8 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://192.168.1.2:3333';
+  const apiAddr = 'http://172.17.69.46:3333';
+  // const apiAddr = null;
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -214,6 +215,7 @@ function App() {
           toggleMainMenu={toggleMainMenu}
           toggleConnections={toggleConnections}
           updateNotifs={updateNotifs}
+          updateSocialBLog={updateSocialLog}
         />
       }
       {(loggedIn && !isReading.postOpen) &&

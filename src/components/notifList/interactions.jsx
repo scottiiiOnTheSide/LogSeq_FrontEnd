@@ -40,7 +40,7 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 		updateNotifs(reorder);
 	}
 
-	const acceptConnection = async(recipient) => {
+	const acceptConnection = async(recipient, notifID) => {
 
 		let api = apiAddr,
 			token = userKey,
@@ -58,7 +58,8 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 			body: JSON.stringify({
 				sender: id,
 				recipient: recipient,
-				status: "accepted"
+				status: "accepted",
+				notifID: notifID
 			})
 		});
 
@@ -94,13 +95,18 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 						{data.sender !== userID && data.status == 'sent' ?
 							<div>
 								<p>{data.senderUsername} sent you an connection request</p>
-								<button onClick={()=> {acceptConnection(data.sender)}}>Accept</button>
+								<button onClick={()=> {acceptConnection(data.sender, data._id)}}>Accept</button>
 								<button onClick={ignoreRequest}>Ignore</button>
 							</div>
 						: null}
-						{data.status == 'accepted' ?
+						{data.sender == userID && data.status == 'accepted' ?
 							<p>
 								Connection made with {data.acceptee}
+							</p>
+						: null}
+						{data.sender !== userID && data.status == 'accepted' ?
+							<p>
+								Connection made with {data.accepter}
 							</p>
 						: null}
 					</li>

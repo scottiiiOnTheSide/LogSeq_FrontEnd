@@ -1,5 +1,13 @@
 
 
+11. 01. 2022
+@0000 Made a tweak to the interactions / notification page / list to correctly display info.
+
+
+10. 31. 2022
+@2305 Need to get rid of the whole Calendar state variable and function - that was definitely 
+			overengineered and now the date is currently presenting as 'November 31st', which is incorrect...
+
 10. 19. 2022
 
 @2045 Will run through both front end and back end to ensure all functions are working correctly.

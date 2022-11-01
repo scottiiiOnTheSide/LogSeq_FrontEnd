@@ -8,7 +8,7 @@ import React, { useState, useEffect, useReducer, useRef } from 'react';
 import './connectList.css';
 
 
-export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, toggleConnections, updateNotifs}) {
+export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, toggleConnections, updateNotifs, updateSocialBlog}) {
 
 	const updateConnections = async() => {
 
@@ -136,7 +136,7 @@ export default function ConnectList({apiAddr, userID, userKey, toggleMainMenu, t
 						{connections.map((user, i) => (
 							<li key={i} data-id={user.id}>
 								{user.username}
-								<button onClick={() => removeConnection(user.id)}>&#x2716;</button>
+								<button onClick={() => {removeConnection(user.id); updateSocialBlog();}}>&#x2716;</button>
 							</li>
 							/*use dataset.id to get and use it*/
 						))}
