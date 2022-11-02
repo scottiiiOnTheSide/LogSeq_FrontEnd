@@ -10,6 +10,11 @@ export default function Calendar() {
   const dateNumber = fullDate.getDate(); 
   const dayNumber = fullDate.getDay();
 
+  let start = new Date(d.getFullYear(), 0, 0);
+  let diff = (d - start) + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60 * 1000);
+  let oneDay = 1000 * 60 * 60 * 60 * 24
+  let dayOfTheYear = Math.floor(diff / oneDay);
+
   
   let currentMnth = (month) => {
       let months = [
@@ -22,6 +27,7 @@ export default function Calendar() {
         "July",
         "August",
         "September",
+        "October",
         "November",
         "December"
       ]
@@ -75,7 +81,8 @@ export default function Calendar() {
   	currentDay: currentDay(dayNumber),
   	currentYear: fullDate.getFullYear(),
     getCurrentMonth: currentMnth(),
-    getCurrentDate: currentDate()
+    getCurrentDate: currentDate(),
+    dayOfTheYear: dayOfTheYear
     // intention is to export these functions so that they can be used without set values
   }
 }

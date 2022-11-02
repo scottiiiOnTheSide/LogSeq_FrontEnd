@@ -22,6 +22,7 @@ function App() {
     currentDate: cal.currentDate,
     currentDay: cal.currentDay,
     currentYear: cal.currentYear,
+    dayOfTheYear: cal.dayOfTheYear,
     year_inView: null,
     month_inView: null,
     date_inView: null
@@ -33,6 +34,7 @@ function App() {
   const [connections, toggleConnections] = useReducer(state => !state, false);
   const [notifList, toggleNotifList] = useReducer(state => !state, false);
   const [newNotif, updateNotifs] = useReducer(state => !state, false);
+  const [monthChart, toggleMonthChart] = useReducer(state => !state, false);
   /*
       10. 16. 2022
       with 'newNotif', once a request is made to backend which prompts a
@@ -86,7 +88,6 @@ function App() {
     reorder.splice(0, 1);
     setLog(reorder);
   }
-
   const updateSocialLog = async () => {
     let month = new Date().getMonth(),
         year = new Date().getFullYear(),
@@ -222,7 +223,10 @@ function App() {
         <MenuButton 
           toggleMainMenu={toggleMainMenu}
           headsOrTails={menuHeadsOrTails}
-          toggleNotifList={toggleNotifList}/>
+          toggleNotifList={toggleNotifList}
+          logClasses={logClasses}
+          monthChart={monthChart}
+          toggleMonthChart={toggleMonthChart}/>
       }
       {(loggedIn && isReading.postOpen) &&
         <Blogpost

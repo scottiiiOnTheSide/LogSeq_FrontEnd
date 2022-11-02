@@ -1,6 +1,20 @@
 
 
 11. 01. 2022
+
+@2025 Created skeleton for button that toggles between the BlogLog and the MonthChart
+			I think I will create local variables for getting the date info that I need, seeing
+			as how the calendar state var only stores the info in strings. 
+
+			But I guess I can add to the calendar object to include the numeral info as well.
+
+			Within the bloglog component I prepared to add the monthchart, so I could create it in there...
+			The switch needs to be removed while the MonthChart is up, for both space and reducing potential 
+			dysfunctionality.  
+
+@1850 Turns out the calendar var actually wasn't over engineered, it is necessary as it presents the
+dates (31st, 22nd and such) properly. The month array was simply missing october ahaha ...
+
 @0000 Made a tweak to the interactions / notification page / list to correctly display info.
 
 
