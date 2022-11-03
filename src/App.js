@@ -23,6 +23,8 @@ function App() {
     currentDay: cal.currentDay,
     currentYear: cal.currentYear,
     dayOfTheYear: cal.dayOfTheYear,
+    amountOfDays: cal.amountOfDays,
+    monthInNum: cal.monthInNum,
     year_inView: null,
     month_inView: null,
     date_inView: null
@@ -187,7 +189,8 @@ function App() {
           userID={userID}
           userBlog={userBlog}
           setLogClasses={setLogClasses}
-          logClasses={logClasses}/>
+          logClasses={logClasses}
+          monthChart={monthChart}/>
       }
       {loggedIn &&
         <InteractionList
@@ -226,7 +229,8 @@ function App() {
           toggleNotifList={toggleNotifList}
           logClasses={logClasses}
           monthChart={monthChart}
-          toggleMonthChart={toggleMonthChart}/>
+          toggleMonthChart={toggleMonthChart}
+          calendar={calendar}/>
       }
       {(loggedIn && isReading.postOpen) &&
         <Blogpost

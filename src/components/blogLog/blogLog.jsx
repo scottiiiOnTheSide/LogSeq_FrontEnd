@@ -121,7 +121,10 @@ function DayLog({log, userID, set_isReading, isReading}) {
 	}
 
 
-function MonthChart({log}) {
+function MonthChart({userID, apiAddr}) {
+	return (
+		<div></div>
+	)
 }
 
 
@@ -279,7 +282,7 @@ function Switch({setLogClasses, socialBlog}) {
 
 
 export default function BlogLog(
-	{loggedIn, userBlog, socialBlog, DayLog, WeekList, MonthChart, userID, set_isReading, isReading, setLogClasses, logClasses}) {
+	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
@@ -305,20 +308,31 @@ export default function BlogLog(
 		
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
 
-			<Switch setLogClasses={setLogClasses}
-					socialBlog={socialBlog}/>
+			{!monthChart &&
+				<div id="dayLogWrapper">
+					<Switch 
+						setLogClasses={setLogClasses}
+						socialBlog={socialBlog}/>
 
-			<UserLog userLog={userLog}  
-					 logClasses={logClasses}
-					 userID={userID}
-					 set_isReading={set_isReading} 
-					 isReading={isReading}/>
+					<UserLog 
+						userLog={userLog}  
+					 	logClasses={logClasses}
+					 	userID={userID}
+					 	set_isReading={set_isReading} 
+					 	isReading={isReading}/>
 
-			<SocialLog socialLog={socialLog}
+					<SocialLog socialLog={socialLog}
 					 	logClasses={logClasses}
 					 	userID={userID}
 						set_isReading={set_isReading} 
 						isReading={isReading}/>
+				</div>
+			}
+			{monthChart &&
+				<div id="monthChartWrapper">
+					<MonthChart />
+				</div>
+			}
 			
 		</div>
 	)

@@ -12,8 +12,14 @@ export default function Calendar() {
 
   let start = new Date(d.getFullYear(), 0, 0);
   let diff = (d - start) + ((start.getTimezoneOffset() - d.getTimezoneOffset()) * 60 * 1000);
-  let oneDay = 1000 * 60 * 60 * 60 * 24
+  let oneDay = 1000 * 60 * 60 * 24
   let dayOfTheYear = Math.floor(diff / oneDay);
+  let getAmountOfDays = (year) => {
+    return ((year % 4 === 0 && year % 100 > 0) || year % 400 == 0) ? 366 : 365;
+  }
+  let year = d.getFullYear();
+  let amountOfDays = getAmountOfDays();
+  let monthInNum = d.getMonth() + 1;
 
   
   let currentMnth = (month) => {
@@ -82,7 +88,9 @@ export default function Calendar() {
   	currentYear: fullDate.getFullYear(),
     getCurrentMonth: currentMnth(),
     getCurrentDate: currentDate(),
-    dayOfTheYear: dayOfTheYear
+    dayOfTheYear: dayOfTheYear,
+    amountOfDays: amountOfDays,
+    monthInNum: monthInNum
     // intention is to export these functions so that they can be used without set values
   }
 }

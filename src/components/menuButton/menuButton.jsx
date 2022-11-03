@@ -2,7 +2,9 @@
 import React from 'react';
 import './menuButton.css';
 
-export default function MenuButton({toggleMainMenu, headsOrTails, toggleNotifList, monthChart, toggleMonthChart}) {
+export default function MenuButton({toggleMainMenu, headsOrTails, toggleNotifList, monthChart, toggleMonthChart, calendar}) {
+
+	let cal = calendar;
 
 	return (
 		<div id="buttonWrapper_userMenu">
@@ -21,17 +23,17 @@ export default function MenuButton({toggleMainMenu, headsOrTails, toggleNotifLis
 				</ul>
 			}
 			
-			<button id='DayMonthToggle' onClick={toggleMonthChart}>
+			<button id='dayMonthToggle' onClick={toggleMonthChart}>
 				{!monthChart &&
 					<div id="Day">
 						<p>Day</p>
-						<span>{}</span><span>/</span><span>{}</span>
+						<span>{cal.dayOfTheYear} </span><span>/</span><span> {cal.amountOfDays}</span>
 					</div>
 				}
 				{monthChart &&
 					<div id="Month">
 						<p>Month</p>
-						<span>{}</span><span>/</span><span>{}</span>
+						<span>{cal.monthInNum} </span><span>/</span><span> 12</span>
 					</div>
 				}
 			</button> 

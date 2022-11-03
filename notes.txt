@@ -1,4 +1,13 @@
 
+11. 03. 2022
+@1535 Added needed vars to the calendar object.
+			The DayMonthToggle switches between the overall DayLog screen to a blank canvas for
+			where the MonthChart will be.
+
+			Before proceeding with building out the MonthChart, I would like to clean up the 
+			responses and log statements on the backend API
+
+
 
 11. 01. 2022
 

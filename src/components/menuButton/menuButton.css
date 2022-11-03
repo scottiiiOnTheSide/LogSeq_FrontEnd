@@ -34,3 +34,10 @@ div#buttonWrapper_userMenu ul#altMenu {
         border: none;
         font-size: 1.5em;
     }
+
+
+button#dayMonthToggle {
+    position: absolute;
+    right: 2%;
+    bottom: 15%;
+}
