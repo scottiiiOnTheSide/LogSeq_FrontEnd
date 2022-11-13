@@ -122,8 +122,167 @@ function DayLog({log, userID, set_isReading, isReading}) {
 
 
 function MonthChart({userID, apiAddr}) {
+
+	let initial = new Date(),
+		kyou = initial.getDate(),
+		kongetsu = initial.getMonth(),
+		kotoshi = initial.getFullYear();
+
+	/* cal.s_ will be manipulatable, will probably put in state,
+		and is the var the calendar drawing function will use
+	*/
+	let cal = {
+		sDay: kyou,
+		sMonth: kongetsu,
+		sYear: kotoshi,
+		months: [
+			"January",
+			"February",
+			"March",
+			"April",
+			"May",
+			"June",
+			"July",
+			"August",
+			"September",
+			"October",
+			"November",
+			"December"
+		],
+		days: [
+			"S",
+			"M",
+			"T",
+			"W",
+			"T",
+			"F",
+			"S"
+		],
+	}
+
+	let draw = () => {
+		let daysInMonth = new Date(cal.sYear, cal.sMonth+1, 0).getDate(), //number of days in current/selected month
+			startDay = new Date(cal.sYear, cal.sMonth, 1).getDay(), //first day of the month
+			endDay = new Date(cal.sYear, cal.sMonth, daysInMonth).getDay(), //last day of the month
+			now = new Date(),
+			nowMonth = now.getMonth(),
+			nowYear = now.getFullYear(),
+			nowDay = cal.sMonth == nowMonth && cal.sYear == nowYear ? now.getDate() : null;
+
+		//local storage component. Shouldn't be necessary, will should remove in time
+		cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
+  			if (cal.data==null) {
+    			localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, "{}");
+    			cal.data = {};
+  			} else { 
+  				cal.data = JSON.parse(cal.data); 
+  			}
+
+  		//Drawing Calculations,
+  		//Blank entries for start of month
+  		let squares = [];
+  		if(cal.sMonth && startDay !=1 )	{
+  			let blanks = startDay == 0 ? 7 : startDay ;
+  			for(let i = 0; i < blanks; i++) {
+  				squares.push("b");
+  			}
+  		}
+  		if(!cal.sMonth && startDay != 0) {
+  			for(let i = 0; i < startDay; i++) {
+  				squares.push("b");
+  			}
+  		}
+
+  		//days of the month
+  		for (let i = 1; i <= daysInMonth; i++) { 
+  			squares.push(i); 
+  		}
+
+  		//blank squares at the end of the month
+  		if (cal.sMon && endDay != 0) {
+    		let blanks = endDay==6 ? 1 : 7-endDay;
+    		for (let i=0; i<blanks; i++) { 
+    			squares.push("b"); 
+    		}
+  		}
+
+  		if (!cal.sMon && endDay != 6) {
+    		let blanks = endDay==0 ? 6 : 6-endDay;
+    		for (let i=0; i<blanks; i++) { 
+    			squares.push("b"); 
+    		}
+  		}
+
+  		console.log(squares)
+
+	  	let weeksInMonth = squares.length / 7;
+	  	console.log(weeksInMonth)
+
+	  	let daysInWeek = [];
+	  	let days = JSON.parse(JSON.stringify(squares))
+		for(let i = 1; i <= squares.length / 7; i++) {
+		  	let week = days.splice(0, 7);
+		  	daysInWeek.push(week);
+		}
+		console.log(daysInWeek)
+	  		
+	  	let calendar = 
+	  		<div id="calendar">
+
+	  			{/*//a header for the days of the week*/}
+	  			<div id="dayWrapper">
+		  			{cal.days.map((d, index) => {
+		  				return <div key={index} className="dayOfTheWeek">{d}</div>
+		  			})}
+		  		</div>
+
+		  		<div id="datesWrapper">
+
+		  			{/*rows for the weeks in a month*/}
+			  		{[...Array(weeksInMonth)].map((i, e) => {
+
+			  			return <div key={e} className="row">
+			  				{squares.map((s, index) => {
+			  					let date = squares[index];
+					  			return <div key={index} className={`cell` + `${nowDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}>	
+					  				{/*unsure if the classname thing works as of yet ....*/}
+					  					<div key={index}className="cellDate">
+					  						<p>{squares[index]}</p>
+					  					</div>
+					  				</div>
+					  			})
+			  				}
+			  			</div>
+			  		})
+			  		}
+	  			</div>
+	  		</div>
+
+	  	return calendar;
+
+	}
+
+	let calendar = draw();
+
+	useEffect(() => {
+		// calendar = draw();
+	}, [])
+
 	return (
-		<div></div>
+		<div id="monthChart">		
+			<div id="header">
+				<span id="prev"></span>
+				<span id="current"></span>
+				<span id="next"></span>
+			</div>
+
+			<div id="calendar">
+				{calendar}
+			</div>
+
+			<div id="log">
+			</div>
+		</div>
 	)
 }
 
@@ -282,7 +441,7 @@ function Switch({setLogClasses, socialBlog}) {
 
 
 export default function BlogLog(
-	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart}) {
+	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
@@ -330,7 +489,8 @@ export default function BlogLog(
 			}
 			{monthChart &&
 				<div id="monthChartWrapper">
-					<MonthChart />
+					<MonthChart 
+						userID={userID}/>
 				</div>
 			}
 			

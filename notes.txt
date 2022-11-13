@@ -1,4 +1,29 @@
 
+
+11. 13. 2022
+
+@1215 Implemented previous note - now need to make sure each printed row
+		only draws from it's corresponding week for it's days
+
+@1150 Progress made with the calendar.
+	  Current issue is that each row for each week gets all days of the month,
+	  should only get 7.
+	  Can split the squares array into multiple, with each day within each week
+
+	  let daysInWeek = [];
+	  for(i = 0; i =< squares.length; i+7) {
+	  	let start = 0;
+	  	let week = squares.slice(start, i-7);
+	  	start = i - 7;
+	  	daysInWeek.push(week)
+	  }
+
+11. 11. 2022
+@1255 Currently working on MonthChart calendar function
+		Current hurdle is that the calendar must be dynamically
+		changed, need to convert html creation and append functions
+		to jsx friendly format...
+
 11. 03. 2022
 @1535 Added needed vars to the calendar object.
 			The DayMonthToggle switches between the overall DayLog screen to a blank canvas for
