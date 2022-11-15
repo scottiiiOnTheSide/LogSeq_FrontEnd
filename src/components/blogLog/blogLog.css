@@ -1,3 +1,5 @@
+
+
 div.entry p span[data-code="u"] {
 	text-decoration: underline;
 }
@@ -378,3 +380,22 @@ div#blogLog div#socialLog div#daylog {
 	position: relative;
 	height: 100%;
 }
+
+
+/*
+	C A L E N D A R 
+*/
+
+div#dayWrapper {
+	display: flex;
+	justify-content: space-evenly;
+
+}
+
+div#dayWrapper div.dayOfTheWeek {
+	display: inline-block;
+	padding: 10px;
+}
+
+
+

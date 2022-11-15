@@ -24,18 +24,22 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 			})
 		});
 
+
 		let response = await request.json();
+		// console.log(response)
 
 		response = response.map((data) => {
 			let info = data[0]['connectionRequest'];
 			return info;
 		});
+		// console.log(response)
 
 		let reorder = [];
     	for(let i = response.length; i >= 0; i--) {
       		reorder.push(response[i]);
     	}
-    	reorder.splice(0, 1);
+    	reorder.splice(0, 2);
+    	console.log(reorder)
 
 		updateNotifs(reorder);
 	}
