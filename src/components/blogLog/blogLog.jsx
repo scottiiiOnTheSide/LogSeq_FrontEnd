@@ -242,12 +242,12 @@ function MonthChart({userID, apiAddr}) {
 			  		{[...Array(weeksInMonth)].map((i, e) => {
 
 			  			return <div key={e} className="row">
-			  				{squares.map((s, index) => {
-			  					let date = squares[index];
+			  				{daysInWeek[e].map((s, index) => {
+			  					let date = daysInWeek[e][index];
 					  			return <div key={index} className={`cell` + `${nowDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}>	
 					  				{/*unsure if the classname thing works as of yet ....*/}
 					  					<div key={index}className="cellDate">
-					  						<p>{squares[index]}</p>
+					  						<p>{daysInWeek[e][index]}</p>
 					  					</div>
 					  				</div>
 					  			})

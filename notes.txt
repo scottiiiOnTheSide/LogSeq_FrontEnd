@@ -1,4 +1,33 @@
 
+11. 14. 2022
+@2230 Very rudimentary calendar built :D
+	  Next Steps: (In no particular order)
+	  - Header for Current Date, Prev and Next to be added
+	    - Clicking on current Month + Year will bring up modal for user to
+	      select further month + date from list
+
+	  - When monthChart mounts, api call to get amount of posts
+	  	for each day within current month
+	  	- this first api call, in the back end,
+	  		1. gets all the posts from this month,
+	  		2. counts number of posts per day
+	  		3. sends object with populated days as int '0 - 30ish' as key
+	  			and amount of posts as value
+	  		4. on front end, uses this data to populate the amount of bars
+	  			present for each day
+	  		5. on each reRender of the calendar, this data is gotten first then
+	  			 and then utilized for the render
+	  		?6. Should this api call also include all post data from current day?
+
+	  - need to add html + css for bars denoting post activity for each day
+
+	  - further develop CSS for component
+	  	- remove the 'b' for the blank ones
+
+	  - api call for when day selected:
+	  	- api call simply returns all post data from that day, however 
+	  		listview below calendar will only display Title, MetaData and Event or Entry
+
 
 11. 13. 2022
 

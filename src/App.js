@@ -14,7 +14,7 @@ import MenuButton from './components/menuButton/menuButton';
 
 function App() {
   //section state variables
-  const apiAddr = 'http://localhost:3333';
+  const apiAddr = 'http://172.17.78.18:3333';
   // const apiAddr = null;
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
