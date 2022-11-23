@@ -386,25 +386,68 @@ div#blogLog div#socialLog div#daylog {
 	C A L E N D A R 
 */
 
-div#dayWrapper {
+
+div#monthChart div#header {
+	position: relative;
+	width: 90%;
+	height: 1.5em;
+	margin: 40px auto;
+}
+
+div#monthChart div#header span {
+	font-size: 1.5em;
+}
+
+	div#monthChart div#header span#prev {
+		position: absolute;
+		top: 70%;
+		left: 10%;
+		transform: translateY(-50%);
+	}
+
+	div#monthChart div#header span#current {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+	}
+
+	div#monthChart div#header span#year {
+		position: absolute;
+		top: 120%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+
+	}
+
+	div#monthChart div#header span#next {
+		position: absolute;
+		top: 70%;
+		right: 10%;
+		transform: translateY(-50%);
+	}
+
+
+div#monthChart div#calendar div#dayWrapper {
 	display: flex;
 	justify-content: space-evenly;
 
 }
 
-div#dayWrapper div.dayOfTheWeek {
+div#monthChart div#calendar div#dayWrapper div.dayOfTheWeek {
 	display: inline-block;
 	padding: 10px;
 }
 
 
-div#datesWrapper {}
+div#monthChart div#calendar div#datesWrapper {}
 
-div#datesWrapper div.row {
+div#monthChart div#calendar div#datesWrapper div.row {
 	display: flex;
 	justify-content: space-evenly;
 }
 
-div#datesWrapper div.row div.cell {
+div#monthChart div#calendar div#datesWrapper div.row div.cell {
 	padding: 10px;
 }
+

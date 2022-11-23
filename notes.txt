@@ -1,4 +1,9 @@
 
+11. 23. 2022
+@0930 Notes to be added concerning design intentions for header...
+	  XD file updated to reflect changes
+	  Added rudimentary styling for header elements within calendar
+
 11. 14. 2022
 @2230 Very rudimentary calendar built :D
 	  Next Steps: (In no particular order)
@@ -23,6 +28,7 @@
 
 	  - further develop CSS for component
 	  	- remove the 'b' for the blank ones
+	  	- transition for the mount and dismount of the MonthChart
 
 	  - api call for when day selected:
 	  	- api call simply returns all post data from that day, however 

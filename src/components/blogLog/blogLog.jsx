@@ -271,9 +271,10 @@ function MonthChart({userID, apiAddr}) {
 	return (
 		<div id="monthChart">		
 			<div id="header">
-				<span id="prev"></span>
-				<span id="current"></span>
-				<span id="next"></span>
+				<span id="prev">Oct</span>
+				<span id="current">Nov</span>
+				<span id="year">2022</span>
+				<span id="next">Dec</span>
 			</div>
 
 			<div id="calendar">
