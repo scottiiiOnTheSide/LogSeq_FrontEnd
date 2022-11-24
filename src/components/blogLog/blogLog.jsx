@@ -136,18 +136,18 @@ function MonthChart({userID, apiAddr}) {
 		sMonth: kongetsu,
 		sYear: kotoshi,
 		months: [
-			"January",
-			"February",
-			"March",
-			"April",
+			"Jan",
+			"Feb",
+			"Mar",
+			"Apr",
 			"May",
-			"June",
-			"July",
-			"August",
-			"September",
-			"October",
-			"November",
-			"December"
+			"Jun",
+			"Jul",
+			"Aug",
+			"Sep",
+			"Oct",
+			"Nov",
+			"Dec"
 		],
 		days: [
 			"S",
@@ -161,13 +161,13 @@ function MonthChart({userID, apiAddr}) {
 	}
 
 	let draw = () => {
-		let daysInMonth = new Date(cal.sYear, cal.sMonth+1, 0).getDate(), //number of days in current/selected month
-			startDay = new Date(cal.sYear, cal.sMonth, 1).getDay(), //first day of the month
-			endDay = new Date(cal.sYear, cal.sMonth, daysInMonth).getDay(), //last day of the month
+		let daysInMonth = new Date(kotoshi, kongetsu+1, 0).getDate(), //number of days in current/selected month
+			startDay = new Date(kotoshi, kongetsu, 1).getDay(), //first day of the month
+			endDay = new Date(kotoshi, kongetsu, daysInMonth).getDay(), //last day of the month
 			now = new Date(),
 			nowMonth = now.getMonth(),
 			nowYear = now.getFullYear(),
-			nowDay = cal.sMonth == nowMonth && cal.sYear == nowYear ? now.getDate() : null;
+			nowDay = kongetsu == nowMonth && kotoshi == nowYear ? now.getDate() : null;
 
 		//local storage component. Shouldn't be necessary, will should remove in time
 		cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
@@ -268,13 +268,60 @@ function MonthChart({userID, apiAddr}) {
 		// calendar = draw();
 	}, [])
 
+	let forwardMonth = () => {
+		set_nextClass('nextStart');
+		set_currentClass('off');
+		setTimeout(() => {
+			if(kongetsu + 1 > 11) {
+				set_currentMonth(cal.months[0]);
+				cal.sMonth = 0;
+			} else {
+				set_currentMonth(cal.months[kongetsu + 1]);
+				cal.sMonth = kongetsu + 1;
+			}
+		}, 700)
+		setTimeout(() => {
+			if(cal.sMonth + 1 > 11) {
+				cal.sMonth = 0
+				set_nextMonth(cal.months[cal.sMonth])
+			} else {
+				set_nextMonth(cal.months[cal.sMonth + 1])
+			}
+			set_nextClass('nextEnd');
+			console.log(nextMonth)
+		}, 1000)
+	}
+
+	let backwardMonth = () => {
+		
+	}
+
+	let [nextClass, set_nextClass] = useState(''),
+		[nextMonth, set_nextMonth] = useState(cal.months[kongetsu + 1]),
+		[prevClass, set_prevClass] = useState(''),
+		[prevMonth, set_prevMonth] = useState(cal.months[kongetsu - 1]),
+		[currentClass, set_currentClass] = useState(''),
+		[currentMonth, set_currentMonth] = useState(cal.months[kongetsu]),
+		[currentYear, set_currentYear] = useState(kotoshi)
+
 	return (
 		<div id="monthChart">		
 			<div id="header">
-				<span id="prev">Oct</span>
-				<span id="current">Nov</span>
-				<span id="year">2022</span>
-				<span id="next">Dec</span>
+				<span id="prev" 
+					className={`${nextClass}`}
+					onClick={backwardMonth()}>
+				{prevMonth}</span>
+
+				<span id="current" 
+					className={`${currentClass}`}>
+				{currentMonth}</span>
+
+				<span id="year">{currentYear}</span>
+
+				<span id="next" 
+					className={`${nextClass}`} 
+					onClick={forwardMonth}>
+				{nextMonth}</span>
 			</div>
 
 			<div id="calendar">

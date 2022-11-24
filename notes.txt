@@ -1,4 +1,10 @@
 
+11. 24. 2022
+@1400 Added animations for nextMonth switching between currentMonth
+		Just need to create the reverse for prevMonth in CSS and functions
+
+	  Afterwards, animations for the calendar
+
 11. 23. 2022
 @0930 Notes to be added concerning design intentions for header...
 	  XD file updated to reflect changes
