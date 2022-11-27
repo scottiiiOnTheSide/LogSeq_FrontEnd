@@ -39,7 +39,7 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
       		reorder.push(response[i]);
     	}
     	reorder.splice(0, 2);
-    	console.log(reorder)
+    	// console.log(reorder)
 
 		updateNotifs(reorder);
 	}

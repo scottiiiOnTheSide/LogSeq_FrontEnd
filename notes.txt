@@ -1,5 +1,38 @@
 
+11. 27. 2022
+@0240 animations for Progressing or receeding the months now works as intended
+		progressing changes the next, current and prev
+		and receeding changes the prev, current and next
+
+		however, there's currently some 'error' occurring whenever 
+		I go from Dec, to Jan, then back to Dec. 
+		I believe the num sequence would be 11 to 0 to 11. 
+		from 0 to 11, prev becomes 2 ...
+		Will probably need some console logging in order to see whats going on
+
+		but after I fix this bug, I am then to create the animations for the calendar
+		and plug that into the next and prev functions.
+		so, press prev, call data, calendar animation, redraw with new info, return cal
+
+		actually, the calendar may need more css before the api call becomes necessary...
+
+11. 25. 2022
+@1000 Month progression for calendar header now works correctly.
+	  could . . . add in animation for the year transition as well,
+	  but eh...
+
+	  Next, do the reverse for prevMonth
+	  Then, function to re-render the calender when next or prev prompted
+	  then, animation for calendar going backwards or forwards
+	    - recede animation, scales down moves right fades out
+	      then starts left, fades in scales up moves to center
+	    - proceed animation, scales down moves left fades out
+	      then starts right, fades in scales up moves to center
+
 11. 24. 2022
+
+@1405 Issue - after one click to the next month, the month states dont change...
+
 @1400 Added animations for nextMonth switching between currentMonth
 		Just need to create the reverse for prevMonth in CSS and functions
 

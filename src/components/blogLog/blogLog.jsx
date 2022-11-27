@@ -131,7 +131,7 @@ function MonthChart({userID, apiAddr}) {
 	/* cal.s_ will be manipulatable, will probably put in state,
 		and is the var the calendar drawing function will use
 	*/
-	let cal = {
+	let [cal, set_cal] = useState({
 		sDay: kyou,
 		sMonth: kongetsu,
 		sYear: kotoshi,
@@ -158,7 +158,7 @@ function MonthChart({userID, apiAddr}) {
 			"F",
 			"S"
 		],
-	}
+	}); 
 
 	let draw = () => {
 		let daysInMonth = new Date(kotoshi, kongetsu+1, 0).getDate(), //number of days in current/selected month
@@ -213,10 +213,10 @@ function MonthChart({userID, apiAddr}) {
     		}
   		}
 
-  		console.log(squares)
+  		// console.log(squares)
 
 	  	let weeksInMonth = squares.length / 7;
-	  	console.log(weeksInMonth)
+	  	// console.log(weeksInMonth)
 
 	  	let daysInWeek = [];
 	  	let days = JSON.parse(JSON.stringify(squares))
@@ -224,7 +224,7 @@ function MonthChart({userID, apiAddr}) {
 		  	let week = days.splice(0, 7);
 		  	daysInWeek.push(week);
 		}
-		console.log(daysInWeek)
+		// console.log(daysInWeek)
 	  		
 	  	let calendar = 
 	  		<div id="calendar">
@@ -266,57 +266,124 @@ function MonthChart({userID, apiAddr}) {
 
 	useEffect(() => {
 		// calendar = draw();
+		console.log(cal.sMonth);
 	}, [])
 
 	let forwardMonth = () => {
 		set_nextClass('nextStart');
+		set_prevClass('off');
+		if(cal.sMonth + 1 > 11) {
+			setTimeout(() => {
+				set_yearClass('off');
+			}, 200)
+			setTimeout(() => {
+				set_yearClass('');
+			}, 1200)
+		}
 		set_currentClass('off');
 		setTimeout(() => {
-			if(kongetsu + 1 > 11) {
+			if(cal.sMonth + 1 > 11) {
+				set_cal({
+					...cal,
+					sMonth: 0,
+					sYear: cal.sYear + 1
+				});
 				set_currentMonth(cal.months[0]);
-				cal.sMonth = 0;
+				set_prevMonth(cal.months[11]);
+				console.log(cal.sMonth)
 			} else {
-				set_currentMonth(cal.months[kongetsu + 1]);
-				cal.sMonth = kongetsu + 1;
-			}
+				set_cal({
+					...cal,
+					sMonth: cal.sMonth + 1
+				});
+				set_currentMonth(cal.months[cal.sMonth + 1]);
+				set_prevMonth(cal.months[cal.sMonth])
+			} 
 		}, 700)
 		setTimeout(() => {
 			if(cal.sMonth + 1 > 11) {
-				cal.sMonth = 0
-				set_nextMonth(cal.months[cal.sMonth])
+				set_nextMonth(cal.months[1])
+				console.log(nextMonth);
+			} else if (cal.sMonth == 10) {
+				set_nextMonth(cal.months[0])
 			} else {
-				set_nextMonth(cal.months[cal.sMonth + 1])
+				set_nextMonth(cal.months[cal.sMonth + 2])
 			}
 			set_nextClass('nextEnd');
-			console.log(nextMonth)
+			set_prevClass('')
 		}, 1000)
 	}
 
 	let backwardMonth = () => {
-		
+		set_prevClass('prevStart');
+		set_nextClass('off');
+		if(cal.sMonth - 1 < 0) {
+			setTimeout(() => {
+				set_yearClass('off');
+			}, 200)
+			setTimeout(() => {
+				set_yearClass('');
+			}, 1200)
+		}
+		set_currentClass('off');
+		setTimeout(() => {
+			if(cal.sMonth - 1 < 0) {
+				set_cal({
+					...cal,
+					sMonth: 11,
+					sYear: cal.sYear - 1
+				});
+				set_currentMonth(cal.months[11]);
+				set_nextMonth(cal.months[0])
+				console.log(cal.sMonth)
+			} else {
+				set_cal({
+					...cal,
+					sMonth: cal.sMonth - 1
+				});
+				set_currentMonth(cal.months[cal.sMonth - 1]);
+				set_nextMonth(cal.months[cal.sMonth])
+			}
+		}, 700)
+		setTimeout(() => {
+			if(cal.sMonth - 1 < 0) {
+				set_prevMonth(cal.months[1])
+				console.log(nextMonth);
+			} else if (cal.sMonth == 0) {
+				set_nextMonth(cal.months[10])
+			} else {
+				set_prevMonth(cal.months[cal.sMonth - 2])
+			}
+			set_prevClass('prevEnd');
+			set_nextClass('')
+		}, 1000)
 	}
 
+	//I should be able to have the innerHTML text simply come from the cal state object...
 	let [nextClass, set_nextClass] = useState(''),
 		[nextMonth, set_nextMonth] = useState(cal.months[kongetsu + 1]),
 		[prevClass, set_prevClass] = useState(''),
 		[prevMonth, set_prevMonth] = useState(cal.months[kongetsu - 1]),
 		[currentClass, set_currentClass] = useState(''),
 		[currentMonth, set_currentMonth] = useState(cal.months[kongetsu]),
-		[currentYear, set_currentYear] = useState(kotoshi)
+		[currentYear, set_currentYear] = useState(kotoshi),
+		[yearClass, set_yearClass] = useState('');
 
 	return (
 		<div id="monthChart">		
 			<div id="header">
 				<span id="prev" 
-					className={`${nextClass}`}
-					onClick={backwardMonth()}>
+					className={`${prevClass}`}
+					onClick={backwardMonth}>
 				{prevMonth}</span>
 
 				<span id="current" 
 					className={`${currentClass}`}>
 				{currentMonth}</span>
 
-				<span id="year">{currentYear}</span>
+				<span id="year"
+					className={`${yearClass}`}>
+				{cal.sYear}</span>
 
 				<span id="next" 
 					className={`${nextClass}`} 
@@ -467,7 +534,7 @@ function Switch({setLogClasses, socialBlog}) {
 	})
 
 	useEffect(() => {
-		console.log(activity.rightActive);
+		// console.log(activity.rightActive);
 	}, [])
 
 	let updateSocialLog = socialBlog.updateLog;
