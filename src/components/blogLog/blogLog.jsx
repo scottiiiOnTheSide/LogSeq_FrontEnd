@@ -287,28 +287,35 @@ function MonthChart({userID, apiAddr}) {
 					...cal,
 					sMonth: 0,
 					sYear: cal.sYear + 1
-				});
+				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[0]);
+				set_nextMonth(cal.months[1])
 				set_prevMonth(cal.months[11]);
 				console.log(cal.sMonth)
-			} else {
+			} else if (cal.sMonth + 1 == 11) {
+				set_cal({
+					...cal,
+					sMonth: 11,
+				}); console.log(cal.sMonth);
+				set_nextMonth(cal.months[0]);
+				set_prevMonth(cal.months[cal.sMonth])
+				set_currentMonth(cal.months[11]);
+			} 
+			else {
 				set_cal({
 					...cal,
 					sMonth: cal.sMonth + 1
-				});
+				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[cal.sMonth + 1]);
+				set_nextMonth(cal.months[cal.sMonth + 2])
 				set_prevMonth(cal.months[cal.sMonth])
 			} 
+			
 		}, 700)
 		setTimeout(() => {
-			if(cal.sMonth + 1 > 11) {
-				set_nextMonth(cal.months[1])
-				console.log(nextMonth);
-			} else if (cal.sMonth == 10) {
-				set_nextMonth(cal.months[0])
-			} else {
-				set_nextMonth(cal.months[cal.sMonth + 2])
-			}
+			// if (cal.sMonth == 10) {
+			// 	set_nextMonth(cal.months[0])
+			// }
 			set_nextClass('nextEnd');
 			set_prevClass('')
 		}, 1000)
@@ -317,7 +324,8 @@ function MonthChart({userID, apiAddr}) {
 	let backwardMonth = () => {
 		set_prevClass('prevStart');
 		set_nextClass('off');
-		if(cal.sMonth - 1 < 0) {
+			//in this case, sMonth is 0 and we've gone back a year
+		if(cal.sMonth - 1 < 0) { 
 			setTimeout(() => {
 				set_yearClass('off');
 			}, 200)
@@ -332,28 +340,31 @@ function MonthChart({userID, apiAddr}) {
 					...cal,
 					sMonth: 11,
 					sYear: cal.sYear - 1
-				});
+				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[11]);
 				set_nextMonth(cal.months[0])
+				set_prevMonth(cal.months[10])
 				console.log(cal.sMonth)
+			} else if (cal.sMonth - 1 == 0) {
+				set_cal({
+					...cal,
+					sMonth: cal.sMonth - 1
+				}); console.log(cal.sMonth);
+				set_currentMonth(cal.months[cal.sMonth - 1]);
+				set_nextMonth(cal.months[10])
+				set_prevMonth(cal.months[11])
 			} else {
 				set_cal({
 					...cal,
 					sMonth: cal.sMonth - 1
-				});
+				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[cal.sMonth - 1]);
 				set_nextMonth(cal.months[cal.sMonth])
-			}
-		}, 700)
-		setTimeout(() => {
-			if(cal.sMonth - 1 < 0) {
-				set_prevMonth(cal.months[1])
-				console.log(nextMonth);
-			} else if (cal.sMonth == 0) {
-				set_nextMonth(cal.months[10])
-			} else {
 				set_prevMonth(cal.months[cal.sMonth - 2])
 			}
+			console.log(cal.sMonth)
+		}, 700)
+		setTimeout(() => {
 			set_prevClass('prevEnd');
 			set_nextClass('')
 		}, 1000)
@@ -368,30 +379,31 @@ function MonthChart({userID, apiAddr}) {
 		[currentMonth, set_currentMonth] = useState(cal.months[kongetsu]),
 		[currentYear, set_currentYear] = useState(kotoshi),
 		[yearClass, set_yearClass] = useState('');
+	let [calClass, set_calClass] = useState('');
 
 	return (
 		<div id="monthChart">		
 			<div id="header">
 				<span id="prev" 
-					className={`${prevClass}`}
+					className={prevClass}
 					onClick={backwardMonth}>
 				{prevMonth}</span>
 
 				<span id="current" 
-					className={`${currentClass}`}>
+					className={currentClass}>
 				{currentMonth}</span>
 
 				<span id="year"
-					className={`${yearClass}`}>
+					className={yearClass}>
 				{cal.sYear}</span>
 
 				<span id="next" 
-					className={`${nextClass}`} 
+					className={nextClass} 
 					onClick={forwardMonth}>
 				{nextMonth}</span>
 			</div>
 
-			<div id="calendar">
+			<div id="calendar" className={calClass}>
 				{calendar}
 			</div>
 

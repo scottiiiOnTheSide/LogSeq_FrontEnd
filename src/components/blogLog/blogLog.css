@@ -584,6 +584,31 @@ div#monthChart div#header span {
 				}
 
 
+
+div#monthChart div#calendar {
+
+}
+
+	div#monthChart div#calendar.next {
+		animation-name: calNext;
+	}
+
+		@keyframes calNext {} 
+		/*scale down, move to the left, fade out.
+		fades in from left scaled up, scales down moving to center*/
+
+
+	div#monthChart div#calendar.prev {
+		animation-name: calPrev;
+	}
+
+		@keyframes calPrev {}
+		/*scale down, move to the right, fade out.
+		fades in from the right scaled up, scales down moving to center*/
+
+
+
+
 div#monthChart div#calendar div#dayWrapper {
 	display: flex;
 	justify-content: space-evenly;

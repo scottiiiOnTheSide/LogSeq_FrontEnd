@@ -1,4 +1,16 @@
 
+11. 30. 2022
+
+@0225 Set up css a lil for the classes and animations...
+
+@0215 fixed the issue with preceeding to December turning the prev button to Feb...
+		very simple mistake truly...
+
+		Need to adjust the times on the animations now tho, for the the 'next'
+		disappears,
+
+		after that: calendar next and prev animations!
+
 11. 27. 2022
 @0240 animations for Progressing or receeding the months now works as intended
 		progressing changes the next, current and prev
