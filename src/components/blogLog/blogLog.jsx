@@ -264,11 +264,6 @@ function MonthChart({userID, apiAddr}) {
 
 	let calendar = draw();
 
-	useEffect(() => {
-		// calendar = draw();
-		console.log(cal.sMonth);
-	}, [])
-
 	let forwardMonth = () => {
 		set_nextClass('nextStart');
 		set_prevClass('off');
@@ -289,17 +284,21 @@ function MonthChart({userID, apiAddr}) {
 					sYear: cal.sYear + 1
 				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[0]);
-				set_nextMonth(cal.months[1])
 				set_prevMonth(cal.months[11]);
 				console.log(cal.sMonth)
+				setTimeout(() => {
+					set_nextMonth(cal.months[1])
+				}, 300)
 			} else if (cal.sMonth + 1 == 11) {
 				set_cal({
 					...cal,
 					sMonth: 11,
 				}); console.log(cal.sMonth);
-				set_nextMonth(cal.months[0]);
 				set_prevMonth(cal.months[cal.sMonth])
 				set_currentMonth(cal.months[11]);
+				setTimeout(() => {
+					set_nextMonth(cal.months[0]);
+				}, 300)
 			} 
 			else {
 				set_cal({
@@ -307,18 +306,17 @@ function MonthChart({userID, apiAddr}) {
 					sMonth: cal.sMonth + 1
 				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[cal.sMonth + 1]);
-				set_nextMonth(cal.months[cal.sMonth + 2])
 				set_prevMonth(cal.months[cal.sMonth])
-			} 
+				setTimeout(() => {
+					set_nextMonth(cal.months[cal.sMonth + 2])
+				}, 300)
+			}
 			
 		}, 700)
 		setTimeout(() => {
-			// if (cal.sMonth == 10) {
-			// 	set_nextMonth(cal.months[0])
-			// }
 			set_nextClass('nextEnd');
 			set_prevClass('')
-		}, 1000)
+		}, 1300)
 	}
 
 	let backwardMonth = () => {
@@ -343,8 +341,10 @@ function MonthChart({userID, apiAddr}) {
 				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[11]);
 				set_nextMonth(cal.months[0])
-				set_prevMonth(cal.months[10])
 				console.log(cal.sMonth)
+				setTimeout(() => {
+					set_prevMonth(cal.months[10])
+				}, 300)
 			} else if (cal.sMonth - 1 == 0) {
 				set_cal({
 					...cal,
@@ -352,15 +352,19 @@ function MonthChart({userID, apiAddr}) {
 				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[cal.sMonth - 1]);
 				set_nextMonth(cal.months[10])
-				set_prevMonth(cal.months[11])
+				setTimeout(() => {
+					set_prevMonth(cal.months[11])
+				}, 300)
 			} else {
 				set_cal({
 					...cal,
 					sMonth: cal.sMonth - 1
 				}); console.log(cal.sMonth);
 				set_currentMonth(cal.months[cal.sMonth - 1]);
-				set_nextMonth(cal.months[cal.sMonth])
-				set_prevMonth(cal.months[cal.sMonth - 2])
+				set_nextMonth(cal.months[cal.sMonth]);
+				setTimeout(() => {
+					set_prevMonth(cal.months[cal.sMonth - 2])
+				}, 300)
 			}
 			console.log(cal.sMonth)
 		}, 700)
@@ -372,14 +376,34 @@ function MonthChart({userID, apiAddr}) {
 
 	//I should be able to have the innerHTML text simply come from the cal state object...
 	let [nextClass, set_nextClass] = useState(''),
-		[nextMonth, set_nextMonth] = useState(cal.months[kongetsu + 1]),
+		[nextMonth, set_nextMonth] = useState(''), //needs conditionals...
 		[prevClass, set_prevClass] = useState(''),
-		[prevMonth, set_prevMonth] = useState(cal.months[kongetsu - 1]),
+		[prevMonth, set_prevMonth] = useState(''),
 		[currentClass, set_currentClass] = useState(''),
 		[currentMonth, set_currentMonth] = useState(cal.months[kongetsu]),
 		[currentYear, set_currentYear] = useState(kotoshi),
 		[yearClass, set_yearClass] = useState('');
 	let [calClass, set_calClass] = useState('');
+
+		
+
+	useEffect(()=> {
+		if (cal.sMonth - 1 < 0) {
+			set_prevMonth(cal.months[11])
+		} else if (cal.sMonth - 1 == 0) {
+			set_prevMonth(cal.months[0])
+		} else {
+			set_prevMonth(cal.months[kongetsu - 1])
+		} 
+
+		if (cal.sMonth + 1 > 11) {
+			set_nextMonth(cal.months[0])
+		} else if (cal.sMonth + 1 == 11) {
+			set_nextMonth(cal.months[11]);
+		} else {
+			set_nextMonth(cal.months[kongetsu + 1])
+		}
+	}, [])
 
 	return (
 		<div id="monthChart">		

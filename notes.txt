@@ -1,4 +1,10 @@
 
+
+12. 01. 2022
+@2245 Fixed the issue with the timing of when prev or next dissappears to switch strings
+		Also added contingencies for initial values
+
+
 11. 30. 2022
 
 @0225 Set up css a lil for the classes and animations...
