@@ -1,4 +1,28 @@
 
+12. 03. 2022
+
+@0915 Have switched the variables within the draw calendar function to the state
+	  	variables, thus making the redraw automatic when i traverse months.
+	  	Will simply have the state change (cal state var) happen else where,
+	  	as the timing needs to occur while the calendar is gone
+
+	  	however, currently encountering issue where project crashes once
+	  	we try to load May 2023... Issue stated is invalid array length...
+
+@0900 Have created the animation classes for the calendar.
+	  Will create a seperate function which manages switching the classes, 
+	  	and inputting the data for the calendar redraw
+
+12. 02. 2022
+@1835 Interesting little  tidbit I would like to add - a new social media app that recently released has been 		in the media abit often recently (in light of the twitter fiasco and such) for reasons such as security 		concerns, some issues like such. I find this amusing, because reading up on it, I'd learned that it 		was truly some pet like project started just this summer by a HS senior or College freshman...
+		It's amazing how things can really take off for you ....
+		but abit of a reminder to myself to focus on the quality of the projects I build, not just their function...
+		So, mental note to address best security practices and methodologies (atleast, generally)
+		I know I've got to add some to my front end log-ins.
+
+		In other note, I would like the calendar animations to be split in 2 - the leave and the return.
+		To ensure that the data is definitely included within the rebuild of the cal for the next month
+
 
 12. 01. 2022
 @2245 Fixed the issue with the timing of when prev or next dissappears to switch strings

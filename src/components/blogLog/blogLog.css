@@ -586,26 +586,93 @@ div#monthChart div#header span {
 
 
 div#monthChart div#calendar {
-
+	position: relative;
+	left: 0;
 }
 
-	div#monthChart div#calendar.next {
-		animation-name: calNext;
+	div#monthChart div#calendar.next_Leave {
+		animation-name: calNextLeave;
+		animation-fill-mode: forwards;
+		animation-duration: 0.75s;
+		animation-timing-function: ease-in;
 	}
 
-		@keyframes calNext {} 
-		/*scale down, move to the left, fade out.
-		fades in from left scaled up, scales down moving to center*/
+		@keyframes calNextLeave {
+			0% {
+				left: 0%;
+			}
 
+			100% {
+				left: -100%;
+				transform: scale(0.75);
+				opacity: 0;
+			}
+		} 
+		/*scale down, move to the left, fade out.*/
+		
 
-	div#monthChart div#calendar.prev {
-		animation-name: calPrev;
+	div#monthChart div#calendar.next_Return {
+		animation-name: calNextReturn;
+		animation-fill-mode: forwards;
+		animation-duration: 0.75s;
+		animation-timing-function: ease-in;
 	}
 
-		@keyframes calPrev {}
-		/*scale down, move to the right, fade out.
-		fades in from the right scaled up, scales down moving to center*/
+		@keyframes calNextReturn {
+			0% {
+				left: 100%;
+				transform: scale(0.75);
+				opacity: 0;
+			}
 
+			 100% {
+			 	left: 0%
+			 }
+		} 
+		/*fades in from left scaled up, scales down moving to center*/
+
+
+
+	div#monthChart div#calendar.prev_Leave {
+		animation-name: calPrevLeave;
+		animation-fill-mode: forwards;
+		animation-duration: 0.75s;
+		animation-timing-function: ease-in;
+	}
+
+		@keyframes calPrevLeave {
+			0% {
+				left: 0%;
+			}
+
+			100% {
+				left: 100%;
+				transform: scale(0.75);
+				opacity: 0;
+			}
+		}
+		/*scale down, move to the right, fade out.*/
+		
+
+	div#monthChart div#calendar.prev_Return {
+		animation-name: calPrevReturn;
+		animation-fill-mode: forwards;
+		animation-duration: 0.75s;
+		animation-timing-function: ease-in;
+	}
+
+		@keyframes calPrevReturn {
+			0% {
+				left: -100%;
+				transform: scale(0.75);
+				opacity: 0;
+			}
+
+			100% {
+				left: 0%;
+			}
+		}
+		/*fades in from the right scaled up, scales down moving to center*/
 
 
 

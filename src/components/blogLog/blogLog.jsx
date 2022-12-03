@@ -161,13 +161,13 @@ function MonthChart({userID, apiAddr}) {
 	}); 
 
 	let draw = () => {
-		let daysInMonth = new Date(kotoshi, kongetsu+1, 0).getDate(), //number of days in current/selected month
-			startDay = new Date(kotoshi, kongetsu, 1).getDay(), //first day of the month
-			endDay = new Date(kotoshi, kongetsu, daysInMonth).getDay(), //last day of the month
+		let daysInMonth = new Date(cal.sMonth, cal.sMonth+1, 0).getDate(), //number of days in current/selected month
+			startDay = new Date(cal.sYear, cal.sMonth, 1).getDay(), //first day of the month
+			endDay = new Date(cal.sYear, cal.sMonth, daysInMonth).getDay(), //last day of the month
 			now = new Date(),
 			nowMonth = now.getMonth(),
 			nowYear = now.getFullYear(),
-			nowDay = kongetsu == nowMonth && kotoshi == nowYear ? now.getDate() : null;
+			nowDay = cal.sMonth == nowMonth && cal.sYear == nowYear ? now.getDate() : null;
 
 		//local storage component. Shouldn't be necessary, will should remove in time
 		cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
@@ -261,8 +261,6 @@ function MonthChart({userID, apiAddr}) {
 	  	return calendar;
 
 	}
-
-	let calendar = draw();
 
 	let forwardMonth = () => {
 		set_nextClass('nextStart');
@@ -385,7 +383,7 @@ function MonthChart({userID, apiAddr}) {
 		[yearClass, set_yearClass] = useState('');
 	let [calClass, set_calClass] = useState('');
 
-		
+	let calendar = draw();		
 
 	useEffect(()=> {
 		if (cal.sMonth - 1 < 0) {
@@ -403,6 +401,8 @@ function MonthChart({userID, apiAddr}) {
 		} else {
 			set_nextMonth(cal.months[kongetsu + 1])
 		}
+
+		
 	}, [])
 
 	return (
@@ -427,9 +427,7 @@ function MonthChart({userID, apiAddr}) {
 				{nextMonth}</span>
 			</div>
 
-			<div id="calendar" className={calClass}>
-				{calendar}
-			</div>
+			{calendar}
 
 			<div id="log">
 			</div>
