@@ -121,16 +121,38 @@ function DayLog({log, userID, set_isReading, isReading}) {
 	}
 
 
-function MonthChart({userID, apiAddr}) {
+function MonthChart({userID, apiAddr, userKey}) {
+
+	/*
+		API call gets object with keys representing dates and values amount of posts of
+		posts per day
+	*/
+
+	const getPostsPerDate = async (month, year) => {
+
+		const api = apiAddr,
+			  user = userKey;
+
+		const request = await fetch(`${api}/posts/monthChart?month=${month}&year=${year}`, {
+			method: "GET",
+			headers: {
+				'Content-Type': 'application/json',
+        		'Content-length': 0,
+        		'Accept': 'application/json',
+        		'Host': api,
+        		'auth-token': user
+			}
+		})
+
+		const response = await request.json();
+		set_dateCount(response);
+	}
 
 	let initial = new Date(),
 		kyou = initial.getDate(),
 		kongetsu = initial.getMonth(),
 		kotoshi = initial.getFullYear();
 
-	/* cal.s_ will be manipulatable, will probably put in state,
-		and is the var the calendar drawing function will use
-	*/
 	let [cal, set_cal] = useState({
 		sDay: kyou,
 		sMonth: kongetsu,
@@ -169,18 +191,10 @@ function MonthChart({userID, apiAddr}) {
 			nowYear = now.getFullYear(),
 			nowDay = cal.sMonth == nowMonth && cal.sYear == nowYear ? now.getDate() : null;
 
-		//local storage component. Shouldn't be necessary, will should remove in time
-		cal.data = localStorage.getItem("cal-" + cal.sMth + "-" + cal.sYear);
-  			if (cal.data==null) {
-    			localStorage.setItem("cal-" + cal.sMth + "-" + cal.sYear, "{}");
-    			cal.data = {};
-  			} else { 
-  				cal.data = JSON.parse(cal.data); 
-  			}
-
   		//Drawing Calculations,
   		//Blank entries for start of month
   		let squares = [];
+
   		if(cal.sMonth && startDay !=1 )	{
   			let blanks = startDay == 0 ? 7 : startDay ;
   			for(let i = 0; i < blanks; i++) {
@@ -198,7 +212,7 @@ function MonthChart({userID, apiAddr}) {
   			squares.push(i); 
   		}
 
-  		//blank squares at the end of the month
+  		//blank squares at the end of the month (what is cal.sMon !?)
   		if (cal.sMon && endDay != 0) {
     		let blanks = endDay==6 ? 1 : 7-endDay;
     		for (let i=0; i<blanks; i++) { 
@@ -213,18 +227,24 @@ function MonthChart({userID, apiAddr}) {
     		}
   		}
 
-  		// console.log(squares)
+  		console.log(squares)
 
-	  	let weeksInMonth = squares.length / 7;
-	  	// console.log(weeksInMonth)
+	  	// let weeksInMonth = squares.length / 7 < 5 ? Math.round(squares.length / 7) : 5;
+	  	let weeksInMonth;
+	  	if(squares.length / 7 < 5) {
+	  		weeksInMonth = 5;
+	  	} else {
+	  		weeksInMonth = squares.length / 7;
+	  	}
+	  	console.log(weeksInMonth)
 
 	  	let daysInWeek = [];
 	  	let days = JSON.parse(JSON.stringify(squares))
-		for(let i = 1; i <= squares.length / 7; i++) {
+		for(let i = 0; i <= squares.length / 7; i++) {
 		  	let week = days.splice(0, 7);
 		  	daysInWeek.push(week);
 		}
-		// console.log(daysInWeek)
+		console.log(daysInWeek)
 	  		
 	  	let calendar = 
 	  		<div id="calendar">
@@ -372,19 +392,23 @@ function MonthChart({userID, apiAddr}) {
 		}, 1000)
 	}
 
-	//I should be able to have the innerHTML text simply come from the cal state object...
-	let [nextClass, set_nextClass] = useState(''),
-		[nextMonth, set_nextMonth] = useState(''), //needs conditionals...
+	let [calClass, set_calClass] = useState(''),
+		[nextClass, set_nextClass] = useState(''),
+		[nextMonth, set_nextMonth] = useState(''), 
 		[prevClass, set_prevClass] = useState(''),
 		[prevMonth, set_prevMonth] = useState(''),
 		[currentClass, set_currentClass] = useState(''),
 		[currentMonth, set_currentMonth] = useState(cal.months[kongetsu]),
 		[currentYear, set_currentYear] = useState(kotoshi),
-		[yearClass, set_yearClass] = useState('');
-	let [calClass, set_calClass] = useState('');
+		[yearClass, set_yearClass] = useState(''),
+		[dateCount, set_dateCount] = useState({});
+	
 
 	let calendar = draw();		
 
+	/*
+		Edge cases in displaying the correct Prev and Next months 
+	*/
 	useEffect(()=> {
 		if (cal.sMonth - 1 < 0) {
 			set_prevMonth(cal.months[11])
@@ -402,7 +426,8 @@ function MonthChart({userID, apiAddr}) {
 			set_nextMonth(cal.months[kongetsu + 1])
 		}
 
-		
+		getPostsPerDate(8, 2022);
+		console.log(dateCount)
 	}, [])
 
 	return (
@@ -590,7 +615,7 @@ function Switch({setLogClasses, socialBlog}) {
 
 
 export default function BlogLog(
-	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr}) {
+	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr, userKey}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
@@ -639,7 +664,8 @@ export default function BlogLog(
 			{monthChart &&
 				<div id="monthChartWrapper">
 					<MonthChart 
-						userID={userID}/>
+						userID={userID}
+						userKey={userKey}/>
 				</div>
 			}
 			

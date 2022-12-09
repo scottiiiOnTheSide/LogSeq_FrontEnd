@@ -191,6 +191,7 @@ function App() {
           setLogClasses={setLogClasses}
           logClasses={logClasses}
           apiAddr={apiAddr}
+          userKey={userKey}
           monthChart={monthChart}/>
       }
       {loggedIn &&

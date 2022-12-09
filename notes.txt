@@ -1,5 +1,16 @@
 
+12. 09. 2022
+@0055 For some reason, the api address that the monthChart is calling has the frontEnd's 
+	  url 3000 instead of the backend's 3333 (i believe this is the domain?)
+	  Unsure why that's occuring
+
+12. 08. 2022
+@2350 Implementing new practice starting today - will be using // for temporary comments, and /**/ for code documentation. 
+	  Mantaining legibility is equally as important as writing clean code
+
 12. 03. 2022
+
+@1205 issue fixed concerning the crash occuring at May 2023! Weird thing, but fixed it
 
 @0915 Have switched the variables within the draw calendar function to the state
 	  	variables, thus making the redraw automatic when i traverse months.
