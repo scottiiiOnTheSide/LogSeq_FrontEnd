@@ -1,5 +1,38 @@
 
+
+12. 14. 2022
+@1450 Well as of 2pm, I had successfully made the css for the dates a lil more neat, and have added the tallies. The tallies do also draw from the [getPostsPerDate] state object, thus when it is drawn it will update each day's tallies appropriately.
+
+However, I need to discern when best to make that API call for postsPerMonth however 
+
+12. 13. 2022
+@1234 Will now work more on the CSS of the Calendar elements 
+
+@1005 Order of process for the calendar:
+
+Initial draw sources the date info from the cal state object,
+ all values are for present date on initial load.
+
+initial draw() should also call getPostsForDate(), 
+using the data from the array postsPerDate to populate
+the tallies in the dates
+
+Proceeding or Receeding Dates 
+after setting element classes which initiates their transition,
+run getPostsPerDate after discerning what values to query
+  - if cal.sMonth + 1 > 11 (intended search is January, 0)
+  	- if yes, cal.sYear + 1 for search Year
+  - if cal.sMonth - 1 < 0 (intended search is December, 11)
+  	- if yes, cal.sYear - 1 for search Year
+
+then redraw cal happens automatically with the resetting of the cal state var
+There is currently a slight delay between the months switching the the cal redraw.
+the setCal calls need to be delayed until the calendar fully recedes
+
 12. 09. 2022
+
+@0225 Previous issues fixed
+
 @0055 For some reason, the api address that the monthChart is calling has the frontEnd's 
 	  url 3000 instead of the backend's 3333 (i believe this is the domain?)
 	  Unsure why that's occuring

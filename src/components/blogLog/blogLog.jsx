@@ -124,10 +124,9 @@ function DayLog({log, userID, set_isReading, isReading}) {
 function MonthChart({userID, apiAddr, userKey}) {
 
 	/*
-		API call gets object with keys representing dates and values amount of posts of
-		posts per day
+		API call gets array with each index value 
+		representing amount of posts per day
 	*/
-
 	const getPostsPerDate = async (month, year) => {
 
 		const api = apiAddr,
@@ -145,14 +144,17 @@ function MonthChart({userID, apiAddr, userKey}) {
 		})
 
 		const response = await request.json();
-		set_dateCount(response);
+		set_postsPerDate(response);
+		console.log(postsPerDate);
 	}
 
+	/* Setting initial date values*/
 	let initial = new Date(),
 		kyou = initial.getDate(),
 		kongetsu = initial.getMonth(),
 		kotoshi = initial.getFullYear();
 
+	/*keeps track of currently selected date info*/
 	let [cal, set_cal] = useState({
 		sDay: kyou,
 		sMonth: kongetsu,
@@ -182,6 +184,11 @@ function MonthChart({userID, apiAddr, userKey}) {
 		],
 	}); 
 
+
+	/*
+		Creates the Calendar Element
+		Draws date info from the [cal] state object
+	*/
 	let draw = () => {
 		let daysInMonth = new Date(cal.sMonth, cal.sMonth+1, 0).getDate(), //number of days in current/selected month
 			startDay = new Date(cal.sYear, cal.sMonth, 1).getDay(), //first day of the month
@@ -227,7 +234,7 @@ function MonthChart({userID, apiAddr, userKey}) {
     		}
   		}
 
-  		console.log(squares)
+  		// console.log(squares)
 
 	  	// let weeksInMonth = squares.length / 7 < 5 ? Math.round(squares.length / 7) : 5;
 	  	let weeksInMonth;
@@ -236,7 +243,7 @@ function MonthChart({userID, apiAddr, userKey}) {
 	  	} else {
 	  		weeksInMonth = squares.length / 7;
 	  	}
-	  	console.log(weeksInMonth)
+	  	// console.log(weeksInMonth)
 
 	  	let daysInWeek = [];
 	  	let days = JSON.parse(JSON.stringify(squares))
@@ -244,8 +251,8 @@ function MonthChart({userID, apiAddr, userKey}) {
 		  	let week = days.splice(0, 7);
 		  	daysInWeek.push(week);
 		}
-		console.log(daysInWeek)
-	  		
+		// console.log(daysInWeek)
+
 	  	let calendar = 
 	  		<div id="calendar">
 
@@ -264,8 +271,20 @@ function MonthChart({userID, apiAddr, userKey}) {
 			  			return <div key={e} className="row">
 			  				{daysInWeek[e].map((s, index) => {
 			  					let date = daysInWeek[e][index];
-					  			return <div key={index} className={`cell` + `${nowDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}>	
+			  					let value = postsPerDate[parseInt(date)];
+					  			return <div key={index} 
+					  						className={`cell` + `${nowDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
+					  						onClick={()=> {console.log(value)}}>	
 					  				{/*unsure if the classname thing works as of yet ....*/}
+
+					  					<div className={`${date == 'b' ? 'hidden' : 'tallyWrapper'}`}>
+					  							<span className={`tally` + `${value >= 1 ? ' on' : ''}`}></span>
+					  							<span className={`tally` + `${value >= 3 ? ' on' : ''}`}></span>
+					  							<span className={`tally` + `${value >= 5 ? ' on' : ''}`}></span>
+					  							<span className={`tally` + `${value >= 7 ? ' on' : ''}`}></span>
+					  							<span className={`tally` + `${value >= 9 ? ' on' : ''}`}></span>
+					  					</div>
+
 					  					<div key={index}className="cellDate">
 					  						<p>{daysInWeek[e][index]}</p>
 					  					</div>
@@ -283,6 +302,7 @@ function MonthChart({userID, apiAddr, userKey}) {
 	}
 
 	let forwardMonth = () => {
+
 		set_nextClass('nextStart');
 		set_prevClass('off');
 		if(cal.sMonth + 1 > 11) {
@@ -294,6 +314,16 @@ function MonthChart({userID, apiAddr, userKey}) {
 			}, 1200)
 		}
 		set_currentClass('off');
+
+		/*
+			Assessing values for API request for postsPerDate
+		*/
+
+		//receed cal
+		//initiate redraw
+
+
+
 		setTimeout(() => {
 			if(cal.sMonth + 1 > 11) {
 				set_cal({
@@ -334,7 +364,11 @@ function MonthChart({userID, apiAddr, userKey}) {
 		setTimeout(() => {
 			set_nextClass('nextEnd');
 			set_prevClass('')
+
+			//bring back cal
 		}, 1300)
+
+		console.log(postsPerDate);
 	}
 
 	let backwardMonth = () => {
@@ -392,6 +426,7 @@ function MonthChart({userID, apiAddr, userKey}) {
 		}, 1000)
 	}
 
+	/* Element classes*/
 	let [calClass, set_calClass] = useState(''),
 		[nextClass, set_nextClass] = useState(''),
 		[nextMonth, set_nextMonth] = useState(''), 
@@ -401,14 +436,11 @@ function MonthChart({userID, apiAddr, userKey}) {
 		[currentMonth, set_currentMonth] = useState(cal.months[kongetsu]),
 		[currentYear, set_currentYear] = useState(kotoshi),
 		[yearClass, set_yearClass] = useState(''),
-		[dateCount, set_dateCount] = useState({});
+		[postsPerDate, set_postsPerDate] = useState({});
 	
-
 	let calendar = draw();		
 
-	/*
-		Edge cases in displaying the correct Prev and Next months 
-	*/
+	/*	Edge cases in displaying the correct Prev and Next months */
 	useEffect(()=> {
 		if (cal.sMonth - 1 < 0) {
 			set_prevMonth(cal.months[11])
@@ -426,8 +458,8 @@ function MonthChart({userID, apiAddr, userKey}) {
 			set_nextMonth(cal.months[kongetsu + 1])
 		}
 
-		getPostsPerDate(8, 2022);
-		console.log(dateCount)
+		getPostsPerDate(cal.sMonth, cal.sYear);
+		console.log(postsPerDate)
 	}, [])
 
 	return (
@@ -448,7 +480,16 @@ function MonthChart({userID, apiAddr, userKey}) {
 
 				<span id="next" 
 					className={nextClass} 
-					onClick={forwardMonth}>
+					onClick={
+						()=> {
+							forwardMonth(); 
+							if(cal.sMonth + 1 > 11) {
+								getPostsPerDate(0, cal.sYear + 1);
+								// console.log(postsPerDate);
+							} else {
+								getPostsPerDate(cal.sMonth +1, cal.sYear);
+								// console.log(postsPerDate);
+						}}}>
 				{nextMonth}</span>
 			</div>
 
@@ -664,6 +705,7 @@ export default function BlogLog(
 			{monthChart &&
 				<div id="monthChartWrapper">
 					<MonthChart 
+						apiAddr={apiAddr}
 						userID={userID}
 						userKey={userKey}/>
 				</div>

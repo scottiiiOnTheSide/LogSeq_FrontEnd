@@ -688,14 +688,65 @@ div#monthChart div#calendar div#dayWrapper div.dayOfTheWeek {
 }
 
 
-div#monthChart div#calendar div#datesWrapper {}
+div#monthChart div#calendar div#datesWrapper {
+	margin: 0 auto;
+	width: 95%;
+}
 
 div#monthChart div#calendar div#datesWrapper div.row {
 	display: flex;
 	justify-content: space-evenly;
+	position: relative;
 }
 
-div#monthChart div#calendar div#datesWrapper div.row div.cell {
-	padding: 10px;
-}
+	div#monthChart div#calendar div#datesWrapper div.row div.cell {
+		width: calc(100% / 7);
+/*		padding: 5px 0;*/
+		margin: 5px 0;
+		position: relative;
+	}
 
+		div#monthChart div#calendar div#datesWrapper div.row div.cell p {
+			text-align: center;
+		}
+
+
+	div#monthChart  div.row div.cell div.tallyWrapper {
+		display: flex;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) rotate(180deg) scaleX(-1);
+		justify-content: space-evenly;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+	}
+
+		div#monthChart  div.row div.cell div.tallyWrapper span.tally {
+			display: inline-block;
+			width: 0px;
+/*			height: 20px;*/
+			border: 1px solid rgba(0, 0, 0, .1);
+			margin: 0 ;
+		}
+
+		div#monthChart  div.row div.cell div.tallyWrapper span.tally.on {
+			border-color: black;
+		}
+
+			span.tally:first-child {
+				height: 16%;
+			}
+			span.tally:nth-child(2) {
+				height: 32%;
+			}
+			span.tally:nth-child(3) {
+				height: 48%;
+			}
+			span.tally:nth-child(4) {
+				height: 64%;
+			}
+			span.tally:last-child {
+				height: 48%;
+			}
