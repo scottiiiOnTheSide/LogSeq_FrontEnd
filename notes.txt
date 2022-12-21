@@ -1,4 +1,54 @@
 
+12. 21. 2022
+
+@1600 date onClick function added :D 
+
+@1545 Made the html skeleton for the posts headers within the log under the calendar
+	  Next steps:
+	  - date OnClick function (could do css later)
+
+@1510 Function for getting posts for specific day via monthChart works as intended.
+	  Next steps:
+	  On mount, allPostsPerDate run, populating log underneath monthChart
+	  &
+	  date onClick, runs allPostsPerDate, updates log
+	  animation: scale down and fade.
+	  process:
+	  	run function (it has delayin adding posts to state object)
+	  	change class
+	  	wait duration, change class to opposite. 
+
+12. 16. 2022
+@1210 Implemented calendar animations + slowed the change for getPostsPerDate
+
+	  Next feature to implement: clicking on a specific date to pull and display the posts
+	  for that day.
+
+	  The menu button will also be updated to be 'Create Post' when on dayLog
+	  and 'Create Post for xy.xy.xyxy' when viewing a specific date.
+	  Will use the [calendar] state object from the main app to store and send the values
+	  so that the createPost component can send a post to the API with different dates....
+
+12. 15. 2022
+
+@1135 MonthChart forward and backward search now works well. 
+	  Still need to add fix for leapyear tho...
+
+	  Next, add animations for calendar leaving and returning +
+	  		delay timing for when the [cal] state object gets changed
+
+@1110 No, they are aligned. 
+	  However, I may need to add more contingencies for the searches as forwardMonth() 
+	  can't make a search with 12 as the month, which it is currently.
+
+@1048 I believe, for the most part, 
+	  the forward and backward monthLog searches are correct...
+	  but the postedBy_months range isnt aligned with the js dates object month range
+
+@1025 Front end isn't diplaying right amount of days for Feb 2024, 
+		which is probably due to it being a leapyear.....
+
+		Will have to figure out how to add contingency for that
 
 12. 14. 2022
 @1450 Well as of 2pm, I had successfully made the css for the dates a lil more neat, and have added the tallies. The tallies do also draw from the [getPostsPerDate] state object, thus when it is drawn it will update each day's tallies appropriately.

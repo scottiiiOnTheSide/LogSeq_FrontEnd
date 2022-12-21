@@ -144,8 +144,43 @@ function MonthChart({userID, apiAddr, userKey}) {
 		})
 
 		const response = await request.json();
-		set_postsPerDate(response);
+		setTimeout(() => {
+			set_postsPerDate(response);
+		}, 1000)
+		
 		console.log(postsPerDate);
+	}
+
+	const allPostsForDate = async (month, day, year) => {
+
+		const api = apiAddr,
+			  user = userKey;
+
+		const request = await fetch(`${api}/posts/monthChart?&day=${day}&month=${month}&year=${year}`, {
+			method: "GET",
+			headers: {
+				'Content-Type': 'application/json',
+        		'Content-length': 0,
+        		'Accept': 'application/json',
+        		'Host': api,
+        		'auth-token': user
+			}
+		})
+
+		const response = await request.json();
+
+		let reorder = [];
+    	for(let i = response.length; i >= 0; i--) {
+      		reorder.push(response[i]);
+    	}
+    	reorder.splice(0, 1);
+
+    	//update the state object that'll hold the posts per day
+    	setTimeout(() => {
+    		set_selectedDatesPosts(reorder);
+    		// console.log(selectedDatesPosts);
+    	})
+
 	}
 
 	/* Setting initial date values*/
@@ -185,12 +220,13 @@ function MonthChart({userID, apiAddr, userKey}) {
 	}); 
 
 
+
 	/*
-		Creates the Calendar Element
+		Creates the C A L E N D A R
 		Draws date info from the [cal] state object
 	*/
 	let draw = () => {
-		let daysInMonth = new Date(cal.sMonth, cal.sMonth+1, 0).getDate(), //number of days in current/selected month
+		let daysInMonth = new Date(cal.sYear, cal.sMonth+1, 0).getDate(), //number of days in current/selected month
 			startDay = new Date(cal.sYear, cal.sMonth, 1).getDay(), //first day of the month
 			endDay = new Date(cal.sYear, cal.sMonth, daysInMonth).getDay(), //last day of the month
 			now = new Date(),
@@ -234,9 +270,6 @@ function MonthChart({userID, apiAddr, userKey}) {
     		}
   		}
 
-  		// console.log(squares)
-
-	  	// let weeksInMonth = squares.length / 7 < 5 ? Math.round(squares.length / 7) : 5;
 	  	let weeksInMonth;
 	  	if(squares.length / 7 < 5) {
 	  		weeksInMonth = 5;
@@ -251,10 +284,10 @@ function MonthChart({userID, apiAddr, userKey}) {
 		  	let week = days.splice(0, 7);
 		  	daysInWeek.push(week);
 		}
-		// console.log(daysInWeek)
+
 
 	  	let calendar = 
-	  		<div id="calendar">
+	  		<div id="calendar" className={calClass}>
 
 	  			{/*//a header for the days of the week*/}
 	  			<div id="dayWrapper">
@@ -274,7 +307,7 @@ function MonthChart({userID, apiAddr, userKey}) {
 			  					let value = postsPerDate[parseInt(date)];
 					  			return <div key={index} 
 					  						className={`cell` + `${nowDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
-					  						onClick={()=> {console.log(value)}}>	
+					  						onClick={()=> {clickSelectedDate(cal.sMonth, daysInWeek[e][index], cal.sYear)}}>	
 					  				{/*unsure if the classname thing works as of yet ....*/}
 
 					  					<div className={`${date == 'b' ? 'hidden' : 'tallyWrapper'}`}>
@@ -299,10 +332,13 @@ function MonthChart({userID, apiAddr, userKey}) {
 
 	  	return calendar;
 
-	}
+	}	
+
+
+
+
 
 	let forwardMonth = () => {
-
 		set_nextClass('nextStart');
 		set_prevClass('off');
 		if(cal.sMonth + 1 > 11) {
@@ -315,22 +351,17 @@ function MonthChart({userID, apiAddr, userKey}) {
 		}
 		set_currentClass('off');
 
-		/*
-			Assessing values for API request for postsPerDate
-		*/
-
-		//receed cal
-		//initiate redraw
-
-
+		/*Initiate calendar leaving animation*/
+		set_calClass('next_Leave');
 
 		setTimeout(() => {
 			if(cal.sMonth + 1 > 11) {
-				set_cal({
-					...cal,
-					sMonth: 0,
-					sYear: cal.sYear + 1
-				}); console.log(cal.sMonth);
+					set_cal({
+						...cal,
+						sMonth: 0,
+						sYear: cal.sYear + 1
+					});
+				console.log(cal.sMonth);
 				set_currentMonth(cal.months[0]);
 				set_prevMonth(cal.months[11]);
 				console.log(cal.sMonth)
@@ -338,21 +369,23 @@ function MonthChart({userID, apiAddr, userKey}) {
 					set_nextMonth(cal.months[1])
 				}, 300)
 			} else if (cal.sMonth + 1 == 11) {
-				set_cal({
-					...cal,
-					sMonth: 11,
-				}); console.log(cal.sMonth);
-				set_prevMonth(cal.months[cal.sMonth])
+					set_cal({
+						...cal,
+						sMonth: 11,
+					});
+				console.log(cal.sMonth);
+				set_prevMonth(cal.months[11])
 				set_currentMonth(cal.months[11]);
 				setTimeout(() => {
 					set_nextMonth(cal.months[0]);
 				}, 300)
 			} 
 			else {
-				set_cal({
-					...cal,
-					sMonth: cal.sMonth + 1
-				}); console.log(cal.sMonth);
+					set_cal({
+						...cal,
+						sMonth: cal.sMonth + 1
+					});
+				console.log(cal.sMonth);
 				set_currentMonth(cal.months[cal.sMonth + 1]);
 				set_prevMonth(cal.months[cal.sMonth])
 				setTimeout(() => {
@@ -360,12 +393,12 @@ function MonthChart({userID, apiAddr, userKey}) {
 				}, 300)
 			}
 			
+			/*Return Calendar*/
+			set_calClass('next_Return');
 		}, 700)
 		setTimeout(() => {
 			set_nextClass('nextEnd');
 			set_prevClass('')
-
-			//bring back cal
 		}, 1300)
 
 		console.log(postsPerDate);
@@ -384,6 +417,10 @@ function MonthChart({userID, apiAddr, userKey}) {
 			}, 1200)
 		}
 		set_currentClass('off');
+
+		/*Initiate calendar leave animation*/
+		set_calClass('prev_Leave');
+
 		setTimeout(() => {
 			if(cal.sMonth - 1 < 0) {
 				set_cal({
@@ -418,12 +455,19 @@ function MonthChart({userID, apiAddr, userKey}) {
 					set_prevMonth(cal.months[cal.sMonth - 2])
 				}, 300)
 			}
-			console.log(cal.sMonth)
+
+			/*Return calendar animation*/
+			set_calClass('prev_Return');
 		}, 700)
 		setTimeout(() => {
 			set_prevClass('prevEnd');
 			set_nextClass('')
 		}, 1000)
+	}
+
+	let clickSelectedDate = (month, day, year) => {
+		console.log(month +" "+day+" "+ year)
+		allPostsForDate(month, day, year);
 	}
 
 	/* Element classes*/
@@ -437,8 +481,10 @@ function MonthChart({userID, apiAddr, userKey}) {
 		[currentYear, set_currentYear] = useState(kotoshi),
 		[yearClass, set_yearClass] = useState(''),
 		[postsPerDate, set_postsPerDate] = useState({});
+
+	let calendar = draw();
 	
-	let calendar = draw();		
+	let [selectedDatesPosts, set_selectedDatesPosts] = useState([]);
 
 	/*	Edge cases in displaying the correct Prev and Next months */
 	useEffect(()=> {
@@ -458,8 +504,11 @@ function MonthChart({userID, apiAddr, userKey}) {
 			set_nextMonth(cal.months[kongetsu + 1])
 		}
 
+		//Initial Posts Per Date
 		getPostsPerDate(cal.sMonth, cal.sYear);
-		console.log(postsPerDate)
+
+		//Initials Posts For Selected Date
+		allPostsForDate(kongetsu, kyou, kotoshi)
 	}, [])
 
 	return (
@@ -467,11 +516,26 @@ function MonthChart({userID, apiAddr, userKey}) {
 			<div id="header">
 				<span id="prev" 
 					className={prevClass}
-					onClick={backwardMonth}>
+					onClick={
+						async ()=> {
+							if(cal.sMonth - 1 < 0) {
+								await getPostsPerDate('11', cal.sYear - 1);
+								console.log('one one')
+							} else if (cal.sMonth - 1 == 0) {
+								await getPostsPerDate('0', cal.sYear);
+								console.log('one two')
+							} else {
+								await getPostsPerDate(cal.sMonth - 1, cal.sYear)
+								console.log('one three')
+							}
+							backwardMonth();
+						}
+					}>
 				{prevMonth}</span>
 
 				<span id="current" 
-					className={currentClass}>
+					className={currentClass}
+					onClick={()=> {console.log(postsPerDate)}}>
 				{currentMonth}</span>
 
 				<span id="year"
@@ -481,21 +545,48 @@ function MonthChart({userID, apiAddr, userKey}) {
 				<span id="next" 
 					className={nextClass} 
 					onClick={
-						()=> {
-							forwardMonth(); 
+						async ()=> {
 							if(cal.sMonth + 1 > 11) {
-								getPostsPerDate(0, cal.sYear + 1);
-								// console.log(postsPerDate);
+								await getPostsPerDate('0', cal.sYear + 1);
+								console.log('one')
+							} else if (cal.sMonth + 1 == 1){
+								await getPostsPerDate('1', cal.sYear);
+								console.log('two')
+							} else if (cal.sMonth + 1 == 11) {
+								await getPostsPerDate(11, cal.sYear);
+								console.log('three-ish')
 							} else {
-								getPostsPerDate(cal.sMonth +1, cal.sYear);
-								// console.log(postsPerDate);
-						}}}>
+								await getPostsPerDate(cal.sMonth + 1, cal.sYear);
+								console.log('three')
+							}
+							forwardMonth();
+					}}>
 				{nextMonth}</span>
 			</div>
 
 			{calendar}
 
-			<div id="log">
+			<div id="log" className={''}>
+				{(selectedDatesPosts.length > 0) &&
+					<ul>
+						{selectedDatesPosts.map((post, index) => (
+							<li key="index">
+								<h2>{post.title}</h2>
+								<ul className="deets">
+									{(post.tags.length > 0) &&
+										<li>{post.tags.length} tags</li>
+									}
+									{(post.taggedUsers.length > 0) &&
+										<li>{post.taggedUsers.length} invites</li>
+									}
+								</ul>
+							</li>
+						))}
+					</ul>
+				}
+				{(selectedDatesPosts.length == 0) &&
+					<h2>No Posts for Today</h2>
+				}
 			</div>
 		</div>
 	)

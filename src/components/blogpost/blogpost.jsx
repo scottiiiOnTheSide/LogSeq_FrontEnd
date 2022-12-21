@@ -198,10 +198,6 @@ function UpdatePost ({apiAddr, userKey, postID, title, date, openUpdate, backToB
 
 export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, socialBlog, toggleMainMenu}) {
 
-	// let dateFromObjectId = function (objectId) {
-	// 	return new Date(parseInt(objectId.substring(0, 8), 16) * 1000);
-	// };
-	// let postDateInfo = dateFromObjectId(isReading.blogpostID);
 	let postInfo; 
 	if (isReading.isOwner == true) {
 		postInfo = userBlog.log.find(post => post._id == isReading.blogpostID);
