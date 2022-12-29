@@ -14,6 +14,10 @@ div#daylog {
 	margin-bottom: 60px;
 }
 
+div#daylog h1#noPostsToday {
+	color: rgba(0, 0, 0, 0.05);
+}
+
 div.entry_SL {
 	text-align: right;
 }
@@ -106,12 +110,31 @@ div#blogLog div#socialLog::-webkit-scrollbar  {
 	display: none;
 }
 
+
+
 div#blogLog div.entry {
-	margin: 20px 0;
+	margin: 40px 0;
+}
+
+div#blogLog div.entry span.postDate {
+	display: block;
+	text-align: right;
+
+	font-size: 2em;
+	color: rgba(0, 0, 0, 0.05);
+	font-weight: 700;
 }
 
 div#blogLog div.entry h2 {
-	margin-top: 5px;
+	font-weight: 500;
+	margin: 10px 0;
+}
+
+div#blogLog div.entry p {
+	font-size: 0.9rem;
+	line-height: 20px;
+	margin: 0px 0 10px;
+	width: 90%;
 }
 
 div#blogLog div.entry span#username {
@@ -130,6 +153,7 @@ div#blogLog div.entry ul li {}
 
 div#blogLog div#userlog {
 	left: 100%;
+	z-index: -10;
 }
 
 div#blogLog div#userlog.userEntry {
@@ -137,6 +161,7 @@ div#blogLog div#userlog.userEntry {
 	animation-fill-mode: forwards;
 	animation-duration: 0.2s;
 	animation-timing-function: ease;
+	z-index: 1;
 }
 
 @keyframes userEntry {
@@ -259,6 +284,17 @@ div#blogLog div#userlog::before {
 div#blogLog div#socialLog {
 	left: -100%;
 	opacity: 0;
+	z-index: -10;
+}
+
+div#blogLog div#socialLog div.entry span.postDate {
+	text-align: left;
+}
+
+div#blogLog div#socialLog div.entry p {
+	box-sizing: content-box;
+    padding-left: 10%;
+	margin-right: 0;
 }
 
 
@@ -267,6 +303,7 @@ div#blogLog div#socialLog.socialEntry {
 	animation-fill-mode: forwards;
 	animation-duration: 0.2s;
 	animation-timing-function: ease;
+	z-index: 1;
 }
 
 @keyframes socialEntry {

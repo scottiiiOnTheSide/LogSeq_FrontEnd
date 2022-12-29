@@ -23,6 +23,8 @@ import './blogLog.css';
 
 function DayLog({log, userID, set_isReading, isReading}) {
 
+	/*Changes the state variables which switch between 
+	  viewing dayLog and a blogpost*/
 	const openPost = (postID, userID, owner) => {
 		if(userID == owner) {
 			set_isReading({
@@ -41,6 +43,7 @@ function DayLog({log, userID, set_isReading, isReading}) {
 		}
 	}
 
+	/* Discerns whether there are any posts made today */
 	let postsFromToday = (posts) => {
 		let fromToday;
 		let today = new Date().getDate();
@@ -55,73 +58,97 @@ function DayLog({log, userID, set_isReading, isReading}) {
 			return fromToday;
 	}
 
-	let returnPostElement = (postObject) => {
+	/* Creates the post element within the day log */
+	let returnPostElement = (post) => {
 			let user = userID;
-			let title = postObject.title;
-			let tags = postObject.tags.length;
-			let id = postObject._id;
-			let owner = postObject.owner;
-			let author = postObject.author;
-			let content;
+						let title = post.title;
+						let tags = post.tags.length;
+						let id = post._id;
+						let owner = post.owner;
+						let author = post.author;
+						let content;
+						if(post.content.match(/\((.*?)\)/g)) {
+							content = bodyParse(post.content)
+						} else {
+							content = post.content
+						}
 
-			if(postObject.content.match(/\((.*?)\)/g)) {
-				content = bodyParse(postObject.content)
-			} else {
-				content = postObject.content
-			}
+						let month, day, year, dateMatch;
 
-			return (
-				<div className="entry" key={id} onClick={() => openPost(id, user, owner)}>
-					{(userID !== postObject.owner) &&  
-						<span id="username">&#64;{postObject.author}</span>
-					}
-					<h2>{title}</h2>
-					<p dangerouslySetInnerHTML={{ __html: content }}></p> 
-					<ul>
-						<li>{tags} tags</li>
-					</ul>
-				</div>
-			)
+						if(dateObserved != post.postedOn_day) {
+							month = post.postedOn_month;
+							day = post.postedOn_day;
+							year = post.postedOn_year;
+							dateMatch = false;
+						}
+
+						dateObserved = post.postedOn_day;
+
+						return (
+							<div className="entry" key={id} onClick={() => openPost(id, user, owner)}>
+								
+								{(dateMatch == false) &&
+									<span className="postDate">{month} . {day} . {year}</span>
+								}
+								{(userID !== post.owner) &&  
+									<span id="username">&#64;{post.author}</span>
+								}
+								<h2>{title}</h2>
+								<p dangerouslySetInnerHTML={{ __html: content }}></p> 
+								<ul>
+									<li>{tags} tags</li>
+								</ul>
+							</div>
+						)
 		}
 
-	let currentDay = new Date().getDate();
+	let date = new Date();
+	let currentDay = date.getDate(),
+		currentMonth = date.getMonth(),
+		currentYear = date.getFullYear();
+
+	// let firstPost = log[0].postedOn_day;
 	let [loaded, setLoaded] = useState(false);
-	let blogs = [];
+	// let [dateObserved, setDateObserved] = useState({});
+	let dateObserved;
 
 	useEffect(() => {
 		setLoaded(true);
 	}, [log, log.length > 0])
 
 
+	/* Once Logs actually contains posts ...*/
+	if(loaded == true) {
 
-	//conditional rendering statement
-		if(loaded == true) {
+		if(postsFromToday(log) == true) {
 
-			// console.log(blogs);
+			return (
+				<div id='daylog'>
+					{log.map((post, index) => {
 
-			if(postsFromToday(log) == true) {
-				return (
-					<div id='daylog'>
-						{log.map((post, index) => (
-							returnPostElement(post)
-						))}
-					</div>
-				)
-			} else if (postsFromToday(log) !== true) {
-				return (
-					<div id='daylog'>
-						<h1>No Posts Today</h1>
-						{log.map((post, index) => (
-							returnPostElement(post)
-						))}
-					</div>
-				)
-			}	
-		}
+						returnPostElement(post)
+						
+					})}
+				</div>
+			)
+		} else if (postsFromToday(log) !== true) {
+
+			return (
+				<div id='daylog'>
+					<h1 id="noPostsToday">No Posts Today</h1>
+					{log.map((post, index, posts) => (
+
+						returnPostElement(post)
+						
+					))}
+				</div>
+			)
+		}	
 	}
+}
 
 
-function MonthChart({userID, apiAddr, userKey}) {
+function MonthChart({userID, apiAddr, userKey, socialSide}) {
 
 	/*
 		API call gets array with each index value 
@@ -130,9 +157,10 @@ function MonthChart({userID, apiAddr, userKey}) {
 	const getPostsPerDate = async (month, year) => {
 
 		const api = apiAddr,
-			  user = userKey;
+			  user = userKey,
+			  social = socialSide;
 
-		const request = await fetch(`${api}/posts/monthChart?month=${month}&year=${year}`, {
+		const request = await fetch(`${api}/posts/monthChart?social=${social}&month=${month}&year=${year}`, {
 			method: "GET",
 			headers: {
 				'Content-Type': 'application/json',
@@ -154,9 +182,10 @@ function MonthChart({userID, apiAddr, userKey}) {
 	const allPostsForDate = async (month, day, year) => {
 
 		const api = apiAddr,
-			  user = userKey;
+			  user = userKey,
+			  social = socialSide;
 
-		const request = await fetch(`${api}/posts/monthChart?&day=${day}&month=${month}&year=${year}`, {
+		const request = await fetch(`${api}/posts/monthChart?social=${social}&day=${day}&month=${month}&year=${year}`, {
 			method: "GET",
 			headers: {
 				'Content-Type': 'application/json',
@@ -333,10 +362,6 @@ function MonthChart({userID, apiAddr, userKey}) {
 	  	return calendar;
 
 	}	
-
-
-
-
 
 	let forwardMonth = () => {
 		set_nextClass('nextStart');
@@ -699,7 +724,7 @@ function SocialLog({socialLog, logClasses, userID, set_isReading, isReading}) {
 		leftNonActive: true
 	}
 
-function Switch({setLogClasses, socialBlog}) {
+function Switch({setLogClasses, socialBlog, userBlog, setSocialSide}) {
 
 	/*
 		Goal for the switch:
@@ -729,18 +754,22 @@ function Switch({setLogClasses, socialBlog}) {
 	}, [])
 
 	let updateSocialLog = socialBlog.updateLog;
+	let updateUserBlog = userBlog.updateLog;
 
 	return (
 		<div id="switch">
 			<button id="right" 
 					className={rightButtonClasses} 
 					onClick={()=> {setActivity({type:'leftToRight'}) 
-								setLogClasses({type:'socialOut_userIn'})}}>User</button>
+								setLogClasses({type:'socialOut_userIn'})
+								updateUserBlog()
+								setSocialSide(false)}}>User</button>
 			<button id="left" 
 					className={leftButtonClasses}
 					onClick={()=> {setActivity({type:'rightToLeft'}) 
 									setLogClasses({type:'userOut_socialIn'})
-									updateSocialLog()}}>Social</button>
+									updateSocialLog()
+									setSocialSide(true)}}>Social</button>
 		</div>
 	)
 }
@@ -757,6 +786,8 @@ export default function BlogLog(
 	let userLog = userBlog.log,	
 		socialLog = socialBlog.log;
 
+	const [socialSide, setSocialSide] = useReducer(state => !state, false);
+
 	/*
 		quick control to make sure only Daylog loads
 	    08. 29. 2022
@@ -765,8 +796,6 @@ export default function BlogLog(
 	    - add transition classes to log
 	  	- then, toggle it's designated active var to unmount it
 	*/
-
-	
 
 	const active = true;
 	return (
@@ -777,7 +806,9 @@ export default function BlogLog(
 				<div id="dayLogWrapper">
 					<Switch 
 						setLogClasses={setLogClasses}
-						socialBlog={socialBlog}/>
+						socialBlog={socialBlog}
+						userBlog={userBlog}
+						setSocialSide={setSocialSide}/>
 
 					<UserLog 
 						userLog={userLog}  
@@ -786,7 +817,8 @@ export default function BlogLog(
 					 	set_isReading={set_isReading} 
 					 	isReading={isReading}/>
 
-					<SocialLog socialLog={socialLog}
+					<SocialLog 
+						socialLog={socialLog}
 					 	logClasses={logClasses}
 					 	userID={userID}
 						set_isReading={set_isReading} 
@@ -798,7 +830,8 @@ export default function BlogLog(
 					<MonthChart 
 						apiAddr={apiAddr}
 						userID={userID}
-						userKey={userKey}/>
+						userKey={userKey}
+						socialSide={socialSide}/>
 				</div>
 			}
 			

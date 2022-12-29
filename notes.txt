@@ -1,4 +1,33 @@
 
+
+
+12. 29. 2022
+@1010 Fixes and Changes to be Made:
+	  - Menu button to say 'Add Post' or 'Connections' depending on active side
+	  - monthChart toggle to switchSides 
+	  - monthChart toggle dissappears when mainOption active
+	  - rudimentary logout (deleting sessionStorage keys should suffice)
+	  - Selecting date on MonthChart allows user to make post for said date
+	  	- gotta connect that main App calendar state object...
+	  	- XD designs to reflect change from removing the option screen for Entries and Events.
+	  - DayLog should remain consistent, js + css should only change display or opacity (and 	z index)
+
+
+12. 25. 2022
+@1431 Need to preserve which side of the DayLog is active after activating the MonthChart
+	 Will most likely need to move the respective state variables up into the App.js file
+
+12. 23. 2022
+
+@1200 The Date is now posted above posts - if posts share the same date, no duplicates
+
+@0850 Currently having issue with storing or checking the date info for the posts
+
+12. 22. 2022
+@1330 For some reason, the social log is 'loading' over the userLog...
+	  I have to adjust the CSS animations on all that anyways
+
+
 12. 21. 2022
 
 @1600 date onClick function added :D 

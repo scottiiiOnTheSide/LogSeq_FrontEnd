@@ -13,9 +13,9 @@ import UserMenu from './components/userMenu/userMenu';
 import MenuButton from './components/menuButton/menuButton';
 
 function App() {
+
   //section state variables
-  const apiAddr = 'http://172.23.67.77:3333';
-  // const apiAddr = null;
+  const apiAddr = 'http://172.23.66.25:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -64,13 +64,14 @@ function App() {
   */
   let [log, setLog] = useState([]);
   let [socialLog, set_socialLog] = useState([]);
+
   const updateLog = async () => {
     let month = new Date().getMonth(),
       year = new Date().getFullYear(),
       user = userKey,
       api = apiAddr;
 
-    const response = await fetch(`${apiAddr}/posts/log?month=${month}&year=${year}`, {
+    const response = await fetch(`${apiAddr}/posts/log`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -96,7 +97,7 @@ function App() {
         user = userKey,
         api = apiAddr;
 
-    const response = await fetch(`${apiAddr}/posts/socialLog?month=${month}&year=${year}`, {
+    const response = await fetch(`${apiAddr}/posts/socialLog`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -125,6 +126,7 @@ function App() {
     setLog: set_socialLog,
     updateLog: updateSocialLog
   }
+
   const [isReading, set_isReading] = useState({
     blogpostID: '',
     isOwner: null,
@@ -211,7 +213,8 @@ function App() {
           user={userKey}
           userBlog={userBlog}
           toggleConnections={toggleConnections}
-          logClasses={logClasses}/>
+          logClasses={logClasses}
+          calendar={calendar}/>
       }
       {(loggedIn && connections) &&
         <ConnectList

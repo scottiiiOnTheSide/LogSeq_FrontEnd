@@ -66,12 +66,12 @@ function DeletePost ({apiAddr, userKey, postID, title, date, openDelete, backToB
 	)
 }
 
-
 const formReducer = (state, event) => {
 	return {
 		...state,
 		[event.name]: event.value
 	}}
+
 function UpdatePost ({apiAddr, userKey, postID, title, date, openUpdate, backToBlogLog, userBlog, postInfo}) {
 
 	userKey = userKey;
