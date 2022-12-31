@@ -1,15 +1,34 @@
 
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import './menuButton.css';
 
-export default function MenuButton({toggleMainMenu, headsOrTails, toggleNotifList, monthChart, toggleMonthChart, calendar}) {
+export default function MenuButton(
+	{mainMenu, toggleMainMenu, headsOrTails, toggleNotifList, monthChart, toggleMonthChart, calendar, setCalendar, logStates, socialSide}) {
 
 	let cal = calendar;
+	let [buttonText, setButtonText] = useState('');
+
+	useEffect(() => {
+
+		/* 12. 31. 2022
+			With CSS addition, text and monthChart Toggle should fade and reappear
+		*/
+		if(mainMenu) {
+			setButtonText('Close')
+		}
+		if(!mainMenu && socialSide) {
+			setButtonText('Connections')
+		} else if(!mainMenu & !socialSide) {
+			setButtonText('Add Post')
+		}
+	}, [socialSide, mainMenu])
+	
 
 	return (
 		<div id="buttonWrapper_userMenu">
 			{headsOrTails &&
-				<button id="menuToggle" onClick={toggleMainMenu}>Menu</button>
+
+				<button id="menuToggle" onClick={toggleMainMenu}>{buttonText}</button>
 			}
 			{!headsOrTails &&
 				<ul id='altMenu'>
@@ -23,7 +42,17 @@ export default function MenuButton({toggleMainMenu, headsOrTails, toggleNotifLis
 				</ul>
 			}
 			
-			<button id='dayMonthToggle' onClick={toggleMonthChart}>
+			<button id='dayMonthToggle' onClick={() => {
+				toggleMonthChart()
+				if(calendar.date_inView) {
+					setCalendar({
+						...calendar,
+						year_inView: null,
+    					month_inView: null,
+    					date_inView: null
+					})
+				}
+			}}>
 				{!monthChart &&
 					<div id="Day">
 						<p>Day</p>

@@ -15,7 +15,7 @@ import MenuButton from './components/menuButton/menuButton';
 function App() {
 
   //section state variables
-  const apiAddr = 'http://172.23.66.25:3333';
+  const apiAddr = 'http://172.30.217.87:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -27,7 +27,10 @@ function App() {
     monthInNum: cal.monthInNum,
     year_inView: null,
     month_inView: null,
-    date_inView: null
+    date_inView: null,
+    viewDateInView: ()=> {
+      console.log(calendar.month_inView +" "+ calendar.date_inView +" "+ calendar.year_inView, )
+    }
   });
   const [login, setLogin] = useReducer(state => !state, true);
   const [home, setHome] = useReducer(state => !state, false);
@@ -71,7 +74,7 @@ function App() {
       user = userKey,
       api = apiAddr;
 
-    const response = await fetch(`${apiAddr}/posts/log`, {
+    const response = await fetch(`${apiAddr}/posts/log?social=false`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -83,13 +86,8 @@ function App() {
     })
 
     const data = await response.json();
-
-    let reorder = [];
-    for(let i = data.length; i >= 0; i--) {
-      reorder.push(data[i]);
-    }
-    reorder.splice(0, 1);
-    setLog(reorder);
+    setLog(data);
+    console.log(data);
   }
   const updateSocialLog = async () => {
     let month = new Date().getMonth(),
@@ -97,7 +95,7 @@ function App() {
         user = userKey,
         api = apiAddr;
 
-    const response = await fetch(`${apiAddr}/posts/socialLog`, {
+    const response = await fetch(`${apiAddr}/posts/log?social=true`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -108,13 +106,8 @@ function App() {
       }
     });
     const data = await response.json();
-
-    let reorder = [];
-    for(let i = data.length; i >= 0; i--) {
-      reorder.push(data[i]);
-    }
-    reorder.splice(0, 1);
-    set_socialLog(reorder);
+    set_socialLog(data);
+    console.log(data)
   }
   const userBlog = {
     log: log,
@@ -163,6 +156,7 @@ function App() {
     }
 
   const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
+  const [socialSide, setSocialSide] = useReducer(state => !state, false);
 
   return (
     <div id="MAIN">
@@ -189,12 +183,28 @@ function App() {
           isReading={isReading}
           set_isReading={set_isReading}
           userID={userID}
-          userBlog={userBlog}
           setLogClasses={setLogClasses}
           logClasses={logClasses}
           apiAddr={apiAddr}
           userKey={userKey}
-          monthChart={monthChart}/>
+          monthChart={monthChart}
+          setSocialSide={setSocialSide}
+          socialSide={socialSide}
+          calendar={calendar}
+          setCalendar={setCalendar}/>
+      }
+      {(loggedIn && isReading.postOpen) &&
+        <Blogpost
+          apiAddr={apiAddr}
+          userKey={userKey}
+          userID={userID}
+          isReading={isReading}
+          set_isReading={set_isReading}
+          isReading={isReading}
+          toggleMainMenu={toggleMainMenu}
+          userBlog={userBlog}
+          socialBlog={socialBlog}
+        />
       }
       {loggedIn &&
         <InteractionList
@@ -210,46 +220,30 @@ function App() {
       {(loggedIn && mainMenu) && 
         <UserMenu 
           apiAddr={apiAddr}
-          user={userKey}
-          userBlog={userBlog}
-          toggleConnections={toggleConnections}
-          logClasses={logClasses}
-          calendar={calendar}/>
-      }
-      {(loggedIn && connections) &&
-        <ConnectList
-          apiAddr={apiAddr}
           userID={userID}
           userKey={userKey}
-          toggleMainMenu={toggleMainMenu}
-          toggleConnections={toggleConnections}
+          userBlog={userBlog}
+          socialBlog={socialBlog}
+          Connections={ConnectList}
+          logClasses={logClasses}
+          calendar={calendar}
           updateNotifs={updateNotifs}
-          updateSocialBLog={updateSocialLog}
+          toggleMainMenu={toggleMainMenu}
         />
       }
       {(loggedIn && !isReading.postOpen) &&
         <MenuButton 
+          mainMenu={mainMenu}
           toggleMainMenu={toggleMainMenu}
           headsOrTails={menuHeadsOrTails}
           toggleNotifList={toggleNotifList}
           logClasses={logClasses}
           monthChart={monthChart}
           toggleMonthChart={toggleMonthChart}
-          calendar={calendar}/>
-      }
-      {(loggedIn && isReading.postOpen) &&
-        <Blogpost
-          apiAddr={apiAddr}
-          userKey={userKey}
-          userID={userID}
-          isReading={isReading}
-          set_isReading={set_isReading}
-          isReading={isReading}
-          userBlog={userBlog}
-          toggleMainMenu={toggleMainMenu}
-          userBlog={userBlog}
-          socialBlog={socialBlog}
-        />
+          calendar={calendar}
+          setCalendar={setCalendar}
+          logStates={logStates}
+          socialSide={socialSide}/>
       }
       
     </div>

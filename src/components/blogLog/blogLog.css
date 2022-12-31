@@ -116,6 +116,11 @@ div#blogLog div.entry {
 	margin: 40px 0;
 }
 
+	div#blogLog div.entry:last-child {
+		padding-bottom: 300px;
+	}
+
+
 div#blogLog div.entry span.postDate {
 	display: block;
 	text-align: right;

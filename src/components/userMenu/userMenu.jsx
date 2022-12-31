@@ -2,40 +2,6 @@
 import React, {useState, useReducer, useEffect} from 'react';
 import './userMenu.css';
 
-function LogControls({toggleCreateForm, toggleConnections, logClasses}) {
-
-	//Later, will add read variables from these states so that
-	//classes can be added / removed upon toggling
-
-	let toggleOne = toggleCreateForm;
-	let right, left;
-
-	// useEffect(()=> {
-		if(logClasses.userEntry == true) {
-			right = true;
-			left = false;
-		} else if (logClasses.socialEntry == true) {
-			left = true;
-			right = false;
-		}
-	// }, [])
-
-	return (
-		<ul id="logControls">
-			{(right && !left) &&
-				<li>
-					<button onClick={toggleCreateForm}>Create Post</button>
-				</li> 
-			}
-			{(left && !right) &&
-				<li>
-					<button onClick={toggleConnections}>Manage Connections</button>
-				</li> 
-			}
-		</ul>
-	)
-}
-
 const formReducer = (state, event) => {
 	return {
 		...state,
@@ -43,7 +9,7 @@ const formReducer = (state, event) => {
 	}
 }
 
-function CreateForm({apiAddr, user, updateLog, toggleCreateForm}) {
+function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 
 	const [formData, setFormData] = useReducer(formReducer, {});
 
@@ -68,22 +34,45 @@ function CreateForm({apiAddr, user, updateLog, toggleCreateForm}) {
 	const handleSubmit = async(event) => {
 		event.preventDefault();
 
-		console.log(formData);
+		// console.log(formData);
 
-		const response = await fetch(`${apiAddr}/posts/createPost`, {
-			method: "POST",
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json',
-				'auth-token': user
-			},
-			body: JSON.stringify({
-				title: formData.title,
-				content: formData.content,
-				tags: formData.tags,
-				usePostedByDate: true
+		let response;
+
+		if(!calendar.date_inView) {
+			response = await fetch(`${apiAddr}/posts/createPost`, {
+				method: "POST",
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'auth-token': userKey
+				},
+				body: JSON.stringify({
+					title: formData.title,
+					content: formData.content,
+					tags: formData.tags,
+					usePostedByDate: true
+				})
 			})
-		})
+		}
+		else if(calendar.date_inView) {
+			response = await fetch(`${apiAddr}/posts/createPost`, {
+				method: "POST",
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json',
+					'auth-token': userKey
+				},
+				body: JSON.stringify({
+					title: formData.title,
+					content: formData.content,
+					tags: formData.tags,
+					usePostedByDate: false,
+					postedOn_month: calendar.month_inView,
+					postedOn_day: calendar.date_inView,
+					postedOn_year: calendar.year_inView
+				})
+			})
+		}
 
 		const newPost = await response.json();
 		updateLog();
@@ -106,36 +95,49 @@ function CreateForm({apiAddr, user, updateLog, toggleCreateForm}) {
 				<button type="submit">Submit</button>
 			</form>
 
-			<button onClick={toggleCreateForm}>Close</button>
+			{/*<button onClick={toggleCreateForm}>Close</button>*/}
 		</div>
 	)
 }
 
 
-export default function UserMenu({apiAddr, user, userBlog, toggleConnections, logClasses}) {
+export default function UserMenu(
+	{apiAddr, userKey, userID, userBlog, socialBlog, Connections, logClasses, calendar, updateNotifs}) {
+
+	let right, left;
+	if(logClasses.userEntry == true) {
+		right = true;
+		left = false;
+	} else if (logClasses.socialEntry == true) {
+		left = true;
+		right = false;
+	}
 
 	const [is_createFormOpen, toggleCreateForm] = useReducer(state => !state, false);
-	// const [is_updateListOpen, toggleUpdateList] = useReducer(state => !state, false);
-	// const [is_deleteListOpen, toggleDeleteList] = useReducer(state => !state, false);
 
 	//will pass the read var from State to components, 
 	//so that classes / css rules can be added upon change
 
 	return (
-		<div id="userMenu">
-			<LogControls 
-				toggleCreateForm={toggleCreateForm}
-				toggleConnections={toggleConnections}
-				logClasses={logClasses}/>
-
-			{is_createFormOpen &&
-				<CreateForm 
-					apiAddr={apiAddr} 
-					user={user} 
-					updateLog={userBlog.updateLog}
-					toggleCreateForm={toggleCreateForm}/>
-			}
-		</div>		
+		<div id="userMenusWrapper">
+			{(right && !left) && 
+		 		<CreatePost 
+		 			apiAddr={apiAddr}
+		 			userKey={userKey}
+		 			updateLog={userBlog.updateLog}
+		 			calendar={calendar}
+		 		/>
+		 	}
+		 	{(left && !right) &&
+		 		<Connections
+          			apiAddr={apiAddr}
+          			userID={userID}
+          			userKey={userKey}
+          			updateNotifs={updateNotifs}
+          			updateSocialLog={socialBlog.updateLog}
+        		/>
+		 	}
+		</div>
 	)
 
 }

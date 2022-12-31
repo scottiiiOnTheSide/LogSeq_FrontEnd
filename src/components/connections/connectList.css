@@ -6,7 +6,7 @@ div#connectList {
 	top: 0;
 
 	background-color: white;
-	z-index: 11;
+	z-index: 10;
 }
 
 div#connectList input#search {}

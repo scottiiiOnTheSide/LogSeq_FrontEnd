@@ -75,20 +75,24 @@ function DayLog({log, userID, set_isReading, isReading}) {
 
 						let month, day, year, dateMatch;
 
-						if(dateObserved != post.postedOn_day) {
-							month = post.postedOn_month;
-							day = post.postedOn_day;
-							year = post.postedOn_year;
-							dateMatch = false;
+						if(monthObserved != post.postedOn_month) {
+
+						 	if (dateObserved != post.postedOn_day) {
+								month = post.postedOn_month;
+								day = post.postedOn_day;
+								year = post.postedOn_year;
+								dateMatch = false;
+							}
 						}
 
 						dateObserved = post.postedOn_day;
+						monthObserved = post.postedOn_Month;
 
 						return (
 							<div className="entry" key={id} onClick={() => openPost(id, user, owner)}>
 								
 								{(dateMatch == false) &&
-									<span className="postDate">{month} . {day} . {year}</span>
+									<span className="postDate">{month + 1} . {day} . {year}</span>
 								}
 								{(userID !== post.owner) &&  
 									<span id="username">&#64;{post.author}</span>
@@ -106,61 +110,35 @@ function DayLog({log, userID, set_isReading, isReading}) {
 	let currentDay = date.getDate(),
 		currentMonth = date.getMonth(),
 		currentYear = date.getFullYear();
+	let dateObserved, monthObserved;
 
-	// let firstPost = log[0].postedOn_day;
-	let [loaded, setLoaded] = useState(false);
-	// let [dateObserved, setDateObserved] = useState({});
-	let dateObserved;
-
-	useEffect(() => {
-		setLoaded(true);
-	}, [log, log.length > 0])
-
-
-	/* Once Logs actually contains posts ...*/
-	if(loaded == true) {
-
-		if(postsFromToday(log) == true) {
-
-			return (
-				<div id='daylog'>
-					{log.map((post, index) => {
-
-						returnPostElement(post)
-						
-					})}
-				</div>
-			)
-		} else if (postsFromToday(log) !== true) {
-
-			return (
-				<div id='daylog'>
-					<h1 id="noPostsToday">No Posts Today</h1>
-					{log.map((post, index, posts) => (
-
-						returnPostElement(post)
-						
-					))}
-				</div>
-			)
-		}	
-	}
-}
+	let [loaded, setLoaded] = useReducer(state => !state, false);
+	
+	return (
+		<div id='daylog'>
+			{(postsFromToday(log) !== true) &&
+				<h1 id="noPostsToday">No Posts Today</h1>
+			}
+			{log.map(post => returnPostElement(post))}
+		</div>
+	)		
+} 
 
 
-function MonthChart({userID, apiAddr, userKey, socialSide}) {
+function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal}) {
 
 	/*
 		API call gets array with each index value 
 		representing amount of posts per day
 	*/
+
+	let s = social;
 	const getPostsPerDate = async (month, year) => {
 
 		const api = apiAddr,
-			  user = userKey,
-			  social = socialSide;
+			  user = userKey;
 
-		const request = await fetch(`${api}/posts/monthChart?social=${social}&month=${month}&year=${year}`, {
+		const request = await fetch(`${api}/posts/monthChart?social=${s}&month=${month}&year=${year}`, {
 			method: "GET",
 			headers: {
 				'Content-Type': 'application/json',
@@ -182,10 +160,9 @@ function MonthChart({userID, apiAddr, userKey, socialSide}) {
 	const allPostsForDate = async (month, day, year) => {
 
 		const api = apiAddr,
-			  user = userKey,
-			  social = socialSide;
+			  user = userKey;
 
-		const request = await fetch(`${api}/posts/monthChart?social=${social}&day=${day}&month=${month}&year=${year}`, {
+		const request = await fetch(`${api}/posts/monthChart?social=${s}&day=${day}&month=${month}&year=${year}`, {
 			method: "GET",
 			headers: {
 				'Content-Type': 'application/json',
@@ -247,8 +224,6 @@ function MonthChart({userID, apiAddr, userKey, socialSide}) {
 			"S"
 		],
 	}); 
-
-
 
 	/*
 		Creates the C A L E N D A R
@@ -336,7 +311,16 @@ function MonthChart({userID, apiAddr, userKey, socialSide}) {
 			  					let value = postsPerDate[parseInt(date)];
 					  			return <div key={index} 
 					  						className={`cell` + `${nowDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
-					  						onClick={()=> {clickSelectedDate(cal.sMonth, daysInWeek[e][index], cal.sYear)}}>	
+					  						onClick={()=> {
+					  							clickSelectedDate(cal.sMonth, daysInWeek[e][index], cal.sYear)
+					  							setAppCal({
+					  								...appCal,
+					  								year_inView: cal.sYear,
+    												month_inView: cal.sMonth,
+    												date_inView: daysInWeek[e][index]
+					  							})
+					  							appCal.viewDateInView();
+					  					}}>	
 					  				{/*unsure if the classname thing works as of yet ....*/}
 
 					  					<div className={`${date == 'b' ? 'hidden' : 'tallyWrapper'}`}>
@@ -683,7 +667,8 @@ function SocialLog({socialLog, logClasses, userID, set_isReading, isReading}) {
 			</div>
 
 			{active &&
-				<DayLog log={socialLog}
+				<DayLog 
+					log={socialLog}
 					userID={userID}
 					set_isReading={set_isReading} 
 					isReading={isReading} />
@@ -749,10 +734,6 @@ function Switch({setLogClasses, socialBlog, userBlog, setSocialSide}) {
 		'nonActive': activity.rightNonActive,
 	})
 
-	useEffect(() => {
-		// console.log(activity.rightActive);
-	}, [])
-
 	let updateSocialLog = socialBlog.updateLog;
 	let updateUserBlog = userBlog.updateLog;
 
@@ -776,28 +757,15 @@ function Switch({setLogClasses, socialBlog, userBlog, setSocialSide}) {
 
 
 export default function BlogLog(
-	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr, userKey}) {
+	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr, userKey, setSocialSide, socialSide, calendar,setCalendar}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
 		socialBlog.updateLog();
 	}, [])
 
-	let userLog = userBlog.log,	
-		socialLog = socialBlog.log;
+	console.log(socialSide);
 
-	const [socialSide, setSocialSide] = useReducer(state => !state, false);
-
-	/*
-		quick control to make sure only Daylog loads
-	    08. 29. 2022
-	    create state functions for each log
-	    use useEffect for when state changes to
-	    - add transition classes to log
-	  	- then, toggle it's designated active var to unmount it
-	*/
-
-	const active = true;
 	return (
 		
 		<div id='blogLog'> {/*//Wrapper element for other components*/}
@@ -811,14 +779,14 @@ export default function BlogLog(
 						setSocialSide={setSocialSide}/>
 
 					<UserLog 
-						userLog={userLog}  
+						userLog={userBlog.log}  
 					 	logClasses={logClasses}
 					 	userID={userID}
 					 	set_isReading={set_isReading} 
 					 	isReading={isReading}/>
 
 					<SocialLog 
-						socialLog={socialLog}
+						socialLog={socialBlog.log}
 					 	logClasses={logClasses}
 					 	userID={userID}
 						set_isReading={set_isReading} 
@@ -831,7 +799,9 @@ export default function BlogLog(
 						apiAddr={apiAddr}
 						userID={userID}
 						userKey={userKey}
-						socialSide={socialSide}/>
+						social={socialSide}
+						appCal={calendar}
+						setAppCal={setCalendar}/>
 				</div>
 			}
 			
