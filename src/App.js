@@ -15,7 +15,7 @@ import MenuButton from './components/menuButton/menuButton';
 function App() {
 
   //section state variables
-  const apiAddr = 'http://172.30.217.87:3333';
+  const apiAddr = 'http://172.27.7.39:3333';
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -66,8 +66,6 @@ function App() {
       U S E R  &  S O C I A L  L o G s 
   */
   let [log, setLog] = useState([]);
-  let [socialLog, set_socialLog] = useState([]);
-
   const updateLog = async () => {
     let month = new Date().getMonth(),
       year = new Date().getFullYear(),
@@ -87,8 +85,10 @@ function App() {
 
     const data = await response.json();
     setLog(data);
-    console.log(data);
+    // console.log(data);
   }
+
+  let [socialLog, set_socialLog] = useState([]);
   const updateSocialLog = async () => {
     let month = new Date().getMonth(),
         year = new Date().getFullYear(),
@@ -107,8 +107,11 @@ function App() {
     });
     const data = await response.json();
     set_socialLog(data);
-    console.log(data)
+    // console.log(data)
   }
+
+  let [monthLog, set_monthLog] = useState([]);
+
   const userBlog = {
     log: log,
     setLog: setLog,
@@ -124,9 +127,10 @@ function App() {
     blogpostID: '',
     isOwner: null,
     postOpen: null,
+    monthLog: null
   });
 
-    let logStateReducer = (state, action) => {
+  let logStateReducer = (state, action) => {
       let newState;
       switch(action.type) {
         case 'userOut_socialIn':
@@ -148,7 +152,8 @@ function App() {
       }
       return newState;
     }
-    const logStates = {
+    
+  const logStates = {
       userEntry: true,
       userLeave: false,
       socialEntry: false,
@@ -191,7 +196,9 @@ function App() {
           setSocialSide={setSocialSide}
           socialSide={socialSide}
           calendar={calendar}
-          setCalendar={setCalendar}/>
+          setCalendar={setCalendar}
+          monthLog={monthLog}
+          set_monthLog={set_monthLog}/>
       }
       {(loggedIn && isReading.postOpen) &&
         <Blogpost
@@ -200,10 +207,10 @@ function App() {
           userID={userID}
           isReading={isReading}
           set_isReading={set_isReading}
-          isReading={isReading}
           toggleMainMenu={toggleMainMenu}
           userBlog={userBlog}
           socialBlog={socialBlog}
+          monthLog={monthLog}
         />
       }
       {loggedIn &&

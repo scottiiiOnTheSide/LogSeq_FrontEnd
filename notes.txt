@@ -1,4 +1,27 @@
 
+01. 19. 2023
+
+@0440 Would like to implement a list of states and triggers for the menu
+		
+List of Modes:
+  - Add Post
+  - Connections
+  - Interactions / LogOut
+  - Exit / Options
+  *in future
+  	- option within tags section
+  	- option within macros section
+
+I believe I will make individual elements for each,
+have them switch upon trigger...
+
+@0420 Should, could be a little embarassed that this project hasn't seen any progress since ... last year xD
+
+Anyhoo, can now open blogPost component with post from monthChart
+
+I do need to resituate the menu button once posts are open, so that it can close them
+
+
 12. 30. 2022
 
 @1305 Proactive posts work !!!

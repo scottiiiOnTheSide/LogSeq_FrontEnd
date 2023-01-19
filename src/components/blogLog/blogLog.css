@@ -428,6 +428,10 @@ div#blogLog div#socialLog div#daylog {
 	C A L E N D A R 
 */
 
+div#monthChartWrapper {
+/*	background-color: white;*/
+}
+
 
 div#monthChart div#header {
 	position: relative;

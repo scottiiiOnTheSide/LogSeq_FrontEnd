@@ -196,14 +196,25 @@ function UpdatePost ({apiAddr, userKey, postID, title, date, openUpdate, backToB
 	)
 }
 
-export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, socialBlog, toggleMainMenu}) {
+export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, socialBlog, toggleMainMenu, monthLog}) {
 
 	let postInfo; 
+
 	if (isReading.isOwner == true) {
-		postInfo = userBlog.log.find(post => post._id == isReading.blogpostID);
+		if(isReading.monthLog == true) {
+			postInfo = monthLog.find(post => post._id == isReading.blogpostID);
+		} else {
+			postInfo = userBlog.log.find(post => post._id == isReading.blogpostID);
+		}
 	} else if (isReading.isOwner == false) {
-		postInfo = socialBlog.log.find(post => post._id == isReading.blogpostID);
+		if(isReading.monthLog == true) {
+			postInfo = monthLog.find(post => post._id == isReading.blogpostID);
+		} else {
+			postInfo = socialBlog.log.find(post => post._id == isReading.blogpostID);	
+		}
+		
 	}
+
 	let postIDlength = postInfo._id.length;
 	let postID = postInfo._id.slice(0, postIDlength);
 

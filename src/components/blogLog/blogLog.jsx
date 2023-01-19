@@ -125,13 +125,13 @@ function DayLog({log, userID, set_isReading, isReading}) {
 } 
 
 
-function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal}) {
+function MonthChart(
+	{userID, apiAddr, userKey, social, appCal, setAppCal, monthLog, set_monthLog, set_isReading, isReading}) {
 
 	/*
 		API call gets array with each index value 
 		representing amount of posts per day
 	*/
-
 	let s = social;
 	const getPostsPerDate = async (month, year) => {
 
@@ -183,8 +183,7 @@ function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal}) {
 
     	//update the state object that'll hold the posts per day
     	setTimeout(() => {
-    		set_selectedDatesPosts(reorder);
-    		// console.log(selectedDatesPosts);
+    		set_monthLog(reorder);
     	})
 
 	}
@@ -475,8 +474,28 @@ function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal}) {
 	}
 
 	let clickSelectedDate = (month, day, year) => {
-		console.log(month +" "+day+" "+ year)
+		// console.log(month +" "+day+" "+ year)
 		allPostsForDate(month, day, year);
+	}
+
+	const openPost = (postID) => {
+		if(social == true) {
+			set_isReading({
+					// ...isReading,
+					blogpostID: postID,
+					isOwner: false,
+					postOpen: true,
+					monthLog: true
+			})
+		} else {
+			set_isReading({
+					// ...isReading,
+					blogpostID: postID,
+					isOwner: true,
+					postOpen: true,
+					monthLog: true
+			})
+		}
 	}
 
 	/* Element classes*/
@@ -576,10 +595,10 @@ function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal}) {
 			{calendar}
 
 			<div id="log" className={''}>
-				{(selectedDatesPosts.length > 0) &&
+				{(monthLog.length > 0) &&
 					<ul>
-						{selectedDatesPosts.map((post, index) => (
-							<li key="index">
+						{monthLog.map((post, index) => (
+							<li key="index" onClick={()=>{openPost(post._id)}}>
 								<h2>{post.title}</h2>
 								<ul className="deets">
 									{(post.tags.length > 0) &&
@@ -593,7 +612,7 @@ function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal}) {
 						))}
 					</ul>
 				}
-				{(selectedDatesPosts.length == 0) &&
+				{(monthLog.length == 0) &&
 					<h2>No Posts for Today</h2>
 				}
 			</div>
@@ -757,18 +776,20 @@ function Switch({setLogClasses, socialBlog, userBlog, setSocialSide}) {
 
 
 export default function BlogLog(
-	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr, userKey, setSocialSide, socialSide, calendar,setCalendar}) {
+	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr, userKey, setSocialSide, socialSide, calendar,setCalendar, monthLog, set_monthLog}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
 		socialBlog.updateLog();
 	}, [])
 
-	console.log(socialSide);
+	// console.log(socialSide);
+
+
 
 	return (
 		
-		<div id='blogLog'> {/*//Wrapper element for other components*/}
+		<div id='blogLog' > {/*//Wrapper element for other components*/}
 
 			{!monthChart &&
 				<div id="dayLogWrapper">
@@ -801,7 +822,11 @@ export default function BlogLog(
 						userKey={userKey}
 						social={socialSide}
 						appCal={calendar}
-						setAppCal={setCalendar}/>
+						setAppCal={setCalendar}
+						monthLog={monthLog}
+						set_monthLog={set_monthLog}
+						isReading={isReading}
+						set_isReading={set_isReading}/>
 				</div>
 			}
 			
