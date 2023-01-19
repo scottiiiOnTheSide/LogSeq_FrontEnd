@@ -196,7 +196,7 @@ function UpdatePost ({apiAddr, userKey, postID, title, date, openUpdate, backToB
 	)
 }
 
-export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, socialBlog, toggleMainMenu, monthLog}) {
+export default function Blogpost({apiAddr, userKey, userID, isReading, set_isReading, userBlog, socialBlog, monthLog}) {
 
 	let postInfo; 
 
@@ -330,11 +330,6 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 				<ul id="users">
 					{/*dynamically add any tagged users here, if any*/}
 				</ul>
-			</div>
-
-			<div id="menuWrapper">
-				<button onClick={backToBlogLog}>Exit</button> 
-				{/*just this, for now...*/}
 			</div>
 
 			{/*Will possibly create an outside function for comments, ITF (in the future)*/}

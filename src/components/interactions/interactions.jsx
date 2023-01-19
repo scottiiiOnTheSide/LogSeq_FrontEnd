@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react';
 import './interactions.css';
 
-export default function InteractionsList({apiAddr, userKey, userID, newNotif, notifList, toggleNotifList, updateSocialBlog}) {
+export default function InteractionsList({apiAddr, userKey, userID, newNotif, notif, set_notif, updateSocialBlog, set_menuSide}) {
 
 	const updateInteractions = async() => {
 
@@ -76,7 +76,7 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 	const ignoreRequest = async() => {}
 
 	const [notifs, updateNotifs] = useState([]);
-	const toggle = notifList == true ? 'true' : 'false';
+	const toggle = notif == true ? 'true' : 'false';
 
 	useEffect(()=> {
 		updateInteractions();
@@ -85,7 +85,7 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 
 	return (
 		<div 
-		className={notifList ? 'active' : 'mute'}
+		className={notifs ? 'active' : 'mute'}
 		id='interactions'>
 			<h2>Interactions</h2>
 
@@ -100,7 +100,7 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 							<div>
 								<p>{data.senderUsername} sent you an connection request</p>
 								<button onClick={()=> {acceptConnection(data.sender, data._id)}}>Accept</button>
-								<button onClick={ignoreRequest}>Ignore</button>
+								<button onClick={()=> {ignoreRequest()}}>Ignore</button>
 							</div>
 						: null}
 						{data.sender == userID && data.status == 'accepted' ?
@@ -117,7 +117,7 @@ export default function InteractionsList({apiAddr, userKey, userID, newNotif, no
 				))}
 			</ul>
 
-			<button onClick={toggleNotifList}>Exit</button>
+			<button id="exit" onClick={()=>{set_notif(); set_menuSide();}}>Exit</button>
 			{/*10. 16. 2022 this button must also toggle mainMenu button back to regular state*/}
 		</div>
 	)

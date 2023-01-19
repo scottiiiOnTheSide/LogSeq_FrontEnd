@@ -8,14 +8,44 @@ import UserEntry from './components/userEntry/userEntry';
 import BlogLog from './components/blogLog/blogLog';
 import Blogpost from './components/blogpost/blogpost';
 import ConnectList from './components/connections/connectList';
-import InteractionList from './components/notifList/interactions';
+import InteractionList from './components/interactions/interactions';
 import UserMenu from './components/userMenu/userMenu';
 import MenuButton from './components/menuButton/menuButton';
 
 function App() {
 
-  //section state variables
+  /*Self explanatory*/
   const apiAddr = 'http://172.27.7.39:3333';
+
+  /*User Log In*/
+  //07. 07. 2022 These two should honestly be one in the same. Will couple them later
+  const [isLoggedIn, set_isLoggedIn] = useState({});
+  const [loggedIn, loggedIn_set] = useState(() => {
+    if(sessionStorage.getItem('userOnline')) {
+      return true;
+    } else {
+      return false;
+    }
+  })
+  const userID = sessionStorage.getItem('userKey');
+  const userKey = sessionStorage.getItem('userOnline');
+
+  /*
+    section state variables - 
+    read if component mounted or mounts it
+  */
+  const [login, setLogin] = useReducer(state => !state, true);
+  const [userSide, set_userSide] = useReducer(state => !state, true);
+  const [socialSide, set_socialSide] = useReducer(state => !state, false);
+  const [monthChart, set_monthChart] = useReducer(state => !state, false);
+  const [menu, set_menu] = useReducer(state => !state, false);
+    /* this menu houses inner menus */
+  const [menuSide, set_menuSide] = useReducer(state => !state, true);
+    /* true is 'default', false is flipside: (settings, notifs, logout) */
+  const [notif, set_notif] = useReducer(state => !state, false);
+  const [connections, set_connections] = useReducer(state => !state, false);
+  
+
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
     currentMonth: cal.currentMonth,
@@ -32,40 +62,22 @@ function App() {
       console.log(calendar.month_inView +" "+ calendar.date_inView +" "+ calendar.year_inView, )
     }
   });
-  const [login, setLogin] = useReducer(state => !state, true);
-  const [home, setHome] = useReducer(state => !state, false);
-  const [mainMenu, toggleMainMenu] = useReducer(state => !state, false);
-  const [menuHeadsOrTails, toggleMenuFlip] = useReducer(state => !state, true);
-  const [connections, toggleConnections] = useReducer(state => !state, false);
-  const [notifList, toggleNotifList] = useReducer(state => !state, false);
   const [newNotif, updateNotifs] = useReducer(state => !state, false);
-  const [monthChart, toggleMonthChart] = useReducer(state => !state, false);
   /*
       10. 16. 2022
       with 'newNotif', once a request is made to backend which prompts a
       new notification being added to the user's list, newNotif gets updated.
       when newNotif changes, the interactionList component also updates
+
+      01. 18. 2023
+      This implemetation will be removed once webSockets are implemented...
   */ 
   
-  //07. 07. 2022 These two should honestly be one in the same. Will couple them later
-  const [isLoggedIn, set_isLoggedIn] = useState({});
-  const [loggedIn, loggedIn_set] = useState(() => {
-    if(sessionStorage.getItem('userOnline')) {
-      return true;
-    } else {
-      return false;
-    }
-  })
-
-  const userID = sessionStorage.getItem('userKey');
-  const userKey = sessionStorage.getItem('userOnline');
-
-
 
   /* 
       U S E R  &  S O C I A L  L o G s 
   */
-  let [log, setLog] = useState([]);
+  const [log, setLog] = useState([]);
   const updateLog = async () => {
     let month = new Date().getMonth(),
       year = new Date().getFullYear(),
@@ -87,8 +99,13 @@ function App() {
     setLog(data);
     // console.log(data);
   }
+  const userBlog = {
+    log: log,
+    setLog: setLog,
+    updateLog: updateLog
+  }
 
-  let [socialLog, set_socialLog] = useState([]);
+  const [socialLog, set_socialLog] = useState([]);
   const updateSocialLog = async () => {
     let month = new Date().getMonth(),
         year = new Date().getFullYear(),
@@ -109,27 +126,36 @@ function App() {
     set_socialLog(data);
     // console.log(data)
   }
-
-  let [monthLog, set_monthLog] = useState([]);
-
-  const userBlog = {
-    log: log,
-    setLog: setLog,
-    updateLog: updateLog
-  }
   const socialBlog = {
     log: socialLog,
     setLog: set_socialLog,
     updateLog: updateSocialLog
   }
 
+  let [monthLog, set_monthLog] = useState([]);
+
+  /* Check and Set whether a Blogpost active*/
+  //01.19.2023 make this into one object, eventually...
   const [isReading, set_isReading] = useState({
     blogpostID: '',
     isOwner: null,
     postOpen: null,
     monthLog: null
   });
+  let closePost = () => {
+    set_isReading({
+      ...isReading,
+      isOwner: null,
+      blogpostID: null,
+      postOpen: null,
+    })
+    userBlog.updateLog();
+  }
 
+
+  /* Reducer for managing state info regarding 
+      User and Social Sides
+  */
   let logStateReducer = (state, action) => {
       let newState;
       switch(action.type) {
@@ -161,16 +187,17 @@ function App() {
     }
 
   const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
-  const [socialSide, setSocialSide] = useReducer(state => !state, false);
 
+
+
+  /* M A I N  A P P */
   return (
     <div id="MAIN">
       <Header 
         loggedIn={loggedIn} 
-        home={home} 
         calendar={calendar} 
         setCalendar={setCalendar}
-        toggleMenuFlip={toggleMenuFlip}/>
+        set_menuSide={set_menuSide}/>
 
       {!loggedIn && 
           <UserEntry 
@@ -193,7 +220,7 @@ function App() {
           apiAddr={apiAddr}
           userKey={userKey}
           monthChart={monthChart}
-          setSocialSide={setSocialSide}
+          set_socialSide={set_socialSide}
           socialSide={socialSide}
           calendar={calendar}
           setCalendar={setCalendar}
@@ -207,24 +234,24 @@ function App() {
           userID={userID}
           isReading={isReading}
           set_isReading={set_isReading}
-          toggleMainMenu={toggleMainMenu}
           userBlog={userBlog}
           socialBlog={socialBlog}
           monthLog={monthLog}
         />
       }
-      {loggedIn &&
+      {(loggedIn && notif) &&
         <InteractionList
           newNotif={newNotif}
           apiAddr={apiAddr}
           userKey={userKey}
           userID={userID}
-          notifList={notifList}
-          toggleNotifList={toggleNotifList}
+          notif={notif}
+          set_notif={set_notif}
           updateSocialBLog={updateSocialLog}
+          set_menuSide={set_menuSide}
         />
       }
-      {(loggedIn && mainMenu) && 
+      {(loggedIn && menu) && 
         <UserMenu 
           apiAddr={apiAddr}
           userID={userID}
@@ -235,22 +262,30 @@ function App() {
           logClasses={logClasses}
           calendar={calendar}
           updateNotifs={updateNotifs}
-          toggleMainMenu={toggleMainMenu}
         />
       }
-      {(loggedIn && !isReading.postOpen) &&
+      {(loggedIn) &&
         <MenuButton 
-          mainMenu={mainMenu}
-          toggleMainMenu={toggleMainMenu}
-          headsOrTails={menuHeadsOrTails}
-          toggleNotifList={toggleNotifList}
-          logClasses={logClasses}
+          menu={menu}
+          set_menu={set_menu}
+          set_notif={set_notif}
+
+          userSide={userSide}
+          socialSide={socialSide}
+          menuSide={menuSide}
+          set_menuSide={set_menuSide}
+
+          isReading={isReading}
+          set_isReading={set_isReading}
+          closePost={closePost}
+
           monthChart={monthChart}
-          toggleMonthChart={toggleMonthChart}
+          set_monthChart={set_monthChart}
+
           calendar={calendar}
           setCalendar={setCalendar}
-          logStates={logStates}
-          socialSide={socialSide}/>
+
+          logStates={logStates}/>
       }
       
     </div>

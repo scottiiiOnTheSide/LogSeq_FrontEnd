@@ -728,7 +728,7 @@ function SocialLog({socialLog, logClasses, userID, set_isReading, isReading}) {
 		leftNonActive: true
 	}
 
-function Switch({setLogClasses, socialBlog, userBlog, setSocialSide}) {
+function Switch({setLogClasses, socialBlog, userBlog, set_socialSide}) {
 
 	/*
 		Goal for the switch:
@@ -763,20 +763,19 @@ function Switch({setLogClasses, socialBlog, userBlog, setSocialSide}) {
 					onClick={()=> {setActivity({type:'leftToRight'}) 
 								setLogClasses({type:'socialOut_userIn'})
 								updateUserBlog()
-								setSocialSide(false)}}>User</button>
+								set_socialSide(false)}}>User</button>
 			<button id="left" 
 					className={leftButtonClasses}
 					onClick={()=> {setActivity({type:'rightToLeft'}) 
 									setLogClasses({type:'userOut_socialIn'})
 									updateSocialLog()
-									setSocialSide(true)}}>Social</button>
+									set_socialSide(true)}}>Social</button>
 		</div>
 	)
 }
 
 
-export default function BlogLog(
-	{loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr, userKey, setSocialSide, socialSide, calendar,setCalendar, monthLog, set_monthLog}) {
+export default function BlogLog({loggedIn, userBlog, socialBlog, userID, set_isReading, isReading, setLogClasses, logClasses, monthChart, apiAddr, userKey, set_socialSide, socialSide, calendar,setCalendar, monthLog, set_monthLog}) {
 
 	useEffect(()=> {
 		userBlog.updateLog();
@@ -797,7 +796,7 @@ export default function BlogLog(
 						setLogClasses={setLogClasses}
 						socialBlog={socialBlog}
 						userBlog={userBlog}
-						setSocialSide={setSocialSide}/>
+						set_socialSide={set_socialSide}/>
 
 					<UserLog 
 						userLog={userBlog.log}  

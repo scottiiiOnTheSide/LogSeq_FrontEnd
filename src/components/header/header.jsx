@@ -16,7 +16,7 @@ function Login() {
 	)
 }
 
-function Home({calendar, toggleMenuFlip}) {
+function Home({calendar, set_menuSide}) {
 
 	//function to change Day from 'today' to weekday name
 	//when no longer looking at current posts
@@ -36,7 +36,7 @@ function Home({calendar, toggleMenuFlip}) {
 			<button 
 				id="menuToggle"	
 				className={active ? 'active' : null}
-				onClick={()=> {toggleMenuFlip(); setActive()}}>!!
+				onClick={()=> {set_menuSide(); setActive()}}>!!
 			</button>
 		</div>
 	)
@@ -46,17 +46,17 @@ function Home({calendar, toggleMenuFlip}) {
 //need to have overaching 'state management' that tells component
 //when certain section is active, thus setting corresponding header component
 //to be active
-export default function header({loggedIn, home, calendar, toggleMenuFlip}) {
+export default function header({loggedIn, home, calendar, set_menuSide}) {
 	return (
 		<header>
 			{!loggedIn &&
 				<Login />
 			}
 
-			{(loggedIn || home) &&
+			{loggedIn &&
 				<Home 
 					calendar={calendar}
-					toggleMenuFlip={toggleMenuFlip}/>
+					set_menuSide={set_menuSide}/>
 			}
 		</header>
 	)

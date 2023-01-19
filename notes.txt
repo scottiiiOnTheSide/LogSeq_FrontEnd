@@ -1,6 +1,8 @@
 
 01. 19. 2023
 
+@0700 Added post options to the mainMenuButton. Will update CSS styling lateeeeer
+
 @0440 Would like to implement a list of states and triggers for the menu
 		
 List of Modes:
