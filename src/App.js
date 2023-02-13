@@ -15,7 +15,7 @@ import MenuButton from './components/menuButton/menuButton';
 function App() {
 
   /*Self explanatory*/
-  const apiAddr = 'http://172.27.7.39:3333';
+  const apiAddr = 'http://172.23.61.18:3333';
 
   /*User Log In*/
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later

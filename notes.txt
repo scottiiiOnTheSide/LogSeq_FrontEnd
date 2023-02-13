@@ -1,4 +1,92 @@
 
+
+02. 13. 2023
+@0140 The New textArea + imageAdd button works as intended :D !
+	  Now need to create / edit handleChange function to get the data
+	  from each combo and organize it accordingly...
+
+	  Should be simple enough, as in actuality the 'add image' button is
+	  what will toggle the addition of the new textarea + imageAdd
+
+	  handleChange function can take index as arg, and if event.target.name
+	  is content or image, take it's index and add it's content and add it
+	  to the content state array.
+
+	  doesnt matter if, for whatever reason, the handle change function
+	  doesnt add them in order: that's what the index is for.
+	  in the event and image is added first, it ought to have an index of 0
+
+
+02. 12. 2023
+@0830 textAreaImageAdd can be added into returned element for component using {}
+	  one is placed initially.
+
+	  need to find a way to be able to add new elements to an array so they can
+	  be printed with .map
+
+	  should create an object holding the data of each textarea.
+
+	  could have the submit function then aggregate the info from each object
+	  for submission... which needs to be done as an array in which ever order the 
+	  images + text is in. 
+
+02. 10. 2023
+@0755
+		Current working idea for textarea + imageUpload:
+		create state object which accounts for the textArea + imageAdd combos
+		and their data. 
+
+		eg. event.target.files[0] from the function run to get the image from
+		the input to be stored within object...
+
+		Buttons will trigger additional combos being added.
+
+02. 05. 2023
+@1105 Never finished that previous train of thought . . .
+	  Current idea is to implement a state object, or array, which
+	  we'll run a .map on.
+
+	  for the addImage button, everytime one is added, we add to the
+	  state array, thus generating more textArea + addImage combos.
+
+	  Will need to add some additions to the backend and front end,
+	  concerning blogpost upload and display D:
+	  	- backend will need to be able to accept post body as an array
+	  	- frontend - simply display, in order, whats in the post body
+
+	  it may be possible to discern the post content (whether regular text or an image)
+	  link, and have the front end create an image element or p element based on that
+	  check....
+
+
+01. 31. 2023
+
+@1616 Logic for 'Add an image, add a text box'
+
+	  Requirements:
+	  * Total limit of 500 characters between all textboxes
+	  * When an image is added,
+	  		if total character count is below 500,
+	  		add a new text box below
+
+
+@1555 As of rn - the connections menu is being passed as a prop down to the User menu...
+	  which is weird
+
+	  Will - at some point - put that code within the user menu ...
+
+	  either that, or I'm gonna have to export the createPost component as well...
+
+	  TBH, I may have them both exported.
+
+	  The connections menu will have a few more features, like opening live messaging
+	  with a person, or inviting them into a group.
+
+	  The createPost element will house both the Entry and Event creation - the Event being abit more involved.
+
+	  Plus there's also the page to explain the details and formatting of the post making...
+
+
 01. 19. 2023
 
 @0700 Added post options to the mainMenuButton. Will update CSS styling lateeeeer
