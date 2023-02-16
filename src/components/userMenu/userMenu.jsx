@@ -2,34 +2,38 @@
 import React, {useState, useReducer, useEffect} from 'react';
 import './userMenu.css';
 
+let count = 0;
 
 function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 
 	const [formData, setFormData] = useState({});
-	const [content, setContent] = useState([
-		{
-			content: null,
-			index: null
-		}
-	]);
-	let contents = [];
+	const [contentCount, setContentCount] = useState([0]);
+	const [postContent, setPostContent] = useState([]);
 
-	const handleChange = (event, index) => {
+	const handleChange = (event) => {
 
 		if(event.target.name == 'tags') {
 			let value = event.target.value;
 			let array = value.split(/[, ]+/);
 			setFormData({
 				...formData,
-				name: event.target.name,
-				value: array
+				[event.target.name]: event.target.value,
 			})
+		}
+		else if(event.target.name == 'content') {
+			let value = event.target.value;
+			setPostContent([
+				...postContent,
+				{ 
+					content: event.target.value, 
+					index: event.target.dataset.index 
+				}		
+			])
 		}
 		else {
 			setFormData({
 				...formData,
-				name: event.target.name,
-				value: event.target.value
+				[event.target.name]: event.target.value,
 			})
 		}
 	}
@@ -37,69 +41,71 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 	const handleSubmit = async(event) => {
 		event.preventDefault();
 
-		// console.log(formData);
-
 		let response;
 
-		if(!calendar.date_inView) {
-			response = await fetch(`${apiAddr}/posts/createPost`, {
-				method: "POST",
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'auth-token': userKey
-				},
-				body: JSON.stringify({
-					title: formData.title,
-					content: formData.content,
-					tags: formData.tags,
-					usePostedByDate: true
-				})
-			})
-		}
-		else if(calendar.date_inView) {
-			response = await fetch(`${apiAddr}/posts/createPost`, {
-				method: "POST",
-				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json',
-					'auth-token': userKey
-				},
-				body: JSON.stringify({
-					title: formData.title,
-					content: formData.content,
-					tags: formData.tags,
-					usePostedByDate: false,
-					postedOn_month: calendar.month_inView,
-					postedOn_day: calendar.date_inView,
-					postedOn_year: calendar.year_inView
-				})
-			})
-		}
+		setFormData({
+			...formData,
+			content: postContent,
+		})
 
-		const newPost = await response.json();
-		updateLog();
+		console.log(formData)
+
+		// if(!calendar.date_inView) {
+		// 	response = await fetch(`${apiAddr}/posts/createPost`, {
+		// 		method: "POST",
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 			'Accept': 'application/json',
+		// 			'auth-token': userKey
+		// 		},
+		// 		body: JSON.stringify({
+		// 			title: formData.title,
+		// 			content: ,
+		// 			tags: formData.tags,
+		// 			usePostedByDate: true
+		// 		})
+		// 	})
+		// }
+		// else if(calendar.date_inView) {
+		// 	response = await fetch(`${apiAddr}/posts/createPost`, {
+		// 		method: "POST",
+		// 		headers: {
+		// 			'Content-Type': 'application/json',
+		// 			'Accept': 'application/json',
+		// 			'auth-token': userKey
+		// 		},
+		// 		body: JSON.stringify({
+		// 			title: formData.title,
+		// 			content: formData.content,
+		// 			tags: formData.tags,
+		// 			usePostedByDate: false,
+		// 			postedOn_month: calendar.month_inView,
+		// 			postedOn_day: calendar.date_inView,
+		// 			postedOn_year: calendar.year_inView
+		// 		})
+		// 	})
+		// }
+
+		// const newPost = await response.json();
+		// updateLog();
 	}
 
 	const newCombo = (e) => {
 		e.preventDefault();
-
-		setContent([
-			...content,
-			{
-				content: null,
-				index: null,
-			}
+		setContentCount([
+			...contentCount,
+			count++
 		])
-		console.log(content);
+		console.log(contentCount);
 	}
 
-	let textareaImageAdd = () => {
-		let element = <fieldset className="textareaImageadd">
+	let textareaImageAdd = (func, index) => {
+		let element = <fieldset key={index} className="textareaImageadd">
 			<textarea 
 				name="content" 
 				placeholder="Content" 
-				onChange={handleChange}
+				onBlur={handleChange}
+				data-index={index}
 				rows="10"
 				cols="30">
 			</textarea>
@@ -115,8 +121,8 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 			<form onSubmit={handleSubmit}>
 				<fieldset>
 					<input name="title" placeholder="Title" onChange={handleChange}/>
-					{content.map((element, index) => (
-						textareaImageAdd()
+					{contentCount.map((element, index) => (
+						textareaImageAdd(handleChange, index)
 					))}
 					<input name="tags" placeholder="tags" onChange={handleChange}/>
 				</fieldset>

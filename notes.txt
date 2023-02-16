@@ -1,4 +1,16 @@
 
+02. 16. 2023
+
+@0945 textarea + image content is now added to the formData state object correctly.
+		had to change onChange to onBlur - as onChange was creating an array index
+		for each keystroke.
+
+@0830 contentCombo now working correctly :D !
+
+02. 14. 2023
+@0300 Need to rework the contentCombo printing function . . .
+		out of brain juice...
+	  
 
 02. 13. 2023
 @0140 The New textArea + imageAdd button works as intended :D !
@@ -15,6 +27,8 @@
 	  doesnt matter if, for whatever reason, the handle change function
 	  doesnt add them in order: that's what the index is for.
 	  in the event and image is added first, it ought to have an index of 0
+
+	  also need to add keys to each returned element...
 
 
 02. 12. 2023
