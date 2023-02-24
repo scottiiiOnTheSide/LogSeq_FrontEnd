@@ -1,9 +1,35 @@
 
+02. 22. 2023
+
+@1340 frontEnd now -totally- uploads images correctly ...
+
+@0855 blog post now gets parsed through formData then sent
+	  It now sends without issue from front end...
+	  yet theres no data shown on backend...
+
+02. 21. 2023
+@0920 It would seem that I cannot simply send an image file as part of a json request,
+I'd either have to do them seperately, or convert the images first...
+
+since the endpoint can only read one request object at a time, I would
+have to create 2 seperate processes if the images are accepted seperately...
+
+
+02. 20. 2023
+@2120 image upload now works correctly...
+	  formData object formatted as intended
+
 02. 16. 2023
+
+@1210 Added type field to content object, so we can have a check for when there are 5 images
+
+	Also need to add count between all textareas to limit characters to 500
 
 @0945 textarea + image content is now added to the formData state object correctly.
 		had to change onChange to onBlur - as onChange was creating an array index
 		for each keystroke.
+
+		have muted out the code for form submission until i update the backend.
 
 @0830 contentCombo now working correctly :D !
 

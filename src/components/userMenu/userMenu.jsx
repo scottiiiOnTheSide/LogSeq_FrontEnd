@@ -19,18 +19,26 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 				...formData,
 				[event.target.name]: event.target.value,
 			})
-		}
-		else if(event.target.name == 'content') {
-			let value = event.target.value;
+		} else if(event.target.name == 'image') {
 			setPostContent([
 				...postContent,
 				{ 
-					content: event.target.value, 
+					content: event.target.files[0],
+					type: event.target.name, 
 					index: event.target.dataset.index 
 				}		
 			])
-		}
-		else {
+		} else if(event.target.name == 'content') {
+			setPostContent([
+				...postContent,
+				{ 
+					content: event.target.value,
+					type: "text", 
+					index: event.target.dataset.index 
+
+				}		
+			])
+		} else {
 			setFormData({
 				...formData,
 				[event.target.name]: event.target.value,
@@ -43,51 +51,58 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 
 		let response;
 
-		setFormData({
-			...formData,
-			content: postContent,
-		})
+		let submission = new FormData();
+		submission.append('title', formData.title)
+		submission.append('tags', formData.tags)
+		for(let i=0; i < postContent.length; i++){
+			if(postContent[i].type == 'text') {
+				submission.append(`text_${postContent[i].index}`, postContent[i].content)
+			} else if(postContent[i].type == 'image') {
+				let content = postContent[i].content;
+				submission.append(`image_${postContent[i].index}`, content)
+			}
+		}
 
-		console.log(formData)
+		for(let obj of submission) {
+			console.log(obj)
+		}
 
-		// if(!calendar.date_inView) {
-		// 	response = await fetch(`${apiAddr}/posts/createPost`, {
-		// 		method: "POST",
-		// 		headers: {
-		// 			'Content-Type': 'application/json',
-		// 			'Accept': 'application/json',
-		// 			'auth-token': userKey
-		// 		},
-		// 		body: JSON.stringify({
-		// 			title: formData.title,
-		// 			content: ,
-		// 			tags: formData.tags,
-		// 			usePostedByDate: true
-		// 		})
-		// 	})
-		// }
-		// else if(calendar.date_inView) {
-		// 	response = await fetch(`${apiAddr}/posts/createPost`, {
-		// 		method: "POST",
-		// 		headers: {
-		// 			'Content-Type': 'application/json',
-		// 			'Accept': 'application/json',
-		// 			'auth-token': userKey
-		// 		},
-		// 		body: JSON.stringify({
-		// 			title: formData.title,
-		// 			content: formData.content,
-		// 			tags: formData.tags,
-		// 			usePostedByDate: false,
-		// 			postedOn_month: calendar.month_inView,
-		// 			postedOn_day: calendar.date_inView,
-		// 			postedOn_year: calendar.year_inView
-		// 		})
-		// 	})
-		// }
+		if(!calendar.date_inView) {
 
-		// const newPost = await response.json();
-		// updateLog();
+			submission.append('usePostedByDate', 'true');
+
+			response = await fetch(`${apiAddr}/posts/createPost`, {
+				method: "POST",
+				headers: {
+					// 'Content-Type': 'multipart/form-data; boundary=---logseqmedia',
+					// 'Accept': 'multipart/form-data',
+					'auth-token': userKey,
+				}, 
+				body: submission,
+			})
+		}
+		else if(calendar.date_inView) {
+			response = await fetch(`${apiAddr}/posts/createPost`, {
+				method: "POST",
+				headers: {
+					'Content-Type': 'multipart/form-data; boundary=---logseqmedia',
+					'Accept': 'multipart/form-data',
+					'auth-token': userKey
+				},
+				body: JSON.stringify({
+					title: formData.title,
+					content: postContent,
+					tags: formData.tags,
+					usePostedByDate: false,
+					postedOn_month: calendar.month_inView,
+					postedOn_day: calendar.date_inView,
+					postedOn_year: calendar.year_inView
+				})
+			})
+		}
+
+		const newPost = await response.json();
+		updateLog();
 	}
 
 	const newCombo = (e) => {
@@ -109,16 +124,23 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 				rows="10"
 				cols="30">
 			</textarea>
-			<input id="addImage" type="file" name='image'/>
+			<input 
+				id="addImage" 
+				onChange={handleChange} 
+				type="file" 
+				accept="image/"
+				name='image' 
+				data-index={index + 0.5}/>
 			<img /> 
 		</fieldset>
 
 		return element;
 	}
+
 	return (
 		//form with title, content tags
 		<div id="createPost">
-			<form onSubmit={handleSubmit}>
+			<form onSubmit={handleSubmit} encType='multipart/form-data'>
 				<fieldset>
 					<input name="title" placeholder="Title" onChange={handleChange}/>
 					{contentCount.map((element, index) => (
