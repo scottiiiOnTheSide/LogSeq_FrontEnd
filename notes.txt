@@ -1,4 +1,20 @@
 
+
+04. 21. 2023
+@1035 new post content will be array of objects:
+	  
+	  for the blogpost:
+	  use forEach on the post.content to discern
+	  how to post what content: 
+
+	  for blogLog:
+	  only display first post.content with text
+	  have all images be thumbnails below the text
+	  	(also need to shorten text displayed on log
+	  	beyond certain amount. Can use enlarged, gray periods
+	  	to indicate there's more text)
+
+
 02. 22. 2023
 
 @1340 frontEnd now -totally- uploads images correctly ...
