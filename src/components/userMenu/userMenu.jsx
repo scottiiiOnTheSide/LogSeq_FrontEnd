@@ -56,7 +56,7 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 		submission.append('tags', formData.tags)
 		for(let i=0; i < postContent.length; i++){
 			if(postContent[i].type == 'text') {
-				submission.append(`${postContent[i].index}_text`, postContent[i].content)
+				submission.append(`${postContent[i].index}`, postContent[i].content)
 			} else if(postContent[i].type == 'image') {
 				let content = postContent[i].content;
 				submission.append(`${postContent[i].index}`, content)
@@ -92,7 +92,7 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 				body: JSON.stringify({
 					title: formData.title,
 					content: postContent,
-					tags: formData.tags,
+					tags: formData.tags? formData.tags : null,
 					usePostedByDate: false,
 					postedOn_month: calendar.month_inView,
 					postedOn_day: calendar.date_inView,
