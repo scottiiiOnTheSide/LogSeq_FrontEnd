@@ -1,4 +1,21 @@
 
+05. 14. 2023
+
+@1315 The contentUpdate FINALLY WORKS !!!
+			Imma merge up from here
+
+@1255 Updated the bloglog so that the first text piece from the content Array shows up
+		  in the preview.
+
+05. 11. 2023
+
+@1515 need to have createPost display confirm after successful upload, 
+		  and then dismount
+
+@0905 Changed the post model schema for content to be an array on the back end already,
+			thus i need to implement changes on the front end to parse them properly T- T
+			for blogLog/DayLog -> only the first text body will be displayed...
+			Will have to write script for blogPost to display each array item correctly
 
 04. 21. 2023
 @1035 new post content will be array of objects:

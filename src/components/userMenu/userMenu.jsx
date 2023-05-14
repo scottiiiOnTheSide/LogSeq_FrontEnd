@@ -56,20 +56,17 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 		submission.append('tags', formData.tags)
 		for(let i=0; i < postContent.length; i++){
 			if(postContent[i].type == 'text') {
-				submission.append(`${postContent[i].index}`, postContent[i].content)
+				let content = postContent[i].content;
+				submission.append(`${postContent[i].index}`, content)
 			} else if(postContent[i].type == 'image') {
 				let content = postContent[i].content;
 				submission.append(`${postContent[i].index}`, content)
 			}
 		}
 
-		for(let obj of submission) {
-			console.log(obj)
-		}
-
 		if(!calendar.date_inView) {
 
-			submission.append('usePostedByDate', 'true');
+			submission.append('usePostedByDate', true);
 
 			response = await fetch(`${apiAddr}/posts/createPost`, {
 				method: "POST",
@@ -81,6 +78,9 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 				body: submission,
 			})
 		}
+		/* 05. 13. 2023
+			need to update this similarly to above. submission append for postedOn values
+		*/
 		else if(calendar.date_inView) {
 			response = await fetch(`${apiAddr}/posts/createPost`, {
 				method: "POST",
@@ -101,8 +101,11 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 				})
 			})
 		}
-
-		const newPost = await response.json();
+		for(let obj of submission) {
+			console.log(obj)
+		}
+		const confirmation = await response.json();
+		console.log(confirmation);
 		updateLog();
 	}
 
@@ -125,14 +128,14 @@ function CreatePost({apiAddr, userKey, updateLog, calendar}) {
 				rows="10"
 				cols="30">
 			</textarea>
-			<input 
+			<input
 				id="addImage" 
 				onChange={handleChange} 
 				type="file" 
 				accept="image/"
 				name='image' 
 				data-index={index + 0.5}/>
-			<img /> 
+			{/*<img /> */}
 		</fieldset>
 
 		return element;

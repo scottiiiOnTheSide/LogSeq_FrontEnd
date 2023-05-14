@@ -206,7 +206,8 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 		} else {
 			postInfo = userBlog.log.find(post => post._id == isReading.blogpostID);
 		}
-	} else if (isReading.isOwner == false) {
+	} 
+	else if (isReading.isOwner == false) {
 		if(isReading.monthLog == true) {
 			postInfo = monthLog.find(post => post._id == isReading.blogpostID);
 		} else {
@@ -239,11 +240,11 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 	let id = postInfo._id;
 	let owner = postInfo.owner;
 	let content;
-	if(postInfo.content.match(/\((.*?)\)/g)) {
-		content = bodyParse(postInfo.content);
-	} else {
-		content = postInfo.content
-	}
+	// if(postInfo.content.match(/\((.*?)\)/g)) {
+	// 	content = bodyParse(postInfo.content);
+	// } else {
+	// 	content = postInfo.content
+	// }
 
 	let backToBlogLog = () => {
 		set_isReading({
@@ -321,7 +322,22 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 
 			<h1>{postInfo.title}</h1>
 
-			<p dangerouslySetInnerHTML={{ __html: content }}></p>
+			{postInfo.content.map((data) => {
+					if(data.type == 'text') {
+						if(data.content.match(/\((.*?)\)/g)) {
+							return (<p dangerouslySetInnerHTML={{ __html: bodyParse(data.content)}} key={data.place}></p>)
+						} else {
+							return (<p dangerouslySetInnerHTML={{ __html: data.content}} key={data.place}></p>)
+						}
+					} else if(data.type == 'media') {
+						return <img src={data.content}/>
+					}
+				}
+			)}
+				
+			
+
+			{/*<p dangerouslySetInnerHTML={{ __html: content }}></p>*/}
 
 			<div id="metabox">
 				<ul id="tags">
@@ -338,3 +354,17 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 		</article> 
 	)
 }
+
+// // <div id="contentArea">
+// 		postContent.map((element, index) => {
+// 			if(element.key % 1 != 0) {
+// 				//checks if keyName is decimal - the images
+// 				// will work on value that is string or num, so no need to convert 
+// 				return <img src={element.value} />
+// 			} else if (element.key % 1 = 0) {
+// 				//element is text content
+// 				return <p>{element.value}</p>
+// 			}
+
+// 		})
+//    // </div>

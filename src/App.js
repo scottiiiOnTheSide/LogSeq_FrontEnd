@@ -15,7 +15,7 @@ import MenuButton from './components/menuButton/menuButton';
 function App() {
 
   /*Self explanatory*/
-  const apiAddr = ' http://192.168.48.63:3333';
+  const apiAddr = 'http://172.19.185.143:3333';
 
   /*User Log In*/
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
@@ -43,8 +43,7 @@ function App() {
   const [menuSide, set_menuSide] = useReducer(state => !state, true);
     /* true is 'default', false is flipside: (settings, notifs, logout) */
   const [notif, set_notif] = useReducer(state => !state, false);
-  const [connections, set_connections] = useReducer(state => !state, false);
-  
+  const [connections, set_connections] = useReducer(state => !state, false);  
 
   const cal = Calendar();
   const [calendar, setCalendar] = useState({
@@ -71,8 +70,7 @@ function App() {
 
       01. 18. 2023
       This implemetation will be removed once webSockets are implemented...
-  */ 
-  
+  */   
 
   /* 
       U S E R  &  S O C I A L  L o G s 
@@ -152,7 +150,6 @@ function App() {
     userBlog.updateLog();
   }
 
-
   /* Reducer for managing state info regarding 
       User and Social Sides
   */
@@ -188,11 +185,9 @@ function App() {
 
   const [logClasses, setLogClasses] = useReducer(logStateReducer, logStates);
 
-
-
   /* M A I N  A P P */
   return (
-    <div id="MAIN">
+   <div id="MAIN">
       <Header 
         loggedIn={loggedIn} 
         calendar={calendar} 
@@ -287,9 +282,8 @@ function App() {
 
           logStates={logStates}/>
       }
-      
-    </div>
-  );
+    </div> 
+  )
 }
 
 export default App;

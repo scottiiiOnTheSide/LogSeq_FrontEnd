@@ -67,11 +67,20 @@ function DayLog({log, userID, set_isReading, isReading}) {
 						let owner = post.owner;
 						let author = post.author;
 						let content;
-						if(post.content.match(/\((.*?)\)/g)) {
-							content = bodyParse(post.content)
-						} else {
-							content = post.content
+						/*
+							05. 14. 2023
+							Need to cut text once it's beyong 64 characters, then add...
+						*/
+						/*gets first text content from contentArray*/
+						for(let i = 0; i < post.content.length; i++) {
+							if(post.content[i].place == '0' || post.content[i].place % 1 == 0) {
+								content = post.content[i].content;
+							}
+							break;
 						}
+
+						/* create loop to find first text*/
+						// console.log(content);
 
 						let month, day, year, dateMatch;
 
