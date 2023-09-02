@@ -19,7 +19,7 @@ function App() {
   /*Self explanatory*/
   const apiAddr = 'http://172.19.185.143:3333';
   // const ws = new WebSocket("ws://172.19.185.143:3333");
-  const WS_URL = "ws://172.19.185.143:3333";
+  
   // let Instant = Instant();
 
 
@@ -47,7 +47,7 @@ function App() {
     }
   })
   const userID = sessionStorage.getItem('userKey');
-  const userKey = sessionStorage.getItem('userOnline');
+  const userOnline = sessionStorage.getItem('userOnline');
 
   /*
     section state variables - 
@@ -98,7 +98,7 @@ function App() {
   const updateLog = async () => {
     let month = new Date().getMonth(),
       year = new Date().getFullYear(),
-      user = userKey,
+      user = userOnline,
       api = apiAddr;
 
     const response = await fetch(`${apiAddr}/posts/log?social=false`, {
@@ -126,7 +126,7 @@ function App() {
   const updateSocialLog = async () => {
     let month = new Date().getMonth(),
         year = new Date().getFullYear(),
-        user = userKey,
+        user = userOnline,
         api = apiAddr;
 
     const response = await fetch(`${apiAddr}/posts/log?social=true`, {
@@ -209,7 +209,7 @@ function App() {
    <div id="MAIN">
 
       <Instant
-        WS_URL={WS_URL}
+        userID={userID}
       />
 
       <Header 
@@ -237,7 +237,7 @@ function App() {
           setLogClasses={setLogClasses}
           logClasses={logClasses}
           apiAddr={apiAddr}
-          userKey={userKey}
+          userOnline={userOnline}
           monthChart={monthChart}
           set_socialSide={set_socialSide}
           socialSide={socialSide}
@@ -249,7 +249,7 @@ function App() {
       {(loggedIn && isReading.postOpen) &&
         <Blogpost
           apiAddr={apiAddr}
-          userKey={userKey}
+          userOnline={userOnline}
           userID={userID}
           isReading={isReading}
           set_isReading={set_isReading}
@@ -262,7 +262,7 @@ function App() {
         <InteractionList
           newNotif={newNotif}
           apiAddr={apiAddr}
-          userKey={userKey}
+          userOnline={userOnline}
           userID={userID}
           notif={notif}
           set_notif={set_notif}
@@ -274,7 +274,7 @@ function App() {
         <UserMenu 
           apiAddr={apiAddr}
           userID={userID}
-          userKey={userKey}
+          userOnline={userOnline}
           userBlog={userBlog}
           socialBlog={socialBlog}
           Connections={ConnectList}

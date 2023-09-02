@@ -1,7 +1,12 @@
 
 
-09. 01. 2023
 
+@09. 02. 2023
+@1245 websockets now working!
+
+
+
+09. 01. 2023
 @1245 useEffect necessary for websocket operations?
 
 

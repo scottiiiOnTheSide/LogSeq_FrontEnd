@@ -6,8 +6,10 @@
 import React, { useState, useReducer, useEffect } from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 
-export default function Instant ({WS_URL}) {
+export default function Instant ({userID}) {
 
+
+	const WS_URL = `ws://172.19.185.143:3333/?${userID}`;
 	const [socketURL, setSocketURL] = useState(WS_URL);
 	const {sendMessage, lastMessage, readyState} = useWebSocket(socketURL);
 
