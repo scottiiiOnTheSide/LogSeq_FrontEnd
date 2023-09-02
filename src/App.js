@@ -1,6 +1,8 @@
 
 import React, { useState, useReducer } from 'react';
+import useWebSocket, {ReadyState} from 'react-use-websocket';
 import Calendar from './components/calendar';
+import Instant from './components/instant';
 import './App.css';
 
 import Header from './components/header/header';
@@ -16,6 +18,23 @@ function App() {
 
   /*Self explanatory*/
   const apiAddr = 'http://172.19.185.143:3333';
+  // const ws = new WebSocket("ws://172.19.185.143:3333");
+  const WS_URL = "ws://172.19.185.143:3333";
+  // let Instant = Instant();
+
+
+  // useWebSocket(WS_URL, {
+  //   onOpen: ()=> {
+  //     console.log('Websocket connection established')
+
+
+  //   },
+  //   onMessage: (e)=> {
+  //     let data = JSON.parse(e.data);
+  //     console.log(data);
+  //   }
+  // })
+
 
   /*User Log In*/
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
@@ -188,6 +207,11 @@ function App() {
   /* M A I N  A P P */
   return (
    <div id="MAIN">
+
+      <Instant
+        WS_URL={WS_URL}
+      />
+
       <Header 
         loggedIn={loggedIn} 
         calendar={calendar} 

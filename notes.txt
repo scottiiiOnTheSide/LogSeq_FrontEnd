@@ -1,4 +1,20 @@
 
+
+09. 01. 2023
+
+@1245 useEffect necessary for websocket operations?
+
+
+@0833 Some notes on react-use-websockets
+			- function, hook, causes a component rerender whenever message recieved,
+			should be in it's own componenet
+			- includes options for how hook / component should operate during 
+				certain events
+			- has included functions for handling websocket operations....
+
+
+
+
 05. 14. 2023
 
 @1315 The contentUpdate FINALLY WORKS !!!
