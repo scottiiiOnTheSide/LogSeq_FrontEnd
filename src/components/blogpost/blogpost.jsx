@@ -125,6 +125,7 @@ function UpdatePost ({apiAddr, userKey, postID, title, date, openUpdate, backToB
 			})
 		}
 	}
+	
 	const updatePost = async(event) => {
 
 		event.preventDefault()
