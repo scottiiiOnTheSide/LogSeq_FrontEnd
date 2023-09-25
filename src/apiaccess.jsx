@@ -4,161 +4,259 @@
  * 
  */
 
-export function APIaccess(apiAddr) {
 
-	async function signupUser(signupCredentials) {
-		/**
-		 * Form Requirements:
-		 * - firstName:
-		 * - lastName:
-		 * - emailAddr:
-		 * - userName:
-		 * - password:
-		 */
+export default function APIaccess () {
 
-		return await fetch(`${apiAddr}/users/newuser`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept': 'application/json'
-			},
-			body: JSON.stringify(signupCredentials)
-		}).then(data => data.json());
+	const apiAddr = "http://172.19.185.143:3333";
+	const userKey = sessionStorage.getItem('userKey');
 
-		/* 09. 14. 2023
-		   Returns a true statement if signup successful
-		   Checks by submitted emailAddr whether account was made with on prior
-		*/
-	}
+	return {
 
-	async function loginUser(loginCredentials) {
+		async signUpUser(signupCredentials) {
+			/**
+			 * Form Requirements:
+			 * - firstName:
+			 * - lastName:
+			 * - emailAddr:
+			 * - userName:
+			 * - password:
+			 */
 
-		/**
-		 * Form Requirements
-		 * - emailAddr
-		 * - password
-		 */
+			return await fetch(`${apiAddr}/users/newuser`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: JSON.stringify(signupCredentials)
+			}).then(data => data.json());
 
-		let parseJwt = (token) => {
-		    let base64Url = token.split('.')[1],
-		        base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'),
-		        jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
-		        	return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
-		        }).join(''));
+			/* 09. 14. 2023
+			   Returns a true statement if signup successful
+			   Checks by submitted emailAddr whether account was made with on prior
+			*/
+			return true;
+		},
 
-		    return JSON.parse(jsonPayload);
-		};
+		async logInUser(loginCredentials) {
 
-		let loggedIn = await fetch(`${apiAddr}/users/login`, {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'Accept':'application/json'
-			},
-			body: JSON.stringify(loginCredentials)
-		}).then(data => data.json());
+			/**
+			 * Form Requirements
+			 * - emailAddr
+			 * - password
+			 */
 
-		loggedIn = parseJwt(loggedIn);
-		let userID = loggedIn._id
-		let userToken = loggedIn;
+			let parseJwt = (token) => {
+			    let base64Url = token.split('.')[1],
+			        base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/'),
+			        jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+			        	return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+			        }).join(''));
 
-		return { userID, userToken };
+			    return JSON.parse(jsonPayload);
+			};
 
-		/**
-		 * returns userID and the full JWT token
-		 */
-	}
+			let loggedIn = await fetch(`${apiAddr}/users/login`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept':'application/json'
+				},
+				body: JSON.stringify(loginCredentials)
+			}).then(data => data.json());
 
-	/**
-	 * userKey required for all operations conducted
-	 * while logged in
-	 */
+			let userToken = loggedIn;
 
-	async function pullUserLog(userKey, pull, lastID) {
+			let userInfo = parseJwt(loggedIn);
+			let userID = userInfo._id
+
+			return { userID, userToken };
+			// return true;
+		},	
 
 		/**
-		 * The 'pull' argument differentiates the kind of request for posts
-		 * made to the API
-		 * initial: when user first logs in
-		 * update: get the most recent, new posts
-		 * append: get more posts from the past, those before the last postID sent
+		 * userKey required for all operations conducted
+		 * while logged in
+		 * 
+		 * 09. 16. 2023 
+		 * Have userID passed as a prop as well.
+		 * would be available, saved into storage after login
 		 */
 
-		let log = await fetch(`${apiAddr}/posts/log?social=false?pull=${pull}?lastID=${lastID}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				'Content-Length': 0,
-				'Accept': 'application/json',
-				'Host': apiAddr,
-				'auth-token': userKey
-			}
-		}).then(data => data.json());
+		async pullUserLog(pull, lastID) {
 
-		return log;
-	}
+			/**
+			 * The 'pull' argument differentiates the kind of request for posts
+			 * made to the API
+			 * initial: when user first logs in
+			 * update: get the most recent, new posts
+			 * append: get more posts from the past, those before the last postID sent
+			 */
 
-	async function pullSocialLog(userKey, pull, lastID) {
+			//?pull=${pull}?lastID=${lastID} for future update
 
-		let log = await fetch(`${apiAddr}/posts/log?social=true?pull=${pull}?lastID=${lastID}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				'Content-Length': 0,
-				'Accept': 'application/json',
-				'Host': apiAddr,
-				'auth-token': userKey
-			}
-		}).then(data => data.json());
+			let log = await fetch(`${apiAddr}/posts/log?social=false`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Content-Length': 0,
+					'Accept': 'application/json',
+					'Host': apiAddr,
+					'auth-token': userKey
+				}
+			}).then(data => data.json());
 
-		return log;
-	}
+			return log;
+		},
 
-	async function getBlogPost(userKey, postID) {
+		async pullSocialLog(pull, lastID) {
 
-		let post = await fetch(`${apiAddr}/posts/?id=${postID}`, {
-			method: 'GET',
-			headers: {
-				'Content-Type': 'application/json',
-				'Content-Length': 0,
-				'Accept': 'application/json',
-				'Host': apiAddr,
-				'auth-token': userKey
-			}
-		}).then(data => data.json());
+			//?pull=${pull}?lastID=${lastID} for future update
 
-		return post;
-	}
+			let log = await fetch(`${apiAddr}/posts/log?social=true`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Content-Length': 0,
+					'Accept': 'application/json',
+					'Host': apiAddr,
+					'auth-token': userKey
+				}
+			}).then(data => data.json());
 
-	async function updateBlogPost() {
+			return log;
+		},
 
-		/**
-		 * 09. 15. 2023
-		 * Need to redesign algo for editting posts between Front and Back End
-		 * Function will be removed for now, until later update
-		 */
-	}
+		async getBlogPost(postID) {
 
-	async function deleteBlogPost(userKey, postID) {
+			let post = await fetch(`${apiAddr}/posts/?id=${postID}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Content-Length': 0,
+					'Accept': 'application/json',
+					'Host': apiAddr,
+					'auth-token': userKey
+				}
+			}).then(data => data.json());
 
-		const response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
-			method: "DELETE",
-			headers: {
-				// 'Content-Type': 'application/json',
-				// 'Accept': 'application/json',
-				'auth-token': userKey
-			}
-		}).then(data => data)
+			return post;
+		},
 
-		return response;
-		/* simply confirms whether post is deleted or not */
-	}
+		async updateBlogPost() {
 
-	async function getInteractions(userKey, lastID) {
+			/**
+			 * 09. 15. 2023
+			 * Need to redesign algo for editting posts between Front and Back End
+			 * Function will be removed for now, until later update
+			 */
+		},
 
-	}
+		async deleteBlogPost(postID) {
 
-	async function getConnections(userKey) {
-		
+			const response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
+				method: "DELETE",
+				headers: {
+					// 'Content-Type': 'application/json',
+					// 'Accept': 'application/json',
+					'auth-token': userKey
+				}
+			}).then(data => data)
+
+			return response;
+			/* simply confirms whether post is deleted or not */
+		},
+
+		async getInteractions(userID, currentNum) {
+
+			const notifs = await fetch(`${apiAddr}/users/notif/getAll?userID=${userID}?currentNum=${currentNum}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+	        		'Content-length': 0,
+	        		'Accept': 'application/json',
+	        		'Host': apiAddr,
+	        		'auth-token': userKey,
+				}
+			}).then(data => data.json());
+
+			return notifs;
+		},
+
+		async newInteraction(body) {
+
+			/**
+			 * Notif object requirements:
+			 * type:
+			 * isRead: boolean,
+			 * sender: userID,
+			 * recipients: array || userID
+			 * url:
+			 * message: *request, *accepted, *ignored
+			 */
+
+			const request = await fetch(`${apiAddr}/users/notif`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+	        		'Content-length': 0,
+	        		'Accept': 'application/json',
+	        		'Host': apiAddr,
+	        		'auth-token': userKey,
+				},
+				body: JSON.stringify(body)
+			}).then(data => data.json());
+
+			return request.message;
+		},
+
+		async getConnections(userID) {
+			
+			let request = await fetch(`${apiAddr}/users/${userID}/?query=all`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+	        		'Content-length': 0,
+	        		'Accept': 'application/json',
+	        		'Host': apiAddr,
+	        		'auth-token': userKey,
+				}
+			}).then(data => data.json());
+
+			return request;
+		},
+
+		async removeConnection(userID, removalID) {
+
+			let request = await fetch(`${apiAddr}/users/${userID}/?query=remove?removalID=${removalID}`, {
+				method: 'PATCH',
+				headers: {
+					'Content-Type': 'application/json',
+	        		'Content-length': 0,
+	        		'Accept': 'application/json',
+	        		'Host': apiAddr,
+	        		'auth-token': userKey,
+				}
+			}).then(data => data.json());
+
+			return request.message;
+		},
+
+		async getSingleUser(userID) {
+
+			/* For return user's page*/
+			let user = await fetch(`${apiAddr}/users/${userID}/?query=singleUser`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+	        		'Content-length': 0,
+	        		'Accept': 'application/json',
+	        		'Host': apiAddr,
+	        		'auth-token': userKey,
+				}
+			}).then(data => data.json());
+
+			return user;
+		}
 	}
 }

@@ -134,8 +134,7 @@ function DayLog({log, userID, set_isReading, isReading}) {
 } 
 
 
-function MonthChart(
-	{userID, apiAddr, userKey, social, appCal, setAppCal, monthLog, set_monthLog, set_isReading, isReading}) {
+function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal, monthLog, set_monthLog, set_isReading, isReading}) {
 
 	/*
 		API call gets array with each index value 

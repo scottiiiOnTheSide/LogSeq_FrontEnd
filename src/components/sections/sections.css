@@ -1,0 +1,131 @@
+
+div#sectionsWrapper {
+	display: flex;
+	position: fixed;
+	width: 100%;
+	top: 140px;
+	overflow-y: scroll;
+
+/*	background-color: var(--site-gray-lightest);*/
+}
+
+
+div#userLog,
+div#socialLog,
+div#groupsList,
+div#macrosList,
+div#homeLog {
+	width: 98%;
+/*	height: fit-content;*/
+	height: 100%; /*needs to be fixed for animation */
+	opacity: 0;
+	transition: all 0.5s linear;
+	transform: scale(0.8);
+}
+
+@keyframes appear {
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);	
+	}
+}
+
+@keyframes disappear {
+	0% {
+		opacity: 1;
+		transform: scale(1);	
+	}
+	100% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+}
+
+	div#userLog.active {
+		opacity: 1;
+		transform: scale(1);
+		background-color: white;
+		animation: 0.5s ease-in-out forwards appear;
+	}
+
+		div#userLog.not {
+			background-color: transparent;
+			animation: 0.5s ease-in-out forwards disappear;
+		}
+
+	div#socialLog.active {
+		opacity: 1;
+		transform: scale(1);
+		background-color: white;
+		animation: 0.5s ease-in-out forwards appear;
+	}
+
+		div#socialLog.not {
+			background-color: transparent;
+			animation: 0.5s ease-in-out forwards disappear;
+		}
+
+
+
+div.log h2.noPostsToday,
+div.log div.entry span.postDate {
+	display: block;
+	font-family: "Raleway";
+	font-size: 2.5em;
+	color: var(--site-gray-lightest);
+	text-align: right;
+}
+
+div.log div.entry span.postDate {
+	margin: 60px 0;
+}
+
+div#socialLog div.log h2.noPostsToday,
+div.log div.entry span.postDate {
+	text-align: left;
+}	
+
+div#userLog div.log span.postDate{
+	text-align: right;
+}
+
+
+
+div.log div.entry {
+	margin: 80px 0;
+}
+
+div.log div.entry h2 {
+	font-family: "Raleway";
+	font-size: 1.5em;
+	font-weight: 400;
+	line-height: 32px;
+	color: var(--site-gray-middle);
+	margin: 0px;
+}
+
+
+div#socialLog div.log div.entry h2 {
+	text-align: right;
+	margin: 0px 0 10px;
+}
+
+div#socialLog div.log div.entry span#username {
+
+	font-size: 0.75em;
+	margin: 10px 0 0;
+}
+
+
+div.log div.entry p {
+	font-family: "Open Sans";
+	font-size: 0.9em;
+	font-weight: 400;
+	line-height: 26px;
+	color: var(--site-gray-middle);
+	margin: 10px 0 0;
+}
