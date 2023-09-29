@@ -101,16 +101,17 @@ function HomeOrEntry({ children }) {
 // ])
 
 
+
 function Home() {
 
-  let cal = Calendar();
-
-  const [currentSection, setSection] = React.useState(2);
+  const cal = Calendar();
+  const [currentSection, setSection] = React.useState(2); //default setting
   const [isModal, setModal] = React.useReducer(state => !state, false)
-
+  const isPost = false;
+  
   return (
     <section id="HOME">  
-        <Header cal={cal} />
+        <Header cal={cal} isPost={isPost}/>
         <CarouselNav currentSection={currentSection} setSection={setSection}/>
 
         <Outlet />
@@ -142,7 +143,7 @@ export default function Main() {
           }
         />
 
-        <Route path="/post/:id" loader={postLoader} element={
+        <Route path="/post/:postID" /*loader={postLoader}*/ element={
             <HomeOrEntry>
               <Post />
             </HomeOrEntry>

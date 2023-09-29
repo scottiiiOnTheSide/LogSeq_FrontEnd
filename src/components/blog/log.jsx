@@ -1,4 +1,5 @@
 import * as React from 'react';
+import {useNavigate} from 'react-router-dom';
 
 /**
  * 09. 24. 2023
@@ -7,14 +8,10 @@ import * as React from 'react';
  * be distinguished
  */
 
-//checks whether any posts have been made today
-
-
-
-
 export default function Log({userID, data}) {
 
 	let dateObserved, monthObserved;
+	const navigate = useNavigate();
 
 	function ifAnyPostsFromToday (posts) {
 		let fromToday,
@@ -77,7 +74,13 @@ export default function Log({userID, data}) {
 		monthObserved = post.postedOn_month;
 
 		return (
-			<div className="entry" key={id} onClick={() => {console.log(post.content.length)}}>
+			<div className="entry" key={id} onClick={()=> {
+				setTimeout(()=> {
+					navigate(`/post/${post._id}`, {
+						state: {post: post}
+					})
+				}, 575)
+			}}>
 									
 				{(dateMatch == false) &&
 					<span className="postDate">{month + 1} . {day} . {year}</span>
@@ -87,7 +90,6 @@ export default function Log({userID, data}) {
 				}
 				
 				<h2>{title}</h2>
-				{/*<p dangerouslySetInnerHTML={{ __html: content }}></p> */}
 				<p>{text}</p>
 
 				<ul>
@@ -96,6 +98,16 @@ export default function Log({userID, data}) {
 			</div>
 		)
 	}
+
+	// function openPostItem (post) {
+
+	// 	let delay = setTimeout(()=> {
+
+	// 		navigate('/post/:postID', {
+	// 			state: post
+	// 		})
+	// 	}, 575)
+	// }
 
 	let log = data;
 	let id = userID;

@@ -12,7 +12,7 @@ const root = ReactDOM.createRoot(document.getElementById('BASE'));
 root.render(
   <React.StrictMode>
 
-  <Router>
+  <Router> 
     <AuthProvider>
       <Main />
     </AuthProvider> 

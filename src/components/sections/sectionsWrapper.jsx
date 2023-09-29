@@ -20,7 +20,6 @@ export default function SectionsWrapper({currentSection}) {
 		wrapper.current.style.height = `${maxHeight}px`;
 	}, [])
 
-
 	let prePanes = {
 		groups: false, //0
 		socialLog: false, //1
@@ -29,10 +28,10 @@ export default function SectionsWrapper({currentSection}) {
 		home: false //4
 	}
 	let [panes, setPanes] = React.useState(prePanes);
-	let [active, setActive] = React.useState(2); 
+	let [active, setActive] = React.useState(); 
 	// when is number corresponding to section, said section is active
 	// switch to null for no active classes
-
+	console.log(active);
 
 	/**
 	 * 09. 21. 2023
@@ -47,9 +46,28 @@ export default function SectionsWrapper({currentSection}) {
 
 	React.useEffect(()=> {
 
-		if(currentSection == 2) {
+		setActive(currentSection);
 
-			setActive(null);
+		if(currentSection == 2 && active == undefined) {
+
+			let nextStep = setTimeout(()=> {
+				Object.keys(prePanes).forEach(value => {
+					prePanes[value] = false;
+				})
+				console.log(prePanes);
+				setPanes(prePanes);
+			}, 550)
+
+			let thirdStep = setTimeout(()=> {
+				setActive(currentSection);
+				prePanes.userLog = true;
+				setPanes(prePanes);
+				console.log(panes);
+			}, 1100)
+
+		} else if(currentSection == 2) {
+
+			setActive('x');
 
 			let nextStep = setTimeout(()=> {
 				Object.keys(prePanes).forEach(value => {
@@ -68,7 +86,7 @@ export default function SectionsWrapper({currentSection}) {
 
 		} else if (currentSection == 1){
 
-			setActive(null);
+			setActive('x');
 
 			let nextStep = setTimeout(()=> {
 				Object.keys(prePanes).forEach(value => {

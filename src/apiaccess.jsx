@@ -19,7 +19,7 @@ export default function APIaccess () {
 			 * - lastName:
 			 * - emailAddr:
 			 * - userName:
-			 * - password:
+			 * - password:s
 			 */
 
 			return await fetch(`${apiAddr}/users/newuser`, {

@@ -85,7 +85,40 @@ header button#interactionsToggle span {
 	}
 
 
+header svg#return {
+/*	transform: scale(0.6);*/
+	width: 50px;
+	position: relative;
+	top: 5px;
+	transition: all 0.3s ease-in-out;
+}
 
+header svg#return.leave {
+	animation: leave 0.5s ease-in-out forwards;
+}
+
+@keyframes leave {
+	0% {
+		right: 0%;
+	}
+	100% {
+		right: 50px;
+	}
+}
+
+header svg#return polyline {
+	fill: rgba(255, 255, 255, 0);
+    stroke-width: 8px;
+}
+
+	header svg#return polyline#top {
+	    stroke: rgba(0, 0, 0, 0.5);
+/*		stroke: red;*/
+	}
+
+	header svg#return polyline#bottom {
+		stroke: rgba(0, 0, 0, 0.1);
+	}
 
 
 

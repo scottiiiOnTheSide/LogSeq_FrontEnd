@@ -1,4 +1,8 @@
 
+/**
+ * CSS for the 5 main sections & the log variants
+ */
+
 div#sectionsWrapper {
 	display: flex;
 	position: fixed;
@@ -23,6 +27,15 @@ div#homeLog {
 	transform: scale(0.8);
 }
 
+
+/**
+ * As userLog is currently the default, it will have 'already present' styling
+ */
+div#userLog {
+	animation: 0.5s ease-in-out forwards appear;
+}
+
+
 @keyframes appear {
 	0% {
 		opacity: 0;
@@ -46,10 +59,7 @@ div#homeLog {
 }
 
 	div#userLog.active {
-		opacity: 1;
-		transform: scale(1);
-		background-color: white;
-		animation: 0.5s ease-in-out forwards appear;
+/*		animation: 0.5s ease-in-out forwards appear;*/
 	}
 
 		div#userLog.not {
@@ -58,9 +68,6 @@ div#homeLog {
 		}
 
 	div#socialLog.active {
-		opacity: 1;
-		transform: scale(1);
-		background-color: white;
 		animation: 0.5s ease-in-out forwards appear;
 	}
 

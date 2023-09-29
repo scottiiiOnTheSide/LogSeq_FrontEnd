@@ -1,0 +1,71 @@
+
+section#POST {
+	position: absolute; 
+/*	may change above rule...*/
+
+	width: 100%;
+}
+
+article {
+	position: relative;
+	margin-top: 65px;
+}
+
+article button#open {
+	position: relative;
+	top: 15%;
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 10;
+	margin-top: 30px;
+}
+
+/* * * D e t a i l s  B o x * * */
+
+article div#details {
+	position: relative;
+	top: -40px;
+	width: 100%;
+	height: 0px;
+	background-color: var(--site-gray-lightest);
+	border-radius: 6px;
+	transition: all 0.3s ease-in-out;
+	overflow: hidden;
+}
+
+	article div#details.open {
+		height: auto;
+	}
+
+
+article div#details h4 {
+	margin: 60px 10px 0;
+}
+
+article div#details p {
+	margin: 10px 10px 0;
+}
+
+
+article div#details ul#options {
+	margin: 20px 0 20px;
+	padding: 0;
+	list-style-type: none;
+}
+
+article div#details ul#options li {
+	display: inline-block;
+	margin: 0 10px;
+}
+
+
+
+
+
+article div#mainContent {
+	position: relative;
+}
+
+article div#commentsWrapper {
+	position: relative;
+}

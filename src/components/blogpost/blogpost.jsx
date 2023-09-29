@@ -213,9 +213,16 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 			postInfo = monthLog.find(post => post._id == isReading.blogpostID);
 		} else {
 			postInfo = socialBlog.log.find(post => post._id == isReading.blogpostID);	
-		}
-		
+		}	
 	}
+	let backToBlogLog = () => {
+		set_isReading({
+			...isReading,
+			blogpostID: null,
+			postOpen: false
+		})
+		userBlog.updateLog();
+	}	
 
 	let postIDlength = postInfo._id.length;
 	let postID = postInfo._id.slice(0, postIDlength);
@@ -247,14 +254,7 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 	// 	content = postInfo.content
 	// }
 
-	let backToBlogLog = () => {
-		set_isReading({
-			...isReading,
-			blogpostID: null,
-			postOpen: false
-		})
-		userBlog.updateLog();
-	}	
+	
 
 	const [revealInfo, setRevealInfo] = useReducer(state => !state, false);
 	const [deleteOpen, openDelete] = useReducer(state => !state, false);

@@ -16,10 +16,12 @@ function CreatePost() {
 
 export default function UserLog({active}) {
 
+
+	console.log(active);
+	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
 	let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
 	let [modal, setModal] = React.useReducer(state => !state, false);
-	let isActive = active;
 
 	/**
 	 * For now, get userLog on mount
@@ -34,10 +36,25 @@ export default function UserLog({active}) {
 
 	React.useEffect(()=> {
 		updateLog();
+		console.log(place);
 	}, [])
 
+	React.useEffect(()=> {
+
+		console.log(active);
+		if (active == undefined) {
+			console.log(active);
+			return;
+		}
+		if(active !== 2 || active == 'x') {
+			setPlace('not');
+			console.log(active);
+		}
+	}, [active])
+
+
 	return (
-		<div id="userLog" className={isActive == 2 ? 'active' : 'not'}>
+		<div id="userLog" className={place}>
 
 			<Log data={log} userID={userID} />
 			
