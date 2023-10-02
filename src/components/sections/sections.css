@@ -106,6 +106,10 @@ div.log div.entry {
 	margin: 80px 0;
 }
 
+div.log div.entry:last-child {
+	padding-bottom: 40px;
+}
+
 div.log div.entry h2 {
 	font-family: "Raleway";
 	font-size: 1.5em;

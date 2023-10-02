@@ -224,8 +224,8 @@ export default function Blogpost({apiAddr, userKey, userID, isReading, set_isRea
 		userBlog.updateLog();
 	}	
 
-	let postIDlength = postInfo._id.length;
-	let postID = postInfo._id.slice(0, postIDlength);
+	// let postIDlength = postInfo._id.length;
+	// let postID = postInfo._id.slice(0, postIDlength);
 
 	let dateInfo = new Date(postInfo.createdAt.slice(0, -1));
 	let date = dateInfo.toString().slice(4, 15);

@@ -6,7 +6,7 @@ import Log from '../blog/log';
 let accessAPI = APIaccess();
 
 
-function CreatePost() {
+function CreatePost({}) {
 
 	/* element dimensions to be 100% viewport */
 	return (
@@ -14,14 +14,13 @@ function CreatePost() {
 	)
 }
 
-export default function UserLog({active}) {
+export default function UserLog({active, setModal, modal}) {
 
 
 	console.log(active);
 	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
 	let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
-	let [modal, setModal] = React.useReducer(state => !state, false);
 
 	/**
 	 * For now, get userLog on mount
@@ -38,6 +37,13 @@ export default function UserLog({active}) {
 		updateLog();
 		console.log(place);
 	}, [])
+
+	let [isModal, openModal] = React.useState(false);
+	React.useEffect(()=> {
+		if(modal == 2) {
+			openModal(true);
+		}
+	}, [modal])
 
 	React.useEffect(()=> {
 
@@ -58,7 +64,7 @@ export default function UserLog({active}) {
 
 			<Log data={log} userID={userID} />
 			
-			{modal &&
+			{isModal &&
 				<CreatePost />
 			}
 		</div>

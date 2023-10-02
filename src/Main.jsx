@@ -21,6 +21,7 @@ import './components/home/home.css';
 import Entry from './components/entry/entry';
 import Header from './components/home/header';
 import CarouselNav from './components/home/carouselNav';
+import ButtonBar from './components/home/buttonBar';
 import SectionsWrapper from './components/sections/sectionsWrapper';
 
 import Post, {loader as postLoader} from './components/blog/post';
@@ -43,70 +44,12 @@ function HomeOrEntry({ children }) {
 }
 
 
-
-// const router = createBrowserRouter([
-//   {
-//     path: "/",
-//     element:  <HomeOrEntry> 
-//                   <Entry 
-//                     accessAPI={accessAPI}
-//                     useAuth={useAuth}
-//                   /> 
-//               </HomeOrEntry>
-//   },
-//   {
-//     path: "/entry",
-//     element: <Entry />
-//   },
-//   // {
-//   //   path: "/home",
-//   //   element: <HomeOrEntry> <Home /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/:user",
-//   //   element: <HomeOrEntry> <Userpage /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/:blogpost",
-//   //   element: <HomeOrEntry> <Blogpost /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/user/:username/settings",
-//   //   element: <HomeOrEntry> <UserSetting /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/:username/:collectionName",
-//   //   element: <HomeOrEntry> <Collection /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/group/:groupname",
-//   //   element: <HomeOrEntry> <GroupPage /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/tag/:tagname",
-//   //   element: <HomeOrEntry> <TagPage /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/global",
-//   //   element: <HomeOrEntry> <Global /> </HomeOrEntry>
-//   // },
-//   // {
-//   //   path: "/about",
-//   //   element: <About />
-//   // },
-//   // {
-//   //   path: "/error",
-//   //   element: <ErrorPage />
-//   // }
-// ])
-
-
-
+/* * * H O M E  C o m p o n e n t * * */
 function Home() {
 
   const cal = Calendar();
   const [currentSection, setSection] = React.useState(2); //default setting
-  const [isModal, setModal] = React.useReducer(state => !state, false)
+  const [modal, setModal] = React.useState()
   const isPost = false;
   
   return (
@@ -116,7 +59,9 @@ function Home() {
 
         <Outlet />
 
-        <SectionsWrapper currentSection={currentSection} />
+        <SectionsWrapper currentSection={currentSection} setModal={setModal} modal={modal}/>
+
+        <ButtonBar cal={cal} modal={modal} setModal={setModal} currentSection={currentSection}/>
 
     </section>
   )
@@ -153,3 +98,59 @@ export default function Main() {
       </Routes>
   )
 }
+
+// const router = createBrowserRouter([
+//   {
+//     path: "/",
+//     element:  <HomeOrEntry> 
+//                   <Entry 
+//                     accessAPI={accessAPI}
+//                     useAuth={useAuth}
+//                   /> 
+//               </HomeOrEntry>
+//   },
+//   {
+//     path: "/entry",
+//     element: <Entry />
+//   },
+//   {
+//     path: "/home",
+//     element: <HomeOrEntry> <Home /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/:user",
+//     element: <HomeOrEntry> <Userpage /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/:blogpost",
+//     element: <HomeOrEntry> <Blogpost /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/user/:username/settings",
+//     element: <HomeOrEntry> <UserSetting /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/:username/:collectionName",
+//     element: <HomeOrEntry> <Collection /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/group/:groupname",
+//     element: <HomeOrEntry> <GroupPage /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/tag/:tagname",
+//     element: <HomeOrEntry> <TagPage /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/global",
+//     element: <HomeOrEntry> <Global /> </HomeOrEntry>
+//   },
+//   {
+//     path: "/about",
+//     element: <About />
+//   },
+//   {
+//     path: "/error",
+//     element: <ErrorPage />
+//   }
+// ])

@@ -9,7 +9,7 @@ import GroupsList from './groupsList';
 import MacrosList from './macrosList';
 import HomeLog from './homeLog';
 
-export default function SectionsWrapper({currentSection}) {
+export default function SectionsWrapper({currentSection, setModal, modal}) {
 
 	/*** Set Wrapper Height ***/
 
@@ -110,19 +110,19 @@ export default function SectionsWrapper({currentSection}) {
 		<div id="sectionsWrapper" ref={wrapper}>
 
 			{panes.socialLog &&
-				<SocialLog active={active}/>
+				<SocialLog active={active} modal={modal} setModal={setModal}/>
 			}
 			{panes.userLog &&
-				<UserLog active={active}/>
+				<UserLog active={active} modal={modal} setModal={setModal}/>
 			}
 			{panes.macros &&
-				<MacrosList active={active}/>
+				<MacrosList active={active} modal={modal} setModal={setModal}/>
 			}
 			{panes.groups &&
-				<GroupsList active={active}/>
+				<GroupsList active={active} modal={modal} setModal={setModal}/>
 			}
 			{panes.home &&
-				<HomeLog active={active}/>
+				<HomeLog active={active} modal={modal} setModal={setModal}/>
 			}
 			
 		</div>
