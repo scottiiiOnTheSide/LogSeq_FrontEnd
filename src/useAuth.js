@@ -22,25 +22,16 @@ function useAuth() {
 	 * If context works correctly, will create stateVars for userKey & and ID
 	 * instead
 	 */
-	
-
-	React.useEffect(()=> { //everytime site is accessed while logged in, this 'should' work
-		
-	}, [authed]);
 
 	return {
 		authed,
 
 		async login(loginCredentials) {
-				// let data = APIaccess.logInUser(loginCredentials);
-				// sessionStorage.setItem('userKey', data.userKey);
-				// sessionStorage.setItem('userID', data.userID);
-				// setAuth(true);
 
 				await APIaccess().logInUser(loginCredentials).then((data) => {
-					console.log(data);
 					sessionStorage.setItem('userKey', data.userToken);
 					sessionStorage.setItem('userID', data.userID);
+					sessionStorage.setItem('userName', data.userName);
 				});
 
 				setAuth(true);

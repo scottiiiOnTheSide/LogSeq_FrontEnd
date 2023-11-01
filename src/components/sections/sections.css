@@ -1,7 +1,8 @@
 
-/**
- * CSS for the 5 main sections & the log variants
- */
+/* * * 
+		T h e  F i v e
+		M a i n  S e c t i o n s 
+* * */
 
 div#sectionsWrapper {
 	display: flex;
@@ -9,10 +10,7 @@ div#sectionsWrapper {
 	width: 100%;
 	top: 140px;
 	overflow-y: scroll;
-
-/*	background-color: var(--site-gray-lightest);*/
 }
-
 
 div#userLog,
 div#socialLog,
@@ -28,9 +26,7 @@ div#homeLog {
 }
 
 
-/**
- * As userLog is currently the default, it will have 'already present' styling
- */
+/* As userLog is currently the default, it will have 'already present' styling */
 div#userLog {
 	animation: 0.5s ease-in-out forwards appear;
 }
@@ -140,3 +136,149 @@ div.log div.entry p {
 	color: var(--site-gray-middle);
 	margin: 10px 0 0;
 }
+
+
+
+
+
+/* * *
+	C R E A T E  P O S T
+* * */
+
+section#HOME div#createPost {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+
+	z-index: 15;
+	background-color: white;
+}
+
+	div#createPost fieldset {
+		padding: 0;
+		border: none;
+	}
+
+	div#createPost input {
+		display: block;
+		margin: 10px 0;
+	}
+
+section#HOME div#createPost div#options {
+	position: absolute;
+	width: 100%;
+	bottom: 20px;
+}
+
+section#HOME div#createPost div#options button {
+	background-color: transparent;
+	border: none;
+	outline: none;
+	width: 47%;
+	padding: 10px 0;
+}
+
+section#HOME div#createPost div#taggedUsers {
+	margin: 36px auto;
+	border-bottom: 1px solid var(--site-gray-mid);
+}
+
+	section#HOME div#createPost div#taggedUsers p {
+		margin: 8px;
+		color: var(--site-gray-mid);
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#selected {
+		margin: 8px 8px;
+		padding: 0;
+		list-style-type: none;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#selected li {
+		display: inline-block;
+		margin: 0 4px;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options li {
+		margin: 8px 8px 8px 16px;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options li span {
+		display: inline-block;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options li p {
+		display: inline-block;
+	}
+
+
+
+
+
+
+
+/* * *
+	M a n a g e  C o n n e c t i o n s
+* * */
+
+section#HOME div#manageConnections {
+	position: absolute;
+	width: 100%;
+	height: 100vh;
+
+	z-index: 15;
+	background-color: white;
+}
+
+section#HOME div#manageConnections ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+section#HOME div#manageConnections ul li {
+	display: flex;
+}
+
+section#HOME div#manageConnections ul li p {
+	margin: 10px;
+}
+
+section#HOME div#manageConnections ul li p span {
+	color: var(--site-gray-mid);
+}
+
+section#HOME div#manageConnections button#exit {
+	position: absolute;
+	left: 50%;
+	bottom: 30px;
+	transform: translateX(-50%);
+
+	background-color: transparent;
+	border: none;
+	outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

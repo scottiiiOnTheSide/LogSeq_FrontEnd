@@ -1,6 +1,6 @@
 
 section#POST {
-	position: absolute; 
+	position: relative; 
 /*	may change above rule...*/
 
 	width: 100%;
@@ -9,11 +9,13 @@ section#POST {
 article {
 	position: relative;
 	margin-top: 65px;
+	height: calc(100vh - 144px);
+	overflow-y: scroll;
 }
 
 article button#open {
 	position: relative;
-	top: 15%;
+/*	top: 15%;*/
 	left: 50%;
 	transform: translateX(-50%);
 	z-index: 10;
@@ -60,8 +62,6 @@ article div#details ul#options li {
 
 
 
-
-
 article div#mainContent {
 	position: relative;
 }
@@ -69,3 +69,119 @@ article div#mainContent {
 article div#commentsWrapper {
 	position: relative;
 }
+
+
+
+
+
+
+
+/* * * M A I N  C O N T E N T * * */
+
+
+
+
+
+
+
+
+
+/* * * C O M M E N T S * * */
+
+div#commentsWrapper {
+	margin-top: 180px;
+}
+
+
+div#commentsWrapper h2 {
+}
+
+
+
+
+
+
+
+
+
+/* * * O P T I O N S * * */
+
+div#optionsBar {
+	width: 100%;
+	position: fixed;
+	bottom: -10px;
+	background-color: transparent;
+	z-index: 10;
+}
+
+div#optionsBar button#optionsToggle {
+	height: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 24px 0;
+}
+
+
+
+div#optionsBar ul#options {
+	width: 100%;
+	background-color: white;
+	position: absolute;
+	bottom: 0;
+
+	list-style-type: none;
+	margin: 0 0 10px;
+	padding: 0;
+}
+
+div#optionsBar ul#options li {
+	width: 100%;
+}
+
+div#optionsBar ul#options li:last-child button {
+	font-family: 'Open Sans';
+	font-size: 2em;
+}
+
+div#optionsBar ul#options li button {
+	position: relative;
+	display: block;
+	margin: 12px auto;
+}
+
+
+div#optionsBar form {
+	display: block;
+	width: 100%;
+	position: absolute;
+	bottom: 10px;
+	z-index: 12;
+	background-color: white;
+}
+
+div#optionsBar form h3 {}
+
+div#optionsBar form textarea {
+	width: 98%;
+}
+
+div#optionsBar form div#buttonBox {
+
+}
+
+div#optionsBar form div#buttonBox button {
+	width: 50%;
+	padding: 12px 0;
+}
+
+
+
+
+
+
+
+
+
+
+

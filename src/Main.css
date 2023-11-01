@@ -30,3 +30,26 @@ section#BASE {
   --site-gray-middle: rgba(112, 112, 112, 0.9);
   --initial-color: royalblue;
 }
+
+
+
+
+
+/* * * *
+		C O M M O N  S T Y L E S 
+* * * */
+
+.buttonDefault {
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 1.25em;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+
+	background-color: transparent;
+	border: none;
+}
+
+
+
+

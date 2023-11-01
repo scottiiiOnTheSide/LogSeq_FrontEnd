@@ -7,7 +7,7 @@
 
 export default function APIaccess () {
 
-	const apiAddr = "http://172.19.185.143:3333";
+	const apiAddr = "http://192.168.1.176:3333";
 	const userKey = sessionStorage.getItem('userKey');
 
 	return {
@@ -68,20 +68,13 @@ export default function APIaccess () {
 			let userToken = loggedIn;
 
 			let userInfo = parseJwt(loggedIn);
-			let userID = userInfo._id
+			let userID = userInfo._id;
+			let userName = userInfo._username;
+			console.log(userInfo);
 
-			return { userID, userToken };
+			return { userID, userName, userToken };
 			// return true;
 		},	
-
-		/**
-		 * userKey required for all operations conducted
-		 * while logged in
-		 * 
-		 * 09. 16. 2023 
-		 * Have userID passed as a prop as well.
-		 * would be available, saved into storage after login
-		 */
 
 		async pullUserLog(pull, lastID) {
 
@@ -127,9 +120,51 @@ export default function APIaccess () {
 			return log;
 		},
 
+		async pullMonthChart(month, day, year, social) {
+
+			if(day) { /*** Gets all posts per specific day ***/
+
+				let request = await fetch(`${apiAddr}/posts/monthChart?social=${social}&month=${month}&day=${day}&year=${year}`, {
+					method: "GET",
+					header: {
+						'Content-Type': 'application/json',
+		        		'Content-length': 0,
+		        		'Accept': 'application/json',
+		        		'Host': apiAddr,
+		        		'auth-token': userKey
+					}
+				}).then(data => data.json());
+
+				let reorder = [];
+		        for(let i = request.length; i >= 0; i--) {
+		          reorder.push(request[i]);
+		        }
+		        // reorder.splice(0, 1);
+
+				return reorder;
+
+			} else { /*** Gets amount of posts per day in a month ***/
+
+				let request = await fetch(`${apiAddr}/posts/monthChart?social=${social}&month=${month}&year=${year}`, {
+					method: "GET",
+					header: {
+						'Content-Type': 'application/json',
+		        		'Content-length': 0,
+		        		'Accept': 'application/json',
+		        		'Host': apiAddr,
+		        		'auth-token': userKey
+					}
+				}).then(data => data.json());
+
+				return request;
+
+			}
+
+		},
+
 		async getBlogPost(postID) {
 
-			let post = await fetch(`${apiAddr}/posts/?id=${postID}`, {
+			let post = await fetch(`${apiAddr}/posts/${postID}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -143,7 +178,28 @@ export default function APIaccess () {
 			return post;
 		},
 
-		async updateBlogPost() {
+		async createPost(content) {
+
+			console.log(content);
+
+			let post = await fetch(`${apiAddr}/posts/createPost`, {
+				method: "POST",
+				headers: {
+					'auth-token': userKey,
+					// 'Content-Type': 'multipart/form-data; boundary=----logseqmedia',
+					// 'Accept': 'multipart/form-data',
+					// 'Content-Length': 0,
+					// 'accept': 'application/json',
+					// 'Host': apiAddr,
+				},
+				body: content,
+			}).then(data => data.json())
+
+			//returns true for successful submit, returns false on error
+			return post;
+		},
+
+		async updatePost() {
 
 			/**
 			 * 09. 15. 2023
@@ -152,7 +208,7 @@ export default function APIaccess () {
 			 */
 		},
 
-		async deleteBlogPost(postID) {
+		async deletePost(postID) {
 
 			const response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
 				method: "DELETE",
@@ -161,41 +217,99 @@ export default function APIaccess () {
 					// 'Accept': 'application/json',
 					'auth-token': userKey
 				}
-			}).then(data => data)
+			}).then(data => data.json())
 
 			return response;
 			/* simply confirms whether post is deleted or not */
 		},
 
-		async getInteractions(userID, currentNum) {
+		async postComment(type, parentID, body) {
 
-			const notifs = await fetch(`${apiAddr}/users/notif/getAll?userID=${userID}?currentNum=${currentNum}`, {
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-	        		'Content-length': 0,
-	        		'Accept': 'application/json',
-	        		'Host': apiAddr,
-	        		'auth-token': userKey,
-				}
-			}).then(data => data.json());
+			/**
+			 * type: *initial, *response
+			 */
 
-			return notifs;
+			if(body == null) {
+				let request = await fetch(`${apiAddr}/posts/comment/${type}/?postID=${parentID}`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+		        		'Content-length': 0,
+		        		'Accept': 'application/json',
+		        		'Host': apiAddr,
+		        		'auth-token': userKey,
+					}
+				}).then(data => data.json());
+
+				return request;
+			} else {
+				let request = await fetch(`${apiAddr}/posts/comment/${type}`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+		        		'Content-length': 0,
+		        		'Accept': 'application/json',
+		        		'Host': apiAddr,
+		        		'auth-token': userKey,
+					},
+					body: JSON.stringify(body)
+				}).then(data => data.json());
+
+				return request;
+			}
+			
 		},
 
-		async newInteraction(body) {
+		async getInteractions(arg) {
+
+			if(arg == 'count') {
+
+				const notifs = await fetch(`${apiAddr}/users/notif/sendUnreadCount`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+		        		'Content-length': 0,
+		        		'Accept': 'application/json',
+		        		'Host': apiAddr,
+		        		'auth-token': userKey,
+					}
+				}).then(data => data.json());
+
+				return notifs;
+
+			} else {
+
+				const notifs = await fetch(`${apiAddr}/users/notif/sendAll`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+		        		'Content-length': 0,
+		        		'Accept': 'application/json',
+		        		'Host': apiAddr,
+		        		'auth-token': userKey,
+					}
+				}).then(data => data.json());
+
+				return notifs;
+			}
+		},
+
+		/**
+		 * For connection requests, commenting, tagging, group invites
+		 */
+		async newInteraction(notif) {
 
 			/**
 			 * Notif object requirements:
-			 * type:
+			 * type: *request, *commentInitial, *commentResponse, *tagging
 			 * isRead: boolean,
 			 * sender: userID,
 			 * recipients: array || userID
 			 * url:
-			 * message: *request, *accepted, *ignored
+			 * message: *sent, *accept, *ignore
 			 */
 
-			const request = await fetch(`${apiAddr}/users/notif`, {
+			const request = await fetch(`${apiAddr}/users/notif/${notif.type}`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -204,15 +318,15 @@ export default function APIaccess () {
 	        		'Host': apiAddr,
 	        		'auth-token': userKey,
 				},
-				body: JSON.stringify(body)
+				body: JSON.stringify(notif)
 			}).then(data => data.json());
 
-			return request.message;
+			return request;
 		},
 
-		async getConnections(userID) {
+		async getConnections() {
 			
-			let request = await fetch(`${apiAddr}/users/${userID}/?query=all`, {
+			let request = await fetch(`${apiAddr}/users/user?query=getAllConnects`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -226,10 +340,10 @@ export default function APIaccess () {
 			return request;
 		},
 
-		async removeConnection(userID, removalID) {
+		async removeConnection(userID) {
 
-			let request = await fetch(`${apiAddr}/users/${userID}/?query=remove?removalID=${removalID}`, {
-				method: 'PATCH',
+			let request = await fetch(`${apiAddr}/users/user?query=removeConnect&remove=${userID}`, {
+				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 	        		'Content-length': 0,
@@ -239,7 +353,7 @@ export default function APIaccess () {
 				}
 			}).then(data => data.json());
 
-			return request.message;
+			return request;
 		},
 
 		async getSingleUser(userID) {
@@ -257,6 +371,27 @@ export default function APIaccess () {
 			}).then(data => data.json());
 
 			return user;
+		},
+
+		async searchUsers(query) {
+
+			const search = await fetch(`${apiAddr}/users/search/?userName=${query}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+		        	'Content-length': 0,
+		        	'Accept': 'application/json',
+		        	'Host': apiAddr,
+		        	'auth-token': userKey
+				}
+			}).then(data => data.json());
+
+			return search;
+			//returns search results, most likely some array of objects
 		}
 	}
 }
+
+
+
+

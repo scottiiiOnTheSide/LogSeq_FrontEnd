@@ -4,6 +4,7 @@ import ReactDOM from 'react-dom/client';
 
 import { AuthProvider } from './useAuth';
 import { BrowserRouter as Router } from "react-router-dom";
+
 import Main from "./Main";
 import './Main.css';
 

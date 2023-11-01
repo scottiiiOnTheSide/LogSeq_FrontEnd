@@ -37,7 +37,7 @@ function ReturnElement ({}) {
 }
 
 
-export default function Header ({cal, isPost}) {
+export default function Header ({cal, isPost, setNotifList, unreadCount}) {
 
 	/**
 	 * 09. 18. 2023
@@ -63,8 +63,8 @@ export default function Header ({cal, isPost}) {
 				<span>{cal.currentYear}</span>
 			</div>
 
-			<button id="interactionsToggle">
-				<p>2</p> 
+			<button id="interactionsToggle" onClick={setNotifList}>
+				<p>{unreadCount}</p> 
 				<span></span>
 				<span></span>
 				<span></span>

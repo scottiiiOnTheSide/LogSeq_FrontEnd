@@ -1,0 +1,205 @@
+
+/* * * I n t e r a c t i o n s  L i s t * * */
+
+div#interactionsList {
+/*	position: absolute;*/
+	position: fixed;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+	z-index: 20;
+}
+
+div#interactionsList div#header {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border-bottom: 2px solid var(--site-gray-mid);
+}
+
+	div#interactionsList div#header h2 {
+		position: relative;
+		top: 4px;
+		left: 10px;
+		font-weight: 400;
+		letter-spacing: 5px;
+		color: var(--site-gray-dark);
+	}
+
+	div#interactionsList div#header h2 span#username {
+		position: absolute;
+		top: -20px;
+		left: -10px;
+		font-size: 1.6em;
+		font-weight: 600;
+		letter-spacing: 1px;
+		color: var(--site-gray-light);
+	}
+
+
+
+
+div#interactionsList div#header button {
+	position: relative;
+	top: -4px;
+	border: none;
+	background: transparent;
+	padding: 0px;
+}
+
+div#interactionsList div#header button p {
+	margin: 0;
+	padding: 0;
+
+	font-size: 4em;
+	font-weight: 600;
+	color: var(--site-gray-light);
+}
+
+div#interactionsList div#header button span {
+	position: absolute;
+	top: 5px;
+	left: 20px;
+	font-family: 'Open Sans';
+	font-size: 3em;
+	font-weight: 400;
+	color: var(--site-gray-dark);
+}
+
+
+
+
+
+
+div#interactionsList ul#notifList {
+	margin-top: 8px;
+	padding: 0;
+	list-style-type: none;
+	position: relative;
+	height: 88%;
+	overflow: scroll;
+	z-index: 10;
+}
+
+div#interactionsList ul#notifList li {
+	width: 96%;
+	margin: 20px auto;
+	padding: 0 0 12px;
+	border-bottom: 1px solid var(--site-gray-light);;
+}
+	
+	div#interactionsList ul#notifList li:last-child {
+		padding-bottom: 20px;
+	}
+
+div#interactionsList ul#notifList li p {}
+
+div#interactionsList ul#notifList li div.options {}
+
+div#interactionsList ul#notifList li div.options button {
+	font-size: 0.85em;
+}
+
+
+
+
+div#interactionsList div#buttonBar {
+	position: absolute;
+	bottom: 0px;
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+div#interactionsList div#buttonBar button {
+	padding: 16px 0 10px;
+	width: 50%;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* * * P o p U p  N o t i f s  * * */
+
+div#popUpNotif {
+/*	display: none;*/
+	position: absolute;
+	bottom: -140px;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 96%;
+	margin: 0 auto;
+	z-index: 20;
+	background-color: white;
+	border: 2px solid var(--site-gray-lite);
+	border-radius: 3px;
+	box-sizing: border-box;
+	padding: 6px 12px 12px;
+
+	opacity: 0;
+	transition: all 0.5s ease-in-out;
+}
+
+	div#popUpNotif.active {
+		animation: active 0.5s ease-in-out forwards;
+	}
+
+	div#popUpNotif.nonActive {
+		animation: nonActive 0.5s ease-in-out;
+	}
+
+	@keyframes active {
+		0% {
+			display: block;
+			opacity: 0;
+			bottom: -100px;
+		}
+		100% {
+			bottom: 10px;
+			opacity: 1;
+		}
+	}
+
+	@keyframes nonActive {
+		0% {
+			bottom: 10px;
+			opacity: 1;
+		}
+		99% {
+			bottom: -100px;
+			opacity: 0;
+		}
+		100%{
+			display: none;
+		}
+	}
+
+div#popUpNotif p {
+	margin: 10px 0 20px;
+}
+
+div#popUpNotif ul#options {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+div#popUpNotif ul#options li {}
+
+div#popUpNotif ul#options li button {
+	padding: 0;
+}
+
+
+
+

@@ -12,13 +12,16 @@ export default function Log({userID, data}) {
 
 	let dateObserved, monthObserved;
 	const navigate = useNavigate();
+	let log = data;
+	let id = userID;
 
 	function ifAnyPostsFromToday (posts) {
 		let fromToday,
-			today = new Date().getDate();
+			today = new Date().getDate(),
+			month = new Date().getMonth();
 
 		for(let i = 0; i < posts.length; i++) {
-			if(posts[i].postedOn_day == today) {
+			if(posts[i].postedOn_day == today && posts[i].postedOn_month == month) {
 				fromToday = true;
 				break;
 			} else {
@@ -32,12 +35,16 @@ export default function Log({userID, data}) {
 	function returnPostItem (post, userID) {
 
 		let title = post.title,
-			tags = post.tags.length,
+			tags,
 			id = post._id,
 			owner = post.owner,
 			author = post.author,
 			content = post.content[0],
 			text = [];
+
+			if(post.tags) {
+				tags = post.tags.length
+			}
 
 		/**
 		 * post content is currently array, housing objects: only object
@@ -62,16 +69,23 @@ export default function Log({userID, data}) {
 		let month, day, year, dateMatch;
 
 		if(monthObserved != post.postedOn_month) {
+
 			if(dateObserved != post.postedOn_day) {
 				month = post.postedOn_month;
 				day = post.postedOn_day;
 				year = post.postedOn_year;
 				dateMatch = false;
 			}
+		} else if(monthObserved == post.postedOn_month && dateObserved != post.postedOn_day) {
+			month = post.postedOn_month;
+			day = post.postedOn_day;
+			year = post.postedOn_year;
+			dateMatch = false;
 		}
 
 		dateObserved = post.postedOn_day;
 		monthObserved = post.postedOn_month;
+		// console.log(post.title+ " "+ month + "." + day + "." +year+ "---" +monthObserved+ "." +dateObserved);
 
 		return (
 			<div className="entry" key={id} onClick={()=> {
@@ -99,18 +113,7 @@ export default function Log({userID, data}) {
 		)
 	}
 
-	// function openPostItem (post) {
-
-	// 	let delay = setTimeout(()=> {
-
-	// 		navigate('/post/:postID', {
-	// 			state: post
-	// 		})
-	// 	}, 575)
-	// }
-
-	let log = data;
-	let id = userID;
+	
 
 	return (
 		<div className={"log"}>
