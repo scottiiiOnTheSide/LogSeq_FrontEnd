@@ -274,7 +274,7 @@ export function CreatePost({setModal, setSocketMessage}) {
 
 
 
-export default function UserLog({active, setModal, modal}) {
+export default function UserLog({active, setModal, modal, setSocial}) {
 
 	console.log(active);
 	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
@@ -294,6 +294,7 @@ export default function UserLog({active, setModal, modal}) {
 	} 
 	React.useEffect(()=> {
 		updateLog();
+		setSocial('false');
 	}, [])
 	React.useEffect(()=> {
 		updateLog();

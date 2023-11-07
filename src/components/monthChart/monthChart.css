@@ -1,0 +1,319 @@
+
+div#monthChart {
+	position: absolute;
+	width: 100%;
+	height: calc(100% - 140px);
+	z-index: 15;
+	background-color: white;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+div#monthChart div#header {
+	position: relative;
+	width: 90%;
+	height: 1.5em;
+	margin: 28px auto 60px;
+}
+
+div#monthChart div#header span {
+	font-family: 'Raleway';
+	font-size: 1.5em;
+	color: var(--site-gray-dark);
+}
+
+div#monthChart div#header span#prev {
+	position: absolute;
+	top: 100%;
+	left: 10%;
+	transform: translateY(-50%);
+	transition: all 0.5s ease-in-out;
+	opacity: 1;
+}
+
+	div#monthChart div#header span#prev.off {
+		opacity: 0;
+	}
+
+	div#monthChart div#header span#prev.prevStart {
+		animation-name: prevStart;
+		animation-fill-mode: forwards;
+		animation-duration: 1s;
+		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
+	}
+
+		@keyframes prevStart {
+			0% {
+				top: 100%;
+				left: 10%;
+			}
+			70% {
+				font-size: 3em;
+				top: 50%;
+				left: 50%;
+				transform: translate(-50%, -50%);
+			}
+			100% {
+				opacity: 0;
+				font-size: 3em;
+				top: 50%;
+				left: 50%;	
+				right: unset;
+				transform: translate(-50%, -50%);
+			}
+		}
+
+	div#monthChart div#header span#prev.prevEnd {
+		animation-name: prevEnd;
+		animation-fill-mode: forwards;
+		animation-duration: 0.5s;
+		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
+	}
+
+		@keyframes prevEnd {
+			0% {
+				opacity: 0;
+				font-size: 3em;
+				top: 50%;
+				left: 50%;
+				right: unset;
+				transform: translate(-50%, -50%);
+			}
+
+			99% {
+				top: 100%;
+				left: 10%;
+				transform: translateY(-50%);
+			}
+
+			100% {
+				opacity: 1;
+				top: 100%;
+				left: 10%;
+				transform: translateY(-50%);
+			}
+		}
+
+div#monthChart div#header span#current {
+	font-size: 3em;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	opacity: 1;
+}
+
+	div#monthChart div#header span#current.switch {
+		opacity: 0;
+	}
+
+div#monthChart div#header span#year {
+	letter-spacing: 10px;
+	position: absolute;
+	top: 200%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	padding-left: 10px;
+	transition: all 0.5s ease-in-out
+}
+
+	div#monthChart div#header span#year.off {
+		opacity: 0;
+	}
+
+div#monthChart div#header span#next {
+	position: absolute;
+	top: 100%;
+	right: 10%;
+	transform: translateY(-50%);
+	transition: all 0.5s ease-in-out;
+	opacity: 1;
+}
+
+	div#monthChart div#header span#next.off {
+		opacity: 0;
+	}
+	
+	div#monthChart div#header span#next.nextStart {
+		animation-name: nextStart;
+		animation-fill-mode: forwards;
+		animation-duration: 1s;
+		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
+	}
+
+		@keyframes nextStart {
+			0% {
+				top: 100%;
+				right: 10%;
+			}
+			70% {
+				font-size: 3em;
+				top: 50%;
+				left: 50%;
+				right: unset;
+				transform: translate(-50%, -50%);
+			}
+			100% {
+				opacity: 0;
+				font-size: 3em;
+				top: 50%;
+				left: 50%;
+				right: unset;
+				transform: translate(-50%, -50%);
+			}
+		}
+
+	div#monthChart div#header span#next.nextEnd {
+		animation-name: nextEnd;
+		animation-fill-mode: forwards;
+		animation-duration: 0.5s;
+		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
+	}
+
+		@keyframes nextEnd {
+			0% {
+				opacity: 0;
+				font-size: 3em;
+				top: 50%;
+				left: 50%;
+				right: unset;
+				transform: translate(-50%, -50%);
+			}
+			99% {
+				top: 100%;
+				right: 10%;
+				transform: translateY(-50%);
+			}
+			100% {
+				opacity: 1;
+				top: 100%;
+				right: 10%;
+				transform: translateY(-50%);
+			}
+		}
+
+
+div#monthChart div#calendar {
+
+}
+
+	div#monthChart div#calendar.leave {
+		animation-name: calLeave;
+		animation-fill-mode: forwards;
+		animation-duration: 1s;
+		animation-timing-function: ease-in;
+	}
+
+	@keyframes calLeave {
+		0% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		100% {
+			opacity: 0;
+			transform: scale(0.75);
+		}
+	}
+
+	div#monthChart div#calendar.return {
+		animation-name: calReturn;
+		animation-fill-mode: forwards;
+		animation-duration: 1s;
+		animation-timing-function: ease-in;
+	}
+
+	@keyframes calReturn {
+		0% {
+			opacity: 0;
+			transform: scale(0.75);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}
+
+
+div#monthChart div#calendar div#daysOfTheWeek {
+	display: flex;
+	justify-content: space-evenly;
+}
+
+div#monthChart div#calendar div#daysOfTheWeek div.day {
+	display: inline-block;
+	padding: 10px;
+	color: var(--site-gray-dark);
+}
+
+
+div#monthChart div#calendar div#dates {
+	margin: 0 auto;
+	width: 95%;
+}
+
+div#monthChart div#calendar div#dates div.row {
+	display: flex;
+	justify-content: space-evenly;
+	position: relative;
+}
+
+	div#monthChart div#calendar div#dates div.row div.cell {
+		width: calc(100% / 7);
+/*		padding: 5px 0;*/
+		margin: 5px 0;
+		position: relative;
+	}
+
+		div#monthChart div#calendar div#dates div.row div.cell p {
+			text-align: center;
+			color: var(--site-gray-dark);
+		}
+
+		div#monthChart div#calendar div#dates div.row div.blank p {
+			color: transparent;
+		}
+
+
+	div#monthChart  div.row div.cell div.tallyWrapper {
+		display: flex;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%) rotate(180deg) scaleX(-1);
+		justify-content: space-evenly;
+		width: 100%;
+		height: 100%;
+		z-index: -1;
+	}
+
+		div#monthChart  div.row div.cell div.tallyWrapper span.tally {
+			display: inline-block;
+			width: 0px;
+/*			height: 20px;*/
+			border: 1px solid rgba(0, 0, 0, .1);
+			margin: 0 ;
+		}
+
+		div#monthChart  div.row div.cell div.tallyWrapper span.tally.on {
+			border-color: black;
+		}
+
+			span.tally:first-child {
+				height: 16%;
+			}
+			span.tally:nth-child(2) {
+				height: 32%;
+			}
+			span.tally:nth-child(3) {
+				height: 48%;
+			}
+			span.tally:nth-child(4) {
+				height: 64%;
+			}
+			span.tally:last-child {
+				height: 48%;
+			}
+
+
+

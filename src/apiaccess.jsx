@@ -126,7 +126,7 @@ export default function APIaccess () {
 
 				let request = await fetch(`${apiAddr}/posts/monthChart?social=${social}&month=${month}&day=${day}&year=${year}`, {
 					method: "GET",
-					header: {
+					headers: {
 						'Content-Type': 'application/json',
 		        		'Content-length': 0,
 		        		'Accept': 'application/json',
@@ -147,7 +147,7 @@ export default function APIaccess () {
 
 				let request = await fetch(`${apiAddr}/posts/monthChart?social=${social}&month=${month}&year=${year}`, {
 					method: "GET",
-					header: {
+					headers: {
 						'Content-Type': 'application/json',
 		        		'Content-length': 0,
 		        		'Accept': 'application/json',
@@ -157,7 +157,6 @@ export default function APIaccess () {
 				}).then(data => data.json());
 
 				return request;
-
 			}
 
 		},

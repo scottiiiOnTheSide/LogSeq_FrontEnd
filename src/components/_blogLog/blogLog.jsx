@@ -287,7 +287,6 @@ function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal, monthL
 	  	} else {
 	  		weeksInMonth = squares.length / 7;
 	  	}
-	  	// console.log(weeksInMonth)
 
 	  	let daysInWeek = [];
 	  	let days = JSON.parse(JSON.stringify(squares))
@@ -319,7 +318,7 @@ function MonthChart({userID, apiAddr, userKey, social, appCal, setAppCal, monthL
 					  			return <div key={index} 
 					  						className={`cell` + `${nowDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
 					  						onClick={()=> {
-					  							clickSelectedDate(cal.sMonth, daysInWeek[e][index], cal.sYear)
+					  							// clickSelectedDate(cal.sMonth, daysInWeek[e][index], cal.sYear)
 					  							setAppCal({
 					  								...appCal,
 					  								year_inView: cal.sYear,

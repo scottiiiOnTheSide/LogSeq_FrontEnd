@@ -31,6 +31,7 @@ import Instant from './components/instants/instant'
 /*** Sub Sections ***/
 import { CreatePost } from './components/sections/userLog';
 import { ManageConnections } from './components/sections/socialLog';
+import MonthChart from './components/monthChart/monthChart';
 import './components/sections/sections.css';
 
 
@@ -66,11 +67,16 @@ function Home({
   const cal = Calendar();
   const [currentSection, setSection] = React.useState(2); //default setting
   const [notifList, setNotifList] = React.useReducer(state => !state, false);
-  // const [unreadCount, setUnreadCount] = React.useState(2);
-  // const [socketMessage, setSocketMessage] = React.useState({});
+  const [monthChart, setMonthChart] = React.useReducer(state => !state, false);
   const [modal, setModal] = React.useReducer(state => !state, false);
   const isPost = false;
-
+  const [social, setSocial] = React.useState(''); /* True, False & Group */
+  const [dateInView, set_dateInView] = React.useState({
+    month: null,
+    day: null,
+    year: null,
+  })
+  
   /**
    * 10. 08. 2023
    * Make it so USER section is only default on initial load - chosen section
@@ -93,16 +99,27 @@ function Home({
 
         <Outlet />
 
-        <SectionsWrapper currentSection={currentSection} setModal={setModal} modal={modal}/>
+        <SectionsWrapper currentSection={currentSection} setModal={setModal} modal={modal} setSocial={setSocial}/>
 
         {(modal && currentSection == 2) &&
-          <CreatePost setModal={setModal} setSocketMessage={setSocketMessage}/>
+          <CreatePost setModal={setModal} setSocketMessage={setSocketMessage} dateInView={dateInView}/>
         }
         {(modal && currentSection == 1) &&
           <ManageConnections setModal={setModal} setSocketMessage={setSocketMessage}/>
         }
 
-        <ButtonBar cal={cal} modal={modal} setModal={setModal} currentSection={currentSection}/>
+        <ButtonBar cal={cal} 
+                   modal={modal} 
+                   setModal={setModal} 
+                   monthChart={monthChart}
+                   dateInView={dateInView}
+                   set_dateInView={set_dateInView}
+                   setMonthChart={setMonthChart} 
+                   currentSection={currentSection}/>
+
+        {monthChart &&
+          <MonthChart social={social} cal={cal} set_dateInView={set_dateInView}/>
+        }
 
           <Instant 
             socketMessage={socketMessage} 

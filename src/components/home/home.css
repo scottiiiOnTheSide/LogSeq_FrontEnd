@@ -223,7 +223,8 @@ section#HOME {
 	div#buttonBar {
 		width: 100%;
 		position: fixed;
-		bottom: -10px;
+/*		bottom: -10px;*/
+		bottom: 0;
 		background-color: white;
 		z-index: 10;
 	}
@@ -250,7 +251,25 @@ section#HOME {
 	}
 
 
+div#buttonBar button#monthChartToggle {
+    position: absolute;
+    right: 2%;
+    bottom: 2%;
+    box-sizing: content-box;
+    padding: 10px 5px;
+    background-color: transparent;
+    border: none;
+}
 
+div#buttonBar button#monthChartToggle p {
+    margin: 0 0 5px 0;
+    font-size: 1.2em;
+}
+
+div#buttonBar button#monthChartToggle span {
+    margin: 0;
+    font-size: 1.2em;
+}
 
 
 

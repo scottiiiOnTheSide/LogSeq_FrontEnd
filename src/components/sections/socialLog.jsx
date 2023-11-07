@@ -60,7 +60,7 @@ export function ManageConnections({setModal, setSocketMessage}) {
 	}
 
 	React.useEffect( ()=> {
-		updateConnections();	
+		updateConnections();
 	}, [])
 	
 	return (
@@ -113,7 +113,7 @@ export function ManageConnections({setModal, setSocketMessage}) {
 	)
 }
 
-export default function SocialLog({active}) {
+export default function SocialLog({active, setSocial}) {
 
 	let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
@@ -128,6 +128,7 @@ export default function SocialLog({active}) {
 
 	React.useEffect(()=> {
 		updateLog();
+		setSocial('true');
 	}, [])
 
 	return (
