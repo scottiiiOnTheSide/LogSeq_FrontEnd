@@ -8,6 +8,7 @@ div#monthChart {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
+	overflow-y: scroll;
 }
 
 div#monthChart div#header {
@@ -201,7 +202,7 @@ div#monthChart div#calendar {
 	div#monthChart div#calendar.leave {
 		animation-name: calLeave;
 		animation-fill-mode: forwards;
-		animation-duration: 1s;
+		animation-duration: 0.5s;
 		animation-timing-function: ease-in;
 	}
 
@@ -219,7 +220,7 @@ div#monthChart div#calendar {
 	div#monthChart div#calendar.return {
 		animation-name: calReturn;
 		animation-fill-mode: forwards;
-		animation-duration: 1s;
+		animation-duration: 0.5s;
 		animation-timing-function: ease-in;
 	}
 
@@ -316,4 +317,7 @@ div#monthChart div#calendar div#dates div.row {
 			}
 
 
+div#monthChart div.log {
+	margin: -60px auto 0;
+}
 

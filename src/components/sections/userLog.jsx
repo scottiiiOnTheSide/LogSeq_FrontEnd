@@ -314,10 +314,12 @@ export default function UserLog({active, setModal, modal, setSocial}) {
 		}
 	}, [active])
 
+	let noHeading = false;
+
 	return (
 		<div id="userLog" className={place}>
 
-			<Log data={log} userID={userID} />
+			<Log data={log} userID={userID} noHeading={noHeading}/>
 
 		</div>
 	)

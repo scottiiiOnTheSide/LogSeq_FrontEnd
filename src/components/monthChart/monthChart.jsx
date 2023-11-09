@@ -1,6 +1,7 @@
 
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
+import Log from '../blog/log';
 import './monthChart.css';
 
 let accessAPI = APIaccess();
@@ -24,13 +25,12 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 		let day;
 		let request = await accessAPI.pullMonthChart(month, day, year, social);
 		set_tallyPerDate(request);
-		console.log(request)
 	}
 
 	let getPostsPerDate = async(month, day, year) => {
 
 		let request = await accessAPI.pullMonthChart(month, day, year, social);
-		console.log(request);
+		request.shift();
 		set_postsPerDate(request);
 	}
 
@@ -42,6 +42,8 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 		getPostsPerDate(kongetsu, kyou, kotoshi)
 	}, [])
 
+
+	let [calClass, set_calClass] = React.useState('');
 	let drawCalendar = () => {
 
 		let daysInMonth = new Date(selectedDate.year, selectedDate.month+1, 0).getDate(), //number of days in current/selected month
@@ -94,7 +96,6 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 	  		weeksInMonth = squares.length / 7;
 	  		weeksInMonth = Math.floor(weeksInMonth);
 	  	}
-	  	console.log(weeksInMonth)
 
 	  	let daysInWeek = [];
 	  	let days = JSON.parse(JSON.stringify(squares))
@@ -119,10 +120,9 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 		// 		daysInWeek.pop()
 		// 	}
 		// }
-		console.log(daysInWeek)
 
 		let calendar = 
-		<div id="calendar" className="">
+		<div id="calendar" className={calClass}>
 			
 			<div id="daysOfTheWeek">
 				{dayInitials.map((d, index) => {
@@ -176,15 +176,16 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 	/*
 		Element Class Names via State
 	*/
-	let [calClass, set_calClass] = React.useState(''),
-		[nextClass, set_nextClass] = React.useState(''),
+	
+	let	[nextClass, set_nextClass] = React.useState(''),
 		[nextMonth, set_nextMonth] = React.useState(''), 
 		[prevClass, set_prevClass] = React.useState(''),
 		[prevMonth, set_prevMonth] = React.useState(''),
 		[currentClass, set_currentClass] = React.useState(''),
 		[currentMonth, set_currentMonth] = React.useState(cal.monthsAbrv[kongetsu]),
 		[currentYear, set_currentYear] = React.useState(kotoshi),
-		[yearClass, set_yearClass] = React.useState('');
+		[yearClass, set_yearClass] = React.useState(''),
+		noHeading = true;
 
 
 	let forwardMonth = () => {
@@ -346,6 +347,8 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 		}
 	}, [])
 
+	console.log(postsPerDate)
+
 	return (
 
 		<div id="monthChart">
@@ -390,6 +393,10 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 
 			{calendar}
 
+			
+				<Log data={postsPerDate} noHeading={noHeading} />
+			
+			
 
 		</div>
 

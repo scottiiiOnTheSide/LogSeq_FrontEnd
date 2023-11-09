@@ -8,12 +8,12 @@ import {useNavigate} from 'react-router-dom';
  * be distinguished
  */
 
-export default function Log({userID, data}) {
+export default function Log({userID, data, noHeading}) {
 
 	let dateObserved, monthObserved;
 	const navigate = useNavigate();
 	let log = data;
-	let id = userID;
+	let id = sessionStorage.getItem('userID')
 
 	function ifAnyPostsFromToday (posts) {
 		let fromToday,
@@ -96,7 +96,7 @@ export default function Log({userID, data}) {
 				}, 575)
 			}}>
 									
-				{(dateMatch == false) &&
+				{dateMatch == false  &&
 					<span className="postDate">{month + 1} . {day} . {year}</span>
 				}
 				{(userID !== post.owner) &&  
@@ -112,12 +112,10 @@ export default function Log({userID, data}) {
 			</div>
 		)
 	}
-
-	
-
+	console.log(noHeading)
 	return (
 		<div className={"log"}>
-			{(ifAnyPostsFromToday(data) !== true) &&
+			{((ifAnyPostsFromToday(log) !== true) && noHeading == false) &&
 				<h2 className="noPostsToday">No Posts Today</h2>
 			}
 			{log.map(post => returnPostItem(post, id))}
