@@ -14,6 +14,7 @@ import useWebSocket, {ReadyState} from 'react-use-websocket';
 import APIaccess from './apiaccess';
 import useAuth from "./useAuth";
 import Calendar from './components/calendar'
+import {UIContextProvider, UIContext} from './UIcontext';
 
 import './Main.css';
 import './components/home/home.css';
@@ -61,22 +62,28 @@ function Home({
   accessID, 
   setAccessID, 
   unreadCount, 
-  setUnreadCount
+  setUnreadCount,
+  current,
+  setCurrent,
+  cal,
+  selectedDate,
+  set_selectedDate
 }) {
-
-  const cal = Calendar();
-  const [currentSection, setSection] = React.useState(2); //default setting
   const [notifList, setNotifList] = React.useReducer(state => !state, false);
-  const [monthChart, setMonthChart] = React.useReducer(state => !state, false);
+  
   const [modal, setModal] = React.useReducer(state => !state, false);
   const isPost = false;
+
   const [social, setSocial] = React.useState(''); /* True, False & Group */
+  const [currentSection, setSection] = React.useState(2); //default setting
+  const [monthChart, setMonthChart] = React.useReducer(state => !state, false);
+
   const [dateInView, set_dateInView] = React.useState({
     month: null,
     day: null,
     year: null,
   })
-  
+
   /**
    * 10. 08. 2023
    * Make it so USER section is only default on initial load - chosen section
@@ -86,7 +93,7 @@ function Home({
   return (
     <section id="HOME">  
         <Header cal={cal} isPost={isPost} setNotifList={setNotifList} unreadCount={unreadCount}/>
-        <CarouselNav currentSection={currentSection} setSection={setSection}/>
+        <CarouselNav current={current} setCurrent={setCurrent}/>
 
         {notifList &&
           <InteractionsList 
@@ -99,10 +106,12 @@ function Home({
 
         <Outlet />
 
-        <SectionsWrapper currentSection={currentSection} setModal={setModal} modal={modal} setSocial={setSocial}/>
+        <SectionsWrapper current={current} setCurrent={setCurrent} setModal={setModal} modal={modal} setSocial={setSocial}/>
 
         {(modal && currentSection == 2) &&
-          <CreatePost setModal={setModal} setSocketMessage={setSocketMessage} dateInView={dateInView}/>
+          <CreatePost setModal={setModal} 
+                      setSocketMessage={setSocketMessage} 
+                      selectedDate={selectedDate}/>
         }
         {(modal && currentSection == 1) &&
           <ManageConnections setModal={setModal} setSocketMessage={setSocketMessage}/>
@@ -111,14 +120,19 @@ function Home({
         <ButtonBar cal={cal} 
                    modal={modal} 
                    setModal={setModal} 
-                   monthChart={monthChart}
                    dateInView={dateInView}
                    set_dateInView={set_dateInView}
-                   setMonthChart={setMonthChart} 
-                   currentSection={currentSection}/>
+                   current={current}
+                   setCurrent={setCurrent}/>
 
-        {monthChart &&
-          <MonthChart social={social} cal={cal} set_dateInView={set_dateInView}/>
+        {current.monthChart &&
+          <MonthChart 
+            setCurrent={setCurrent} 
+            current={current}
+            cal={cal} 
+            set_dateInView={set_dateInView}
+            selectedDate={selectedDate}
+            set_selectedDate={set_selectedDate}/>
         }
 
           <Instant 
@@ -135,14 +149,21 @@ function Home({
   )
 }
 
+
+
+
+
+
+
+
+
 export default function Main() {
 
   /**
-   * 10. 12. 2023
-   * Can move stateVar for all interactions + webSocket connection & functions
-   * inside here, so that all individual pages have access
+   * W e b  S o c k e t
+   * A n d
+   * N o t i f i c a t i o n s
    */
-
   let userID = sessionStorage.getItem('userID');
   const [socketURL, setSocketURL] = React.useState(``);
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketURL);
@@ -150,9 +171,11 @@ export default function Main() {
   const [accessID, setAccessID] = React.useState({})
   const [isActive, setActive] = React.useState({
     type: null,   //type of popUp notif to appear
-    state: null,  //set class for it to popUp
+    state: null,  //set class for it to popUp 
   })
   const [unreadCount, setUnreadCount] = React.useState('');  
+
+  const cal = Calendar();
 
   /**
    * Connects to webSocket server upon verifying user log in
@@ -164,8 +187,6 @@ export default function Main() {
     }
   }, [authed])
 
-
-  // Might leave this ...
   // could possibly implement reconnect redundancy here
   React.useEffect(() => { 
     if(readyState === ReadyState.OPEN) {
@@ -237,6 +258,10 @@ export default function Main() {
   })
 
 
+  /**
+   * Fetches unread count of interactions on initial load
+   * and when new interactions occur
+   */
   let getUnreadCount = async() => {
     let count = await accessAPI.getInteractions('count');
     if(count < 10) {
@@ -254,81 +279,108 @@ export default function Main() {
   }, [socketMessage])
 
 
-  /**
-   * 10. 25. 2023
-   * sendMessage, socketMessage, setSocketMessage, isActive, setActive, accessID, setAccessID
-   * all need to be passed down to each page's <Instant> component
-   */
+
+  const [current, setCurrent] = React.useState({
+    section: 2, //0, 1, 2, 3, 4
+    social: false, //true, false or social
+    monthChart: false, //true or false
+    scrollTo: null
+  });
+  const hajime = new Date(),
+      kyou = hajime.getDate(),
+      kongetsu = hajime.getMonth(),
+      kotoshi = hajime.getFullYear();
+  const [selectedDate, set_selectedDate] = React.useState({
+    day: kyou,
+    month: kongetsu,
+    year: kotoshi
+  })
+
+  
   return(
-      <Routes>
+      <UIContextProvider>
+        <Routes>
 
-        <Route path="/" element={
-            <HomeOrEntry>
-              <Home 
-                // socket & notif stuff 
-                socketURL={socketURL}
-                socketMessage={socketMessage}
-                setSocketMessage={setSocketMessage}
-                sendMessage={sendMessage}
-                isActive={isActive}
-                setActive={setActive}
-                accessID={accessID}
-                setAccessID={setAccessID}
-                unreadCount={unreadCount}
-                setUnreadCount={setUnreadCount}
-                lastMessage={lastMessage}
-                // socket & notif stuff
-              />
-            </HomeOrEntry>
-          } 
-        />
+          <Route path="/" element={
+              <HomeOrEntry>
+                <Home 
+                  // socket & notif stuff 
+                  socketURL={socketURL}
+                  socketMessage={socketMessage}
+                  setSocketMessage={setSocketMessage}
+                  sendMessage={sendMessage}
+                  isActive={isActive}
+                  setActive={setActive}
+                  accessID={accessID}
+                  setAccessID={setAccessID}
+                  unreadCount={unreadCount}
+                  setUnreadCount={setUnreadCount}
+                  lastMessage={lastMessage}
+                  // socket & notif stuff
+                  cal={cal}
+                  current={current}
+                  setCurrent={setCurrent}
+                  selectedDate={selectedDate}
+                  set_selectedDate={set_selectedDate}
+                />
+              </HomeOrEntry>
+            } 
+          />
 
-        <Route path="/entry" element={<Entry/>} 
-        />
+          <Route path="/entry" element={<Entry/>} 
+          />
 
-        <Route path="/home" element={
-            <HomeOrEntry>
-              <Home 
-                // socket & notif stuff
-                socketURL={socketURL}
-                socketMessage={socketMessage}
-                setSocketMessage={setSocketMessage}
-                sendMessage={sendMessage}
-                isActive={isActive}
-                setActive={setActive}
-                accessID={accessID}
-                setAccessID={setAccessID}
-                unreadCount={unreadCount}
-                setUnreadCount={setUnreadCount}
-                lastMessage={lastMessage}
-                // socket & notif stuff
-              />
-            </HomeOrEntry>
-          }
-        />
+          <Route path="/home" element={
+              <HomeOrEntry>
+                <Home 
+                  // socket & notif stuff
+                  socketURL={socketURL}
+                  socketMessage={socketMessage}
+                  setSocketMessage={setSocketMessage}
+                  sendMessage={sendMessage}
+                  isActive={isActive}
+                  setActive={setActive}
+                  accessID={accessID}
+                  setAccessID={setAccessID}
+                  unreadCount={unreadCount}
+                  setUnreadCount={setUnreadCount}
+                  lastMessage={lastMessage}
+                  // socket & notif stuff
+                  cal={cal}
+                  current={current}
+                  setCurrent={setCurrent}
+                  selectedDate={selectedDate}
+                  set_selectedDate={set_selectedDate}
+                />
+              </HomeOrEntry>
+            }
+          />
 
-        <Route path="/post/:postID" element={
-            <HomeOrEntry>
-              <Post 
-                // socket stuff
-                socketURL={socketURL}
-                socketMessage={socketMessage}
-                setSocketMessage={setSocketMessage}
-                sendMessage={sendMessage}
-                isActive={isActive}
-                setActive={setActive}
-                accessID={accessID}
-                setAccessID={setAccessID}
-                unreadCount={unreadCount}
-                setUnreadCount={setUnreadCount}
-                lastMessage={lastMessage}
-                // socket stuff
-              />
-            </HomeOrEntry>
-          } 
-        />
+          <Route path="/post/:postID" element={
+              <HomeOrEntry>
+                <Post 
+                  // socket stuff
+                  socketURL={socketURL}
+                  socketMessage={socketMessage}
+                  setSocketMessage={setSocketMessage}
+                  sendMessage={sendMessage}
+                  isActive={isActive}
+                  setActive={setActive}
+                  accessID={accessID}
+                  setAccessID={setAccessID}
+                  unreadCount={unreadCount}
+                  setUnreadCount={setUnreadCount}
+                  lastMessage={lastMessage}
+                  // socket stuff
+                  selectedDate={selectedDate}
+                  set_selectedDate={set_selectedDate}
+                />
+              </HomeOrEntry>
+            } 
+          />
 
-      </Routes>
+        </Routes>
+      </UIContextProvider>
   )
 }
 

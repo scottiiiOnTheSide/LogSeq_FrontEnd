@@ -4,7 +4,39 @@
 -----------------------------------------------------------------------------------------
 
 
+### 11. 10. 2023
+
+@2230 Proactive & retroactive posts via monthChart now working :D !
+there should REALLY be some indication as to whether a retro/pro post was made ...
+
+
+@2220 date saved when returning from viewing post from <MonthChart>
+			Change implemented so that <Log> doesn't save selectedPost when
+			viewing on monthChart.
+
+@2025 App recalls where user was on <MonthChart> when viewing post,
+		  need to have date saved as well...
+
+@1225 setting stateVar for current within the <Main> component and passing it down is a
+	    successful solution to maintaining scroll distance & section user is viewing
+
+selectedDate state var within <MonthChart> needs to be moved to <Main>
+dateInView will be replaced by selectedDate as well...
+^should allow <monthChart> to be maintained when pulling up a post
+
+for <log> if monthChart is true, dont save post index 
+
+and, in <Post> reAdd contingency for when selectedDate.date has value,
+so createdPost is a retro/pro post
+
+
+@0815 base function for scrolling to post within log works! 
+	    now need to find method for getting index of post when selected to save ...
+
+
 ### 11. 09. 2023
+@1830 scrollIntoView on element itself works...
+
 @0715 Got the <Log> component to work within the <monthChart> 
 		  however... clicking on the post goes to the <post> page, 
 		  removing the chart from being up...

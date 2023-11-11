@@ -6,30 +6,20 @@ import './monthChart.css';
 
 let accessAPI = APIaccess();
 
-export default function MonthChart ({social, cal, set_dateInView}) {
+export default function MonthChart ({current, setCurrent, cal, set_dateInView, selectedDate, set_selectedDate}) {
 
 	const [tallyPerDate, set_tallyPerDate] = React.useState({});
 	const [postsPerDate, set_postsPerDate] = React.useState([]);
 
-	const hajime = new Date(),
-		  kyou = hajime.getDate(),
-		  kongetsu = hajime.getMonth(),
-		  kotoshi = hajime.getFullYear();
-	const [selectedDate, set_SelectedDate] = React.useState({
-		day: kyou,
-		month: kongetsu,
-		year: kotoshi
-	})
-
 	let getTallyPerDate = async(month, year) => {
 		let day;
-		let request = await accessAPI.pullMonthChart(month, day, year, social);
+		let request = await accessAPI.pullMonthChart(month, day, year, current.social);
 		set_tallyPerDate(request);
 	}
 
 	let getPostsPerDate = async(month, day, year) => {
 
-		let request = await accessAPI.pullMonthChart(month, day, year, social);
+		let request = await accessAPI.pullMonthChart(month, day, year, current.social);
 		request.shift();
 		set_postsPerDate(request);
 	}
@@ -39,9 +29,13 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 		getTallyPerDate(selectedDate.month, selectedDate.year);
 
 		//Initials Posts For Selected Date
-		getPostsPerDate(kongetsu, kyou, kotoshi)
+		getPostsPerDate(selectedDate.month, selectedDate.day, selectedDate.year);
 	}, [])
 
+	const hajime = new Date(),
+      kyou = hajime.getDate(),
+      kongetsu = hajime.getMonth(),
+      kotoshi = hajime.getFullYear();
 
 	let [calClass, set_calClass] = React.useState('');
 	let drawCalendar = () => {
@@ -141,7 +135,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 						       		return <div key={index} 
 						       					className={`cell` + `${currentDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
 						       					onClick={()=> {
-						       						set_dateInView({
+						       						set_selectedDate({
 						       							month: selectedDate.month,
 						       							day: daysInWeek[e][index],
 						       							year: selectedDate.year,
@@ -170,7 +164,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 
 		return calendar;
 	}
-	let calendar = drawCalendar()
+	let calendar = drawCalendar();
 
 
 	/*
@@ -182,14 +176,15 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 		[prevClass, set_prevClass] = React.useState(''),
 		[prevMonth, set_prevMonth] = React.useState(''),
 		[currentClass, set_currentClass] = React.useState(''),
-		[currentMonth, set_currentMonth] = React.useState(cal.monthsAbrv[kongetsu]),
-		[currentYear, set_currentYear] = React.useState(kotoshi),
+		[currentMonth, set_currentMonth] = React.useState(cal.monthsAbrv[selectedDate.month]),
+		[currentYear, set_currentYear] = React.useState(selectedDate.year),
 		[yearClass, set_yearClass] = React.useState(''),
 		noHeading = true;
 
 
 	let forwardMonth = () => {
 
+		set_postsPerDate([]);
 		set_nextClass('nextStart');
 		set_prevClass('off');
 
@@ -208,7 +203,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 
 		setTimeout(() => {
 			if(selectedDate.month + 1 > 11) {
-				set_SelectedDate({
+				set_selectedDate({
 					day: null,
 					month: 0,
 					year: selectedDate.year + 1
@@ -222,7 +217,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 				}, 300)
 
 			} else if (selectedDate.month + 1 == 11) {
-					set_SelectedDate({
+					set_selectedDate({
 						day: null,
 						month: 11,
 						year: selectedDate.year
@@ -235,7 +230,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 				}, 300)
 			} 
 			else {
-				set_SelectedDate({
+				set_selectedDate({
 					day: null,
 					month: selectedDate.month + 1,
 					year: selectedDate.year
@@ -258,6 +253,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 
 	let backwardMonth = () => {
 
+		set_postsPerDate([]);
 		set_prevClass('prevStart');
 		set_nextClass('off');
 
@@ -277,7 +273,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 
 		setTimeout(() => {
 			if(selectedDate.month - 1 < 0) {
-				set_SelectedDate({
+				set_selectedDate({
 					day: null,
 					month: 11,
 					year: selectedDate.year - 1
@@ -292,7 +288,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 
 			} else if (selectedDate.month - 1 == 0) {
 
-				set_SelectedDate({
+				set_selectedDate({
 					day: null,
 					month: 0,
 					year: selectedDate.year
@@ -304,7 +300,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 					set_prevMonth(cal.monthsAbrv[11])
 				}, 300)
 			} else {
-				set_SelectedDate({
+				set_selectedDate({
 					day: null,
 					month: selectedDate.month - 1,
 					year: selectedDate.year
@@ -330,24 +326,24 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 		Ensure correct date is set initially 
 	*/
 	React.useEffect(()=> {
-		if (selectedDate.month - 1 < 0) {
-			set_prevMonth(cal.monthsAbrv[11])
-		} else if (selectedDate.month - 1 == 0) {
-			set_prevMonth(cal.monthsAbrv[0])
-		} else {
-			set_prevMonth(cal.monthsAbrv[kongetsu - 1])
-		} 
+			if (selectedDate.month - 1 < 0) {
+				set_prevMonth(cal.monthsAbrv[11])
+			} else if (selectedDate.month - 1 == 0) {
+				set_prevMonth(cal.monthsAbrv[0])
+			} else {
+				set_prevMonth(cal.monthsAbrv[selectedDate.month - 1])
+			} 
 
-		if (selectedDate.month + 1 > 11) {
-			set_nextMonth(cal.monthsAbrv[0])
-		} else if (selectedDate.month + 1 == 11) {
-			set_nextMonth(cal.monthsAbrv[11]);
-		} else {
-			set_nextMonth(cal.monthsAbrv[kongetsu + 1])
-		}
+			if (selectedDate.month + 1 > 11) {
+				set_nextMonth(cal.monthsAbrv[0])
+			} else if (selectedDate.month + 1 == 11) {
+				set_nextMonth(cal.monthsAbrv[11]);
+			} else {
+				set_nextMonth(cal.monthsAbrv[selectedDate.month + 1])
+			}
 	}, [])
 
-	console.log(postsPerDate)
+	// console.log(selectedDate.month == kongetsu)
 
 	return (
 
@@ -359,7 +355,7 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 					if(selectedDate.month - 1 < 0) {
 						await getTallyPerDate('11', selectedDate.year - 1);
 						console.log('one one')
-					} else if (cal.sMonth - 1 == 0) {
+					} else if (selectedDate.month - 1 == 0) {
 						await getTallyPerDate('0', selectedDate.year);
 						console.log('one two')
 					} else {
@@ -393,11 +389,11 @@ export default function MonthChart ({social, cal, set_dateInView}) {
 
 			{calendar}
 
+			{postsPerDate.length == 0 &&
+				<h2 id="noPosts">No Posts</h2>
+			}
+			<Log data={postsPerDate} noHeading={noHeading} current={current} setCurrent={setCurrent}/>
 			
-				<Log data={postsPerDate} noHeading={noHeading} />
-			
-			
-
 		</div>
 
 	)

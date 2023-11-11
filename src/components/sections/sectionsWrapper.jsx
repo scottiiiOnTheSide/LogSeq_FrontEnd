@@ -9,7 +9,7 @@ import GroupsList from './groupsList';
 import MacrosList from './macrosList';
 import HomeLog from './homeLog';
 
-export default function SectionsWrapper({currentSection, setModal, modal, setSocial}) {
+export default function SectionsWrapper({current, setCurrent, setModal, modal, setSocial}) {
 
 	/*** Set Wrapper Height ***/
 
@@ -29,10 +29,11 @@ export default function SectionsWrapper({currentSection, setModal, modal, setSoc
 	}
 	let [panes, setPanes] = React.useState(prePanes);
 	let [active, setActive] = React.useState(); 
+	let currentSection = current.section;
 	// when is number corresponding to section, said section is active
 	// switch to null for no active classes
 	console.log(active);
-
+	console.log(currentSection)
 	/**
 	 * 09. 21. 2023
 	 * On currentSection change,
@@ -110,10 +111,15 @@ export default function SectionsWrapper({currentSection, setModal, modal, setSoc
 		<div id="sectionsWrapper" ref={wrapper}>
 
 			{panes.socialLog &&
-				<SocialLog active={active} modal={modal} setModal={setModal} setSocial={setSocial}/>
+				<SocialLog active={active} 
+						   current={current}
+						   setCurrent={setCurrent}/>
 			}
 			{panes.userLog &&
-				<UserLog active={active} modal={modal} setModal={setModal} setSocial={setSocial}/>
+				<UserLog active={active} 
+						 current={current} 
+						 setCurrent={setCurrent} 
+						 setSocial={setSocial}/>
 			}
 			{panes.macros &&
 				<MacrosList active={active} modal={modal} setModal={setModal}/>

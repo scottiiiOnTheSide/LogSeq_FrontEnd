@@ -8,7 +8,7 @@ import {useNavigate} from 'react-router-dom';
  * be distinguished
  */
 
-export default function Log({userID, data, noHeading}) {
+export default function Log({userID, data, noHeading, current, setCurrent}) {
 
 	let dateObserved, monthObserved;
 	const navigate = useNavigate();
@@ -32,7 +32,7 @@ export default function Log({userID, data, noHeading}) {
 		return fromToday;
 	}
 
-	function returnPostItem (post, userID) {
+	function returnPostItem (post, index, userID) {
 
 		let title = post.title,
 			tags,
@@ -89,6 +89,12 @@ export default function Log({userID, data, noHeading}) {
 
 		return (
 			<div className="entry" key={id} onClick={()=> {
+				
+				setCurrent({
+					...current,
+					scrollTo: index + 1
+				})
+
 				setTimeout(()=> {
 					navigate(`/post/${post._id}`, {
 						state: {post: post}
@@ -112,13 +118,43 @@ export default function Log({userID, data, noHeading}) {
 			</div>
 		)
 	}
-	console.log(noHeading)
+
+	let logRef = React.useRef();
+	let logRefC = logRef.current;
+	let isMounted = React.useRef(false);
+
+
+	/* 
+		Tracks position of selected post to return to 
+	    after viewing it in <Post>
+	*/
+	React.useEffect(()=> {
+		if(isMounted.current) {
+			let logRefC = logRef.current;
+			console.log(logRefC)
+			console.log(logRefC.children)
+
+			if(current.scrollTo) {
+				if(current.monthChart == true) {
+					return;
+				} else {
+					let selected = logRefC.children[current.scrollTo];
+					selected.scrollIntoView({behavior: "smooth"});
+				}
+			}	
+		} else {
+			if(log.length > 0) {
+				isMounted.current = true
+			}
+		}
+	}, [log])
+
 	return (
-		<div className={"log"}>
+		<div className={"log"} ref={logRef}>
 			{((ifAnyPostsFromToday(log) !== true) && noHeading == false) &&
 				<h2 className="noPostsToday">No Posts Today</h2>
 			}
-			{log.map(post => returnPostItem(post, id))}
+			{log.map((post, index) => returnPostItem(post, index, id))}
 		</div>
 	)
 

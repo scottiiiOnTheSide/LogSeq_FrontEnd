@@ -65,7 +65,7 @@ function DropSelect({tagged, setTagged}) {
 }
 
 
-export function CreatePost({setModal, setSocketMessage}) {
+export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
@@ -129,9 +129,14 @@ export function CreatePost({setModal, setSocketMessage}) {
 			}
 		}
 
-		// if(!calendar.date_inView) {
-
+		if(selectedDate.day != null) {
+			submission.append('usePostedByDate', false);
+			submission.append('postedOn_month', selectedDate.month);
+			submission.append('postedOn_day', selectedDate.day);
+			submission.append('postedOn_year', selectedDate.year);
+		} else {
 			submission.append('usePostedByDate', true);
+		}	
 			console.log(submission);
 
 			let submit = await accessAPI.createPost(submission);
@@ -172,22 +177,8 @@ export function CreatePost({setModal, setSocketMessage}) {
 			} else if(submit == false) {
 				console.log('Issue with post submission');
 			}
-			
-		// }
-		// else if(calendar.date_inView) {
+		}
 
-		// 	submission.append('usePostedByDate', false);
-		// 	submission.append('postedOn_month', calendar.month_inView);
-		// 	submission.append('postedOn_day', calendar.date_inView);
-		// 	submission.append('postedOn_year', calendar.year_inView);
-
-		// 	let submit = await accessAPI.createPost(submission);
-
-		// 	/*
-		// 		do something on confirmation 
-		// 	*/
-		// }
-	}
 
 	const newCombo = (e) => {
 		e.preventDefault();
@@ -274,7 +265,7 @@ export function CreatePost({setModal, setSocketMessage}) {
 
 
 
-export default function UserLog({active, setModal, modal, setSocial}) {
+export default function UserLog({active, setModal, modal, setSocial, setCurrent, current}) {
 
 	console.log(active);
 	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
@@ -294,7 +285,10 @@ export default function UserLog({active, setModal, modal, setSocial}) {
 	} 
 	React.useEffect(()=> {
 		updateLog();
-		setSocial('false');
+		setCurrent({
+			...current,
+			social: false
+		})
 	}, [])
 	React.useEffect(()=> {
 		updateLog();
@@ -319,7 +313,7 @@ export default function UserLog({active, setModal, modal, setSocial}) {
 	return (
 		<div id="userLog" className={place}>
 
-			<Log data={log} userID={userID} noHeading={noHeading}/>
+			<Log data={log} userID={userID} noHeading={noHeading} current={current} setCurrent={setCurrent}/>
 
 		</div>
 	)

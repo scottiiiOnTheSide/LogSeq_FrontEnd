@@ -1,16 +1,14 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
 
-export default function ButtonBar({modal, setModal, currentSection, setMonthChart, monthChart, dateInView, set_dateInView, cal}) {
+export default function ButtonBar({modal, setModal, current, setCurrent, dateInView, set_dateInView, cal}) {
 
-
-	let current = currentSection;
 	let [functionName, setFuncName] = React.useState('Create Post');
 
 	React.useEffect(()=> {
-		if(currentSection == 2) {
+		if(current.section == 2) {
 			setFuncName('Create Post');
-		} else if (currentSection == 1) {
+		} else if (current.section == 1) {
 			setFuncName('Manage Connections');
 		}
 	}, [current])
@@ -20,7 +18,17 @@ export default function ButtonBar({modal, setModal, currentSection, setMonthChar
 			<button id="main" onClick={setModal}>{functionName}</button>
 
 			<button id="monthChartToggle" onClick={()=> {
-				setMonthChart()
+				if(current.monthChart) {
+					setCurrent({
+						...current,
+						monthChart: false
+					})
+				} else if(!current.monthChart) {
+					setCurrent({
+						...current,
+						monthChart: true
+					})
+				}
 
 				/* resets calendar values each time it's toggled */
 				if(dateInView.day) {
@@ -32,7 +40,7 @@ export default function ButtonBar({modal, setModal, currentSection, setMonthChar
 				}
 			}}>
 				
-				{!monthChart &&
+				{!current.monthChart &&
 					<div id="day">
 						<p>Day</p>
 						<span>{cal.dayOfTheYear}</span>
@@ -40,7 +48,7 @@ export default function ButtonBar({modal, setModal, currentSection, setMonthChar
 						<span>{cal.amountOfDays}</span>
 					</div>
 				}
-				{monthChart &&
+				{current.monthChart &&
 					<div id="month">
 						<p>Month</p>
 						<span>{cal.monthInNum}</span>

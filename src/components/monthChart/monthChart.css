@@ -317,6 +317,14 @@ div#monthChart div#calendar div#dates div.row {
 			}
 
 
+div#monthChart h2#noPosts {
+	display: block;
+    font-family: "Raleway";
+    font-size: 2.5em;
+    color: var(--site-gray-lightest);
+    text-align: right;
+}
+
 div#monthChart div.log {
 	margin: -60px auto 0;
 }

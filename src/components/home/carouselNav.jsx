@@ -1,7 +1,7 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
 
-export default function CarouselNav({currentSection, setSection}) {
+export default function CarouselNav({current, setCurrent}) {
 
 	const opts = [
 		{name: "Groups", active: false, key: 0},
@@ -17,46 +17,83 @@ export default function CarouselNav({currentSection, setSection}) {
 	const list = React.useRef();
 
 	function moveLeft() {
-		let current = parseInt(getComputedStyle(list.current).left);
+		let currentt = parseInt(getComputedStyle(list.current).left);
 
-		if(current == "160") {
+		if(currentt == "160") {
 			return null;
 		} else {
 			setLeft();
-			setSection(currentSection - 1);
-			current = current + 80;
-			list.current.style.left = `${current}px`;
+			setCurrent({
+				...current,
+				section:current.section - 1,
+				scrollTo: null
+			});
+			currentt = currentt + 80;
+			list.current.style.left = `${currentt}px`;
 		}
 	}
 
 	function moveRight() {
-		let current = parseInt(getComputedStyle(list.current).left);
+		let currentt = parseInt(getComputedStyle(list.current).left);
 
-		if(current == "-160") {
+		if(currentt == "-160") {
 			return null;
 		} else {
 			setRight();
-			setSection(currentSection + 1);
+			setCurrent({
+				...current,
+				section:current.section + 1,
+				scrollTo: null
+			});
 			// console.log(current);
-			current = current - 80;
-			list.current.style.left = `${current}px`;	
+			currentt = currentt - 80;
+			list.current.style.left = `${currentt}px`;	
 		}
 	}
 
 	React.useEffect(()=> {
-		let num = currentSection + 1
+		let num = current.section + 1
 		opts[num].active = false;
-		opts[currentSection].active = true;
+		opts[current.section].active = true;
 		setOptions(opts);
+
+		setCurrent({
+			...current,
+			scrollTo: null,
+		})
 	}, [left])
 
 	React.useEffect(()=> {
-		let num = currentSection - 1;
+		let num = current.section - 1;
 		opts[num].active = false;
-		opts[currentSection].active = true;
+		opts[current.section].active = true;
 		setOptions(opts);
+
+		setCurrent({
+			...current,
+			scrollTo: null,
+		})
 	}, [right])
 
+	React.useEffect(()=> {
+
+		if(current.section == 0) {
+			list.current.style.left = '160px'
+		}
+
+		else if(current.section == 1) {
+			list.current.style.left = '80px';
+		}
+
+		else if(current.section == 3) {
+			list.current.style.left = '-80px';
+		}
+
+		else if(current.section == 4) {
+			list.current.style.left = '-160px';
+		}
+
+	}, [])
 
 	return (
 		<nav>

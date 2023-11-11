@@ -113,28 +113,31 @@ export function ManageConnections({setModal, setSocketMessage}) {
 	)
 }
 
-export default function SocialLog({active, setSocial}) {
+export default function SocialLog({active, current, setCurrent}) {
 
 	let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
-	let [modal, setModal] = React.useReducer(state => !state, false);
 	let isActive = active;
 
 	let updateLog = async() => {
 		let data = await accessAPI.pullSocialLog();
 		setLog(data);
-		// console.log(log);
 	} 
 
 	React.useEffect(()=> {
 		updateLog();
-		setSocial('true');
+		setCurrent({
+			...current,
+			social: true
+		})
 	}, [])
+
+	let noHeading = false;
 
 	return (
 		<div id="socialLog" className={isActive == 1 ? 'active' : 'not'}>
 
-			<Log data={log} userID={userID} />
+			<Log data={log} userID={userID} noHeading={noHeading} current={current} setCurrent={setCurrent}/>
 			
 		</div>
 	)
