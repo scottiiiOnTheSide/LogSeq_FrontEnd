@@ -4,8 +4,46 @@
 -----------------------------------------------------------------------------------------
 
 
-### 11. 10. 2023
+### 11. 11. 2023
 
+@1900 Issues fixed:
+			- scroll distance and section maintained once returning from a post
+			- user no longer recieves notif about their own comment on a their own post
+			- all posts in <Log>are in descending order
+
+Next:
+- put notif.id in socketMessage after recieving confirmation, so that it can be marked read
+  in the popUpNotif
+- content within textbox needs to be single string 
+  - how to preserve new lines
+
+and something is currently wrong with marking posts asRead...
+
+
+
+
+@1020 'option' created for error messages via <instant>
+
+@0800 
+****To Do . . . After
+		- work on algo, middleware, for managing tags:
+		   - creating, adding tags to posts - adding posts in tags' list
+
+@0745 removed manageTags middleware & tags model from backend . . . intend to replace with
+			'Groups' . . . 
+
+Thus, new algo needs to be ordained for 
+- creating tags
+- adding tags to post
+&
+- adding posts to tags
+
+This group model is also to be used for: User collections and Groups...
+
+For 1.0A, will only have tags - private and nonPrivate
+
+
+### 11. 10. 2023
 @2230 Proactive & retroactive posts via monthChart now working :D !
 there should REALLY be some indication as to whether a retro/pro post was made ...
 

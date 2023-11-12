@@ -202,6 +202,12 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if(socketMessage.type == 'markRead') {
 			makeNotif_markNotifRead(socketMessage);
 		}
+		else if(socketMessage.type == 'error') {
+			setActive({
+				state: true,
+				type: 1
+			});
+		}
 	}, [socketMessage]);
 
 	/**
@@ -255,8 +261,10 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				{(message.type == 'confirmation' && message.message == 'post') &&
 					<p>Post Uploaded !</p>
 				}
+				{message.type == 'error' &&
+					<p>{message.message}</p>
+				}
 						
-
 
 				{isActive.type == 3 &&
 					<ul id="options">
@@ -298,5 +306,12 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
  * message: 
  */
 
+/**
+ * For error alerts:
+ * setSocketMessage({
+ 	type: 'error',
+ 	message: 'exactly what needs to be communicated to user'
+ * })
+ */
 
 

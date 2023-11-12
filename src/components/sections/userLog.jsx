@@ -280,8 +280,16 @@ export default function UserLog({active, setModal, modal, setSocial, setCurrent,
 	 */
 	let updateLog = async() => {
 		let data = await accessAPI.pullUserLog();
+
+		// let reorder = [];
+        // for(let i = data.length - 1 ; i >= 0; i--) {
+        //   reorder.push(data[i]);
+        // }
+		// setLog(reorder);
+		// console.log(reorder);
+
 		setLog(data);
-		console.log(log);
+		console.log(data);
 	} 
 	React.useEffect(()=> {
 		updateLog();
