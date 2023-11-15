@@ -4,8 +4,51 @@
 -----------------------------------------------------------------------------------------
 
 
-### 11. 11. 2023
+### 11. 15. 2023
 
+@1500 will consider the scrollToComment issue 'closed' for now. May be able tp fix eventually
+		  with CSS cleanup
+
+@1405 scrollToComment does actually work now - but section#POST moving still an issue...
+
+@1045 section#POST moves up by a tiny bit when scrollToComment is active
+scrollToComment still not working however...
+
+
+### 11. 13. 2023
+@1725 need <Post> to reRender after initial load, so that it can find the comment and scrollTo...
+
+@1425 commentCount function to be active for 1.0A (old posts dont have commentCount field)
+
+@0655
+****To Do
+		- work on issue with frontEnd comment count ✅
+		- work on commentCount issue ✅
+		- tagged and comment notifs 'interact' to take user to post ✅
+		- content within textbox for comments + postBody needs to be single string WHILE finding
+			way to preserve newlines \nl 
+			- could reuse bodyParse
+
+@0640 Marking notif (atleast about comments) as read works, but the unReadcount doesnt update
+      upon doing so ....
+      I may just have to accept this as an 'up in the air' issue for now...
+      it isn't experience breaking...
+
+
+
+### 11. 12. 2023
+@1350 api call for post isn't returning the object sent from backend - the ID. just keeps sending
+		  true...
+		  need id from successful notif to be passed to <instant> via socketMessage...
+
+@1320
+interactionList now updates immediately after marking a notif as read 
+
+****'interact' option for tag alerts and comments to navigate to post (import navigate into <Instant>)
+		!? scroll distance lost once selected
+		!? backButton on post specifically returns user home -> UI concern???
+
+### 11. 11. 2023
 @1900 Issues fixed:
 			- scroll distance and section maintained once returning from a post
 			- user no longer recieves notif about their own comment on a their own post

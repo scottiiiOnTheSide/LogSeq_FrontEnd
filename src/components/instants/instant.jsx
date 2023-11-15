@@ -1,13 +1,15 @@
 /* * * V I T A L S * * */
 import React, { useState, useReducer, useEffect } from 'react';
 import useWebSocket, {ReadyState} from 'react-use-websocket';
+import {useNavigate} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
 import './notifs.css';
 
 const accessAPI = APIaccess();
 
-export default function Instants({sendMessage, socketMessage, setSocketMessage, setActive, isActive, accessID, setAccessID}) {
+export default function Instants({sendMessage, socketMessage, setSocketMessage, setActive, isActive, accessID, setAccessID, getUnreadCount}) {
 
+	const navigate = useNavigate();
 	let userID = sessionStorage.getItem('userID');
 	let username = sessionStorage.getItem('userName');
 	let activity = isActive;
@@ -66,6 +68,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 					type: 1
 				})
 			}
+			notif._id = data;
 		})
 
 		let pause = setTimeout(()=> {
@@ -74,9 +77,14 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	}
 
 	let makeNotif_markNotifRead = async(notif) => {
-		let request = await accessAPI.newInteraction(notif).then((data)=> {
-			setSocketMessage({message: 'notif marked as read'});
-		})
+		console.log(notif);
+		let request = await accessAPI.newInteraction(notif);
+
+		if(request) {
+			setSocketMessage({message: 'mark read'});
+			console.log('something')
+		}
+		getUnreadCount();
 	}
 
 	let makeNotif_taggedPost = async(notif) => {
@@ -91,6 +99,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 					state: true,
 					type: 1
 				})
+				notif._id = data;
 			}
 		})
 
@@ -101,7 +110,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 
 
 
-	let interact = (arg) => {
+	let interact = async(arg) => {
 
 		/* Sets socketMessage to accept connection request */
 		if(arg == 'accept') {
@@ -145,15 +154,25 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 
 		} else if(arg == 'markRead') {
 
-			//a popUp need not be made,
-			//but makes sure the notif count updates
-			setSocketMessage({
-				message: 'a notif marked read'
-			})
-		}
-		//else if (socketMessage.type == 'comment' || socketMessage.type == 'tagging') {
+			let notif = {
+				type: 'markRead',
+				notifID: accessID.notifID,
+				userID: userID,
+			};
+			makeNotif_markNotifRead(notif);
 
-		// }
+		} else if(arg == 'viewPost') {
+
+			let post = await accessAPI.getBlogPost(accessID.postURL);
+			setAccessID({
+				commentID: accessID.commentID
+			})
+			setTimeout(()=> {
+				navigate(`/post/${accessID.postURL}`, {
+						state: {post: post}
+					})
+			}, 300)
+		}
 	}
 
 	/**
@@ -175,12 +194,12 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}
 		else if(socketMessage.type == 'comment') {
 
-			if(socketMessage.message == 'initial') {
+			if(socketMessage.message == 'initial' || socketMessage.message == 'response') {
 				makeNotif_sendCommentNotif(socketMessage);
-
-			}else if(socketMessage.message == 'response-recieved') {
-
+			} else {
+				return
 			}
+
 		}
 		else if(socketMessage.type == 'tagging') {
 			if(socketMessage.message == 'sent') {
@@ -210,21 +229,13 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}
 	}, [socketMessage]);
 
+	
+	const popUpNotif = React.useRef();
+
 	/**
 	 * Returns specific popUp notification type based on
 	 * message recieved from webSocket
 	 */
-	const popUpNotif = React.useRef();
-	// React.useEffect(()=> {
-	// 	if(isActive == false) {
-	// 		let delay = setTimeout(()=> {
-
-	// 		})
-	// 	}
-	// }, [isActive])
-
-	// console.log(isActive)
-
 	let returnPopUpType = (message) => {
 
 		return (
@@ -236,6 +247,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 				{(message.type == 'comment' && message.message == 'initial-recieved') &&
 					<p>{socketMessage.senderUsername} left a comment on "{socketMessage.postTitle}"</p>
+				}
+				{(message.type == 'comment' && message.message == 'response-recieved') &&
+					<p>{socketMessage.senderUsername} responded to your comment on "{socketMessage.postTitle}"</p>
 				}
 				{(message.type == 'request' && message.message == 'initial') &&
 					<p>{message.senderUsername} has sent a connection request!</p>
@@ -276,8 +290,19 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 				{isActive.type == 2 &&
 					<ul id="options">
-						<li><button className="buttonDefault" onClick={()=> {setActive({type: null, state: false})}}>Close</button></li>
-						<li><button className="buttonDefault">Interact</button></li> 
+						<li><button className="buttonDefault" onClick={()=> {
+																setActive({type: null, state: false});
+																if(accessID.notifID) {
+																	interact('markRead');	
+																}
+															}}>Close</button></li>
+						<li><button className="buttonDefault" onClick={()=> {
+																setActive({type: null, state: false});
+																if(accessID.postURL) {
+																	interact('viewPost');	
+																	console.log(accessID.postID)
+																}
+															}}>Interact</button></li> 
 						{/*has button who's function changes based on */}
 					</ul>
 				}
@@ -289,7 +314,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			</div>	
 		)	
 	}
-
+	// console.log(accessID)
 	// console.log(socketMessage);
 	
 	return (

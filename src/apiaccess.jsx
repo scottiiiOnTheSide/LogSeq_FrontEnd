@@ -259,6 +259,22 @@ export default function APIaccess () {
 			
 		},
 
+		async updateCommentCount(postID, count) {
+
+			let request = await fetch(`${apiAddr}/posts/comment/updateCount/?postID=${postID}&count=${count}`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+		        		'Content-length': 0,
+		        		'Accept': 'application/json',
+		        		'Host': apiAddr,
+		        		'auth-token': userKey,
+					}
+				}).then(data => data.json());
+
+			return request;
+		},
+
 		async getInteractions(arg) {
 
 			if(arg == 'count') {

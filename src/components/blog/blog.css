@@ -1,15 +1,25 @@
 
 section#POST {
-	position: relative; 
+	position: fixed;
 /*	may change above rule...*/
-
 	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+/*	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
+}
+
+section#POST header {
+/*	padding: 10px 0 14px;*/
 }
 
 article {
-	position: relative;
-	margin-top: 65px;
-	height: calc(100vh - 144px);
+	width: 100%;
+	position: fixed;
+	padding-top: 70px;
+	height: calc(100vh - 140px);
 	overflow-y: scroll;
 }
 
@@ -64,12 +74,8 @@ article div#details ul#options li {
 
 article div#mainContent {
 	position: relative;
+	padding-bottom: 160px;
 }
-
-article div#commentsWrapper {
-	position: relative;
-}
-
 
 
 
@@ -89,7 +95,8 @@ article div#commentsWrapper {
 /* * * C O M M E N T S * * */
 
 div#commentsWrapper {
-	margin-top: 180px;
+	position: relative;
+/*	margin-top: 180px;*/
 }
 
 
@@ -110,7 +117,7 @@ div#optionsBar {
 	width: 100%;
 	position: fixed;
 	bottom: -10px;
-	background-color: transparent;
+	background-color: white;
 	z-index: 10;
 }
 
@@ -119,7 +126,7 @@ div#optionsBar button#optionsToggle {
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    padding: 24px 0;
+    padding: 20px 0;
 }
 
 

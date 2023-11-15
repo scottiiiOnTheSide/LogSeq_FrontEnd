@@ -20,6 +20,8 @@ section#HOME {
 
 		border-bottom: 2px solid var(--site-gray-mid);
 		padding-bottom: 14px;
+		background-color: white;
+		z-index: 20;
 	}
 
 	header div#thePresent {

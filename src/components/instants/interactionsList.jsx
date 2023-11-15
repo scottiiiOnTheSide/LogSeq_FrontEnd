@@ -55,7 +55,9 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 				message: 'accept'
 			};
 			setSocketMessage(notif);
+
 		} else if(arg == 'ignore') {
+
 			let notif = {
 				type: 'request',
 				recipients: [userID],
@@ -64,26 +66,20 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 				message: 'ignore'
 			};
 			setSocketMessage(notif);
+
 		} else if(arg == 'markRead') {
-			// (async ()=> {
-			// 	console.log(ID);
-			// 	let notif = {
-			// 		type: 'markRead',
-			// 		notifID: ID,
-			// 		userID: userID
-			// 	};
-			// 	let request = await accessAPI.newInteraction(notif);
-			// 	if(request) {
-			// 		console.log(request);
-			// 		setSocketMessage({message: 'notif marked read'});
-			// 	}
-			// })();
+
 				let notif = {
 					type: 'markRead',
 					notifID: ID,
-					userID: userID
+					userID: userID,
+					senderUsername: username
 				};
 				setSocketMessage(notif);
+
+				let delay = setTimeout(()=> {
+					updateList()
+				}, 200)
 		}
 	}
 
@@ -118,7 +114,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 					<div className="options">
 						<button className="buttonDefault">See Comment</button>
 						<button className="buttonDefault"
-								onClick={()=> {interact('markRead', notif._id )}}>Mark Read</button>
+								onClick={()=> {interact('markRead', notif._id, username )}}>Mark Read</button>
 					</div>
 				}
 				{notif.type == 'tagging' &&
@@ -139,7 +135,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 			   </li>
 	}
 
-	console.log(notifs[0])
+	// console.log(notifs[0])
 
 	return (
 		<div id="interactionsList"> 

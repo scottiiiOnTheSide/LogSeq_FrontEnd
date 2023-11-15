@@ -98,7 +98,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 				setTimeout(()=> {
 					navigate(`/post/${post._id}`, {
 						state: {post: post}
-					})
+					});
 				}, 575)
 			}}>
 									
@@ -131,8 +131,6 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 	React.useEffect(()=> {
 		if(isMounted.current) {
 			let logRefC = logRef.current;
-			console.log(logRefC)
-			console.log(logRefC.children)
 
 			if(current.scrollTo) {
 				if(current.monthChart == true) {

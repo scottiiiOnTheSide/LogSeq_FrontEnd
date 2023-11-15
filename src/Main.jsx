@@ -63,6 +63,7 @@ function Home({
   setAccessID, 
   unreadCount, 
   setUnreadCount,
+  getUnreadCount,
   current,
   setCurrent,
   cal,
@@ -143,6 +144,7 @@ function Home({
             setActive={setActive}
             accessID={accessID}
             setAccessID={setAccessID}
+            getUnreadCount={getUnreadCount}
           />
         
     </section>
@@ -238,13 +240,28 @@ export default function Main() {
           senderUsername: data.senderUsername,
           type: 'comment',
           message: 'initial-recieved',
-          postTitle: data.postTitle
+          postTitle: data.postTitle,
         });
         setActive({
           type: 2,
           state: true
         })
-        setAccessID({ postURL: data.postURL });
+        setAccessID({ postURL: data.postURL, notifID: data._id, commentID: data.details });
+        console.log(data);
+      }
+      else if(data.type == 'comment' && data.message == 'response-recieved') {
+        setSocketMessage({
+          senderUsername: data.senderUsername,
+          type: 'comment',
+          message: 'response-recieved',
+          postTitle: data.postTitle,
+        });
+        setActive({
+          type: 2,
+          state: true
+        })
+        setAccessID({ postURL: data.postURL, notifID: data._id, commentID: data.details });
+        console.log(data);
       }
       else if(data.type == 'tagging' && data.message == 'recieved') {
         setSocketMessage(data)
@@ -252,7 +269,7 @@ export default function Main() {
           type: 2,
           state: true
         })
-        setAccessID({ postURL: data.postURL });
+        setAccessID({ postURL: data.url, notifID: data._id });
       }
     }
   })
@@ -315,6 +332,7 @@ export default function Main() {
                   setAccessID={setAccessID}
                   unreadCount={unreadCount}
                   setUnreadCount={setUnreadCount}
+                  getUnreadCount={getUnreadCount}
                   lastMessage={lastMessage}
                   // socket & notif stuff
                   cal={cal}
@@ -344,6 +362,7 @@ export default function Main() {
                   setAccessID={setAccessID}
                   unreadCount={unreadCount}
                   setUnreadCount={setUnreadCount}
+                  getUnreadCount={getUnreadCount}
                   lastMessage={lastMessage}
                   // socket & notif stuff
                   cal={cal}
@@ -370,6 +389,7 @@ export default function Main() {
                   setAccessID={setAccessID}
                   unreadCount={unreadCount}
                   setUnreadCount={setUnreadCount}
+                  getUnreadCount={getUnreadCount}
                   lastMessage={lastMessage}
                   // socket stuff
                   selectedDate={selectedDate}

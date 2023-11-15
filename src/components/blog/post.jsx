@@ -25,7 +25,8 @@ export default function Post({
 	accessID, 
 	setAccessID,
 	unreadCount,
-	setUnreadCount
+	setUnreadCount,
+	getUnreadCount
 }) {
 
 	/**
@@ -65,6 +66,27 @@ export default function Post({
 				}
 			})
 		)
+		/*
+			recursively count all comments, 
+			send count to backEnd to update post's commentCount
+
+			uncomment with 1.0A
+		*/
+		// let cmntcount = 0;
+		// let countComments = (comments) => {
+		// 	for(let cmnt of comments) {
+		// 		cmntcount++;
+		// 		countComments(cmnt.replies)
+		// 	}
+		// 	return cmntcount;
+		// }
+		// await accessAPI.updateCommentCount(id, cmntcount).then((res) => {
+		// 	setPostData({
+		// 		...postData,
+		// 		commentCount: cmntcount
+		// 	})
+		// })
+		// console.log(countComments(cmnts));
 		setComments(cmnts);
 	};
 	let getPost = async() => {
@@ -73,10 +95,7 @@ export default function Post({
 		setTimeout(()=> {
 			getComments(postData.comments);
 		}, 500)
-	}
-	if(!postData) {
-		getPost();
-	}
+	};
 	/*** updates comments on initial load and page refresh ***/
 	React.useEffect(()=> {
 		getComments(postData.comments);
@@ -158,38 +177,47 @@ export default function Post({
 				senderID: userID,
 				senderUsername: userName,
 				postURL: postID,
-				message: 'initial',
 				recipients: [postData.owner],
-				postTitle: postData.title
+				postTitle: postData.title,
 		}
 
 		if(access.type == 'initial') {
 
 			body.parentID = postID;
+			notif.message = 'initial';
 
 		} else if (access.type == 'response') {
 
 			body.parentID = access.commentID;
+			if(access.commentOwner == userID) {
+				//removes post owner from notifList if user responds to their own comment
+				notif.recipients.shift(); 
+			}
 			if(postData.owner != access.commentOwner) {
 				notif.recipients.push(access.commentOwner);
 			}
+			notif.message = 'response';
 		}
-		let request = await accessAPI.postComment(access.type, postID, body);
 
+		let notifID;
+		let request = await accessAPI.postComment(access.type, postID, body).then(res => {
+			console.log(res)
+			notif.details = res;
+			setSocketMessage(notif);
+			console.log(notif)
+			getComments();
+		})
+
+		console.log(request);
 		toggleComment();
 		toggleOptions();
-
-		if(request == true) {
-			setSocketMessage(notif);
-			getComments();
-		}
 	}
 
 	let createComment = (comment) => {
 
 		let date = `${comment.postedOn_month}. ${comment.postedOn_day}. ${comment.postedOn_year}`;
 		let element = 
-			<li className="comment" key={comment._id}>
+			<li className="comment" key={comment._id} id={comment._id}>
 				
 				<h3>{comment.ownerUsername} @ {date}</h3>
 				<p>{comment.content}</p>
@@ -219,8 +247,26 @@ export default function Post({
 		return element;
 	}
 
-	// console.log(postData._id)
-	// console.log(comments);
+
+	/*
+		If user visits page via notif concerning comment
+	*/
+
+	let commentsRef = React.useRef()
+	let commentsCurrent = commentsRef.current;
+
+	React.useEffect(()=> {
+		if(commentsCurrent) {
+			if(accessID.commentID) {
+				let comment = document.getElementById(accessID.commentID);
+				console.log(comment);
+				comment.scrollIntoView({behavior: "smooth"});
+				/* can add class to comment to make it stand out...*/
+			}
+		}	
+	}, [comments, commentsCurrent])
+
+	// console.log(accessID)
 
 	return (
 		<section id="POST">
@@ -290,7 +336,7 @@ export default function Post({
 				<div id="commentsWrapper">
 					<h2>Comments</h2>
 
-					<ul id="commentBox">
+					<ul id="commentBox" ref={commentsRef}>
 						{comments.map(comment => (
 							createComment(comment)
 						))}
@@ -307,9 +353,10 @@ export default function Post({
 						<li>
 							<button className="buttonDefault" onClick={()=> {
 								toggleComment(); 
+								console.log(comments.length)
 								setAccess({
 									type: 'initial',
-									commentNumber: `${postData.comments.length + 1}`
+									commentNumber: `${comments.length + 1}`
 								})
 
 							}}>Comment</button>
@@ -354,6 +401,7 @@ export default function Post({
                 setActive={setActive}
                 accessID={accessID}
                 setAccessID={setAccessID}
+                getUnreadCount={getUnreadCount}
 			/>
 		</section>
 	)
