@@ -123,7 +123,6 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 	let logRefC = logRef.current;
 	let isMounted = React.useRef(false);
 
-
 	/* 
 		Tracks position of selected post to return to 
 	    after viewing it in <Post>

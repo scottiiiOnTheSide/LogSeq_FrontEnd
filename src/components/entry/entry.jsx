@@ -98,10 +98,12 @@ function UserLogIn({accessapi, setUserID}) {
 		let user = await login({
 			emailAddr: formData.emailAddr,
 			password: formData.password
+		}).then(()=> {
+			navigate('/home');
 		})
 
 		// setUserID(user.userID);
-		navigate('/home');
+		
 	}
 
 	const handleChange = (event) => {

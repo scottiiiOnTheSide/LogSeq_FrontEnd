@@ -178,7 +178,7 @@ export default function Post({
 				senderUsername: userName,
 				postURL: postID,
 				recipients: [postData.owner],
-				postTitle: postData.title,
+				details: JSON.stringify({postTitle: postData.title})
 		}
 
 		if(access.type == 'initial') {
@@ -202,7 +202,10 @@ export default function Post({
 		let notifID;
 		let request = await accessAPI.postComment(access.type, postID, body).then(res => {
 			console.log(res)
-			notif.details = res;
+			notif.details = JSON.stringify({
+				postTitle: postData.title,
+				commentID: res
+			});
 			setSocketMessage(notif);
 			console.log(notif)
 			getComments();

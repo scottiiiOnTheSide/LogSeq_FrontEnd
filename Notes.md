@@ -3,9 +3,30 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 11. 18. 2023
+
+@2350 postConfirmation keeps popping up after successful submit - fix
+
+@2340 fixed concerning newLines in <CreatePost> 
+		  Issue was the newLines would cause repeated entry of the same textArea, with new content
+		  now update to textarea updates content in at respective index
+
+newLines aren't maintained from submission to display (both comments and post)... will work on
+
+@2110 userLog and unreadNotif count retrieved upon initial login
+have to get the userKey with every api call - which is how it was done in the previous ver.
+
+
+### 11. 17. 2023
+@1620 perhaps in a preStep to 1.0A, after creating new accounts and data, 
+-go to post from interactionsList- can be added.
+
+As of now, new notifs will have change, but not previous. 
+for notifs, postTitle, commentID is kept in notif.details
+anything placed in details is JSON object
+
 
 ### 11. 15. 2023
-
 @1500 will consider the scrollToComment issue 'closed' for now. May be able tp fix eventually
 		  with CSS cleanup
 

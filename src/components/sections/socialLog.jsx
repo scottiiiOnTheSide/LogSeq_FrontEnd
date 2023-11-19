@@ -10,7 +10,7 @@ let accessAPI = APIaccess();
 /**
  * Exported to Main.jsx
  */
-export function ManageConnections({setModal, setSocketMessage}) {
+export function ManageConnections({setCurrent, current, setSocketMessage}) {
 
 	const userID = sessionStorage.getItem('userID'),
 		  userName = sessionStorage.getItem('userName');
@@ -108,7 +108,12 @@ export function ManageConnections({setModal, setSocketMessage}) {
 					<button onClick={()=> {toggleResults(); setSearchFocus()}}>Close Search</button>
 				</div>
 			}
-			<button id="exit" className={"buttonDefault"}onClick={setModal}>Exit</button>
+			<button id="exit" className={"buttonDefault"}onClick={()=> {
+				setCurrent({
+					...current,
+					modal: false
+				})
+			}}>Exit</button>
 		</div>
 	)
 }

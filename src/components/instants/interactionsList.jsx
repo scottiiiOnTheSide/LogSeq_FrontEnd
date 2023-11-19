@@ -1,5 +1,6 @@
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
+import {useNavigate} from 'react-router-dom';
 
 import '../../components/home/home.css';
 import './notifs.css';
@@ -7,11 +8,12 @@ import './notifs.css';
 let accessAPI = APIaccess();
 
 
-export default function InteractionsList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage }) {
+export default function InteractionsList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage, accessID, setAccessID }) {
 
 	let [notifs, setNotifs] = React.useState([]);
 	let username = sessionStorage.getItem('userName');
 	let userID = sessionStorage.getItem('userID');
+	let navigate = useNavigate();
 
 	let updateList = async() => {
 		let data = await accessAPI.getInteractions(); 
@@ -38,7 +40,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 	}, [socketMessage])
 
 
-	let interact = (arg, ID, username, postID) => {
+	let interact = (arg, ID, username, postID, notif) => {
 
 		/* 
 			set middle two arguments as 'undefined' when using
@@ -80,14 +82,37 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 				let delay = setTimeout(()=> {
 					updateList()
 				}, 200)
+		} else if(arg == 'viewPost') {
+
+			(async ()=> {
+				let post = await accessAPI.getBlogPost(notif.url);
+				let details = JSON.parse(notif.details);
+
+				if(notif.commentID)
+				setAccessID({
+					commentID: details.commentID
+				})
+				setTimeout(()=> {
+					navigate(`/post/${accessID.postURL}`, {
+							state: {post: post}
+						})
+				}, 300)
+			})();
+		
 		}
+
 	}
 
 
 	let returnNotifType = (notif) => {
 
+		let details
+		// if(notif.details) {
+		// 	details = JSON.parse(notif.details);	
+		// }
+		
 		// save notif._id as key
-		return <li className="notif" key={notif._id}>
+		return <li className="notif" key={notif._id} onClick={()=> {console.log(notif)}}>
 				{notif.isRead == false &&
 					<span className="unread">!</span>
 				}
@@ -101,13 +126,16 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 					<p>You and {notif.senderUsername} are now connected!</p>
 				}
 				{(notif.type == 'comment' && notif.message == 'initial') &&
-					<p>{notif.senderUsername} left a comment on your post {notif.postTitle}</p>
+					// <p>{notif.senderUsername} left a comment on your post {details.postTitle}</p>
+					<p>{notif.senderUsername} left a comment on your post </p>
 				}
 				{(notif.type == 'comment' && notif.message == 'response') &&
-					<p>{notif.senderUsername} responded to your comment on {notif.postTitle}</p>
+					// <p>{notif.senderUsername} responded to your comment on {details.postTitle}</p>
+					<p>{notif.senderUsername} responded to your comment on</p>
 				}
 				{(notif.type == 'tagging' && notif.message == 'recieved') &&
-					<p>{notif.senderUsername} tagged you in a post {notif.postTitle}</p>
+					// <p>{notif.senderUsername} tagged you in a post {details.postTitle}</p>
+					<p>{notif.senderUsername} tagged you in a post</p>
 				}
 
 				{notif.type == 'comment' && 

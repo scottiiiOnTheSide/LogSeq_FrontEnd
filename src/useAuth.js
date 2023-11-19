@@ -28,14 +28,8 @@ function useAuth() {
 
 		async login(loginCredentials) {
 
-				await APIaccess().logInUser(loginCredentials).then((data) => {
-					sessionStorage.setItem('userKey', data.userToken);
-					sessionStorage.setItem('userID', data.userID);
-					sessionStorage.setItem('userName', data.userName);
-				});
-
+				await APIaccess().logInUser(loginCredentials);
 				setAuth(true);
-
 				return true; //confirms login successful and user details stored
 		},
 		logout() {

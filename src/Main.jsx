@@ -71,14 +71,7 @@ function Home({
   set_selectedDate
 }) {
   const [notifList, setNotifList] = React.useReducer(state => !state, false);
-  
-  const [modal, setModal] = React.useReducer(state => !state, false);
   const isPost = false;
-
-  const [social, setSocial] = React.useState(''); /* True, False & Group */
-  const [currentSection, setSection] = React.useState(2); //default setting
-  const [monthChart, setMonthChart] = React.useReducer(state => !state, false);
-
   const [dateInView, set_dateInView] = React.useState({
     month: null,
     day: null,
@@ -102,25 +95,30 @@ function Home({
             unreadCount={unreadCount}
             setUnreadCount={setUnreadCount}
             setSocketMessage={setSocketMessage}
-            socketMessage={socketMessage}/>
+            socketMessage={socketMessage}
+            accessID={accessID}
+            setAccessID={setAccessID}/>
         }
 
         <Outlet />
 
-        <SectionsWrapper current={current} setCurrent={setCurrent} setModal={setModal} modal={modal} setSocial={setSocial}/>
+        <SectionsWrapper current={current} setCurrent={setCurrent} />
 
-        {(modal && currentSection == 2) &&
-          <CreatePost setModal={setModal} 
+        {(current.modal && current.section == 2) &&
+          <CreatePost setCurrent={setCurrent}
+                      current={current} 
                       setSocketMessage={setSocketMessage} 
                       selectedDate={selectedDate}/>
         }
-        {(modal && currentSection == 1) &&
-          <ManageConnections setModal={setModal} setSocketMessage={setSocketMessage}/>
+        {(current.modal && current.section == 1) &&
+          <ManageConnections current={current} 
+                             setCurrent={setCurrent} 
+                             setSocketMessage={setSocketMessage}/>
         }
 
         <ButtonBar cal={cal} 
-                   modal={modal} 
-                   setModal={setModal} 
+                   current={current} 
+                   setCurrent={setCurrent}
                    dateInView={dateInView}
                    set_dateInView={set_dateInView}
                    current={current}
@@ -166,6 +164,7 @@ export default function Main() {
    * A n d
    * N o t i f i c a t i o n s
    */
+  const { authed } = useAuth();
   let userID = sessionStorage.getItem('userID');
   const [socketURL, setSocketURL] = React.useState(``);
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketURL);
@@ -177,17 +176,36 @@ export default function Main() {
   })
   const [unreadCount, setUnreadCount] = React.useState('');  
 
-  const cal = Calendar();
-
+  /**
+   * Fetches unread count of interactions on initial load
+   * and when new interactions occur
+   */
+  let getUnreadCount = async() => {
+    let count = await accessAPI.getInteractions('count');
+    if(count < 10) {
+      count = '0' + count;
+    } else if (count > 99) {
+      count = '99';
+    }
+    setUnreadCount(count);
+  }
   /**
    * Connects to webSocket server upon verifying user log in
+   * & gets unreadNotif count
    */
-  const { authed } = useAuth();
   React.useEffect(()=> {
     if(authed == true) {
       setSocketURL(`ws://192.168.1.176:3333/?${userID}`);
+      getUnreadCount();
     }
   }, [authed])
+  React.useEffect(()=> {
+    getUnreadCount();
+  }, [socketMessage])
+
+
+  
+  
 
   // could possibly implement reconnect redundancy here
   React.useEffect(() => { 
@@ -275,28 +293,13 @@ export default function Main() {
   })
 
 
-  /**
-   * Fetches unread count of interactions on initial load
-   * and when new interactions occur
-   */
-  let getUnreadCount = async() => {
-    let count = await accessAPI.getInteractions('count');
-    if(count < 10) {
-      count = '0' + count;
-    } else if (count > 99) {
-      count = '99';
-    }
-    setUnreadCount(count);
-  }
-  React.useEffect(()=> {
-    getUnreadCount();
-  }, [])
-  React.useEffect(()=> {
-    getUnreadCount();
-  }, [socketMessage])
+  
 
 
 
+
+
+  const cal = Calendar();
   const [current, setCurrent] = React.useState({
     section: 2, //0, 1, 2, 3, 4
     social: false, //true, false or social

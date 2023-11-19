@@ -1,7 +1,7 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
 
-export default function ButtonBar({modal, setModal, current, setCurrent, dateInView, set_dateInView, cal}) {
+export default function ButtonBar({current, setCurrent, dateInView, set_dateInView, cal}) {
 
 	let [functionName, setFuncName] = React.useState('Create Post');
 
@@ -15,7 +15,7 @@ export default function ButtonBar({modal, setModal, current, setCurrent, dateInV
 
 	return (
 		<div id="buttonBar">
-			<button id="main" onClick={setModal}>{functionName}</button>
+			<button id="main" onClick={()=> {setCurrent({...current, modal: true})}}>{functionName}</button>
 
 			<button id="monthChartToggle" onClick={()=> {
 				if(current.monthChart) {

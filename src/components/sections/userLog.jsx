@@ -3,7 +3,7 @@ import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import './sections.css';
-
+import useAuth from "../../useAuth";
 let accessAPI = APIaccess();
 
 
@@ -65,7 +65,7 @@ function DropSelect({tagged, setTagged}) {
 }
 
 
-export function CreatePost({setModal, setSocketMessage, selectedDate}) {
+export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate}) {
 
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
@@ -73,7 +73,7 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 	const [contentCount, setContentCount] = React.useState([0]);
 	const [postContent, setPostContent] = React.useState([]);
 	let count = 0;
-
+	// console.log(postContent);
 	const handleChange = (event) => {
 
 		if(event.target.name == 'tags') {
@@ -95,15 +95,48 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 			])
 		} 
 		else if(event.target.name == 'content') {
-			setPostContent([
-				...postContent,
-				{ 
-					content: event.target.value,
-					type: "text", 
-					index: event.target.dataset.index 
 
-				}		
-			])
+			let copy;
+			for(let i = 0; i < postContent.length; i++) {
+				if(postContent[i].index == event.target.dataset.index) {
+					copy = true;
+				}
+			}
+
+			if(event.target.value == '') {
+				return
+			} else if (copy == true) {
+				if(postContent.length == 1) {
+					setPostContent([
+						{ 
+							content: event.target.value,
+							type: "text", 
+							index: event.target.dataset.index 
+						}		
+					])
+				} else {
+					let _postContent = JSON.parse(JSON.stringify(postContent));
+					_postContent.pop();
+					setPostContent([
+						..._postContent,
+						{
+							content: event.target.value,
+							type: "text", 
+							index: event.target.dataset.index
+						}
+					])
+				}
+			} else {
+				setPostContent([
+					...postContent,
+					{ 
+						content: event.target.value,
+						type: "text", 
+						index: event.target.dataset.index 
+
+					}		
+				])
+			}
 		} 
 		else {
 			setFormData({
@@ -115,14 +148,20 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 
 	const handleSubmit = async(event) => {
 		event.preventDefault();
+		console.log(postContent)
 
 		let submission = new FormData();
 		submission.append('title', formData.title)
 		submission.append('tags', formData.tags)
 		for(let i=0; i < postContent.length; i++){
 			if(postContent[i].type == 'text') {
-				let content = postContent[i].content;
-				submission.append(`${postContent[i].index}`, content)
+				if(postContent[i].content === '') {
+					return null;
+				} else {
+					let content = postContent[i].content;
+					submission.append(`${postContent[i].index}`, content)
+				}
+				
 			} else if(postContent[i].type == 'image') {
 				let content = postContent[i].content;
 				submission.append(`${postContent[i].index}`, content)
@@ -137,47 +176,51 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 		} else {
 			submission.append('usePostedByDate', true);
 		}	
-			console.log(submission);
+		
+		console.log(submission);
 
-			let submit = await accessAPI.createPost(submission);
+		let submit = await accessAPI.createPost(submission);
 
-			/*
-				do something on confirmation
-			*/
-			if(submit.confirm == true) {
-				console.log("Post submission successful");
-				setModal(); //closes the createPost component - should change name within component
+		/*
+			do something on confirmation
+		*/
+		if(submit.confirm == true) {
+			console.log("Post submission successful");
+			console.log(submit);
+			setCurrent({
+				...current,
+				modal: false
+		}) //closes the createPost component - should change name within component
 
-				/**
-				 * 10. 27. 2023
-				 * setSocketMessage here with info for making notif for tagged users
-				 */
-				if(tagged.some(user => user.selected == true)) {
+		/**
+		 * 10. 27. 2023
+		 * setSocketMessage here with info for making notif for tagged users
+		 */
+		if(tagged.some(user => user.selected == true)) {
 
-					let recips = tagged.filter(user => user.selected == true).map(user => {return user.id});
+			let recips = tagged.filter(user => user.selected == true).map(user => {return user.id});
 
-					setSocketMessage({
-						type: 'tagging',
-						isRead: false,
-						senderID: userID,
-						senderUsername: username,
-						url: submit.postURL,
-						message: 'sent',
-						postTitle: submit.postTitle,
-						recipients: recips
-					})
+			setSocketMessage({
+				type: 'tagging',
+				isRead: false,
+				senderID: userID,
+				senderUsername: username,
+				url: submit.postURL,
+				message: 'sent',
+				recipients: recips,
+				details: JSON.stringify({postTitle: submit.postTitle})
+			})
 
-				} else {
-					setSocketMessage({
-						type: 'confirmation',
-						message: 'post'
-					})
-				}
-
-			} else if(submit == false) {
-				console.log('Issue with post submission');
-			}
+		} else {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'post'
+			})
 		}
+		} else if(submit.confirm == false) {
+			console.log('Issue with post submission');
+		}
+	}
 
 
 	const newCombo = (e) => {
@@ -187,6 +230,7 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 			count++
 		])
 	}
+	// console.log(postContent)
 	const textareaImageAdd = (index) => {
 
 		let element = <fieldset key={index} className="textareaImageAdd">
@@ -196,8 +240,12 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 				onBlur={handleChange}
 				data-index={index}
 				rows="10"
-				cols="30">
-			</textarea>
+				cols="30"
+				/>
+				{/*
+					onBlur - if any object in postContent has same index as this.index,
+					remove it, add this one
+				*/}
 			<input
 				id="addImage" 
 				onChange={handleChange} 
@@ -220,23 +268,7 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 		getConnections();
 	}, []);
 
-	const [tagged, setTagged] = React.useState([
-		{
-			userName: 'One',
-			userID: 123,
-			selected: false
-		},
-		{
-			userName: 'Two',
-			userID: 456,
-			selected: false
-		},
-		{
-			userName: 'Three',
-			userID: 789,
-			selected: false
-		},
-	])
+	const [tagged, setTagged] = React.useState([])
 
 	return (
 		<div id="createPost">
@@ -255,7 +287,12 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 
 					<div id="options">
 						<button type="submit">Submit</button>
-						<button onClick={setModal}>Close</button>
+						<button onClick={()=> {
+							setCurrent({
+								...current,
+								modal: false
+							})
+						}}>Close</button>
 					</div>
 				</fieldset>
 			</form>
@@ -266,7 +303,6 @@ export function CreatePost({setModal, setSocketMessage, selectedDate}) {
 
 export default function UserLog({active, setModal, modal, setSocial, setCurrent, current}) {
 
-	console.log(active);
 	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
 	let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
@@ -290,7 +326,7 @@ export default function UserLog({active, setModal, modal, setSocial, setCurrent,
 	}, [])
 	React.useEffect(()=> {
 		updateLog();
-	}, [modal])
+	}, [current.modal])
 
 
 	/* change userLog class based on state from Home component in Main.jsx */

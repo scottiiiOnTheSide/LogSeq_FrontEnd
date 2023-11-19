@@ -122,13 +122,13 @@ export default function SectionsWrapper({current, setCurrent, setModal, modal, s
 						 setSocial={setSocial}/>
 			}
 			{panes.macros &&
-				<MacrosList active={active} modal={modal} setModal={setModal}/>
+				<MacrosList active={active} />
 			}
 			{panes.groups &&
-				<GroupsList active={active} modal={modal} setModal={setModal}/>
+				<GroupsList active={active} />
 			}
 			{panes.home &&
-				<HomeLog active={active} modal={modal} setModal={setModal}/>
+				<HomeLog active={active} />
 			}
 			
 		</div>

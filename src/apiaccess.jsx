@@ -5,10 +5,9 @@
  */
 
 
-export default function APIaccess () {
+export default function APIaccess (userKey) {
 
 	const apiAddr = "http://192.168.1.176:3333";
-	const userKey = sessionStorage.getItem('userKey');
 
 	return {
 
@@ -70,9 +69,12 @@ export default function APIaccess () {
 			let userInfo = parseJwt(loggedIn);
 			let userID = userInfo._id;
 			let userName = userInfo._username;
-			console.log(userInfo);
 
-			return { userID, userName, userToken };
+			sessionStorage.setItem('userKey', userToken);
+			sessionStorage.setItem('userID', userID);
+			sessionStorage.setItem('userName', userName);
+
+			return true;
 			// return true;
 		},	
 
@@ -87,7 +89,7 @@ export default function APIaccess () {
 			 */
 
 			//?pull=${pull}?lastID=${lastID} for future update
-
+			let userKey = sessionStorage.getItem('userKey');
 			let log = await fetch(`${apiAddr}/posts/log?social=false`, {
 				method: 'GET',
 				headers: {
@@ -106,6 +108,7 @@ export default function APIaccess () {
 
 			//?pull=${pull}?lastID=${lastID} for future update
 
+			let userKey = sessionStorage.getItem('userKey');
 			let log = await fetch(`${apiAddr}/posts/log?social=true`, {
 				method: 'GET',
 				headers: {
@@ -122,6 +125,7 @@ export default function APIaccess () {
 
 		async pullMonthChart(month, day, year, social) {
 
+			let userKey = sessionStorage.getItem('userKey');
 			if(day) { /*** Gets all posts per specific day ***/
 
 				let request = await fetch(`${apiAddr}/posts/monthChart?social=${social}&month=${month}&day=${day}&year=${year}`, {
@@ -163,6 +167,7 @@ export default function APIaccess () {
 
 		async getBlogPost(postID) {
 
+			let userKey = sessionStorage.getItem('userKey');
 			let post = await fetch(`${apiAddr}/posts/${postID}`, {
 				method: 'GET',
 				headers: {
@@ -181,6 +186,7 @@ export default function APIaccess () {
 
 			console.log(content);
 
+			let userKey = sessionStorage.getItem('userKey');
 			let post = await fetch(`${apiAddr}/posts/createPost`, {
 				method: "POST",
 				headers: {
@@ -209,7 +215,8 @@ export default function APIaccess () {
 
 		async deletePost(postID) {
 
-			const response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
+			let userKey = sessionStorage.getItem('userKey');
+			let response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
 				method: "DELETE",
 				headers: {
 					// 'Content-Type': 'application/json',
@@ -228,6 +235,7 @@ export default function APIaccess () {
 			 * type: *initial, *response
 			 */
 
+			let userKey = sessionStorage.getItem('userKey');
 			if(body == null) {
 				let request = await fetch(`${apiAddr}/posts/comment/${type}/?postID=${parentID}`, {
 					method: 'POST',
@@ -261,6 +269,7 @@ export default function APIaccess () {
 
 		async updateCommentCount(postID, count) {
 
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/posts/comment/updateCount/?postID=${postID}&count=${count}`, {
 					method: 'POST',
 					headers: {
@@ -277,6 +286,7 @@ export default function APIaccess () {
 
 		async getInteractions(arg) {
 
+			let userKey = sessionStorage.getItem('userKey');
 			if(arg == 'count') {
 
 				const notifs = await fetch(`${apiAddr}/users/notif/sendUnreadCount`, {
@@ -324,6 +334,7 @@ export default function APIaccess () {
 			 * message: *sent, *accept, *ignore
 			 */
 
+			let userKey = sessionStorage.getItem('userKey');
 			const request = await fetch(`${apiAddr}/users/notif/${notif.type}`, {
 				method: 'POST',
 				headers: {
@@ -341,6 +352,7 @@ export default function APIaccess () {
 
 		async getConnections() {
 			
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/users/user?query=getAllConnects`, {
 				method: 'GET',
 				headers: {
@@ -357,6 +369,7 @@ export default function APIaccess () {
 
 		async removeConnection(userID) {
 
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/users/user?query=removeConnect&remove=${userID}`, {
 				method: 'GET',
 				headers: {
@@ -374,6 +387,7 @@ export default function APIaccess () {
 		async getSingleUser(userID) {
 
 			/* For return user's page*/
+			let userKey = sessionStorage.getItem('userKey');
 			let user = await fetch(`${apiAddr}/users/${userID}/?query=singleUser`, {
 				method: 'GET',
 				headers: {
@@ -390,6 +404,7 @@ export default function APIaccess () {
 
 		async searchUsers(query) {
 
+			let userKey = sessionStorage.getItem('userKey');
 			const search = await fetch(`${apiAddr}/users/search/?userName=${query}`, {
 				method: 'GET',
 				headers: {
