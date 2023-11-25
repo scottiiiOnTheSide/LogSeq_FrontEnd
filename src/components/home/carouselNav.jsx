@@ -52,7 +52,7 @@ export default function CarouselNav({current, setCurrent}) {
 	}
 
 	React.useEffect(()=> {
-		let num = current.section + 1
+		let num = current.section + 1;
 		opts[num].active = false;
 		opts[current.section].active = true;
 		setOptions(opts);

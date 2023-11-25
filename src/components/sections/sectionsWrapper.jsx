@@ -32,8 +32,8 @@ export default function SectionsWrapper({current, setCurrent, setModal, modal, s
 	let currentSection = current.section;
 	// when is number corresponding to section, said section is active
 	// switch to null for no active classes
-	console.log(active);
-	console.log(currentSection)
+	// console.log(active);
+	// console.log(currentSection)
 	/**
 	 * 09. 21. 2023
 	 * On currentSection change,

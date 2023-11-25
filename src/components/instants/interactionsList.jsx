@@ -1,6 +1,7 @@
 import * as React from 'react';
-import APIaccess from '../../apiaccess';
 import {useNavigate} from 'react-router-dom';
+import APIaccess from '../../apiaccess';
+import useAuth from '../../useAuth';
 
 import '../../components/home/home.css';
 import './notifs.css';
@@ -14,6 +15,8 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 	let username = sessionStorage.getItem('userName');
 	let userID = sessionStorage.getItem('userID');
 	let navigate = useNavigate();
+	const { logout } = useAuth();
+	const [confirm, setConfirm] = React.useReducer(state => !state, false);
 
 	let updateList = async() => {
 		let data = await accessAPI.getInteractions(); 
@@ -189,8 +192,31 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 
 			<div id="buttonBar">
 				<button className="buttonDefault">PROFILE</button>
-				<button className="buttonDefault">LOGOUT</button>
+				<button className="buttonDefault" onClick={setConfirm}>LOGOUT</button>
 			</div>
+
+			{confirm &&
+				<div id="logoutConfirm">
+					<h2>Confirm</h2>
+					<p>Are you sure you wish to Log Out?</p>
+
+					<div id="buttonWrapper">
+						<button onClick={()=> {
+							setConfirm()
+						}}>Cancel</button>
+
+						<button onClick={async()=> {
+
+							await logout().then(()=> {
+								navigate('/entry');
+							})
+
+						}}>Logout</button>
+					</div>
+				</div>
+			}
+			
+
 		</div>
 	)
 

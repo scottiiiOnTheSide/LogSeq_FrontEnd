@@ -32,10 +32,15 @@ function useAuth() {
 				setAuth(true);
 				return true; //confirms login successful and user details stored
 		},
-		logout() {
-			return new Promise((res) => {
+		async logout() {
+			return new Promise((res, rej) => {
 				sessionStorage.removeItem('userKey');
+				sessionStorage.removeItem('userName');
+				sessionStorage.removeItem('userID');
 				setAuth(false);
+				if(sessionStorage.length == 0) {
+					res()
+				}
 			})
 		}
 	};

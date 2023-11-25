@@ -222,6 +222,10 @@ export default function Main() {
   useWebSocket(socketURL, {
     onMessage: (e)=> {
       let data = JSON.parse(e.data);
+      let details;
+      if(data.details) {
+        details = JSON.parse(data.details)
+      }
       console.log(data);
 
       // if(data.recipients.includes(userID) {
@@ -264,7 +268,8 @@ export default function Main() {
           type: 2,
           state: true
         })
-        setAccessID({ postURL: data.postURL, notifID: data._id, commentID: data.details });
+        // setAccessID({ postURL: data.postURL, notifID: data._id, commentID: details.commentID });
+        setAccessID({ postURL: data.postURL, notifID: data._id });
         console.log(data);
       }
       else if(data.type == 'comment' && data.message == 'response-recieved') {
@@ -278,7 +283,8 @@ export default function Main() {
           type: 2,
           state: true
         })
-        setAccessID({ postURL: data.postURL, notifID: data._id, commentID: data.details });
+        // setAccessID({ postURL: data.postURL, notifID: data._id, commentID: details.commentID });
+        setAccessID({ postURL: data.postURL, notifID: data._id });
         console.log(data);
       }
       else if(data.type == 'tagging' && data.message == 'recieved') {

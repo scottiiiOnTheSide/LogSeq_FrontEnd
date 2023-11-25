@@ -3,7 +3,7 @@ import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import './sections.css';
-import useAuth from "../../useAuth";
+
 let accessAPI = APIaccess();
 
 
@@ -150,75 +150,77 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		event.preventDefault();
 		console.log(postContent)
 
-		let submission = new FormData();
-		submission.append('title', formData.title)
-		submission.append('tags', formData.tags)
-		for(let i=0; i < postContent.length; i++){
-			if(postContent[i].type == 'text') {
-				if(postContent[i].content === '') {
-					return null;
-				} else {
+		if(!formData.title && postContent < 1) {
+			setSocketMessage({
+				type: 'error',
+				message: 'Both a Title and Content are needed to make a post!'
+			})
+		} else {
+			let submission = new FormData();
+			submission.append('title', formData.title)
+			submission.append('tags', formData.tags)
+			for(let i=0; i < postContent.length; i++){
+				if(postContent[i].type == 'text') {
+					if(postContent[i].content === '') {
+						return null;
+					} else {
+						let content = postContent[i].content;
+						submission.append(`${postContent[i].index}`, content)
+					}
+					
+				} else if(postContent[i].type == 'image') {
 					let content = postContent[i].content;
 					submission.append(`${postContent[i].index}`, content)
 				}
-				
-			} else if(postContent[i].type == 'image') {
-				let content = postContent[i].content;
-				submission.append(`${postContent[i].index}`, content)
 			}
-		}
 
-		if(selectedDate.day != null) {
-			submission.append('usePostedByDate', false);
-			submission.append('postedOn_month', selectedDate.month);
-			submission.append('postedOn_day', selectedDate.day);
-			submission.append('postedOn_year', selectedDate.year);
-		} else {
-			submission.append('usePostedByDate', true);
-		}	
-		
-		console.log(submission);
+			if(selectedDate.day != null) {
+				submission.append('usePostedByDate', false);
+				submission.append('postedOn_month', selectedDate.month);
+				submission.append('postedOn_day', selectedDate.day);
+				submission.append('postedOn_year', selectedDate.year);
+			} else {
+				submission.append('usePostedByDate', true);
+			}	
+			console.log(submission);
 
-		let submit = await accessAPI.createPost(submission);
+			let submit = await accessAPI.createPost(submission);
 
-		/*
-			do something on confirmation
-		*/
-		if(submit.confirm == true) {
-			console.log("Post submission successful");
-			console.log(submit);
-			setCurrent({
-				...current,
-				modal: false
-		}) //closes the createPost component - should change name within component
+			if(submit.confirm == true) {
+				console.log("Post submission successful");
+				console.log(submit);
+				setCurrent({
+					...current,
+					modal: false
+			}) //closes the createPost component - should change name within component
 
-		/**
-		 * 10. 27. 2023
-		 * setSocketMessage here with info for making notif for tagged users
-		 */
-		if(tagged.some(user => user.selected == true)) {
+			/**
+			 * 10. 27. 2023
+			 * setSocketMessage here with info for making notif for tagged users
+			 */
+			if(tagged.some(user => user.selected == true)) {
 
-			let recips = tagged.filter(user => user.selected == true).map(user => {return user.id});
+				let recips = tagged.filter(user => user.selected == true).map(user => {return user.id});
 
-			setSocketMessage({
-				type: 'tagging',
-				isRead: false,
-				senderID: userID,
-				senderUsername: username,
-				url: submit.postURL,
-				message: 'sent',
-				recipients: recips,
-				details: JSON.stringify({postTitle: submit.postTitle})
-			})
+				setSocketMessage({
+					type: 'tagging',
+					isRead: false,
+					senderID: userID,
+					senderUsername: username,
+					url: submit.postURL,
+					message: 'sent',
+					recipients: recips,
+					details: JSON.stringify({postTitle: submit.postTitle})
+				})
 
-		} else {
-			setSocketMessage({
-				type: 'confirmation',
-				message: 'post'
-			})
-		}
-		} else if(submit.confirm == false) {
-			console.log('Issue with post submission');
+			} else {
+				setSocketMessage({
+					confirm: 'postUpload'
+				})
+			}
+			} else if(submit.confirm == false) {
+				console.log('Issue with post submission');
+			}
 		}
 	}
 

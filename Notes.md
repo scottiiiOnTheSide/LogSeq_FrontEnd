@@ -3,8 +3,94 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
-### 11. 18. 2023
 
+
+### 11. 25. 2023
+@0100 
+
+****To Do Next:
+		- create error popUp alert. Activates when
+			- error from API
+			- input field is missing value
+
+same format: popUp stateVar,
+	active: true, false
+	message: API error or frontEnd check for missing field
+
+
+
+### 11. 24. 2023
+@1230 
+****To Do Next:
+		- add check for whether inputs have value onSubmit, if not:
+			error message pop up 'please fill in all inputs'
+
+- after successful signup,  ✅
+	set transition state var in main component,
+	when set true,
+	- set signup false
+	  delay. 
+	  then set transition component on (same set up as other components)
+	  after sequence complete,
+	  turn off transition component then turn on log in
+
+	  two elements in transition component
+	  delay in animation sequence for second element
+	  can define element within main Entry component
+
+
+
+### 11. 23. 2023
+
+@1145 added animation styling for loginOrSignup and the forms
+      added toggling between the different forms
+
+****To Do:
+	  - form submit buttons "login" & "signup" to be nonActive and do nothing unless all
+	  	inputs have values ✅
+	  	- can check ref form.children[0].children for value
+	  	- map array of input details, returned element can have value={state}
+
+@1000 for initial button choice, on option select, loginOrSignup dissappears
+
+
+### 11. 22. 2023
+@1200 element toggle stateVar changes element class:
+
+if true: element.class = on
+- animation to display, then opacity 1
+
+if false: element.class = off
+- animation to opacity 0, display none
+
+To Do Next:
+- add animation classes to <forms> - same for both ✅
+- for loginOrSignup, it dissappears on first click. ✅
+	- can useRef and inline js for change
+- fadeOut page on navigate
+
+
+### 11. 19. 2023
+@1955 Unexpected end of JSON error for user responding to their own comment...
+
+implemented change to commentsSchema - now have field for parentPost, so that
+all comments can be deleted alongside post
+
+
+
+@1355 added component flow for deleting posts via <popUpNotif> :D
+on backEnd - need to implement measure for deleting ALL comments associated with a post ...
+
+@1245 comments issues fixed :D
+
+@1100 Fixed the postConfirmation popUp issue - however, now posting comments doesnt cause
+			a pop up... atleast, when user comments on own post
+
+another user commenting on post give them a popUp, but also a notif about the comment as well
+so, theres a mix up...
+
+
+### 11. 18. 2023
 @2350 postConfirmation keeps popping up after successful submit - fix
 
 @2340 fixed concerning newLines in <CreatePost> 

@@ -165,6 +165,7 @@ export default function Post({
 			ownerUsername: userName,
 			ownerID: userID,
 			content: messageContent,
+			parentPost: postID,
 			postedOn_month: date.getMonth() + 1,
 			postedOn_day: date.getDate(),
 			postedOn_year: date.getFullYear(),
@@ -199,7 +200,6 @@ export default function Post({
 			notif.message = 'response';
 		}
 
-		let notifID;
 		let request = await accessAPI.postComment(access.type, postID, body).then(res => {
 			console.log(res)
 			notif.details = JSON.stringify({
@@ -211,7 +211,6 @@ export default function Post({
 			getComments();
 		})
 
-		console.log(request);
 		toggleComment();
 		toggleOptions();
 	}
@@ -291,7 +290,12 @@ export default function Post({
 						}
 						{isOwner &&
 							<li>
-								<button>DELETE</button>
+								<button onClick={()=> {
+									setSocketMessage({
+										action: 'deletePost',
+										postID: postData._id
+									})
+								}}>DELETE</button>
 							</li>
 						}
 						{!isOwner &&

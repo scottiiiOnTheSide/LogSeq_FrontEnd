@@ -1,0 +1,221 @@
+
+section#entry {
+	position: relative;
+	top: 0;
+	height: 100%;
+}
+
+section#entry div#titleWrapper {
+	padding: 24px 0 0 16px;
+}
+
+section#entry div#titleWrapper h1 {
+	font-family: 'Raleway';
+	font-size: 2.5em;
+	color: var(--greyscale-accent);
+	letter-spacing: 2px;
+
+	margin: 0px 0;
+}
+
+section#entry div#titleWrapper h1 span {
+	color: black;
+	margin-right: 4px;
+}
+
+section#entry div#titleWrapper h1#xyz {
+	margin-top: -4px;
+}
+
+
+
+
+section#entry div#loginOrSignup {
+	width: 100%;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: 0;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+
+	transition: all 0.5s ease-out;
+}
+
+section#entry div#loginOrSignup button {
+	font-family: 'Raleway';
+	font-size: 1em;
+	color: black;
+	letter-spacing: 2px;
+	text-transform: uppercase;
+
+	width: 50%;
+	padding: 20px 0;
+	border: none;
+	background-color: white;
+}
+
+
+
+/* * * 
+	S i g n  U p  S u c c e s s f u l  
+	T r a n s i t i o n 
+* * */
+section#entry div#transition {
+/*	display: none;*/
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: 70%;
+	animation: 0.5s ease-in-out 2.5s forwards _nonActive;
+}
+
+section#entry div#transition div {
+	margin: 80px 0;
+	opacity: 0;
+}
+
+section#entry div#transition div#first {
+	animation: 1s ease-in-out forwards _active;
+}
+
+section#entry div#transition div#second {
+	animation: 1s ease-in-out 1s forwards _active;
+}
+
+section#entry div#transition div p {
+	font-family: 'Raleway';
+	font-size: 1.5em;
+	font-weight: 600;
+	color: var(--greyscale-accent);
+	letter-spacing: 2px;
+	text-align: center;
+}
+
+
+
+
+
+
+section#entry form {
+	width: 90%;
+	margin: 60px auto;
+	display: none;
+	opacity: 0;
+}
+
+section#entry form#signin._active,
+section#entry form#login._active {
+	animation: 0.3s ease-in-out forwards _active;
+}
+
+	@keyframes _active {
+		0% {
+			opacity: 0;
+		}
+		100% {
+			opacity: 1;
+		}
+	}
+
+section#entry form._nonActive {
+	animation: 0.5s ease-in-out forwards _nonActive;
+}
+	
+	@keyframes _nonActive {
+		0% {
+			opacity: 1;
+		}
+		100% {
+			opacity: 0;
+		}
+	}
+
+
+section#entry form fieldset {
+	width: 100%;
+	border: none;
+	padding: 0;
+}
+
+section#entry form fieldset input {
+	width: 100%;
+	display: block;
+	margin: 16px 0;
+	border: none;
+	border-bottom: 2px solid var(--greyscale-elements);
+	padding: 12px 2px;
+	background-color: transparent;
+
+	font-family: 'Raleway';
+	font-weight: 400;
+	font-size: 0.9em;
+	color: var(--greyscale-text);
+	letter-spacing: 4px;
+	line-height: 22px;
+}
+
+section#entry form fieldset input::placeholder {
+	color: var(--greyscale-accent);
+}
+
+section#entry form fieldset input:focus {
+	border-bottom-color: var(--greyscale-text);
+}
+
+section#entry form fieldset input:focus {
+	outline: none;
+}
+
+section#entry form button {
+	display: block;
+	font-family: "Raleway";
+	font-weight: 400;
+	text-transform: uppercase;
+	letter-spacing: 3px;
+
+	background-color: transparent;
+	border: none;
+}
+
+section#entry form#login button#login,
+section#entry form#signin button#signin {
+	margin: 24px 0 20px;
+	font-size: 1.75em;
+	transition: all 0.5s ease-out;
+}
+
+	section#entry form#login button#login.canUse,
+	section#entry form#signin button#signin.canUse {
+		color: black;
+	}
+
+	section#entry form#login button#login.cantUse,
+	section#entry form#signin button#signin.cantUse {
+		color: var(--greyscale-accent);
+	}
+
+
+section#entry form button#switch {
+	font-size: 0.75em;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

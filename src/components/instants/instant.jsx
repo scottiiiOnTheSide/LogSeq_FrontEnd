@@ -172,6 +172,29 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 						state: {post: post}
 					})
 			}, 300)
+		} else if (arg == 'remove') {
+
+			if(socketMessage.message == 'confirm_deletePost') {
+
+				navigate(`/home`);
+
+				let request = await accessAPI.deletePost(accessID.remove).then((data)=> {
+					if(data) {
+						setSocketMessage({
+							type: 'confirmation',
+							message: 'deletedPost'
+						})
+						setActive({
+							state: true,
+							type: 1
+						})
+					}
+				})
+
+			} else if(socketMessage.message == 'confirm_deleteComment') {
+
+			}
+
 		}
 	}
 
@@ -181,7 +204,20 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	 */
 	useEffect(()=> {
 
-		if(socketMessage.type == 'request' && socketMessage.message == 'accept') {
+		if(socketMessage.action == 'deletePost') {
+			setAccessID({
+				remove: socketMessage.postID
+			})
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'confirm_deletePost'
+			})
+			setActive({
+				state: true,
+				type: 22
+			});
+		}
+		else if(socketMessage.type == 'request' && socketMessage.message == 'accept') {
 			makeNotif_sendAcceptRequest(socketMessage);
 		}
 		else if (socketMessage.type == 'request' && socketMessage.message == 'sent') {
@@ -206,13 +242,21 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				makeNotif_taggedPost(socketMessage);
 			}
 		}
-		else if(socketMessage.type == 'confirmation' && socketMessage.message == 'removal') {
+		else if(socketMessage.confirm === 'postRemoval') {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'removal'
+			})
 			setActive({
 				state: true,
 				type: 1
 			})
 		}
-		else if (socketMessage.type == 'confirmation' && socketMessage.message == 'post') {
+		else if (socketMessage.confirm === 'postUpload') {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'post'
+			})
 			setActive({
 				state: true,
 				type: 1
@@ -235,7 +279,16 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	/**
 	 * Returns specific popUp notification type based on
 	 * message recieved from webSocket
+	 * 
+	 * level indicates significance of alert:
+	 *    blue --- post / comment / updateSetting / cancel 
+	 * 	  green --- acceptRequest / acceptInvite / tagging 
+	 * 	  orange --- ignore / flag / confirmRemoval 
+	 *    magenta --- error
+	 * 	
 	 */
+	let [level, setLevel] = React.useState('')
+
 	let returnPopUpType = (message) => {
 
 		return (
@@ -265,6 +318,12 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 				{(message.type == 'confirmation' && message.message == 'removal') &&
 					<p>Disconnected with {message.username}</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'confirm_deletePost') &&
+					<p>You are about to delete this post</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'deletedPost') &&
+					<p>Post deleted!</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'ignore') &&
 					<p>Request Ignored</p>
@@ -303,6 +362,20 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 																	console.log(accessID.postID)
 																}
 															}}>Interact</button></li> 
+						{/*has button who's function changes based on */}
+					</ul>
+				}
+				{isActive.type == 22 &&
+					<ul id="options">
+						<li><button className="buttonDefault" onClick={()=> {
+																setActive({type: null, state: false});
+															}}>Cancel</button></li>
+						<li><button className="buttonDefault" onClick={()=> {
+																setActive({type: null, state: false});
+																if(accessID.remove) {
+																	interact('remove');	
+																}
+															}}>Delete</button></li> 
 						{/*has button who's function changes based on */}
 					</ul>
 				}
