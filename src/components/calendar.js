@@ -81,6 +81,31 @@ export default function Calendar() {
       return days[day];
   };
 
+  let monthsAbrv = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec"
+  ];
+
+  let dayInitials = [
+      "S",
+      "M",
+      "T",
+      "W",
+      "T",
+      "F",
+      "S"
+  ];
+
   return {
   	currentMonth: currentMnth(month),
   	currentDate: currentDate(dateNumber),
@@ -90,7 +115,9 @@ export default function Calendar() {
     getCurrentDate: currentDate(),
     dayOfTheYear: dayOfTheYear,
     amountOfDays: amountOfDays,
-    monthInNum: monthInNum
+    monthInNum: monthInNum,
+    monthsAbrv: monthsAbrv,
+    dayInitials: dayInitials
     // intention is to export these functions so that they can be used without set values
   }
 }

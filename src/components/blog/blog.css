@@ -1,0 +1,224 @@
+
+/* * * 
+L o g  &  P o s t 
+* * */
+
+section#POST {
+	position: fixed;
+/*	may change above rule...*/
+	width: 100%;
+	height: 100%;
+	overflow: hidden;
+
+	font-family: "Open Sans";
+
+/*	top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);*/
+}
+
+section#POST header {
+	background-color: var(--greyscale-background-2);
+}
+
+section#POST article button#open {
+	font-size: 1em;
+	position: relative;
+/*	top: 15%;*/
+	left: 50%;
+	transform: translateX(-50%);
+	z-index: 10;
+	margin-top: 30px;
+}
+
+/* * * D e t a i l s  B o x * * */
+
+article div#details {
+	position: relative;
+	top: -40px;
+	width: 100%;
+	height: 0px;
+	background-color: var(--site-gray-lightest);
+	border-radius: 6px;
+	transition: all 0.3s ease-in-out;
+	overflow: hidden;
+}
+
+	article div#details.open {
+		height: auto;
+	}
+
+
+article div#details h4 {
+	margin: 60px 10px 0;
+}
+
+article div#details p {
+	margin: 10px 10px 0;
+}
+
+
+article div#details ul#options {
+	margin: 20px 0 20px;
+	padding: 0;
+	list-style-type: none;
+}
+
+article div#details ul#options li {
+	display: inline-block;
+	margin: 0 10px;
+}
+
+
+
+
+
+
+
+
+
+/* * * M a i n  C o n t e n t * * */
+
+section#POST article {
+	width: 96%;
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);;
+	padding-top: 70px;
+	height: calc(100vh - 140px);
+	overflow-y: scroll;
+}
+
+section#POST article div#mainContent {
+	margin-top: 44px;
+}
+
+section#POST article div#mainContent h2 {
+	font-size: 1.75em;
+	font-weight: 400;
+	letter-spacing: 2px;
+	color: var(--greyscale-text);
+
+	margin-bottom: 8px;
+}
+
+section#POST article div#mainContent p {
+	font-size: 0.95em;
+	line-height: 26px;
+	color: var(--greyscale-text);
+
+	margin-top: 8px;
+}
+
+
+
+
+
+
+
+
+
+/* * * C O M M E N T S * * */
+
+div#commentsWrapper {
+	position: relative;
+	margin-top: 180px;
+}
+
+
+div#commentsWrapper h2 {
+	font-size: 1.75em;
+	font-weight: 400;
+	letter-spacing: 2px;
+	color: var(--greyscale-text);
+}
+
+
+
+
+
+
+
+
+
+/* * * O P T I O N S * * */
+
+div#optionsBar {
+	width: 100%;
+	position: fixed;
+	bottom: 0px;
+	background-color: white;
+	z-index: 10;
+}
+
+div#optionsBar button#optionsToggle {
+	height: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 24px 0;
+}
+
+
+
+div#optionsBar ul#options {
+	width: 100%;
+	background-color: white;
+	position: absolute;
+	bottom: 0;
+
+	list-style-type: none;
+	margin: 0 0 10px;
+	padding: 0;
+}
+
+div#optionsBar ul#options li {
+	width: 100%;
+}
+
+div#optionsBar ul#options li:last-child button {
+	font-family: 'Open Sans';
+	font-size: 2em;
+}
+
+div#optionsBar ul#options li button {
+	position: relative;
+	display: block;
+	margin: 12px auto;
+}
+
+
+div#optionsBar form {
+	display: block;
+	width: 100%;
+	position: absolute;
+	bottom: 10px;
+	z-index: 12;
+	background-color: white;
+}
+
+div#optionsBar form h3 {}
+
+div#optionsBar form textarea {
+	width: 98%;
+}
+
+div#optionsBar form div#buttonBox {
+
+}
+
+div#optionsBar form div#buttonBox button {
+	width: 50%;
+	padding: 12px 0;
+}
+
+
+
+
+
+
+
+
+
+
+

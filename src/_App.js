@@ -18,23 +18,6 @@ function App() {
 
   /*Self explanatory*/
   const apiAddr = 'http://172.19.185.143:3333';
-  // const ws = new WebSocket("ws://172.19.185.143:3333");
-  
-  // let Instant = Instant();
-
-
-  // useWebSocket(WS_URL, {
-  //   onOpen: ()=> {
-  //     console.log('Websocket connection established')
-
-
-  //   },
-  //   onMessage: (e)=> {
-  //     let data = JSON.parse(e.data);
-  //     console.log(data);
-  //   }
-  // })
-
 
   /*User Log In*/
   //07. 07. 2022 These two should honestly be one in the same. Will couple them later
@@ -95,7 +78,8 @@ function App() {
       U S E R  &  S O C I A L  L o G s 
   */
   const [log, setLog] = useState([]);
-  const updateLog = async () => {
+  const updateLog = async () => {\
+
     let month = new Date().getMonth(),
       year = new Date().getFullYear(),
       user = userOnline,
@@ -121,6 +105,16 @@ function App() {
     setLog: setLog,
     updateLog: updateLog
   }
+  /*
+    09. 14. 2023
+    For future update:
+
+    let userLog = {
+      log: 
+      setLog:
+      updateLog: get most recent posts
+      appendLog: gets more past posts
+    } */
 
   const [socialLog, set_socialLog] = useState([]);
   const updateSocialLog = async () => {

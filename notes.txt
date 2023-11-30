@@ -1,5 +1,27 @@
 
 
+@09. 13. 2023
+
+@2230 Rough draft of To Do Next:
+			- create function housing all api calls
+			- have logIn state var within index.js -> in useAuth.js file
+				create context so that other elements are aware of state status
+
+@1730 Everything will now route through Index.js rather than App.js
+
+Organize file with all api routes and processes
+
+
+
+
+
+
+
+
+
+
+* * * * * React Router Addition (above) * * * * * 
+
 
 @09. 02. 2023
 @1245 websockets now working!

@@ -1,0 +1,291 @@
+
+/* * * 
+		T h e  F i v e
+		M a i n  S e c t i o n s 
+* * */
+
+div#sectionsWrapper {
+	display: flex;
+	position: fixed;
+	width: 100%;
+	top: 140px;
+	overflow-y: scroll;
+}
+
+div#userLog,
+div#socialLog,
+div#groupsList,
+div#macrosList,
+div#homeLog {
+	width: 96%;
+	height: 100%; /*needs to be fixed for animation */
+	margin: 0 auto;
+	opacity: 0;
+	transition: all 0.5s linear;
+	transform: scale(0.8);
+}
+
+
+/* As userLog is currently the default, it will have 'already present' styling */
+div#userLog {
+	animation: 0.5s ease-in-out forwards appear;
+}
+
+
+@keyframes appear {
+	0% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+	100% {
+		opacity: 1;
+		transform: scale(1);	
+	}
+}
+
+@keyframes disappear {
+	0% {
+		opacity: 1;
+		transform: scale(1);	
+	}
+	100% {
+		opacity: 0;
+		transform: scale(0.8);
+	}
+}
+
+	div#userLog.active {
+/*		animation: 0.5s ease-in-out forwards appear;*/
+	}
+
+		div#userLog.not {
+			background-color: transparent;
+			animation: 0.5s ease-in-out forwards disappear;
+		}
+
+	div#socialLog.active {
+		animation: 0.5s ease-in-out forwards appear;
+	}
+
+		div#socialLog.not {
+			background-color: transparent;
+			animation: 0.5s ease-in-out forwards disappear;
+		}
+
+
+
+div.log h2.noPostsToday,
+div.log div.entry span.postDate {
+	display: block;
+	font-family: "Raleway";
+	font-size: 2.5em;
+	color: var(--greyscale-elements);
+	text-align: right;
+}
+
+div.log div.entry span.postDate {
+	margin: 60px 0;
+}
+
+div#socialLog div.log h2.noPostsToday,
+div.log div.entry span.postDate {
+	text-align: left;
+}	
+
+div#userLog div.log span.postDate{
+	text-align: right;
+}
+
+
+
+div.log div.entry {
+	margin: 80px 0;
+}
+
+div.log div.entry:last-child {
+	padding-bottom: 40px;
+}
+
+div.log div.entry h2 {
+	font-family: "Raleway";
+	font-size: 1.5em;
+	font-weight: 400;
+	line-height: 32px;
+	color: var(--site-gray-middle);
+	margin: 0px;
+}
+
+
+div#socialLog div.log div.entry h2 {
+	text-align: right;
+	margin: 0px 0 10px;
+}
+
+div#socialLog div.log div.entry span#username {
+
+	font-size: 0.75em;
+	margin: 10px 0 0;
+}
+
+
+div.log div.entry p {
+	font-family: "Open Sans";
+	font-size: 0.9em;
+	font-weight: 400;
+	line-height: 26px;
+	color: var(--site-gray-middle);
+	margin: 10px 0 0;
+}
+
+
+
+
+
+/* * *
+	C R E A T E  P O S T
+* * */
+
+section#HOME div#createPost {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+
+	z-index: 20;
+	background-color: white;
+}
+
+section#HOME div#createPost form {
+	width: 95%;
+	margin: 0 auto;
+}
+
+	div#createPost fieldset {
+		padding: 0;
+		border: none;
+	}
+
+	div#createPost input {
+		display: block;
+		margin: 10px 0;
+	}
+
+section#HOME div#createPost div#options {
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	width: 100%;
+	bottom: 0px;
+}
+
+section#HOME div#createPost div#options button {
+	background-color: transparent;
+	border: none;
+	outline: none;
+	width: 47%;
+	padding: 24px 0;
+}
+
+section#HOME div#createPost div#taggedUsers {
+	margin: 36px auto;
+	border-bottom: 1px solid var(--site-gray-mid);
+}
+
+	section#HOME div#createPost div#taggedUsers p {
+		margin: 8px;
+		color: var(--site-gray-mid);
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#selected {
+		margin: 8px 8px;
+		padding: 0;
+		list-style-type: none;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#selected li {
+		display: inline-block;
+		margin: 0 4px;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options {
+		list-style-type: none;
+		padding: 0;
+		margin: 0;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options li {
+		margin: 8px 8px 8px 16px;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options li span {
+		display: inline-block;
+	}
+
+	section#HOME div#createPost div#taggedUsers ul#options li p {
+		display: inline-block;
+	}
+
+
+
+
+
+
+
+/* * *
+	M a n a g e  C o n n e c t i o n s
+* * */
+
+section#HOME div#manageConnections {
+	position: absolute;
+	width: 100%;
+	height: 100vh;
+
+	z-index: 15;
+	background-color: white;
+}
+
+section#HOME div#manageConnections ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+section#HOME div#manageConnections ul li {
+	display: flex;
+}
+
+section#HOME div#manageConnections ul li p {
+	margin: 10px;
+}
+
+section#HOME div#manageConnections ul li p span {
+	color: var(--site-gray-mid);
+}
+
+section#HOME div#manageConnections button#exit {
+	position: absolute;
+	left: 50%;
+	bottom: 30px;
+	transform: translateX(-50%);
+
+	background-color: transparent;
+	border: none;
+	outline: none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,297 @@
+
+section#HOME {
+	width: 100%;
+	height: 100%;
+	position: relative;
+	overflow: hidden;
+}
+
+
+
+/* * * H e a d e r * * */
+	header {
+		display: flex;
+		justify-content: space-between;
+		width: 95%;
+		position: fixed;
+		top: 4px;
+		left: 50%;
+		transform: translateX(-50%);
+		
+		font-family: 'Raleway';
+
+		border-bottom: 2px solid var(--greyscale-accent);
+		padding: 4px 0 14px;
+		background-color: transparent;
+		z-index: 10;
+	}
+
+	header div#thePresent {
+		position: relative;
+		top: 4px;
+	}
+
+	header div#thePresent h1 {
+		font-weight: 600;
+		font-size: 2.75em;
+		letter-spacing: 12px;
+		color: var(--greyscale-elements);
+
+		margin: 0;
+		position: absolute;
+	}
+
+	header div#thePresent span {
+		font-size: 1.25em;
+		letter-spacing: 1px;
+		color: var(--greyscale-text);
+
+		margin: 0px 3px;
+		position: relative;
+		top: 16px;
+	}
+
+
+
+	header button#interactionsToggle {
+		border: none;
+		background: transparent;
+		margin-top: -4px;
+	/*	position: absolute;*/
+	}
+
+	header button#interactionsToggle p {
+		font-weight: 600;
+		font-size: 4em;
+		color: var(--greyscale-elements);
+
+		margin: 4px 0;
+		position: absolute;
+		margin-left: -8px;
+	}
+
+	header button#interactionsToggle span {
+		display: block;
+		margin: 8px 0;
+		border: 1.5px solid var(--greyscale-details);
+
+	}
+
+		header button#interactionsToggle span:nth-child(2) {
+			width: 16px;
+			margin-left: 32px;
+			margin-top: 22px;
+		}
+		header button#interactionsToggle span:nth-child(3) {
+			width: 32px;
+			margin-left: 16px;
+		}
+		header button#interactionsToggle span:last-child {
+			width: 48px;
+		}
+
+
+	header svg#return {
+	/*	transform: scale(0.6);*/
+		width: 50px;
+		position: relative;
+		top: 5px;
+		transition: all 0.3s ease-in-out;
+		margin-right: -40px;
+	}
+
+	header svg#return.leave {
+		animation: leave 0.5s ease-in-out forwards;
+	}
+
+	@keyframes leave {
+		0% {
+			right: 0%;
+		}
+		100% {
+			right: 50px;
+		}
+	}
+
+	header svg#return polyline {
+		fill: rgba(255, 255, 255, 0);
+	    stroke-width: 8px;
+	}
+
+		header svg#return polyline#top {
+		    stroke: rgba(0, 0, 0, 0.5);
+	/*		stroke: red;*/
+		}
+
+		header svg#return polyline#bottom {
+			stroke: rgba(0, 0, 0, 0.1);
+		}
+
+
+
+/* * * C a r o u s e l  N a v * * */
+	nav {
+		width: 100%;
+		position: fixed;
+		margin-top: 78px;
+		left: 50%;
+		transform: translateX(-50%);
+		display: flex;
+		justify-content: center;
+		overflow: hidden;
+	} 
+
+		nav::before {
+			content: "";
+			display: block;
+			width: 80px;
+			height: 102%;
+			background-color: transparent;
+
+			position: absolute;
+			left: -7%;
+			z-index: 7;
+		}
+		nav::after {
+			content: "";
+			display: block;
+			width: 80px;
+			height: 102%;
+			background-color: transparent;
+
+			position: absolute;
+			right: -7%;
+			z-index: 7;
+		}
+
+	nav ul {
+		position: relative;
+		margin: 20px 0;
+		padding: 0;
+		list-style-type: none;
+		display: flex;
+		align-items: center;
+		z-index: 4;
+		transition: all 0.5s ease;
+/*		overflow: hidden;*/
+	}
+
+	nav ul li {
+	/*	width: 100px;*/
+		text-align: center;
+
+		font-family: "Raleway";
+		font-weight: 400;
+		letter-spacing: 2px;
+
+		padding: 0 10px;
+		transition: all 0.5s ease;
+	}
+
+	/* for GROUPS */
+	nav ul li:first-child {
+		display: none;
+	}
+
+	/* for HOME */
+	nav ul li:last-child {
+		display: none;
+	}
+
+		nav ul li.active {
+			font-size: 1.75em;
+			padding: 0 16px;
+			color: var(--greyscale-accent);
+		}
+
+		nav ul li.not {
+			font-size: 1.15em;
+			font-size: 1em;
+			letter-spacing: 4px;
+			color: var(--greyscale-details);
+		}
+
+	nav button#leftToggle {
+		position: absolute;
+		display: block;
+		height: 90%;
+		left: 0%;
+		width: 146px;
+		z-index: 6;
+		background-color: transparent;
+		border: none;
+	/*	border-bottom: 1px solid blue;*/
+	}
+
+	nav button#rightToggle {
+		position: absolute;
+		display: block;
+		width: 146px;
+		height: 90%;
+		right: 0%;
+		z-index: 6;
+
+		background-color: transparent;
+		border: none;
+	/*	border-bottom: 1px solid blue;*/
+	}
+
+
+
+/* * * B u t t o n  B a r * * */
+div#buttonBar {
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	background-color: white;
+	z-index: 10;
+}
+
+	div#buttonBar button#main {
+		height: 100%;
+		position: relative;
+		left: 50%;
+		transform: translateX(-50%);
+
+		font-family: "Raleway";
+		font-weight: 400;
+		font-size: 1.25em;
+		text-transform: uppercase;
+		letter-spacing: 3px;
+
+		background-color: transparent;
+		border: none;
+		outline: none;
+
+		padding: 24px 0;
+		z-index: 10;
+	}
+
+
+div#buttonBar button#monthChartToggle {
+    position: absolute;
+    right: 2%;
+    bottom: 8%;
+    box-sizing: content-box;
+    padding: 10px 5px;
+    background-color: transparent;
+    border: none;
+}
+
+div#buttonBar button#monthChartToggle p {
+    margin: 0 0 5px 0;
+    font-size: 1.2em;
+}
+
+div#buttonBar button#monthChartToggle span {
+    margin: 0;
+    font-size: 1.2em;
+}
+
+
+
+
+
+
+
+
