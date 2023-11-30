@@ -32,7 +32,8 @@ section#BASE {
   --initial-color: royalblue;
 
   /** Greyscale Theme **/
-  --greyscale-background: rgba(236, 236, 236, 0.75);
+  --greyscale-background: rgba(236, 236, 236, 1);
+  --greyscale-background-2: rgba(236, 236, 236, 1);
   --greyscale-text: rgba(0, 0, 0, 0.5);
   --greyscale-accent: rgba(0, 0, 0, 0.2);
   --greyscale-elements: rgba(31, 31, 31, 0.1);

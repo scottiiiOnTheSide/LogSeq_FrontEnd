@@ -1,4 +1,8 @@
 
+/* * * 
+L o g  &  P o s t 
+* * */
+
 section#POST {
 	position: fixed;
 /*	may change above rule...*/
@@ -6,24 +10,19 @@ section#POST {
 	height: 100%;
 	overflow: hidden;
 
+	font-family: "Open Sans";
+
 /*	top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);*/
 }
 
 section#POST header {
-/*	padding: 10px 0 14px;*/
+	background-color: var(--greyscale-background-2);
 }
 
-article {
-	width: 100%;
-	position: fixed;
-	padding-top: 70px;
-	height: calc(100vh - 140px);
-	overflow-y: scroll;
-}
-
-article button#open {
+section#POST article button#open {
+	font-size: 1em;
 	position: relative;
 /*	top: 15%;*/
 	left: 50%;
@@ -72,17 +71,44 @@ article div#details ul#options li {
 
 
 
-article div#mainContent {
-	position: relative;
-	padding-bottom: 160px;
+
+
+
+
+
+
+/* * * M a i n  C o n t e n t * * */
+
+section#POST article {
+	width: 96%;
+	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);;
+	padding-top: 70px;
+	height: calc(100vh - 140px);
+	overflow-y: scroll;
 }
 
+section#POST article div#mainContent {
+	margin-top: 44px;
+}
 
+section#POST article div#mainContent h2 {
+	font-size: 1.75em;
+	font-weight: 400;
+	letter-spacing: 2px;
+	color: var(--greyscale-text);
 
+	margin-bottom: 8px;
+}
 
+section#POST article div#mainContent p {
+	font-size: 0.95em;
+	line-height: 26px;
+	color: var(--greyscale-text);
 
-
-/* * * M A I N  C O N T E N T * * */
+	margin-top: 8px;
+}
 
 
 
@@ -96,11 +122,15 @@ article div#mainContent {
 
 div#commentsWrapper {
 	position: relative;
-/*	margin-top: 180px;*/
+	margin-top: 180px;
 }
 
 
 div#commentsWrapper h2 {
+	font-size: 1.75em;
+	font-weight: 400;
+	letter-spacing: 2px;
+	color: var(--greyscale-text);
 }
 
 
@@ -116,7 +146,7 @@ div#commentsWrapper h2 {
 div#optionsBar {
 	width: 100%;
 	position: fixed;
-	bottom: -10px;
+	bottom: 0px;
 	background-color: white;
 	z-index: 10;
 }
@@ -126,7 +156,7 @@ div#optionsBar button#optionsToggle {
     position: relative;
     left: 50%;
     transform: translateX(-50%);
-    padding: 20px 0;
+    padding: 24px 0;
 }
 
 

@@ -13,7 +13,19 @@ import InteractionsList from '../../components/instants/interactionsList';
 
 const accessAPI = APIaccess(); 
 
+export function EditPost({ postData }) {
 
+	/**
+	 * 11. 29. 2023
+	 * 
+	 * content is present within textboxes as the default values
+	 * images have "delete" and "pin options"
+	 * 
+	 * on save,
+	 * array of objects 
+	 */
+
+}
 
 export default function Post({
 	socketURL, 
@@ -28,15 +40,6 @@ export default function Post({
 	setUnreadCount,
 	getUnreadCount
 }) {
-
-	/**
-	 * postTitle
-	 * post.tags.map((tag) => <li key={tag}>{tag}</li>)
-	 * post._id
-	 * post.owner
-	 * post.content.map
-	 */
-	
 	/**
 	 * Discerns source of blog post data and uses it
 	 */
@@ -45,98 +48,101 @@ export default function Post({
 	let [postData, setPostData] = React.useState(location.state.post);
 	let [comments, setComments] = React.useState([]);
 
-	let getComments = async() => {
 
-		let id = postData._id;
-		let body = {parentID: postData._id};
-		let cmnts = await accessAPI.postComment('getAll', id, body);
+	// let getComments = async() => {
 
-		await Promise.all(
-			cmnts.map(async (comment) => {
-				let id = comment._id;
-				let body = {parentID: comment._id};
-				let replies = await accessAPI.postComment('getAll', id, body);
+	// 	let id = postData._id;
+	// 	let body = {parentID: postData._id};
+	// 	let cmnts = await accessAPI.postComment('getAll', id, body);
+
+	// 	await Promise.all(
+	// 		cmnts.map(async (comment) => {
+	// 			let id = comment._id;
+	// 			let body = {parentID: comment._id};
+	// 			let replies = await accessAPI.postComment('getAll', id, body);
 				
-				comment.replies = replies;
+	// 			comment.replies = replies;
 				
-				if(replies.replies) {
-					getComments(replies)
-				} else {
-					return;
-				}
-			})
-		)
-		/*
-			recursively count all comments, 
-			send count to backEnd to update post's commentCount
+	// 			if(replies.replies) {
+	// 				getComments(replies)
+	// 			} else {
+	// 				return;
+	// 			}
+	// 		})
+	// 	)
+	// 	/*
+	// 		recursively count all comments, 
+	// 		send count to backEnd to update post's commentCount
 
-			uncomment with 1.0A
-		*/
-		// let cmntcount = 0;
-		// let countComments = (comments) => {
-		// 	for(let cmnt of comments) {
-		// 		cmntcount++;
-		// 		countComments(cmnt.replies)
-		// 	}
-		// 	return cmntcount;
-		// }
-		// await accessAPI.updateCommentCount(id, cmntcount).then((res) => {
-		// 	setPostData({
-		// 		...postData,
-		// 		commentCount: cmntcount
-		// 	})
-		// })
-		// console.log(countComments(cmnts));
-		setComments(cmnts);
-	};
+	// 		uncomment with 1.0A
+	// 	*/
+	// 	// let cmntcount = 0;
+	// 	// let countComments = (comments) => {
+	// 	// 	for(let cmnt of comments) {
+	// 	// 		cmntcount++;
+	// 	// 		countComments(cmnt.replies)
+	// 	// 	}
+	// 	// 	return cmntcount;
+	// 	// }
+	// 	// await accessAPI.updateCommentCount(id, cmntcount).then((res) => {
+	// 	// 	setPostData({
+	// 	// 		...postData,
+	// 	// 		commentCount: cmntcount
+	// 	// 	})
+	// 	// })
+	// 	// console.log(countComments(cmnts));
+	// 	setComments(cmnts);
+	// };
 	let getPost = async() => {
 		let post = await accessAPI.getBlogPost(postID);
 		setPostData(post);
-		setTimeout(()=> {
-			getComments(postData.comments);
-		}, 500)
+		setComments(post.comments)
 	};
-	/*** updates comments on initial load and page refresh ***/
+
+
+	/*** 
+	 	updates post & comments on initial load and page refresh 
+	***/
 	React.useEffect(()=> {
-		getComments(postData.comments);
+		getPost();
 	}, [])
+
 
 	/***
 	 	P o s t D e t a i l s
 	***/
 	let cal = Calendar();
-	let dateInfo = new Date(postData.createdAt.slice(0, -1));
-	let date = dateInfo.toString().slice(4, 15);
-	let hour = dateInfo.toString().slice(16, 18);
-	let minute = dateInfo.toString().slice(19, 21);
-	let AoP;
-	if(hour > 12) {
-		AoP = 'pm';
-		hour = hour - 12;
-	} else {
-		AoP = 'am';
-	}
-	let timeStamp = hour+ ":" +minute+ " " +AoP;
-
-	let userID = sessionStorage.getItem('userID');
-	let userName = sessionStorage.getItem('userName');
-	let isOwner = postData.owner == userID ? true : false;
-
-	//to be removed once old posts gone
-	let content, split;
-	let text = [];
-	if( Object.keys(postData.content[0]).length > 10 ) {
-
-		for (let char in postData.content[0]) {
-			text.push(postData.content[0][char]);
+		let dateInfo = new Date(postData.createdAt.slice(0, -1));
+		let date = dateInfo.toString().slice(4, 15);
+		let hour = dateInfo.toString().slice(16, 18);
+		let minute = dateInfo.toString().slice(19, 21);
+		let AoP;
+		if(hour > 12) {
+			AoP = 'pm';
+			hour = hour - 12;
+		} else {
+			AoP = 'am';
 		}
-		text = text.join("");
-		split = true;
-		// console.log(text)
-	} else if ( Object.keys(postData.content[0].length < 10)) {
-		content = postData.content;
-		split = false;
-	}
+		let timeStamp = hour+ ":" +minute+ " " +AoP;
+
+		let userID = sessionStorage.getItem('userID');
+		let userName = sessionStorage.getItem('userName');
+		let isOwner = postData.owner == userID ? true : false;
+
+		//to be removed once old posts gone
+		let content, split;
+		let text = [];
+		if( Object.keys(postData.content[0]).length > 10 ) {
+			for (let char in postData.content[0]) {
+				text.push(postData.content[0][char]);
+			}
+			text = text.join("");
+			split = true;
+			// console.log(text)
+		} else if ( Object.keys(postData.content[0].length < 10)) {
+			content = postData.content;
+			split = false;
+		}
 
 
 	/*** 
@@ -208,7 +214,7 @@ export default function Post({
 			});
 			setSocketMessage(notif);
 			console.log(notif)
-			getComments();
+			getPost()
 		})
 
 		toggleComment();
@@ -253,7 +259,6 @@ export default function Post({
 	/*
 		If user visits page via notif concerning comment
 	*/
-
 	let commentsRef = React.useRef()
 	let commentsCurrent = commentsRef.current;
 
@@ -266,17 +271,17 @@ export default function Post({
 				/* can add class to comment to make it stand out...*/
 			}
 		}	
-	}, [comments, commentsCurrent])
+	}, [comments, commentsCurrent]);
 
-	// console.log(accessID)
 
+	// console.log(postData);
 	return (
 		<section id="POST">
 			<Header cal={cal} isPost={true} setNotifList={setNotifList} unreadCount={unreadCount}/>
 
 			<article>
 
-				<button id="open" onClick={openDetails}>Post Details</button>
+				<button id="open" className={"buttonDefault"}onClick={openDetails}>Post Details</button>
 				<div id="details" className={toggleDetails ? "open" : ""}>
 
 					<h4>Entry Posted On</h4>

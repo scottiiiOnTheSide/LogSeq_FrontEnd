@@ -9,7 +9,9 @@ export default function ButtonBar({current, setCurrent, dateInView, set_dateInVi
 		if(current.section == 2) {
 			setFuncName('Create Post');
 		} else if (current.section == 1) {
-			setFuncName('Manage Connections');
+			setFuncName('Connections');
+		} else if (current.section == 3) {
+			setFuncName('Manage');
 		}
 	}, [current])
 

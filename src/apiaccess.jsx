@@ -21,7 +21,7 @@ export default function APIaccess (userKey) {
 			 * - password:s
 			 */
 
-			return await fetch(`${apiAddr}/users/newuser`, {
+			let request = await fetch(`${apiAddr}/users/newuser`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -34,7 +34,11 @@ export default function APIaccess (userKey) {
 			   Returns a true statement if signup successful
 			   Checks by submitted emailAddr whether account was made with on prior
 			*/
-			return true;
+			if(request.error) {
+				return request.message 
+			} else {
+				return true;
+			}
 		},
 
 		async logInUser(loginCredentials) {
@@ -55,7 +59,7 @@ export default function APIaccess (userKey) {
 			    return JSON.parse(jsonPayload);
 			};
 
-			let loggedIn = await fetch(`${apiAddr}/users/login`, {
+			let request = await fetch(`${apiAddr}/users/login`, {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -64,18 +68,25 @@ export default function APIaccess (userKey) {
 				body: JSON.stringify(loginCredentials)
 			}).then(data => data.json());
 
-			let userToken = loggedIn;
+			if(request.confirm == true) {
 
-			let userInfo = parseJwt(loggedIn);
-			let userID = userInfo._id;
-			let userName = userInfo._username;
+				let userToken = request.payload;
 
-			sessionStorage.setItem('userKey', userToken);
-			sessionStorage.setItem('userID', userID);
-			sessionStorage.setItem('userName', userName);
+				let userInfo = parseJwt(request.payload);
+				let userID = userInfo._id;
+				let userName = userInfo._username;
 
-			return true;
-			// return true;
+				sessionStorage.setItem('userKey', userToken);
+				sessionStorage.setItem('userID', userID);
+				sessionStorage.setItem('userName', userName);
+
+				return true;
+
+			} else if (request.error == true) {
+				console.log(request);
+				return request.message
+			}
+			
 		},	
 
 		async pullUserLog(pull, lastID) {

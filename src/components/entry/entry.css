@@ -210,7 +210,67 @@ section#entry form button#switch {
 
 
 
+section#entry div#popUp {
+	display: flex;
+	justify-content: space-between;
+	width: 94%;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	bottom: -60px;
+	border: 2px solid var(--greyscale-error);
+	border-radius: 6px;
+	transition: all 1s ease-in-out;
+	animation: 0.5s ease-in-out forwards popUp;
+}
 
+/*section#entry div#popUp.on {
+	display: flex;
+	animation: 1s ease-in-out forwards popUp;
+}
+
+section#entry div#popUp.off {
+	display: flex;
+	animation: 1s ease-in-out forwards popDown;
+}*/
+
+
+	@keyframes popUp {
+		0% {
+			bottom: 0;
+			opacity: 0;
+		}
+		100% {
+			bottom: 60px;
+			opacity: 1;
+		}
+	}
+
+	@keyframes popDown {
+		0% {
+			bottom: 60px;
+			opacity: 1;
+		}
+		100% {
+			bottom: 0;
+			opacity: 0;
+		}
+	}
+
+
+section#entry div#popUp p {
+	display: block;
+	font-family: "Raleway";
+	font-size: 0.95em;
+	font-weight: 400;
+	letter-spacing: 1px;
+	margin: 16px 8px;
+	color: var(--greyscale-error);
+}
+
+section#entry div#popUp button {
+	color: var(--greyscale-text);
+}
 
 
 

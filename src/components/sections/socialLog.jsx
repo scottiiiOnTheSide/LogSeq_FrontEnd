@@ -137,6 +137,10 @@ export default function SocialLog({active, current, setCurrent}) {
 		})
 	}, [])
 
+	React.useEffect(()=> {
+		updateLog();
+	}, [current.modal])
+
 	let noHeading = false;
 
 	return (

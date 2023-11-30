@@ -18,7 +18,7 @@ const formReducer = (state, event) => {
 }
 
 
-function UserSignUp({accessapi, setSignup, setLogin, signup, transition}) {
+function UserSignUp({accessapi, setSignup, setLogin, signup, transition, setPopUp}) {
 
 	/**
 	 * 09. 17. 2023
@@ -38,30 +38,51 @@ function UserSignUp({accessapi, setSignup, setLogin, signup, transition}) {
 		if(!isReady) {
 			return;
 		} else {
-			await accessapi.signUpUser({
-				firstName: formData.firstName,
-				lastName: formData.lastName,
-				emailAddr: formData.emailAddr,
-				userName: formData.userName,
-				password: formData.password
-			}).then(data => {
 
-				if(data == true) {
-					
-					setSignup();
-					let delay = setTimeout(()=> {
-						transition();
-					}, 500)
+			/*
+				check that all inputs have value
+			*/
+			let inputs = Array.from(thisForm.children[0].children);
+			let check = 0;
 
-				} else {
-					/**
-					 * 09. 17. 2023
-					 * would relay error message into notifPopUp function
-					 * and then highlight the field in question
-					 */
-					console.log('login failed')
-				}	
+			inputs.forEach(input => {
+				if(input.value != '') {
+					check++;
+				}
 			})
+
+			if(check != 5) {
+				setPopUp({
+					active: true,
+					message: 'Please fill in all fields'
+				})
+			} else {
+
+				let request = await accessapi.signUpUser({
+					firstName: formData.firstName,
+					lastName: formData.lastName,
+					emailAddr: formData.emailAddr,
+					userName: formData.userName,
+					password: formData.password
+				}).then(data => {
+
+					if(data == true) {
+
+						setSignup();
+						let delay = setTimeout(()=> {
+							transition();
+						}, 500)
+
+					} else {
+						setPopUp({
+							active: true,
+							message: data
+						})
+						console.log('login failed');
+					}	
+				})
+
+			}
 		}
 	}
 
@@ -91,26 +112,32 @@ function UserSignUp({accessapi, setSignup, setLogin, signup, transition}) {
 		}
 	}, [signup, form])
 
-	// className={signup == true ? 'active' : 'nonActive'}
-	return (
-		<form id="signin" onSubmit={handleSubmit} ref={form} onBlur={()=> {
-			let check = true;
-			if(!formData.firstName || formData.emailAddr.length <= 0) {
-				check = false;
-			} if(!formData.lastName || formData.lastName.length <= 0) {
-				check = false;
-			} if(!formData.emailAddr || formData.emailAddr.length <= 0) {
-				check = false;
-			} if(!formData.userName || formData.userName.length <= 0) {
-				check = false;
-			} if(!formData.password || formData.password.length <= 0) {
-				check = false;
-			}
+	/*
+		check whether all inputs have value before making submit button active
+	*/
+	React.useEffect(()=> {
 
-			if(check == true) {
-				setIsReady();
+		if(thisForm) {
+			let inputs = Array.from(thisForm.children[0].children);
+			let check = 0;
+
+			inputs.forEach(input => {
+				if(input.value != '') {
+					check++;
+				}
+			})
+
+			if(check == 5) {
+				if(!isReady) {
+					setIsReady();
+				}
 			}
-		}}>
+		}
+	}, [formData])
+
+	
+	return (
+		<form id="signin" onSubmit={handleSubmit} ref={form}>
 			<fieldset>
 				<input name="firstName" placeholder="First Name" onChange={handleChange} />
 				<input name="lastName" placeholder="Last Name" onChange={handleChange} />
@@ -119,7 +146,8 @@ function UserSignUp({accessapi, setSignup, setLogin, signup, transition}) {
 				<input name="password" placeholder="Create a Password" onChange={handleChange} />
 			</fieldset>
 			<button id="signin"type="submit" className={isReady == true ? 'canUse' : 'cantUse'}>Sign Up</button>
-			<button id="switch" className="switch" onClick={()=> {
+			<button id="switch" className="switch" onClick={(e)=> {
+				e.preventDefault();
 				setSignup();
 				let delay = setTimeout(()=> {
 					setLogin();
@@ -134,7 +162,7 @@ function UserSignUp({accessapi, setSignup, setLogin, signup, transition}) {
 
 
 
-function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup}) {
+function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setPopUp}) {
 
 	/**
 	 * 09. 17. 2023
@@ -152,12 +180,39 @@ function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup}) {
 		if(!isReady) {
 			return;
 		} else {
-			let user = await login({
-				emailAddr: formData.emailAddr,
-				password: formData.password
-			}).then(()=> {
-				navigate('/home');
+
+			let inputs = Array.from(thisForm.children[0].children);
+			let check = 0;
+
+			inputs.forEach(input => {
+				if(input.value != '') {
+					check++;
+				}
 			})
+
+			if(check != 2) {
+				setPopUp({
+					active: true,
+					message: 'Please fill in all fields'
+				})
+			} else {
+
+				let user = await login({
+					emailAddr: formData.emailAddr,
+					password: formData.password
+				});
+
+				if(user == true) {
+					navigate('/home');
+				} else {
+					console.log(user);
+					setPopUp({
+						active: true,
+						message: user
+					})
+				}
+
+			}	
 		}		
 	}
 
@@ -187,25 +242,38 @@ function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup}) {
 		}
 	}, [logingIn, form])
 
-	return (
-		<form id="login" onSubmit={handleSubmit} ref={form} onBlur={()=> {
-			let check = true;
-			if(!formData.emailAddr || formData.emailAddr.length <= 0) {
-				check = false;
-			} if(!formData.password || formData.password.length <= 0) {
-				check = false;
-			}
+	/*
+		check whether all inputs have value before making submit button active
+	*/
+	React.useEffect(()=> {
 
-			if(check == true) {
-				setIsReady();
+		if(thisForm) {
+			let inputs = Array.from(thisForm.children[0].children);
+			let check = 0;
+
+			inputs.forEach(input => {
+				if(input.value != '') {
+					check++;
+				}
+			})
+
+			if(check == 2) {
+				if(!isReady) {
+					setIsReady();
+				}
 			}
-		}}>
+		}
+	}, [formData])
+
+	return (
+		<form id="login" onSubmit={handleSubmit} ref={form}>
 			<fieldset>
 				<input name="emailAddr" placeholder="Email Address" onChange={handleChange} />
 				<input name="password" placeholder="Password" onChange={handleChange} />
 			</fieldset>
 			<button id="login" type="submit" className={isReady == true ? 'canUse' : 'cantUse'}>Log In</button>
-			<button id="switch" onClick={()=> {
+			<button id="switch" onClick={(e)=> {
+				e.preventDefault()
 				setLogingIn();
 				let delay = setTimeout(()=> {
 					setSignup();
@@ -230,6 +298,10 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 	const [signup, setSignup] = React.useReducer(state => !state, false);
 	const [login, setLogin] = React.useReducer(state => !state, false);
 	const [signUpSuccess, setSignUpSuccess] = React.useReducer(state => !state, false);
+	const [popUp, setPopUp] = React.useState({
+		active: false,
+		message: null
+	})
 
 	let transition = () => {
 		setSignUpSuccess();
@@ -254,7 +326,12 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 				<h1 id="xyz"><span>.xyz</span></h1>
 			</div>
 
-			<UserSignUp accessapi={accessapi} signup={signup} setSignup={setSignup} setLogin={setLogin} transition={transition}/>
+			<UserSignUp accessapi={accessapi} 
+						signup={signup} 
+						setSignup={setSignup} 
+						setLogin={setLogin} 
+						transition={transition}
+						setPopUp={setPopUp}/>
 
 			{signUpSuccess &&
 				<div id="transition">
@@ -268,8 +345,12 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 				</div>
 			}
 			
-
-			<UserLogIn accessapi={accessapi} setUserID={setUserID} logingIn={login} setLogingIn={setLogin} setSignup={setSignup}/>
+			<UserLogIn accessapi={accessapi} 
+						setUserID={setUserID} 
+						logingIn={login} 
+						setLogingIn={setLogin} 
+						setSignup={setSignup}
+						setPopUp={setPopUp}/>
 
 			<div id="loginOrSignup" ref={initialChoice}>
 
@@ -294,8 +375,15 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 						initialChoiceElement.style.display = 'none';
 					}, 550)
 				}}>Log In</button>
+			</div>
 
-			</div>				
+			{popUp.active &&
+				<div id="popUp">
+					<p>{popUp.message}</p>
+					<button className={"buttonDefault"}onClick={()=> {setPopUp({ active: false, message: null })}}>Close</button>
+				</div>
+			}
+
 		</section>
 	)
 }

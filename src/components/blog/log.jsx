@@ -1,5 +1,6 @@
 import * as React from 'react';
 import {useNavigate} from 'react-router-dom';
+import './blog.css';
 
 /**
  * 09. 24. 2023
@@ -39,7 +40,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 			id = post._id,
 			owner = post.owner,
 			author = post.author,
-			content = post.content[0],
+			content = post.content[0].content,
 			text = [];
 
 			if(post.tags) {
@@ -50,10 +51,10 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 		 * post content is currently array, housing objects: only object
 		 * being the text split into an object by letter :/
 		 */
-		for (let char in content) {
-			text.push(content[char]);
-		}
-		text = text.join("");
+		// for (let char in content) {
+		// 	text.push(content[char]);
+		// }
+		// text = text.join("");
 
 
 		// } else {
@@ -110,7 +111,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 				}
 				
 				<h2>{title}</h2>
-				<p>{text}</p>
+				<p>{content}</p>
 
 				<ul>
 					<li>{tags} tags</li>

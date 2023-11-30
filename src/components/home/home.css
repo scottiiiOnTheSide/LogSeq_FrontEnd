@@ -10,30 +10,32 @@ section#HOME {
 
 /* * * H e a d e r * * */
 	header {
-		width: 100%;
-		position: fixed;
-		top: 0;
 		display: flex;
 		justify-content: space-between;
-
+		width: 95%;
+		position: fixed;
+		top: 4px;
+		left: 50%;
+		transform: translateX(-50%);
+		
 		font-family: 'Raleway';
 
-		border-bottom: 2px solid var(--site-gray-mid);
-		padding-bottom: 14px;
-		background-color: white;
-		z-index: 20;
+		border-bottom: 2px solid var(--greyscale-accent);
+		padding: 4px 0 14px;
+		background-color: transparent;
+		z-index: 10;
 	}
 
 	header div#thePresent {
-	/*	position: ;*/
-
+		position: relative;
+		top: 4px;
 	}
 
 	header div#thePresent h1 {
 		font-weight: 600;
-		font-size: 3em;
+		font-size: 2.75em;
 		letter-spacing: 12px;
-		color: var(--site-gray-lightest);
+		color: var(--greyscale-elements);
 
 		margin: 0;
 		position: absolute;
@@ -42,11 +44,11 @@ section#HOME {
 	header div#thePresent span {
 		font-size: 1.25em;
 		letter-spacing: 1px;
-		color: var(--site-gray-middle);
+		color: var(--greyscale-text);
 
 		margin: 0px 3px;
 		position: relative;
-		top: 20px;
+		top: 16px;
 	}
 
 
@@ -61,7 +63,7 @@ section#HOME {
 	header button#interactionsToggle p {
 		font-weight: 600;
 		font-size: 4em;
-		color: var(--site-gray-lightest);
+		color: var(--greyscale-elements);
 
 		margin: 4px 0;
 		position: absolute;
@@ -71,7 +73,7 @@ section#HOME {
 	header button#interactionsToggle span {
 		display: block;
 		margin: 8px 0;
-		border: 1.5px solid var(--site-gray-middle);
+		border: 1.5px solid var(--greyscale-details);
 
 	}
 
@@ -131,7 +133,7 @@ section#HOME {
 	nav {
 		width: 100%;
 		position: fixed;
-		margin-top: 70px;
+		margin-top: 78px;
 		left: 50%;
 		transform: translateX(-50%);
 		display: flex;
@@ -144,7 +146,7 @@ section#HOME {
 			display: block;
 			width: 80px;
 			height: 102%;
-			background-color: white;
+			background-color: transparent;
 
 			position: absolute;
 			left: -7%;
@@ -155,7 +157,7 @@ section#HOME {
 			display: block;
 			width: 80px;
 			height: 102%;
-			background-color: white;
+			background-color: transparent;
 
 			position: absolute;
 			right: -7%;
@@ -179,9 +181,8 @@ section#HOME {
 		text-align: center;
 
 		font-family: "Raleway";
-		font-weight: 600;
+		font-weight: 400;
 		letter-spacing: 2px;
-		color: var(--site-gray-middle);
 
 		padding: 0 10px;
 		transition: all 0.5s ease;
@@ -200,11 +201,14 @@ section#HOME {
 		nav ul li.active {
 			font-size: 1.75em;
 			padding: 0 16px;
+			color: var(--greyscale-accent);
 		}
 
 		nav ul li.not {
 			font-size: 1.15em;
-			color: var(--site-gray-lite);
+			font-size: 1em;
+			letter-spacing: 4px;
+			color: var(--greyscale-details);
 		}
 
 	nav button#leftToggle {
@@ -235,14 +239,13 @@ section#HOME {
 
 
 /* * * B u t t o n  B a r * * */
-	div#buttonBar {
-		width: 100%;
-		position: fixed;
-/*		bottom: -10px;*/
-		bottom: 0;
-		background-color: white;
-		z-index: 10;
-	}
+div#buttonBar {
+	width: 100%;
+	position: fixed;
+	bottom: 0;
+	background-color: white;
+	z-index: 10;
+}
 
 	div#buttonBar button#main {
 		height: 100%;
@@ -261,7 +264,6 @@ section#HOME {
 		outline: none;
 
 		padding: 24px 0;
-
 		z-index: 10;
 	}
 
@@ -269,7 +271,7 @@ section#HOME {
 div#buttonBar button#monthChartToggle {
     position: absolute;
     right: 2%;
-    bottom: 2%;
+    bottom: 8%;
     box-sizing: content-box;
     padding: 10px 5px;
     background-color: transparent;

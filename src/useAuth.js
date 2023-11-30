@@ -28,9 +28,15 @@ function useAuth() {
 
 		async login(loginCredentials) {
 
-				await APIaccess().logInUser(loginCredentials);
+			let request = await APIaccess().logInUser(loginCredentials);
+
+			if(request == true) {
 				setAuth(true);
-				return true; //confirms login successful and user details stored
+				return true;
+			} else {
+				return request;
+			}
+				
 		},
 		async logout() {
 			return new Promise((res, rej) => {

@@ -4,12 +4,85 @@
 -----------------------------------------------------------------------------------------
 
 
+### 11. 29. 2023
 
-### 11. 25. 2023
-@0100 
+@1230 
+****To Do Next:
+		- come up with process for editing a post
+		- Clean up backend code and CSS . . .
+
+Finishing 1.0A
+- implement editing post & deleting comments & adding all comments
+
+@1130 notifs are weird - but they work for now. Will remain as is with the whole double nested issue...
+			however, all old notifs removed - working to implement notif.details now
+			in both <InteractionsList>
+
+
+### 11. 28. 2023
+@1520 new comments and comment replies now created and added to Post doc without creating 
+			individual docs 
 
 ****To Do Next:
-		- create error popUp alert. Activates when
+		- process for deleting comments
+		- adding notifs to user's notifList -correctly-
+		- adjust route for marking a notif read
+		- process for editing a post
+			- replace text in content fields with new data
+			- delete photos or add to pinned media 
+			- option to pin post in details box
+
+
+@0410 comment created and added to post Doc - however, will need to change getComments function
+			within posts, as comments are no longer individual docs.
+			simply get postData again after each comment upload 
+			- will have to write function to count all nested comments
+
+
+### 11. 27. 2023
+@0355 add sanbanbaka and make post tagging user to investigate below notes
+
+@0345 worked on CSS for <Home> and <InteractionsList> components
+
+@1225 
+
+****To Do:
+		- Discern whether creating post makes seperate docs in DB for each content 
+			( 11. 28. 2023 | it doesnt - never did lol) ✅
+		- can new comment be created and added to post without saving directly?
+			( 11. 28. 2023 | done ) ✅
+		- can notifs be created and added to user's list without being saved ???
+			( 11. 28. 2023 | Current processes work well enough as is)
+
+
+
+
+### 11. 25. 2023
+@1950 Deleted all DB groups, other than users
+			Have noticed that my user notifications remain, and I can mark them read without
+		  the supposed doc being editted (external doc doesnt exist)
+
+Will look to take this approach with post content...
+Also must make sure no new notifs are then created xD
+
+
+@1115 <Entry> page CSS complete!
+- checks whether all fields in form have input
+- returns error messages with popUp notif
+- transition animations between signUp and logIn
+- animation for successful sign up (will add svgs later)
+
+****To Do Next:
+		- CSS for all <Home> & <Post> components
+
+		- delete all DB content and users, start from scratch
+		- document and organize all functions, make sure they work as intended
+			- fix what doesn't work
+
+
+@0100 
+****To Do Next:
+		- create error popUp alert. Activates when ✅
 			- error from API
 			- input field is missing value
 

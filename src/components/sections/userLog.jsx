@@ -156,6 +156,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 				message: 'Both a Title and Content are needed to make a post!'
 			})
 		} else {
+			
 			let submission = new FormData();
 			submission.append('title', formData.title)
 			submission.append('tags', formData.tags)
@@ -288,8 +289,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					<input name="tags" placeholder="tags" onChange={handleChange} />
 
 					<div id="options">
-						<button type="submit">Submit</button>
-						<button onClick={()=> {
+						<button className={"buttonDefault"} type="submit">Submit</button>
+						<button className={"buttonDefault"} onClick={()=> {
 							setCurrent({
 								...current,
 								modal: false
@@ -298,6 +299,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					</div>
 				</fieldset>
 			</form>
+			
 		</div>
 	)
 }

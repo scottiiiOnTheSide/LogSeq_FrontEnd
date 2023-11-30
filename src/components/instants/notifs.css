@@ -7,12 +7,13 @@ div#interactionsList {
 	top: 0;
 	width: 100%;
 	height: 100%;
-	background-color: white;
+	background-color: var(--greyscale-background-2);
 	z-index: 20;
 }
 
 div#interactionsList div#header {
-	width: 100%;
+	width: 95%;
+	margin: 0 auto;
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
@@ -32,10 +33,10 @@ div#interactionsList div#header {
 		position: absolute;
 		top: -20px;
 		left: -10px;
-		font-size: 1.6em;
+		font-size: 1.5em;
 		font-weight: 600;
 		letter-spacing: 1px;
-		color: var(--site-gray-light);
+		color: var(--greyscale-elements);
 	}
 
 
@@ -43,7 +44,7 @@ div#interactionsList div#header {
 
 div#interactionsList div#header button {
 	position: relative;
-	top: -4px;
+	top: 0px;
 	border: none;
 	background: transparent;
 	padding: 0px;
@@ -65,7 +66,7 @@ div#interactionsList div#header button span {
 	font-family: 'Open Sans';
 	font-size: 3em;
 	font-weight: 400;
-	color: var(--site-gray-dark);
+	color: var(--greyscale-details);
 }
 
 
@@ -74,29 +75,53 @@ div#interactionsList div#header button span {
 
 
 div#interactionsList ul#notifList {
-	margin-top: 8px;
-	padding: 0;
-	list-style-type: none;
 	position: relative;
-	height: 88%;
+/*	width: %;*/
+	height: 84%;
+	margin: 0 auto 0;
+
+	list-style-type: none;
+	padding: 0;
+
 	overflow: scroll;
 	z-index: 10;
 }
 
 div#interactionsList ul#notifList li {
+	display: flex;
 	width: 96%;
-	margin: 20px auto;
-	padding: 0 0 12px;
-	border-bottom: 1px solid var(--site-gray-light);;
+	position: relative;
+	margin: 24px auto;
+	padding: 0 0 20px;
+	border-bottom: 1px solid var(--site-gray-light);
 }
 	
 	div#interactionsList ul#notifList li:last-child {
 		padding-bottom: 20px;
 	}
 
-div#interactionsList ul#notifList li p {}
+div#interactionsList ul#notifList li div#body {
+	width: 90%;
+}
 
-div#interactionsList ul#notifList li div.options {}
+div#interactionsList ul#notifList li span.unread{
+/*	width: %;*/
+
+	text-align: center;
+	font-size: 3em;
+	color: var(--greyscale-accent);
+	padding: 0 8px;
+}
+
+div#interactionsList ul#notifList li p {
+	width: 96%;
+	margin: 16px auto;
+	color: var(--greyscale-text);
+}
+
+div#interactionsList ul#notifList li div.options {
+	margin-left: 2px;
+}
 
 div#interactionsList ul#notifList li div.options button {
 	font-size: 0.85em;
@@ -112,10 +137,12 @@ div#interactionsList div#buttonBar {
 	display: flex;
 	flex-direction: row;
 	justify-content: center;
+	background-color: white;
+	z-index: 15;
 }
 
 div#interactionsList div#buttonBar button {
-	padding: 16px 0 10px;
+	padding: 24px 0;
 	width: 50%;
 }
 

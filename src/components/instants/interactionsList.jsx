@@ -110,59 +110,59 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 	let returnNotifType = (notif) => {
 
 		let details
-		// if(notif.details) {
-		// 	details = JSON.parse(notif.details);	
-		// }
+		if(notif.details) {
+			details = JSON.parse(notif.details);	
+		}
 		
 		// save notif._id as key
 		return <li className="notif" key={notif._id} onClick={()=> {console.log(notif)}}>
 				{notif.isRead == false &&
 					<span className="unread">!</span>
 				}
-				{(notif.type == 'request' && notif.message == 'sent') &&
-					<p>You sent {notif.recipientUsername} a request</p>
-				}
-				{(notif.type == 'request' && notif.message == 'recieved') &&
-					<p>You recieved a request from {notif.senderUsername}</p>
-				}
-				{(notif.type == 'request' && notif.message == 'accept') &&
-					<p>You and {notif.senderUsername} are now connected!</p>
-				}
-				{(notif.type == 'comment' && notif.message == 'initial') &&
-					// <p>{notif.senderUsername} left a comment on your post {details.postTitle}</p>
-					<p>{notif.senderUsername} left a comment on your post </p>
-				}
-				{(notif.type == 'comment' && notif.message == 'response') &&
-					// <p>{notif.senderUsername} responded to your comment on {details.postTitle}</p>
-					<p>{notif.senderUsername} responded to your comment on</p>
-				}
-				{(notif.type == 'tagging' && notif.message == 'recieved') &&
-					// <p>{notif.senderUsername} tagged you in a post {details.postTitle}</p>
-					<p>{notif.senderUsername} tagged you in a post</p>
-				}
 
-				{notif.type == 'comment' && 
-					<div className="options">
-						<button className="buttonDefault">See Comment</button>
-						<button className="buttonDefault"
-								onClick={()=> {interact('markRead', notif._id, username )}}>Mark Read</button>
-					</div>
-				}
-				{notif.type == 'tagging' &&
-					<div className="options">
-						<button className="buttonDefault">See Post</button>
-						<button className="buttonDefault"
-								onClick={()=> {interact('markRead', notif._id )}}>Mark Read</button>
-					</div>
-				}
-				{(notif.type == 'request' && notif.message == 'recieved') &&
-					<div className="options">
-						<button className="buttonDefault" 
-								onClick={()=> {interact('accept', notif.sender, notif.senderUsername)}}>Accept</button>
-						<button className="buttonDefault" 
-								onClick={()=> {interact('ignore', notif.sender, notif.senderUsername)}}>Ignore</button>
-					</div>
-				}
+				<div id="body">
+					{(notif.type == 'request' && notif.message == 'sent') &&
+						<p>You sent {notif.recipientUsername} a request</p>
+					}
+					{(notif.type == 'request' && notif.message == 'recieved') &&
+						<p>You recieved a request from {notif.senderUsername}</p>
+					}
+					{(notif.type == 'request' && notif.message == 'accept') &&
+						<p>You and {notif.senderUsername} are now connected!</p>
+					}
+					{(notif.type == 'comment' && notif.message == 'initial') &&
+						<p>{notif.senderUsername} left a comment on your post "{details.postTitle}"</p>
+					}
+					{(notif.type == 'comment' && notif.message == 'response') &&
+						<p>{notif.senderUsername} responded to your comment on "{details.postTitle}"</p>
+					}
+					{(notif.type == 'tagging' && notif.message == 'recieved') &&
+						<p>{notif.senderUsername} tagged you in a post {details.postTitle}</p>
+					}
+
+					{notif.type == 'comment' && 
+						<div className="options">
+							<button className="buttonDefault">See Comment</button>
+							<button className="buttonDefault"
+									onClick={()=> {interact('markRead', notif._id, username )}}>Mark Read</button>
+						</div>
+					}
+					{notif.type == 'tagging' &&
+						<div className="options">
+							<button className="buttonDefault">See Post</button>
+							<button className="buttonDefault"
+									onClick={()=> {interact('markRead', notif._id )}}>Mark Read</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'recieved') &&
+						<div className="options">
+							<button className="buttonDefault" 
+									onClick={()=> {interact('accept', notif.sender, notif.senderUsername)}}>Accept</button>
+							<button className="buttonDefault" 
+									onClick={()=> {interact('ignore', notif.sender, notif.senderUsername)}}>Ignore</button>
+						</div>
+					}
+				</div>
 			   </li>
 	}
 
