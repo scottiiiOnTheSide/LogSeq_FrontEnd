@@ -162,7 +162,7 @@ function UserSignUp({accessapi, setSignup, setLogin, signup, transition, setPopU
 
 
 
-function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setPopUp}) {
+function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitSequence}) {
 
 	/**
 	 * 09. 17. 2023
@@ -203,7 +203,7 @@ function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setP
 				});
 
 				if(user == true) {
-					navigate('/home');
+					exitSequence();
 				} else {
 					console.log(user);
 					setPopUp({
@@ -302,6 +302,7 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 		active: false,
 		message: null
 	})
+	const navigate = useNavigate();
 
 	let transition = () => {
 		setSignUpSuccess();
@@ -315,10 +316,19 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 		}, 3100)
 	}
 
+	let exitSequence = () => {
+		setLeave();
+		let delay = setTimeout(()=> {
+			navigate('/home');
+		}, 400)
+	}
+
+	let [leave, setLeave] = React.useReducer(state => !state, false);
+
 	const initialChoice = React.useRef()
 	return (
-		<section id="entry">
-
+		<section id="entry" className={`${leave == true ? '_enter' : ''}`}>
+							
 			<div id="titleWrapper">
 				<h1>Welcome to</h1>
 				<h1><span>Sync</span>hronized</h1>
@@ -350,7 +360,8 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 						logingIn={login} 
 						setLogingIn={setLogin} 
 						setSignup={setSignup}
-						setPopUp={setPopUp}/>
+						setPopUp={setPopUp}
+						exitSequence={exitSequence}/>
 
 			<div id="loginOrSignup" ref={initialChoice}>
 

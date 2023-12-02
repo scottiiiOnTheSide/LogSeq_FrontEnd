@@ -20,8 +20,8 @@ section#HOME {
 		
 		font-family: 'Raleway';
 
-		border-bottom: 2px solid var(--greyscale-accent);
-		padding: 4px 0 14px;
+		border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+		padding: 4px 0 16px;
 		background-color: transparent;
 		z-index: 10;
 	}
@@ -129,7 +129,9 @@ section#HOME {
 
 
 
-/* * * C a r o u s e l  N a v * * */
+/* * * 
+	C a r o u s e l  N a v 
+* * */
 	nav {
 		width: 100%;
 		position: fixed;
@@ -238,13 +240,19 @@ section#HOME {
 
 
 
-/* * * B u t t o n  B a r * * */
+/* * * 
+	B u t t o n  B a r 
+* * */
+
 div#buttonBar {
-	width: 100%;
+	width: 95%;
 	position: fixed;
+	left: 50%;
+	transform: translateX(-50%);
 	bottom: 0;
-	background-color: white;
+	background-color: transparent;
 	z-index: 10;
+	border-top: 2.5px solid rgba(0, 0, 0, 0.5);
 }
 
 	div#buttonBar button#main {
@@ -263,7 +271,7 @@ div#buttonBar {
 		border: none;
 		outline: none;
 
-		padding: 24px 0;
+		padding: 28px 0;
 		z-index: 10;
 	}
 

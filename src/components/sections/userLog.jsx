@@ -225,7 +225,6 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		}
 	}
 
-
 	const newCombo = (e) => {
 		e.preventDefault();
 		setContentCount([
@@ -267,14 +266,24 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		})
 		setTagged(request);
 	}
+	
+	const [tagged, setTagged] = React.useState([]);
+
+	const [enter, setEnter] = React.useReducer(state => !state, true);
+	const el = React.useRef()
+	const element = el.current;
+
 	React.useEffect(()=> {
 		getConnections();
-	}, []);
-
-	const [tagged, setTagged] = React.useState([])
+		if(element) {
+			let delay = setTimeout(()=> {
+				setEnter();
+			}, 40);
+		}
+	}, [element]);
 
 	return (
-		<div id="createPost">
+		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''}`}>
 			
 			<form onSubmit={handleSubmit} encType='multipart/form-data'>
 				<fieldset>
@@ -290,11 +299,15 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 					<div id="options">
 						<button className={"buttonDefault"} type="submit">Submit</button>
-						<button className={"buttonDefault"} onClick={()=> {
-							setCurrent({
-								...current,
-								modal: false
-							})
+						<button className={"buttonDefault"} onClick={(e)=> {
+							e.preventDefault();
+							setEnter();
+							let delay = setTimeout(()=> {
+								setCurrent({
+									...current,
+									modal: false
+								})
+							}, 400)
 						}}>Close</button>
 					</div>
 				</fieldset>

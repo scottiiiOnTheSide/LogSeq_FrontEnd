@@ -4,8 +4,28 @@
 -----------------------------------------------------------------------------------------
 
 
-### 11. 29. 2023
+### 11. 30. 2023
+@1555 added ::before psuedo element to <Entry>
 
+latent components, i.e <CreatePost>, to have ::before opacity1 by default
+onMount: use state to change component className to leave
+
+****To Do:
+		- add _latent_ toggle animations to...
+			<CreatePost> ✅   
+			<manageConnections>
+			<interactionList>
+		- add _regular_ toggle animations to
+		  <Entry> ✅
+		  <Home>
+
+For Latent:
+	load with enter, true
+	 - wait 100, then enter, false
+	 on leave - enter, true
+
+
+### 11. 29. 2023
 @1230 
 ****To Do Next:
 		- come up with process for editing a post

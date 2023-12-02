@@ -155,6 +155,26 @@ section#HOME div#createPost {
 	background-color: white;
 }
 
+	div#createPost::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 0.3s;
+		z-index: 0;
+	}
+
+	div#createPost._enter::before {
+		z-index: 20;
+		opacity: 1;
+	}
+
 section#HOME div#createPost form {
 	width: 95%;
 	margin: 0 auto;
