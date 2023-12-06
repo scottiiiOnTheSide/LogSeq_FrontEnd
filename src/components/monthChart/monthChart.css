@@ -2,7 +2,7 @@
 div#monthChart {
 	position: absolute;
 	width: 100%;
-	height: calc(100% - 140px);
+	height: calc(100% - 150px);
 	z-index: 15;
 	background-color: white;
 	top: 50%;
@@ -15,7 +15,7 @@ div#monthChart div#header {
 	position: relative;
 	width: 90%;
 	height: 1.5em;
-	margin: 28px auto 60px;
+	margin: 40px auto 60px;
 }
 
 div#monthChart div#header span {

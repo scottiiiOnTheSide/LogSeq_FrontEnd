@@ -72,6 +72,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	const [formData, setFormData] = React.useState({});
 	const [contentCount, setContentCount] = React.useState([0]);
 	const [postContent, setPostContent] = React.useState([]);
+	const [images, setImages] = React.useState([]);
 	let count = 0;
 	// console.log(postContent);
 	const handleChange = (event) => {
@@ -93,6 +94,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					index: event.target.dataset.index 
 				}		
 			])
+			setImages([...images, URL.createObjectURL(event.target.files[0])]);
 		} 
 		else if(event.target.name == 'content') {
 
@@ -248,13 +250,21 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					onBlur - if any object in postContent has same index as this.index,
 					remove it, add this one
 				*/}
-			<input
-				id="addImage" 
-				onChange={handleChange} 
-				type="file" 
-				accept="image/"
-				name='image' 
-				data-index={index + 0.5}/>
+			<img src={images[index]}/>
+			<label className="imageAdd" onChange={handleChange} htmlFor="addImage" onClick={()=> {
+				document.getElementsByClassName('addImage')[index].click();
+			}}>
+				<input hidden
+					className={'addImage'} 
+					onChange={handleChange} 
+					type="file" 
+					accept="image/"
+					name='image' 
+					data-index={index + 0.5}
+					hidden />
+				Add Image
+			</label>
+			
 		</fieldset>
 
 		return element;
@@ -268,34 +278,51 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	}
 	
 	const [tagged, setTagged] = React.useState([]);
-
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	const el = React.useRef()
 	const element = el.current;
 
+	/* On Mount, fade away pseudo element for transition effect */
 	React.useEffect(()=> {
 		getConnections();
 		if(element) {
-			let delay = setTimeout(()=> {
-				setEnter();
-			}, 40);
+			setEnter();
 		}
 	}, [element]);
+
+	let writtenDate;
+	if(selectedDate.day) {
+		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
+	}
 
 	return (
 		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''}`}>
 			
+			<div id="titleWrapper">
+				<h3>Creating Entry for</h3>
+				{current.monthChart &&
+					<h2>{writtenDate}</h2>
+				}
+				{!current.monthChart &&
+					<h2>Today</h2>
+				}
+			</div>
+
 			<form onSubmit={handleSubmit} encType='multipart/form-data'>
 				<fieldset>
-					<input name="title" placeholder="title" onChange={handleChange}/>
+					<input name="title" id="title" placeholder="Title" onChange={handleChange}/>
 					{contentCount.map((element, index) => (
 						textareaImageAdd(index)
 					))}
-					<button onClick={newCombo}>New Text Area + Image Upload</button>
+					<button id="newCombo" 
+							className={'buttonDefault'} 
+							onClick={newCombo}>
+							More Content
+					</button>
 
 					<DropSelect tagged={tagged} setTagged={setTagged} />
 
-					<input name="tags" placeholder="tags" onChange={handleChange} />
+					<input name="tags" placeholder="Tags" onChange={handleChange} />
 
 					<div id="options">
 						<button className={"buttonDefault"} type="submit">Submit</button>
@@ -307,7 +334,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 									...current,
 									modal: false
 								})
-							}, 400)
+							}, 300)
 						}}>Close</button>
 					</div>
 				</fieldset>

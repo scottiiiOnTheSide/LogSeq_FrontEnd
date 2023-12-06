@@ -78,14 +78,18 @@ function Home({
     year: null,
   })
 
-  /**
-   * 10. 08. 2023
-   * Make it so USER section is only default on initial load - chosen section
-   * should be preserved on refresh
-   */
+  const [enter, setEnter] = React.useReducer(state => !state, true);
+  let el = React.useRef();
+  let element = el.current
+
+  React.useEffect(()=> {
+    if(element) {
+      setEnter();
+    }
+  }, [element])
 
   return (
-    <section id="HOME">  
+    <section id="HOME" ref={el} className={`${enter == true ? '_enter' : ''}`}>  
         <Header cal={cal} isPost={isPost} setNotifList={setNotifList} unreadCount={unreadCount}/>
         <CarouselNav current={current} setCurrent={setCurrent}/>
 

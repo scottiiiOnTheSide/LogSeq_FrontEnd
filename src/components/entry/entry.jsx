@@ -286,7 +286,6 @@ function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setP
 
 
 
-
 export default function Entry({accessapi, useAuth, setUserID}) {
 
 	/**
@@ -317,17 +316,18 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 	}
 
 	let exitSequence = () => {
-		setLeave();
+		setEnter()
 		let delay = setTimeout(()=> {
 			navigate('/home');
-		}, 400)
+		}, 550)
 	}
 
-	let [leave, setLeave] = React.useReducer(state => !state, false);
-
+	const [enter, setEnter] = React.useReducer(state => !state, false);
 	const initialChoice = React.useRef()
+	const el = React.useRef();
+
 	return (
-		<section id="entry" className={`${leave == true ? '_enter' : ''}`}>
+		<section id="entry" ref={el} className={`${enter == true ? '_enter' : ''}`}>
 							
 			<div id="titleWrapper">
 				<h1>Welcome to</h1>

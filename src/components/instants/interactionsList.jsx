@@ -103,10 +103,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 			})();
 		
 		}
-
 	}
-
-
 	let returnNotifType = (notif) => {
 
 		let details
@@ -166,17 +163,30 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 			   </li>
 	}
 
-	// console.log(notifs[0])
+	let [enter, setEnter] = React.useReducer(state => !state, true)
+	let el = React.useRef();
+	let element = el.current;
+
+	React.useEffect(()=> {
+		if(element) {
+			setEnter();
+		}
+	}, [element]);
 
 	return (
-		<div id="interactionsList"> 
+		<div id="interactionsList" ref={el} className={`${enter == true ? '_enter' : ''}`}> 
 
 			<div id="header">
 				<h2>Interactions
 					<span id='username'>{username}'s</span>
 				</h2>
 				
-				<button onClick={setNotifList}>
+				<button onClick={()=> {
+							setEnter();
+							let delay = setTimeout(()=> {
+								setNotifList();
+							}, 400)
+				}}>
 					<p>{unreadCount}</p>
 					<span>x</span>
 				</button>

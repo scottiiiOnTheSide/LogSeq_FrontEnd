@@ -4,6 +4,45 @@
 -----------------------------------------------------------------------------------------
 
 
+
+### 12. 06. 2023
+@1145 commentCount concern, solution provided. FrontEnd counts comments - updates on loads
+			and comments for posts
+
+
+
+### 12. 05. 2023
+@1445
+****To Do Next - finishing CSS
+		- style comments ✅
+		- style notifications
+		- fix styling of post options & commentBox ✅
+		- monthChart styling
+			- signify current day some way
+			- transition effect
+
+- commentCount & deleting comments
+- Cleaning up the backend
+
+
+@0335 CSS for <CreatePost> added
+
+****To Do Next:
+		- create array of image thumbnails for posts within <Log> ✅ 
+		- on post click, slide element before going to <Post> ✅
+
+
+### 12. 03. 2023
+@1400 only needed to add animation by default to <Entry>
+			mount transition effect also added for <Post>
+
+@0545 Added the transition animations effects to current sections and pages (other than Post)
+			but current implementation is abit shoddy
+
+Will switch to giving elements a default entrance animation
+the ::before to appear when component dismount
+
+
 ### 11. 30. 2023
 @1555 added ::before psuedo element to <Entry>
 
@@ -13,11 +52,11 @@ onMount: use state to change component className to leave
 ****To Do:
 		- add _latent_ toggle animations to...
 			<CreatePost> ✅   
-			<manageConnections>
-			<interactionList>
+			<manageConnections> ✅
+			<interactionList> ✅ 
 		- add _regular_ toggle animations to
 		  <Entry> ✅
-		  <Home>
+		  <Home> ✅
 
 For Latent:
 	load with enter, true

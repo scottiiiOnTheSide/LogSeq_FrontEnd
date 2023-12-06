@@ -40,65 +40,41 @@ export default function Post({
 	setUnreadCount,
 	getUnreadCount
 }) {
-	/**
-	 * Discerns source of blog post data and uses it
-	 */
 	let { postID } = useParams();
 	let	location = useLocation();
 	let [postData, setPostData] = React.useState(location.state.post);
 	let [comments, setComments] = React.useState([]);
+	let [commentCount, setCommentCount] = React.useState('');
+	// let commentCount;
 
+	let cmntcount = 0;
+	let countComments = (comments) => {
 
-	// let getComments = async() => {
-
-	// 	let id = postData._id;
-	// 	let body = {parentID: postData._id};
-	// 	let cmnts = await accessAPI.postComment('getAll', id, body);
-
-	// 	await Promise.all(
-	// 		cmnts.map(async (comment) => {
-	// 			let id = comment._id;
-	// 			let body = {parentID: comment._id};
-	// 			let replies = await accessAPI.postComment('getAll', id, body);
-				
-	// 			comment.replies = replies;
-				
-	// 			if(replies.replies) {
-	// 				getComments(replies)
-	// 			} else {
-	// 				return;
-	// 			}
-	// 		})
-	// 	)
-	// 	/*
-	// 		recursively count all comments, 
-	// 		send count to backEnd to update post's commentCount
-
-	// 		uncomment with 1.0A
-	// 	*/
-	// 	// let cmntcount = 0;
-	// 	// let countComments = (comments) => {
-	// 	// 	for(let cmnt of comments) {
-	// 	// 		cmntcount++;
-	// 	// 		countComments(cmnt.replies)
-	// 	// 	}
-	// 	// 	return cmntcount;
-	// 	// }
-	// 	// await accessAPI.updateCommentCount(id, cmntcount).then((res) => {
-	// 	// 	setPostData({
-	// 	// 		...postData,
-	// 	// 		commentCount: cmntcount
-	// 	// 	})
-	// 	// })
-	// 	// console.log(countComments(cmnts));
-	// 	setComments(cmnts);
-	// };
+		for(let cmnt of comments) {
+			cmntcount++;
+			countComments(cmnt.replies)
+		}
+		
+		return cmntcount;
+	}
 	let getPost = async() => {
 		let post = await accessAPI.getBlogPost(postID);
 		setPostData(post);
 		setComments(post.comments)
+		let count = countComments(post.comments);
+		count = count - (count / 2); //may be able to remove this line in production...
+
+		if(count < 10) {
+			count = `00${count}`;
+		} else if (count > 100) {
+			count = `0${count}`;
+		}
+
+		setCommentCount(count)
 	};
 
+	// let b = countComments(post.comments);
+	
 
 	/*** 
 	 	updates post & comments on initial load and page refresh 
@@ -164,6 +140,7 @@ export default function Post({
 	let handleMessage = (e) => {
 		setMessage(e.target.value);
 	}
+
 	let handleSubmit = async(e) => {
 		e.preventDefault();
 		let date = new Date();
@@ -220,39 +197,52 @@ export default function Post({
 		toggleComment();
 		toggleOptions();
 	}
-
+	
 	let createComment = (comment) => {
 
 		let date = `${comment.postedOn_month}. ${comment.postedOn_day}. ${comment.postedOn_year}`;
-		let element = 
-			<li className="comment" key={comment._id} id={comment._id}>
-				
-				<h3>{comment.ownerUsername} @ {date}</h3>
-				<p>{comment.content}</p>
 
-				<button className="buttonDefault"
-						onClick={()=> {
+		let dateInfo = new Date(comment.createdAt.slice(0, -1));
+		let datee = dateInfo.toString().slice(4, 15);
+		let hour = dateInfo.toString().slice(16, 18);
+		let minute = dateInfo.toString().slice(19, 21);
+		if(hour > 12) {
+			AoP = 'pm';
+			hour = hour - 12;
+		} else {
+			AoP = 'am';
+		}
+		let timeStamp = hour+ ":" +minute+ " " +AoP;
 
-							setAccess({
-								type: 'response',
-								commentID: comment._id,
-								commentNumber: `${comment.commentNumber} - ${comment.replies.length + 1}`,
-								commentOwner: comment.ownerID
-							});
 
-							toggleComment()
-				}}>Reply</button>
+		return <li className="comment" key={comment._id} id={comment._id}>
 
-				{comment.replies &&
-					<ul>
-						{comment.replies.map(comment => (
-							createComment(comment)
-						))}
-					</ul>
-				}
+					<h3>{comment.ownerUsername}</h3>
+					<h4>{date} @ {timeStamp}</h4>
+					<p>{comment.content}</p>
+
+					<button className="buttonDefault"
+							onClick={()=> {
+
+								setAccess({
+									type: 'response',
+									commentID: comment._id,
+									commentNumber: `${comment.commentNumber} - ${comment.replies.length + 1}`,
+									commentOwner: comment.ownerID
+								});
+
+								toggleComment()
+					}}>Reply</button>
+
+					{comment.replies &&
+						<ul id="replies">
+							{comment.replies.map(comment => (
+								createComment(comment)
+							))}
+						</ul>
+					}
 
 			</li>
-		return element;
 	}
 
 
@@ -261,7 +251,6 @@ export default function Post({
 	*/
 	let commentsRef = React.useRef()
 	let commentsCurrent = commentsRef.current;
-
 	React.useEffect(()=> {
 		if(commentsCurrent) {
 			if(accessID.commentID) {
@@ -274,9 +263,28 @@ export default function Post({
 	}, [comments, commentsCurrent]);
 
 
-	// console.log(postData);
+	/*
+		Transition Effect for Arriving on page
+	*/
+	const [enter, setEnter] = React.useReducer(state => !state, true);
+	const initialLoad = React.useRef(true);
+	let hasLoaded = initialLoad.current;
+	const el = React.useRef()
+	const element = el.current;
+
+	React.useEffect(()=> {
+		if(hasLoaded) {
+			console.log(hasLoaded);
+			if(element) {
+				setEnter();
+			}
+			hasLoaded = false;
+			return
+		}
+	}, [element]);
+
 	return (
-		<section id="POST">
+		<section id="POST" ref={el} className={`${enter == true ? '_enter' : ''}`}>
 			<Header cal={cal} isPost={true} setNotifList={setNotifList} unreadCount={unreadCount}/>
 
 			<article>
@@ -313,7 +321,10 @@ export default function Post({
 				</div>
 
 
-				{/* * * M A I N   C O N T E N T * * */}
+				{/* * * 
+					M A I N   C O N T E N T 
+				* * */}
+
 				<div id="mainContent">
 
 					{!isOwner &&
@@ -345,8 +356,11 @@ export default function Post({
 				</div>
 
 
+				{/* * * 
+					C O M M E N T S 
+				* * */}
 				<div id="commentsWrapper">
-					<h2>Comments</h2>
+					<h2><span id="commentCount">{commentCount}</span>Comments</h2>
 
 					<ul id="commentBox" ref={commentsRef}>
 						{comments.map(comment => (
@@ -357,11 +371,16 @@ export default function Post({
 				</div>
 			</article>
 
+
+
+			{/* * * 
+					O P T I O N S  B A R  
+			* * */}
 			<div id='optionsBar'>
 				<button id="optionsToggle"className="buttonDefault" ref={optionsButton} onClick={toggleOptions}>OPTIONS</button>
 
 				{isOptionsOpen &&
-					<ul id="options">
+					<ul id="optionsMenu">
 						<li>
 							<button className="buttonDefault" onClick={()=> {
 								toggleComment(); 
@@ -377,7 +396,14 @@ export default function Post({
 							<button className="buttonDefault">Exit Post</button>
 						</li>
 						<li>
-							<button className="buttonDefault" onClick={toggleOptions}>x</button>
+							<button className="buttonDefault" onClick={()=> {
+								let optionsMenu = document.getElementById('optionsMenu');
+								optionsMenu.classList.add('leave')
+
+								let delay = setTimeout(()=> {
+									toggleOptions()
+								}, 150);
+							}}>x</button>
 						</li>
 					</ul>
 				}

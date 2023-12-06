@@ -36,36 +36,29 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 	function returnPostItem (post, index, userID) {
 
 		let title = post.title,
-			tags,
+			tags = 0,
 			id = post._id,
 			owner = post.owner,
 			author = post.author,
 			content = post.content[0].content,
-			text = [];
+			text = [],
+			commentCount;
 
 			if(post.tags) {
 				tags = post.tags.length
 			}
 
-		/**
-		 * post content is currently array, housing objects: only object
-		 * being the text split into an object by letter :/
-		 */
-		// for (let char in content) {
-		// 	text.push(content[char]);
-		// }
-		// text = text.join("");
+		let cmntcount = 0;
+		let countComments = (comments) => {
+			
+			for(let cmnt of comments) {
+				cmntcount++;
+				countComments(cmnt.replies)
+			}
 
-
-		// } else {
-		// 	for(let i = 0; i < post.content.length; i++) {
-		// 		if(post.content[i].place == '0' || post.content[i].place % 1 == 0) {
-		// 			content = post.content[i].content
-		// 			// content = content.substring(0, 100) + '. . .';
-		// 		}
-		// 		break;
-		// 	}
-		// }
+			commentCount = cmntcount;
+		}
+		countComments(post.comments)
 
 		let month, day, year, dateMatch;
 
@@ -77,46 +70,69 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 				year = post.postedOn_year;
 				dateMatch = false;
 			}
-		} else if(monthObserved == post.postedOn_month && dateObserved != post.postedOn_day) {
+		} 
+		else if(monthObserved == post.postedOn_month && dateObserved != post.postedOn_day) {
 			month = post.postedOn_month;
 			day = post.postedOn_day;
 			year = post.postedOn_year;
 			dateMatch = false;
 		}
-
 		dateObserved = post.postedOn_day;
 		monthObserved = post.postedOn_month;
-		// console.log(post.title+ " "+ month + "." + day + "." +year+ "---" +monthObserved+ "." +dateObserved);
 
 		return (
-			<div className="entry" key={id} onClick={()=> {
-				
-				setCurrent({
-					...current,
-					scrollTo: index + 1
-				})
-
-				setTimeout(()=> {
-					navigate(`/post/${post._id}`, {
-						state: {post: post}
-					});
-				}, 575)
-			}}>
-									
+			<>
 				{dateMatch == false  &&
 					<span className="postDate">{month + 1} . {day} . {year}</span>
 				}
-				{(userID !== post.owner) &&  
-					<span id="username">&#64;{post.author}</span>
-				}
-				
-				<h2>{title}</h2>
-				<p>{content}</p>
+				<div className="entry" id={id} key={id} onClick={()=> {
+					
+					let thisEntry = document.getElementById(id);
+					thisEntry.classList.add('shiftLeft');
+					console.log(thisEntry);
 
-				<ul>
-					<li>{tags} tags</li>
-				</ul>
-			</div>
+					console.log(post)
+
+					setCurrent({
+						...current,
+						scrollTo: index + 1
+					})
+
+					setTimeout(()=> {
+						navigate(`/post/${post._id}`, {
+							state: {post: post}
+						});
+					}, 600)
+				}}>
+					{(userID !== post.owner) &&  
+						<span id="username">&#64;{post.author}</span>
+					}	
+					<h2>{title}</h2>
+					<p>{content}</p>
+
+					{post.content.some((data) => data.type == 'media') &&
+						<ul id="thumbnailsWrapper">
+							{post.content.filter(data => data.type == 'media').map(data => (
+								<li>
+									<img src={data.content} />
+								</li>
+							))
+
+							}
+						</ul>
+					}
+					
+
+					<ul id="details">
+						{tags > 0 &&
+							<li>{tags} tags</li>
+						}
+						{commentCount > 0 &&
+							<li>{commentCount} comments</li>
+						}
+					</ul>
+				</div>
+			</>
 		)
 	}
 
