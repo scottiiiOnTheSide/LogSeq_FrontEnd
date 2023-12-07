@@ -23,8 +23,15 @@ export default function ButtonBar({current, setCurrent, dateInView, set_dateInVi
 				if(current.monthChart) {
 					setCurrent({
 						...current,
-						monthChart: false
+						transition: true
 					})
+					let delay = setTimeout(()=> {
+						setCurrent({
+							...current,
+							monthChart: false,
+							transition: false
+						})
+					}, 300)
 				} else if(!current.monthChart) {
 					setCurrent({
 						...current,

@@ -10,18 +10,17 @@
 			and comments for posts
 
 
-
 ### 12. 05. 2023
 @1445
 ****To Do Next - finishing CSS
 		- style comments ✅
-		- style notifications
+		- style notifications ✅
 		- fix styling of post options & commentBox ✅
-		- monthChart styling
-			- signify current day some way
-			- transition effect
+		- monthChart styling ✅
+			- signify current day some way ✅
+			- transition effect ✅
 
-- commentCount & deleting comments
+- deleting comments
 - Cleaning up the backend
 
 

@@ -125,23 +125,29 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 			</div>
 
 			<div id="dates">
-				{[...Array(weeksInMonth)].map((i, e) => {
+			{[...Array(weeksInMonth)].map((i, e) => {
 
-					return <div key={e} className="row">
+					return <div key={e} className='row' id={`row${e}`}>
 						       {daysInWeek[e].map((s, index) => {
 						       		let date = daysInWeek[e][index],
 						       			value = tallyPerDate[parseInt(date)];
 
-						       		return <div key={index} 
-						       					className={`cell` + `${currentDay == squares[index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
+						       		return <button key={index} 
+						       					id={`cell${daysInWeek[e][index]}`}
+						       					className={`cell` + `${kyou == daysInWeek[e][index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
 						       					onClick={()=> {
-						       						set_selectedDate({
-						       							month: selectedDate.month,
-						       							day: daysInWeek[e][index],
-						       							year: selectedDate.year,
-						       						})
-						       						getPostsPerDate(selectedDate.month, daysInWeek[e][index], selectedDate.year);
-						       						console.log(selectedDate.month + '. ' +daysInWeek[e][index] + '. '  +selectedDate.year);
+
+						       							set_selectedDate({
+							       							month: selectedDate.month,
+							       							day: daysInWeek[e][index],
+							       							year: selectedDate.year,
+							       						})
+							       						getPostsPerDate(selectedDate.month, daysInWeek[e][index], selectedDate.year);
+							       						// console.log(selectedDate.month + '. ' +daysInWeek[e][index] + '. '  +selectedDate.year);
+							       						// let itemNum = parseInt(daysInWeek[e][index]),
+							       						// 	item = 'cell' + itemNum;
+							       						// document.getElementById(item).classList.add('selected');
+						       						// }
 						       					}}>
 
 						       					<div className={`${date == 'b' ? 'hidden' : 'tallyWrapper'}`}>
@@ -152,10 +158,10 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 						  							<span className={`tally` + `${value >= 9 ? ' on' : ''}`}></span>
 					  							</div>
 
-					  							<div key={index}className="cellDate">
+					  							<div key={index} className="cellDate">
 							  						<p>{daysInWeek[e][index]}</p>
 							  					</div>
-						       			   </div>
+						       			   </button>
 						       })}
 						   </div>
 				})}
@@ -343,11 +349,12 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 			}
 	}, [])
 
-	// console.log(selectedDate.month == kongetsu)
+
+	let [leave, setLeave] = React.useReducer(state => !state, true);
 
 	return (
 
-		<div id="monthChart">
+		<div id="monthChart" className={`${current.transition == true ? 'leave' : ''}`}>
 
 			<div id="header">
 				

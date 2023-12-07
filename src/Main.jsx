@@ -104,8 +104,6 @@ function Home({
             setAccessID={setAccessID}/>
         }
 
-        <Outlet />
-
         <SectionsWrapper current={current} setCurrent={setCurrent} />
 
         {(current.modal && current.section == 2) &&
@@ -304,17 +302,13 @@ export default function Main() {
 
 
   
-
-
-
-
-
   const cal = Calendar();
   const [current, setCurrent] = React.useState({
     section: 2, //0, 1, 2, 3, 4
     social: false, //true, false or social
     monthChart: false, //true or false
-    scrollTo: null
+    scrollTo: null,
+    transition: false //for components mounted dependant on this stateVar, indicates before unmount
   });
   const hajime = new Date(),
       kyou = hajime.getDate(),
@@ -442,10 +436,6 @@ export default function Main() {
 //   {
 //     path: "/:blogpost",
 //     element: <HomeOrEntry> <Blogpost /> </HomeOrEntry>
-//   },
-//   {
-//     path: "/user/:username/settings",
-//     element: <HomeOrEntry> <UserSetting /> </HomeOrEntry>
 //   },
 //   {
 //     path: "/:username/:collectionName",

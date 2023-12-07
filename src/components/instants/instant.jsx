@@ -14,7 +14,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	let username = sessionStorage.getItem('userName');
 	let activity = isActive;
 
-	/*** Functions to be used by primary useEffect ***/
+	/*** 
+		Functions to be used by primary useEffect 
+	***/
 	let makeNotif_sendInitialRequest = async (notif) => {
 		await accessAPI.newInteraction(notif).then((data) => {
 			if(data) {
@@ -199,6 +201,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	}
 
 	/**
+	 * Primary useEffect
 	 * Upon change of 'socketMessage'
 	 * execute a makeNotif function with socketMessage
 	 */
@@ -338,6 +341,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 					<p>{message.message}</p>
 				}
 						
+				<p>This is some demo text</p>
 
 				{isActive.type == 3 &&
 					<ul id="options">
