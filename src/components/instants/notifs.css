@@ -9,7 +9,30 @@ div#interactionsList {
 	height: 100%;
 	background-color: var(--greyscale-background-2);
 	z-index: 20;
+/*	animation: 0.5s ease-in-out forwards _active;*/
 }
+
+
+	div#interactionsList::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 0.3s;
+		z-index: 0;
+	}
+
+	div#interactionsList._enter::before {
+		z-index: 20;
+		opacity: 1;
+	}
+
 
 div#interactionsList div#header {
 	width: 95%;
@@ -224,17 +247,27 @@ div#popUpNotif {
 
 div#popUpNotif p {
 	margin: 10px 0 20px;
+	color: var(--greyscale-text);
 }
 
 div#popUpNotif ul#options {
+	display: flex;
+	flex-direction: row;
 	list-style-type: none;
 	margin: 0;
 	padding: 0;
 }
 
-div#popUpNotif ul#options li {}
+div#popUpNotif ul#options li {
+	margin: 0 12px;
+}
+
+div#popUpNotif ul#options li:first-child {
+	margin-left: 0px;
+}
 
 div#popUpNotif ul#options li button {
+	font-size: 1em;
 	padding: 0;
 }
 

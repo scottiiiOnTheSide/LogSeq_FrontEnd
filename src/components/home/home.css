@@ -1,10 +1,40 @@
 
+/***
+ * 
+ * For all components that comprise the HOME page
+ * HEADER
+ * CAROUSEL NAV
+ * BUTTON BAR
+ */
+
+
 section#HOME {
 	width: 100%;
 	height: 100%;
 	position: relative;
 	overflow: hidden;
 }
+
+	section#HOME::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 1s;
+		z-index: 0;
+	}
+
+	section#HOME._enter::before {
+		transition: all ease-in-out 0.1s;
+		z-index: 20;
+		opacity: 1;
+	}
 
 
 
@@ -20,7 +50,7 @@ section#HOME {
 		
 		font-family: 'Raleway';
 
-		border-bottom: 2px solid rgba(0, 0, 0, 0.5);
+/*		border-bottom: 2px solid rgba(0, 0, 0, 0.1);*/
 		padding: 4px 0 16px;
 		background-color: transparent;
 		z-index: 10;
@@ -135,7 +165,7 @@ section#HOME {
 	nav {
 		width: 100%;
 		position: fixed;
-		margin-top: 78px;
+		margin-top: 70px;
 		left: 50%;
 		transform: translateX(-50%);
 		display: flex;
@@ -250,9 +280,9 @@ div#buttonBar {
 	left: 50%;
 	transform: translateX(-50%);
 	bottom: 0;
-	background-color: transparent;
+	background-color: var(--greyscale-background);
 	z-index: 10;
-	border-top: 2.5px solid rgba(0, 0, 0, 0.5);
+/*	border-top: 2.5px solid rgba(0, 0, 0, 0.5);*/
 }
 
 	div#buttonBar button#main {

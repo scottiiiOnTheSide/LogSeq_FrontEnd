@@ -1,7 +1,121 @@
 
 /* * * 
-L o g  &  P o s t 
+L o G  &  P o s t 
 * * */
+
+div.log {}
+
+div.log h2.noPostsToday,
+div.log span.postDate {
+	display: block;
+	font-family: "Raleway";
+	font-size: 2.5em;
+	color: var(--greyscale-elements);
+	text-align: right;
+}
+
+div.log span.postDate {
+	margin: 60px 0;
+}
+
+
+div.log div.entry {
+	position: relative;
+	margin: 80px 0;
+	transition: all ease-in-out 0.3s;
+}
+
+div.shiftLeft {
+	animation: shiftLeft ease-in-out forwards 1s;
+}
+
+	@keyframes shiftLeft {
+		0% {
+			left: 0;
+		}
+		100% {
+			left: 100px;
+		}
+	}
+
+div.log div.entry:first-child {
+	margin-top: 40px;
+}
+
+div.log div.entry:last-child {
+	padding-bottom: 40px;
+}
+
+div.log div.entry h2 {
+	font-family: "Raleway";
+	font-size: 1.5em;
+	font-weight: 400;
+	line-height: 32px;
+	color: var(--site-gray-middle);
+	margin: 0px;
+}
+
+div.log div.entry p {
+	font-family: "Open Sans";
+	font-size: 0.9em;
+	font-weight: 400;
+	line-height: 26px;
+	color: var(--site-gray-middle);
+	margin: 10px 0 0;
+}
+
+div.log div.entry ul#thumbnailsWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	list-style-type: none;
+	margin: 24px 0;
+	margin-left: -4px;
+	padding: 0;
+}
+
+div.log div.entry ul#thumbnailsWrapper li {
+	width: 120px;
+	height: 120px;
+	width: 88px;
+	height: 88px;
+	padding: 0 6px;
+/*	margin: 0 16px;*/
+}
+
+div.log div.entry ul#thumbnailsWrapper li img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+    object-position: center;
+    border-radius: 4px;
+    opacity: 0.75;
+}
+
+
+div.log div.entry ul#details {
+	display: flex;
+	flex-direction: row;
+	list-style-type: none;
+	margin: 8px 0 0 -4px;
+	padding: 0;
+}
+
+div.log div.entry ul#details li {
+	font-size: 0.9em;
+	letter-spacing: 1px;
+	margin: 0 8px;
+}
+
+
+
+
+
+
+/***
+ 	P O S T  P A G E
+***/
+
 
 section#POST {
 	position: fixed;
@@ -11,14 +125,33 @@ section#POST {
 	overflow: hidden;
 
 	font-family: "Open Sans";
-
-/*	top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);*/
+	background-color: var(--greyscale-background);
 }
 
+	section#POST::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 1s;
+		z-index: 0;
+	}
+
+	section#POST._enter::before {
+		transition: all ease-in-out 0.1s;
+		z-index: 20;
+		opacity: 1;
+	}
+
 section#POST header {
-	background-color: var(--greyscale-background-2);
+	background-color: transparent;
+	transition: all ease-in-out 0.5s;
 }
 
 section#POST article button#open {
@@ -79,15 +212,24 @@ article div#details ul#options li {
 
 /* * * M a i n  C o n t e n t * * */
 
+section#POST header {
+	top: -2px;
+	background-color: var(--greyscale-background);
+}
+
 section#POST article {
-	width: 96%;
+	width: 94%;
 	position: fixed;
 	left: 50%;
 	transform: translateX(-50%);;
 	padding-top: 70px;
 	height: calc(100vh - 140px);
 	overflow-y: scroll;
+	scrollbar-width: none;
 }
+	section#POST article::-webkit-scrollbar {
+		display: none;
+	}
 
 section#POST article div#mainContent {
 	margin-top: 44px;
@@ -103,11 +245,21 @@ section#POST article div#mainContent h2 {
 }
 
 section#POST article div#mainContent p {
-	font-size: 0.95em;
-	line-height: 26px;
+	font-size: 1em;
+	font-weight: 300;
+	line-height: 28px;
 	color: var(--greyscale-text);
 
 	margin-top: 8px;
+}
+
+section#POST article div#mainContent img {
+	width: 100%;
+	margin: 8px auto;
+	border-radius: 4px;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
 }
 
 
@@ -118,11 +270,14 @@ section#POST article div#mainContent p {
 
 
 
-/* * * C O M M E N T S * * */
+/* * * 
+	C O M M E N T S 
+* * */
 
 div#commentsWrapper {
+	width: 98%;
 	position: relative;
-	margin-top: 180px;
+	margin: 120px auto 40px;
 }
 
 
@@ -131,12 +286,66 @@ div#commentsWrapper h2 {
 	font-weight: 400;
 	letter-spacing: 2px;
 	color: var(--greyscale-text);
+	margin: 0 0 8px 8px;
+}
+
+div#commentsWrapper h2 span#commentCount {
+	font-size: 1.5em;
+	font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--greyscale-accent);
+    margin: 0px 3px;
+    position: absolute;
+    top: -20px;
+    left: -8px;
+}
+
+
+div#commentsWrapper ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+div#commentsWrapper ul#commentBox li {
+	margin: 48px 0;
+}
+
+div#commentsWrapper ul#replies li {
+	margin: 0px 0px 0px -2px;
+	border-left: 2.5px solid var(--greyscale-accent);
+	padding: 24px 0 24px 12px;
+}
+
+div#commentsWrapper ul#replies li:last-child {
+	padding-bottom: 0px;
 }
 
 
 
+div#commentsWrapper ul#commentBox li h3 {
+	color: var(--greyscale-text);
+	font-family: 'Raleway';
+}
 
+div#commentsWrapper ul#commentBox li h4 {
+	font-family: 'Raleway';
+	font-size: 0.9em;
+	font-weight: 300;
+	margin: -16px auto 20px;
 
+}
+
+div#commentsWrapper ul#commentBox li p {
+	color: var(--greyscale-text);
+	font-weight: 300;
+	line-height: 28px;
+	margin: 20px 0 28px;
+}
+
+div#commentsWrapper ul li button {
+	margin-left: -8px;
+}
 
 
 
@@ -147,7 +356,8 @@ div#optionsBar {
 	width: 100%;
 	position: fixed;
 	bottom: 0px;
-	background-color: white;
+/*	background-color: var(--greyscale-background);*/
+	background-color: transparent;
 	z-index: 10;
 }
 
@@ -161,27 +371,32 @@ div#optionsBar button#optionsToggle {
 
 
 
-div#optionsBar ul#options {
+div#optionsBar ul#optionsMenu {
 	width: 100%;
 	background-color: white;
 	position: absolute;
 	bottom: 0;
 
 	list-style-type: none;
-	margin: 0 0 10px;
-	padding: 0;
+	margin: 0 0;
+	padding: 12px 0;
+	animation: _enter ease-in-out forwards 0.1s;
 }
 
-div#optionsBar ul#options li {
+	div#optionsBar ul#optionsMenu.leave {
+		animation: _leave ease-in-out forwards 0.1s;
+	}
+
+div#optionsBar ul#optionsMenu li {
 	width: 100%;
 }
 
-div#optionsBar ul#options li:last-child button {
+div#optionsBar ul#optionsMenu li:last-child button {
 	font-family: 'Open Sans';
 	font-size: 2em;
 }
 
-div#optionsBar ul#options li button {
+div#optionsBar ul#optionsMenu li button {
 	position: relative;
 	display: block;
 	margin: 12px auto;
@@ -197,10 +412,34 @@ div#optionsBar form {
 	background-color: white;
 }
 
-div#optionsBar form h3 {}
+div#optionsBar form h3 {
+	font-size: 1.5em;
+	font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--greyscale-accent);
+    margin: 12px 0px 8px 8px;
+}
 
 div#optionsBar form textarea {
-	width: 98%;
+	width: 94%;
+	position: relative;
+	left: 50%;
+	transform: translateX(-50%);
+
+	font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 0.9em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+
+	border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+}
+
+div#optionsBar form textarea:focus {
+	outline: none;
+	border-bottom-color: var(--greyscale-text);
 }
 
 div#optionsBar form div#buttonBox {

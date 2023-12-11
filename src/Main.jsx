@@ -78,14 +78,18 @@ function Home({
     year: null,
   })
 
-  /**
-   * 10. 08. 2023
-   * Make it so USER section is only default on initial load - chosen section
-   * should be preserved on refresh
-   */
+  const [enter, setEnter] = React.useReducer(state => !state, true);
+  let el = React.useRef();
+  let element = el.current
+
+  React.useEffect(()=> {
+    if(element) {
+      setEnter();
+    }
+  }, [element])
 
   return (
-    <section id="HOME">  
+    <section id="HOME" ref={el} className={`${enter == true ? '_enter' : ''}`}>  
         <Header cal={cal} isPost={isPost} setNotifList={setNotifList} unreadCount={unreadCount}/>
         <CarouselNav current={current} setCurrent={setCurrent}/>
 
@@ -99,8 +103,6 @@ function Home({
             accessID={accessID}
             setAccessID={setAccessID}/>
         }
-
-        <Outlet />
 
         <SectionsWrapper current={current} setCurrent={setCurrent} />
 
@@ -300,17 +302,13 @@ export default function Main() {
 
 
   
-
-
-
-
-
   const cal = Calendar();
   const [current, setCurrent] = React.useState({
     section: 2, //0, 1, 2, 3, 4
     social: false, //true, false or social
     monthChart: false, //true or false
-    scrollTo: null
+    scrollTo: null,
+    transition: false //for components mounted dependant on this stateVar, indicates before unmount
   });
   const hajime = new Date(),
       kyou = hajime.getDate(),
@@ -438,10 +436,6 @@ export default function Main() {
 //   {
 //     path: "/:blogpost",
 //     element: <HomeOrEntry> <Blogpost /> </HomeOrEntry>
-//   },
-//   {
-//     path: "/user/:username/settings",
-//     element: <HomeOrEntry> <UserSetting /> </HomeOrEntry>
 //   },
 //   {
 //     path: "/:username/:collectionName",

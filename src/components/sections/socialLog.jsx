@@ -59,19 +59,25 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 		// console.log(connections)
 	}
 
+	let [enter, setEnter] = React.useReducer(state => !state, true)
+	let el = React.useRef();
+	let element = el.current;
+
 	React.useEffect( ()=> {
 		updateConnections();
-	}, [])
+		if(element) {
+			setEnter();
+		}
+	}, [element, ])
 	
 	return (
-		<div id="manageConnections">
+		<div id="manageConnections" ref={el} className={`${enter == true ? '_enter' : ''}`}>
 			
 			<input type="text" 
 				   id="search" 
 				   placeholder="Search Users" 
 				   onKeyDown={handleSubmit}
 				   onFocus={()=> {setSearchFocus(); toggleResults()}}
-				   // onBlur={()=> {setSearchFocus(); toggleResults()}}
 			/>
 
 			{!searchFocus &&
@@ -109,10 +115,14 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 				</div>
 			}
 			<button id="exit" className={"buttonDefault"}onClick={()=> {
-				setCurrent({
-					...current,
-					modal: false
-				})
+				setEnter()
+				let delay = setTimeout(()=> {
+					setCurrent({
+						...current,
+						modal: false
+					})
+				}, 300)
+				
 			}}>Exit</button>
 		</div>
 	)
