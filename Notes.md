@@ -4,6 +4,22 @@
 -----------------------------------------------------------------------------------------
 
 
+### 12. 11. 2023
+@1230 As of now, its seeming as though i may have brought a
+a very premature end to my beloved PC . . . 
+
+Fortunately, i believe the very last changes that I made to
+this project were indeed commited.
+Evenmoreso, the project looks and works great on mobile !!!
+
+Current Issues:
+- cannot make site full full screen and thus cannot access 
+  the Post / exit button from the <CreatePost> component
+- menuBar is transparent in <Post>
+- visible lag when first selecting a post... this may be due
+  to the fact that post data is gotten when link is
+  clicked? or it has something to do with the animation....
+
 
 ### 12. 06. 2023
 @1145 commentCount concern, solution provided. FrontEnd counts comments - updates on loads
