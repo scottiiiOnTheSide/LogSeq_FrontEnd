@@ -197,7 +197,7 @@ export default function Main() {
    */
   React.useEffect(()=> {
     if(authed == true) {
-      setSocketURL(`ws://192.168.1.176:3333/?${userID}`);
+      setSocketURL(`ws://192.168.1.23:3333/?${userID}`);
       getUnreadCount();
     }
   }, [authed])

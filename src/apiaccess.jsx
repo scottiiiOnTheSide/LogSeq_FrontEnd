@@ -5,9 +5,10 @@
  */
 
 
-export default function APIaccess (userKey) {
+export default function APIaccess () {
 
-	const apiAddr = "http://192.168.1.176:3333";
+	const apiAddr = "http://192.168.1.23:3333";
+	const userKey = sessionStorage.getItem('userKey');
 
 	return {
 
