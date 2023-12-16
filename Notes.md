@@ -4,6 +4,47 @@
 -----------------------------------------------------------------------------------------
 
 
+### 12. 16. 2023
+@1030 added route option for group invites created within user/notif route 
+
+on frontEnd, when accepting request, (groups/addUser), req.body must include
+id of either owner or groupAdmin
+
+**** To Do Next
+		 - write function in <interactionsList> for accepting and ignoring invitations
+		 - begin skeleton for <Macros> section...
+		 - list of generic topics?
+
+### 12. 15. 2023
+@0940 added route for posts: getAll, add, remove.
+			added route for manage: addUser (if public), removeUser (if Public or hasAccess)
+
+****To Do Next:
+		- create frontEnd apiAccess functions for tag & collection operations ✅
+		- write algo for requests
+
+outsideUser to owner:
+	- outside sends request (notif in owners list)
+	- on frontEnd, owner accepts request:
+	  - adding user (one route)
+	  - making notif (2nd route)
+	- if ignore, remove notif from owner's notifs
+
+
+### 12. 13. 2023
+@2320 Begun setting up groups route for backEnd
+			creation routes all completed (need to verify, ofc)
+
+****To Do Next:
+		- write out posts route
+		- backEnd logic for editing posts
+
+
+### 12. 12. 2023
+@0815 added Try / Catch to all routes.
+			No error _should_ be able to crash the api now...
+
+
 ### 12. 11. 2023
 @1230 As of now, its seeming as though i may have brought a
 a very premature end to my beloved PC . . . 

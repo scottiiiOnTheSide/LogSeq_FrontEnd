@@ -430,6 +430,90 @@ export default function APIaccess () {
 
 			return search;
 			//returns search results, most likely some array of objects
+		},
+
+		async newGroup(body) {
+
+			/***
+			 * Necessary body values:
+			 * type: tag, collection, group
+			 * name: groupName
+			 * owner: userID,
+			 * admins: [userID],
+			 * hasAccess: [userID]
+			 * isPrivate: boolean
+			 */
+
+			let request = await fetch(`${apiAddr}/groups/create`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+		        	'Content-length': 0,
+		        	'Accept': 'application/json',
+		        	'Host': apiAddr,
+		        	'auth-token': userKey
+				},
+				body: body,
+			}).then(data => data.json());
+
+			return request;
+		},
+
+		async groupPosts(action, body) {
+
+			/***
+			 * Action Types:
+			 * getPosts, addPost, removePost
+			 * 
+			 * Necessary body values:
+			 * id: groupID,
+			 * name: groupName,
+			 * postID: 
+			 */
+
+			let request = await fetch(`${apiAddr}/groups/posts/${action}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+		        	'Content-length': 0,
+		        	'Accept': 'application/json',
+		        	'Host': apiAddr,
+		        	'auth-token': userKey
+				},
+				body: body,
+			}).then(data => data.json());
+
+			return request;
+		},
+
+		async manageGroup(action, body) {
+
+			/***
+			 * Action Types:
+			 * request, addUser, removeUser, addAdmin, removeAdmin, deleteGroup
+			 * 
+			 * Necessary body values:
+			 * id: groupID,
+			 * name: groupName,
+			 * userID: 
+			 * details: 
+			 * 	 - necessary when giving access to private group.
+			 *   - should be owner or admin's userID
+			 */
+
+			let request = await fetch(`${apiAddr}/groups/manage/${action}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+		        	'Content-length': 0,
+		        	'Accept': 'application/json',
+		        	'Host': apiAddr,
+		        	'auth-token': userKey
+				},
+				body: body,
+			}).then(data => data.json());
+
+			return request;
 		}
 	}
 }
