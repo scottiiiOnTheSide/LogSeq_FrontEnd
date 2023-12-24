@@ -14,6 +14,14 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	let username = sessionStorage.getItem('userName');
 	let activity = isActive;
 
+	/***
+	 * 12. 20. 2023
+	 * 
+	 * All <manage* > component api functions to be processed through <instant>
+	 * as to streamline UX of user making decisions
+	 * 
+	 */
+
 	/*** 
 		Functions to be used by primary useEffect 
 	***/
@@ -111,7 +119,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	}
 
 
-
+	/*** 
+		Response functions to alerts recieved by user
+	***/
 	let interact = async(arg) => {
 
 		/* Sets socketMessage to accept connection request */
@@ -132,7 +142,6 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			})
 			console.log(accessID);
 			console.log(notif);
-
 		}
 		else if(arg == 'ignore') {
 			console.log(socketMessage);
@@ -153,8 +162,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 1,
 				state: true
 			})
+		} 
 
-		} else if(arg == 'markRead') {
+		else if(arg == 'markRead') {
 
 			let notif = {
 				type: 'markRead',
@@ -162,8 +172,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				userID: userID,
 			};
 			makeNotif_markNotifRead(notif);
+		} 
 
-		} else if(arg == 'viewPost') {
+		else if(arg == 'viewPost') {
 
 			let post = await accessAPI.getBlogPost(accessID.postURL);
 			setAccessID({
@@ -174,7 +185,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 						state: {post: post}
 					})
 			}, 300)
-		} else if (arg == 'remove') {
+		} 
+
+		else if (arg == 'remove') {
 
 			if(socketMessage.message == 'confirm_deletePost') {
 
@@ -238,7 +251,6 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			} else {
 				return
 			}
-
 		}
 		else if(socketMessage.type == 'tagging') {
 			if(socketMessage.message == 'sent') {
@@ -341,7 +353,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 					<p>{message.message}</p>
 				}
 						
-				<p>This is some demo text</p>
+				{/*<p>This is some demo text</p>*/}
 
 				{isActive.type == 3 &&
 					<ul id="options">

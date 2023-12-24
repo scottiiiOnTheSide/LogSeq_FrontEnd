@@ -99,7 +99,9 @@ div#socialLog div.log div.entry span#username {
 
 /* * *
 	C R E A T E  P O S T
-	Uur, this is the 3rd time that I'm rewriting this . . . Anyhow, this post shall be used to define the styling for posts with images - both within a log and on their respective pages
+	Uur, this is the 3rd time that I'm rewriting this . . . 
+	Anyhow, this post shall be used to define the styling for posts with images - 
+	both within a log and on their respective pages
 * * */
 
 section#HOME div#createPost {
@@ -307,6 +309,9 @@ section#HOME div#createPost div#taggedUsers {
 	}
 
 
+section#HOME div#createPost input#tags {
+
+}
 
 
 

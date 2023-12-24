@@ -4,6 +4,20 @@
 -----------------------------------------------------------------------------------------
 
 
+### 12. 24. 2023
+@0100 Autocomplete search bar works for tags, bare minimum
+
+****To Do Next:
+		- make li options in results toggleable, so that selecting a tag marks it
+		  as read within state
+		- make span wrapper within input which holds selected options
+			- use setSuggestions somewhere in here...
+		- add suggestions as tags in post . . .
+
+nothing needs to be done to tags within a post...
+still thinking I should add the _ to topics, for differentiation...
+
+
 ### 12. 16. 2023
 @1030 added route option for group invites created within user/notif route 
 

@@ -64,6 +64,101 @@ function DropSelect({tagged, setTagged}) {
 	)
 }
 
+function MultiSelect({suggestions}) {
+
+	/**
+	 * component is input, which houses spans for selected items, +
+	 * dropdown with options.
+	 * 
+	 * typing in input adjusts the results,
+	 * selecting item puts it within span container, within input (?)
+	 * clicking on selected item removes it from selected
+	 * 	- use setState
+	 * 
+	 */
+
+	// let topics = suggestions.map(el => {el.name);
+	let topics = suggestions;
+	const [active, setActive] = React.useState(0);
+	const [filtered, setFiltered] = React.useState([]);
+	const [isShow, setIsShow] = React.useState(false);
+	const [input, setInput] = React.useState("");
+
+	let onChange = (e) => {
+		const input = e.currentTarget.value;
+		const newFilteredSuggestions = topics.filter(topic => {
+			if(topic.name.toLowerCase().indexOf(input.toLowerCase()) > -1) {
+				return topic;
+			}
+			
+		});
+		setActive(0);
+		setFiltered(newFilteredSuggestions);
+		setIsShow(true);
+		setInput(e.currentTarget.value);
+	}
+
+	let onClick = (e) => {
+		setActive(0);
+		setFiltered([]);
+		setIsShow(false);
+		setInput(e.currentTarget.innerText);
+	}
+
+	let onKeyDown = (e) => {
+		if(e.keyCode === 13) { // the enter key
+			setActive(0);
+			setIsShow(false);
+			setInput(filtered[active]);
+		}
+	}
+
+	let renderAutocomplete = () => {
+		if(isShow && input) {
+			if(filtered.length) {
+				return (
+					<ul className="autocomplete">
+						{filtered.map((suggestion, index)=> {
+							let className;
+							if(index === active) {
+								className = 'active';
+							}
+							return (
+								<li className={className, suggestion.type} key={suggestion.name} onClick={onClick}>
+									{suggestion.name}
+								</li>
+							)
+						})}
+					</ul>
+				);
+			}
+			else {
+				return (
+					<div className="no-autocomplete">
+			        	<em>Not found</em>
+			        </div>
+				)
+			}
+		}
+		return <></>
+	}
+
+	return (
+		<>
+			<input id="tags" placeholder="Type to search tags"
+				type="text"
+				onChange={onChange}
+				onKeyDown={onKeyDown}
+				value={input}
+			/>
+			{renderAutocomplete()}
+		</>
+	);
+}
+
+
+
+
 
 export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate}) {
 
@@ -269,6 +364,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 		return element;
 	}
+
+
 	const getConnections = async() => {
 		let request = await accessAPI.getConnections();
 		request.forEach(user => {
@@ -276,8 +373,22 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		})
 		setTagged(request);
 	}
+
+	const getSuggestions = async() => {
+
+		let topics = await accessAPI.getSuggestions();
+		let _topics = topics.map(topic => {
+			return {
+				name: topic,
+				type: 'topic'
+			}
+		})
+		setSuggestions(_topics);
+	}
+
 	
 	const [tagged, setTagged] = React.useState([]);
+	const [suggestions, setSuggestions] = React.useState([]);
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	const el = React.useRef()
 	const element = el.current;
@@ -285,6 +396,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	/* On Mount, fade away pseudo element for transition effect */
 	React.useEffect(()=> {
 		getConnections();
+		getSuggestions();
+
 		if(element) {
 			setEnter();
 		}
@@ -294,6 +407,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	if(selectedDate.day) {
 		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
 	}
+
+	// console.log(suggestions);
 
 	return (
 		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''}`}>
@@ -322,7 +437,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 					<DropSelect tagged={tagged} setTagged={setTagged} />
 
-					<input name="tags" placeholder="Tags" onChange={handleChange} />
+					<MultiSelect suggestions={suggestions} />
 
 					<div id="options">
 						<button className={"buttonDefault"} type="submit">Submit</button>

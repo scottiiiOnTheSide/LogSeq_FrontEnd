@@ -192,8 +192,12 @@ export default function Post({
 			setSocketMessage(notif);
 			console.log(notif)
 			getPost()
-		})
+		});
 
+		/***
+		 * 12. 23. 2023
+		 * These do not toggle when user makes response to their own comment...
+		 */
 		toggleComment();
 		toggleOptions();
 	}

@@ -122,10 +122,12 @@ section#entry div#transition div p {
 
 
 section#entry form {
+	position: relative;
 	width: 90%;
 	margin: 60px auto;
 	display: none;
 	opacity: 0;
+	z-index: 1;
 }
 
 section#entry form#signin._active,
