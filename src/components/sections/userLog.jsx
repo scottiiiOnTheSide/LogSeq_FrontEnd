@@ -64,7 +64,7 @@ function DropSelect({tagged, setTagged}) {
 	)
 }
 
-function MultiSelect({suggestions}) {
+function MultiSelect({suggestions, setSuggestions}) {
 
 	/**
 	 * component is input, which houses spans for selected items, +
@@ -100,9 +100,23 @@ function MultiSelect({suggestions}) {
 
 	let onClick = (e) => {
 		setActive(0);
-		setFiltered([]);
-		setIsShow(false);
+		// setFiltered([]);
+		// setIsShow(false);
 		setInput(e.currentTarget.innerText);
+
+		let copy = suggestions.map(el => {
+			if(el.name == e.currentTarget.innerText) {
+				return {
+					...el,
+					selected: true
+				}
+			} else {
+				return el;
+			}
+		})
+		setSuggestions(copy);
+
+		e.currentTarget.innerText = '';
 	}
 
 	let onKeyDown = (e) => {
@@ -143,16 +157,42 @@ function MultiSelect({suggestions}) {
 		return <></>
 	}
 
+	/**
+	 * 12. 25. 2023
+	 * 
+	 * implement this into onChange element for input
+	 */
+	  
+	let tagsSelect = React.useRef();
+	React.useEffect(()=> {
+		let tags = tagsSelect.current;
+
+		if(getComputedStyle(tags).width > (window.innerWidth * 0.95)) {
+			tags.children[0].style.flexDirection = 'column';
+		}
+
+	}, [tagsSelect])
+
 	return (
-		<>
-			<input id="tags" placeholder="Type to search tags"
-				type="text"
-				onChange={onChange}
-				onKeyDown={onKeyDown}
-				value={input}
-			/>
+		<div id="tagsSelection" ref={tagsSelect}>
+			<div id="inputWrapper">
+				<div id="selected">
+					{suggestions.map(el => {
+						if(el.selected == true) {
+							return <span key={el.name}>{el.name}</span>
+						}
+						
+					})}
+				</div>
+				<input id="tags" placeholder="Type to search tags"
+					type="text"
+					onChange={onChange}
+					onKeyDown={onKeyDown}
+					value={input}
+				/>
+			</div>
 			{renderAutocomplete()}
-		</>
+		</div>
 	);
 }
 
@@ -380,7 +420,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		let _topics = topics.map(topic => {
 			return {
 				name: topic,
-				type: 'topic'
+				type: 'topic',
+				selected: false
 			}
 		})
 		setSuggestions(_topics);
@@ -437,7 +478,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 					<DropSelect tagged={tagged} setTagged={setTagged} />
 
-					<MultiSelect suggestions={suggestions} />
+					<MultiSelect suggestions={suggestions} setSuggestions={setSuggestions}/>
 
 					<div id="options">
 						<button className={"buttonDefault"} type="submit">Submit</button>

@@ -309,11 +309,46 @@ section#HOME div#createPost div#taggedUsers {
 	}
 
 
-section#HOME div#createPost input#tags {
+section#HOME div#createPost div#tagsSelection {
+	
+}
+
+section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected{
+	
+}
+
+section#HOME div#createPost div#tagsSelection div#inputWrapper {
+	display: flex;
+	flex-direction: row;
+    justify-content: flex-start;
+    border-bottom: 2px solid var(--greyscale-elements);
+}
+
+section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected {
+/*	width: fit-content;*/
+	display: flex;
+	flex-direction: row;
+    justify-content: flex-start;
+}
+
+section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected span {
+	display: block;
+	position: relative;
+/*	top: 7px;*/
+	margin: 4px;
+	margin-top: 6px;
 
 }
 
+section#HOME div#createPost div#tagsSelection div#inputWrapper input {
+	width: auto;
+	margin: 0 10px;
+	border-bottom: none;
+}
 
+section#HOME div#createPost div#tagsSelection ul#autocomplete{
+	display: block;
+}
 
 
 

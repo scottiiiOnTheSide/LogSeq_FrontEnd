@@ -4,17 +4,32 @@
 -----------------------------------------------------------------------------------------
 
 
+### 12. 25. 2023
+@0810 added some basic styling for "tags within input" design. Still some more work to do,
+			but great headway
+
+****To Do Next:
+		- give spans onClick function, so tags can be deSelected...
+		- implement flex direction change when inputWrapper gets too long
+		- add selected suggestions as tags in post . . .
+		- add private button to toggle isPrivate
+		- discern logics for creating a tag from <CreatePost>
+
+group management to be routed through <instants> component for responsiveness...
+Where are my notes on that???
+
+
 ### 12. 24. 2023
 @0100 Autocomplete search bar works for tags, bare minimum
 
 ****To Do Next:
 		- make li options in results toggleable, so that selecting a tag marks it
-		  as read within state
+		  as read within state 1/2
 		- make span wrapper within input which holds selected options
-			- use setSuggestions somewhere in here...
+			- use setSuggestions somewhere in here... ✅
 		- add suggestions as tags in post . . .
 
-nothing needs to be done to tags within a post...
+nothing needs to be done to tags within a post... onBackend
 still thinking I should add the _ to topics, for differentiation...
 
 
