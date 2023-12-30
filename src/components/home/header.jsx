@@ -1,7 +1,6 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
 import { useNavigate } from 'react-router-dom'; 
-import { ReactSVG } from 'react-svg';
 
 
 function ReturnElement ({}) {
@@ -52,7 +51,6 @@ export default function Header ({cal, isPost, setNotifList, unreadCount}) {
 		<header>
 
 			{returnable &&
-				// <ReactSVG src="./return.svg" />
 				<ReturnElement />
 			}
 			

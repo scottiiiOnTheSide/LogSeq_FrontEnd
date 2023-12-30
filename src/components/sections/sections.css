@@ -311,7 +311,7 @@ section#HOME div#createPost div#taggedUsers {
 
 
 section#HOME div#createPost div#tagsSelection {
-	
+/*	width: 100%;*/
 }
 
 section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected{
@@ -319,26 +319,41 @@ section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected{
 }
 
 section#HOME div#createPost div#tagsSelection div#inputWrapper {
+/*	width: 100%;*/
 	display: flex;
 	flex-direction: row;
     justify-content: flex-start;
     border-bottom: 2px solid var(--greyscale-elements);
 }
 
-section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected {
-/*	width: fit-content;*/
+section#HOME div#createPost div#tagsSelection div#inputWrapper ul#selected {
+/*	max-width: 100%;*/
 	display: flex;
 	flex-direction: row;
+	flex-wrap: wrap;
     justify-content: flex-start;
+    padding: 0;
 }
 
-section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected span {
+section#HOME div#createPost div#tagsSelection div#inputWrapper ul#selected li {
 	display: block;
 	position: relative;
 /*	top: 7px;*/
 	margin: 4px;
 	margin-top: 6px;
+	border: 2px solid var(--greyscale-accent);
+	border-radius: 12px;
+	padding: 6px 8px;
+}
 
+section#HOME div#createPost div#tagsSelection div#inputWrapper ul#selected li p {
+	display: inline;
+	color: var(--greyscale-text);
+}
+
+section#HOME div#createPost div#tagsSelection div#inputWrapper ul#selected li svg {
+	display: inline;
+	margin: 0 0 -2px 6px;
 }
 
 section#HOME div#createPost div#tagsSelection div#inputWrapper input {
@@ -346,6 +361,15 @@ section#HOME div#createPost div#tagsSelection div#inputWrapper input {
 	margin: 0 10px;
 	border-bottom: none;
 }
+
+/**
+ * 12. 30. 2023
+ * place ul#autocomplete in wrapper with button prompt for
+ * creating new tags
+ * div
+ *   ul#autocomplete
+ *   button#newTag
+ */
 
 section#HOME div#createPost div#tagsSelection ul#autocomplete{
 	display: block;

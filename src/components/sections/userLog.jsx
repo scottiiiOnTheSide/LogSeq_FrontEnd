@@ -78,6 +78,7 @@ function MultiSelect({suggestions, setSuggestions}) {
 	 */
 
 	// let topics = suggestions.map(el => {el.name);
+	// let changer;
 	let topics = suggestions;
 	const [active, setActive] = React.useState(0);
 	const [filtered, setFiltered] = React.useState([]);
@@ -85,6 +86,7 @@ function MultiSelect({suggestions, setSuggestions}) {
 	const [input, setInput] = React.useState("");
 
 	let onChange = (e) => {
+
 		const input = e.currentTarget.value;
 		const newFilteredSuggestions = topics.filter(topic => {
 			if(topic.name.toLowerCase().indexOf(input.toLowerCase()) > -1) {
@@ -100,9 +102,9 @@ function MultiSelect({suggestions, setSuggestions}) {
 
 	let onClick = (e) => {
 		setActive(0);
-		// setFiltered([]);
+		setFiltered([]);
 		// setIsShow(false);
-		setInput(e.currentTarget.innerText);
+		// setInput(e.currentTarget.innerText);
 
 		let copy = suggestions.map(el => {
 			if(el.name == e.currentTarget.innerText) {
@@ -115,17 +117,34 @@ function MultiSelect({suggestions, setSuggestions}) {
 			}
 		})
 		setSuggestions(copy);
-
-		e.currentTarget.innerText = '';
 	}
 
 	let onKeyDown = (e) => {
 		if(e.keyCode === 13) { // the enter key
+			e.preventDefault()
 			setActive(0);
 			setIsShow(false);
-			setInput(filtered[active]);
+			// setInput(filtered[active]);
+
+			console.log(filtered[active])
+
+			let copy = suggestions.map(el => {
+				if(el.name == filtered[active].name) {
+					return {
+						...el,
+						selected: true
+					}
+				} else {
+					return el;
+				}
+			})
+			setSuggestions(copy);
 		}
 	}
+
+	// let removeTag = (name) => {
+		
+	// }
 
 	let renderAutocomplete = () => {
 		if(isShow && input) {
@@ -166,24 +185,48 @@ function MultiSelect({suggestions, setSuggestions}) {
 	let tagsSelect = React.useRef();
 	React.useEffect(()=> {
 		let tags = tagsSelect.current;
+		let selected = tags.children[0].children[0];
+		console.log(getComputedStyle(selected).width)
 
-		if(getComputedStyle(tags).width > (window.innerWidth * 0.95)) {
+		if(parseInt(getComputedStyle(selected).width) > (window.innerWidth * 0.45)) {
 			tags.children[0].style.flexDirection = 'column';
+		} else {
+			tags.children[0].style.flexDirection = 'row';
 		}
-
-	}, [tagsSelect])
+	}, [suggestions])
 
 	return (
 		<div id="tagsSelection" ref={tagsSelect}>
 			<div id="inputWrapper">
-				<div id="selected">
+				<ul id="selected">
 					{suggestions.map(el => {
 						if(el.selected == true) {
-							return <span key={el.name}>{el.name}</span>
+							return <li key={el.name}
+										onClick={()=> {
+											let copy = suggestions.map(sugg => {
+			if(sugg.name == el.name) {
+				return {
+					...sugg,
+					selected: false
+				}
+			} else {
+				return sugg;
+			}
+		})
+		setSuggestions(copy);
+										}}>
+										<p>{el.name}</p>
+										<svg xmlns="http://www.w3.org/2000/svg"  
+											 viewBox="0 0 50 50" 
+											 width="16px" 
+											 height="16px">
+											 <path d="M 9.15625 6.3125 L 6.3125 9.15625 L 22.15625 25 L 6.21875 40.96875 L 9.03125 43.78125 L 25 27.84375 L 40.9375 43.78125 L 43.78125 40.9375 L 27.84375 25 L 43.6875 9.15625 L 40.84375 6.3125 L 25 22.15625 Z"/>
+											 </svg>
+									</li>
 						}
 						
 					})}
-				</div>
+				</ul>
 				<input id="tags" placeholder="Type to search tags"
 					type="text"
 					onChange={onChange}
@@ -210,7 +253,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	const [postContent, setPostContent] = React.useState([]);
 	const [images, setImages] = React.useState([]);
 	let count = 0;
-	console.log(postContent);
+	// console.log(postContent);
 	const handleChange = (event) => {
 
 		if(event.target.name == 'tags') {
@@ -296,7 +339,9 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		} else {
 			
 			let submission = new FormData();
+
 			submission.append('title', formData.title)
+
 			for(let i=0; i < postContent.length; i++){
 				if(postContent[i].type == 'text') {
 					if(postContent[i].content === '') {
@@ -311,6 +356,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					submission.append(`${postContent[i].index}`, content)
 				}
 			}
+
 			let tags = suggestions.filter(el => el.selected == true).map(el => el.name);
 			submission.append('tags', tags);
 

@@ -4,9 +4,24 @@
 -----------------------------------------------------------------------------------------
 
 
+### 12. 30. 2023
+@1400 additions made:
+			selected tags wrapper adjusts when size expands too far 
+			&
+			can now click selected tags in order to remove them
+
+****To Do Next:
+		- add private button to toggle isPrivate
+		- edit ul#autocomplete so that 
+		  - it's within a wrapper
+			- height is limited
+			- button to open modal for newTag is always at bottom
+		- create modal for newTag creation
+		- begin making additions to <Instant> for channelling <Manage* > functions
+
+
 ### 12. 29. 2023
 @2350 tags inclusion within post submission works :D !
-
 need to display tags on post page ...
 
 
@@ -15,9 +30,9 @@ need to display tags on post page ...
 			but great headway
 
 ****To Do Next:
-		- give spans onClick function, so tags can be deSelected...
-		- implement flex direction change when inputWrapper gets too long
-		- add selected suggestions as tags in post . . .
+		- give spans onClick function, so tags can be deSelected... ✅
+		- implement flex direction change when inputWrapper gets too long ✅
+		- add selected suggestions as tags in post . . . ✅
 		- add private button to toggle isPrivate
 		- discern logics for creating a tag from <CreatePost>
 
