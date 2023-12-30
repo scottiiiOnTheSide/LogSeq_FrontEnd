@@ -4,6 +4,12 @@
 -----------------------------------------------------------------------------------------
 
 
+### 12. 29. 2023
+@2350 tags inclusion within post submission works :D !
+
+need to display tags on post page ...
+
+
 ### 12. 25. 2023
 @0810 added some basic styling for "tags within input" design. Still some more work to do,
 			but great headway

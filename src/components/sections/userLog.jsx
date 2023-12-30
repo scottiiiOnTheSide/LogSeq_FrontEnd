@@ -162,7 +162,7 @@ function MultiSelect({suggestions, setSuggestions}) {
 	 * 
 	 * implement this into onChange element for input
 	 */
-	  
+
 	let tagsSelect = React.useRef();
 	React.useEffect(()=> {
 		let tags = tagsSelect.current;
@@ -205,11 +205,12 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
 	const [formData, setFormData] = React.useState({});
+	const [suggestions, setSuggestions] = React.useState([]);
 	const [contentCount, setContentCount] = React.useState([0]);
 	const [postContent, setPostContent] = React.useState([]);
 	const [images, setImages] = React.useState([]);
 	let count = 0;
-	// console.log(postContent);
+	console.log(postContent);
 	const handleChange = (event) => {
 
 		if(event.target.name == 'tags') {
@@ -296,7 +297,6 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 			
 			let submission = new FormData();
 			submission.append('title', formData.title)
-			submission.append('tags', formData.tags)
 			for(let i=0; i < postContent.length; i++){
 				if(postContent[i].type == 'text') {
 					if(postContent[i].content === '') {
@@ -311,6 +311,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					submission.append(`${postContent[i].index}`, content)
 				}
 			}
+			let tags = suggestions.filter(el => el.selected == true).map(el => el.name);
+			submission.append('tags', tags);
 
 			if(selectedDate.day != null) {
 				submission.append('usePostedByDate', false);
@@ -320,7 +322,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 			} else {
 				submission.append('usePostedByDate', true);
 			}	
-			console.log(submission);
+			// console.log(submission);
+			console.log(tags);
 
 			let submit = await accessAPI.createPost(submission);
 
@@ -429,7 +432,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 	
 	const [tagged, setTagged] = React.useState([]);
-	const [suggestions, setSuggestions] = React.useState([]);
+	
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	const el = React.useRef()
 	const element = el.current;

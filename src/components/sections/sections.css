@@ -209,6 +209,7 @@ div#createPost textarea:focus {
 
 div#createPost input#title {
 	font-size: 1.5em;
+	margin-bottom: 4px;
 }
 
 div#createPost fieldset.textareaImageAdd {

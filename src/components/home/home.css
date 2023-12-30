@@ -275,7 +275,7 @@ section#HOME {
 * * */
 
 div#buttonBar {
-	width: 95%;
+	width: 96%;
 	position: fixed;
 	left: 50%;
 	transform: translateX(-50%);
