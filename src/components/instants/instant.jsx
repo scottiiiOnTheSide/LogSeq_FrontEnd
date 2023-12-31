@@ -118,6 +118,24 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}, 1000)	
 	}
 
+	//let doAction_* = async(data) => {
+	// 	let request = await accessAPI._(data).then(res => {
+	// 		if(res.message) {
+
+	// 		}
+	// 		else {
+	// 			setSocketMessage({
+	// 				type: 'confirmation',
+	// 				message: 'post'
+	// 			})
+	// 			setActive({
+	// 				state: true,
+	// 				type: 1
+	// 			})
+	// 		}
+	// 	})
+	// }
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -217,6 +235,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	 * Primary useEffect
 	 * Upon change of 'socketMessage'
 	 * execute a makeNotif function with socketMessage
+	 * 
+	 * 12. 31. 2023
+	 * could probably use switch n case here...
 	 */
 	useEffect(()=> {
 
@@ -233,6 +254,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 22
 			});
 		}
+
+
+
 		else if(socketMessage.type == 'request' && socketMessage.message == 'accept') {
 			makeNotif_sendAcceptRequest(socketMessage);
 		}

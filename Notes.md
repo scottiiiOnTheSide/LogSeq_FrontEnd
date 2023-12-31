@@ -4,6 +4,16 @@
 -----------------------------------------------------------------------------------------
 
 
+### 12. 31. 2023
+@1420 additions made checked off below...
+
+made alternate class state for <CreatePost> for underlay when <NewTag> is up
+
+****To Do Next:
+		- create modal for newTag creation
+		- begin making additions to <Instant> for channelling <Manage* > functions
+		- may need to make <popUpNotif> zIndex higher than <CreatePost> ...
+
 ### 12. 30. 2023
 @1400 additions made:
 			selected tags wrapper adjusts when size expands too far 
@@ -11,11 +21,11 @@
 			can now click selected tags in order to remove them
 
 ****To Do Next:
-		- add private button to toggle isPrivate
+		- add private button to toggle isPrivate ✅
 		- edit ul#autocomplete so that 
-		  - it's within a wrapper
-			- height is limited
-			- button to open modal for newTag is always at bottom
+		  - it's within a wrapper ✅
+			- height is limited ✅
+			- button to open modal for newTag is always at bottom ✅
 		- create modal for newTag creation
 		- begin making additions to <Instant> for channelling <Manage* > functions
 

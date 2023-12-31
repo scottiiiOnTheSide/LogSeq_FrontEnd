@@ -135,6 +135,13 @@ section#HOME div#createPost {
 		opacity: 1;
 	}
 
+	div#createPost._modalActive::before {
+		background-color: rgba(255, 255, 255, 0.75);
+		transition: all ease-in-out 0.1s;
+		z-index: 20;
+		opacity: 1;
+	}
+
 
 
 section#HOME div#createPost div#titleWrapper {
@@ -276,6 +283,13 @@ section#HOME div#createPost div#taggedUsers {
 		margin: 8px;
 		margin-left: 0;
 		color: var(--greyscale-accent);
+
+		font-family: 'Raleway';
+    	font-weight: 400;
+    	font-size: 0.9em;
+    	color: var(--greyscale-text);
+    	letter-spacing: 2px;
+    	line-height: 22px;
 	}
 
 	section#HOME div#createPost div#taggedUsers ul#selected {
@@ -311,7 +325,7 @@ section#HOME div#createPost div#taggedUsers {
 
 
 section#HOME div#createPost div#tagsSelection {
-/*	width: 100%;*/
+/*	margin-bottom: 36px;*/
 }
 
 section#HOME div#createPost div#tagsSelection div#inputWrapper div#selected{
@@ -333,6 +347,7 @@ section#HOME div#createPost div#tagsSelection div#inputWrapper ul#selected {
 	flex-wrap: wrap;
     justify-content: flex-start;
     padding: 0;
+    margin: 4px;
 }
 
 section#HOME div#createPost div#tagsSelection div#inputWrapper ul#selected li {
@@ -360,6 +375,7 @@ section#HOME div#createPost div#tagsSelection div#inputWrapper input {
 	width: auto;
 	margin: 0 10px;
 	border-bottom: none;
+	margin-left: -4px;
 }
 
 /**
@@ -371,9 +387,35 @@ section#HOME div#createPost div#tagsSelection div#inputWrapper input {
  *   button#newTag
  */
 
-section#HOME div#createPost div#tagsSelection ul#autocomplete{
-	display: block;
+section#HOME div#createPost div#tagsSelection div#resultWrapper {
+
 }
+
+section#HOME div#createPost div#tagsSelection ul#autocomplete {
+	list-style-type: none;
+	display: block;
+	height: 100px;
+	margin-top: 0px;
+	padding: 12px 0 12px 20px;
+	overflow-y: scroll;
+}
+
+section#HOME div#createPost div#tagsSelection ul#autocomplete li {
+	margin: 12px 0;
+}
+
+
+
+section#HOME div#createPost form button#setPrivate {
+	margin: 36px 0;
+}
+
+section#HOME div#createPost form button#setPrivate.nonActive {
+	color: var(--greyscale-accent);
+}
+
+
+
 
 
 

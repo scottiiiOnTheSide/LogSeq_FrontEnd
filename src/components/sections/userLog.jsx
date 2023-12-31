@@ -45,11 +45,11 @@ function DropSelect({tagged, setTagged}) {
 	return (
 		<div id="taggedUsers">
 			{!tagged.some(user => user.selected == true) &&
-				<p onClick={()=> {setActive()}}>Tag Connections</p>
+				<p onClick={()=> {setActive()}}>Toggle to Tag Others</p>
 			}
 			<ul id='selected' onClick={()=> {setActive()}}>
 				{tagged.filter(user => user.selected == true).map(user => (
-					<li>{user.userName}</li>
+					<li key={user.userName}>{user.userName}</li>
 				))
 				}
 			</ul>
@@ -148,32 +148,33 @@ function MultiSelect({suggestions, setSuggestions}) {
 
 	let renderAutocomplete = () => {
 		if(isShow && input) {
-			if(filtered.length) {
-				return (
-					<ul className="autocomplete">
-						{filtered.map((suggestion, index)=> {
-							let className;
-							if(index === active) {
-								className = 'active';
-							}
-							return (
-								<li className={className, suggestion.type} key={suggestion.name} onClick={onClick}>
-									{suggestion.name}
-								</li>
-							)
-						})}
-					</ul>
-				);
-			}
-			else {
-				return (
-					<div className="no-autocomplete">
-			        	<em>Not found</em>
-			        </div>
-				)
-			}
+
+			return (
+				<div id="resultsWrapper">
+					{filtered.length &&
+						<ul id="autocomplete">
+				 			{filtered.map((suggestion, index)=> {
+								let className;
+								if(index === active) {
+									className = 'active';
+								}
+								return (
+									<li className={className, suggestion.type} key={suggestion.name} onClick={onClick}>
+										{suggestion.name}
+									</li>
+								)
+							})}
+						</ul>
+					}
+					{!filtered.length &&
+						<div id="no-autocomplete">
+				         	<em>No Results Found</em>
+			         	</div>
+					}
+					<button class={"buttonDefault"}id="makeNewTag">Create a New Tag</button>
+				</div>
+			)
 		}
-		return <></>
 	}
 
 	/**
@@ -204,16 +205,16 @@ function MultiSelect({suggestions, setSuggestions}) {
 							return <li key={el.name}
 										onClick={()=> {
 											let copy = suggestions.map(sugg => {
-			if(sugg.name == el.name) {
-				return {
-					...sugg,
-					selected: false
-				}
-			} else {
-				return sugg;
-			}
-		})
-		setSuggestions(copy);
+												if(sugg.name == el.name) {
+													return {
+														...sugg,
+														selected: false
+													}
+												} else {
+													return sugg;
+												}
+											})
+											setSuggestions(copy);
 										}}>
 										<p>{el.name}</p>
 										<svg xmlns="http://www.w3.org/2000/svg"  
@@ -227,7 +228,7 @@ function MultiSelect({suggestions, setSuggestions}) {
 						
 					})}
 				</ul>
-				<input id="tags" placeholder="Type to search tags"
+				<input id="tags" placeholder="Type to search tags "
 					type="text"
 					onChange={onChange}
 					onKeyDown={onKeyDown}
@@ -249,11 +250,12 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	const username = sessionStorage.getItem('userName');
 	const [formData, setFormData] = React.useState({});
 	const [suggestions, setSuggestions] = React.useState([]);
+	const [isPrivate, setPrivate] = React.useReducer(state => !state, false);
 	const [contentCount, setContentCount] = React.useState([0]);
 	const [postContent, setPostContent] = React.useState([]);
 	const [images, setImages] = React.useState([]);
 	let count = 0;
-	// console.log(postContent);
+	console.log(postContent);
 	const handleChange = (event) => {
 
 		if(event.target.name == 'tags') {
@@ -340,7 +342,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 			
 			let submission = new FormData();
 
-			submission.append('title', formData.title)
+			submission.append('title', formData.title);
+			submission.append('isPrivate', isPrivate);
 
 			for(let i=0; i < postContent.length; i++){
 				if(postContent[i].type == 'text') {
@@ -405,6 +408,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					confirm: 'postUpload'
 				})
 			}
+
 			} else if(submit.confirm == false) {
 				console.log('Issue with post submission');
 			}
@@ -480,6 +484,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	const [tagged, setTagged] = React.useState([]);
 	
 	const [enter, setEnter] = React.useReducer(state => !state, true);
+	const [modal, setModal] = React.useReducer(state => !state, false);
 	const el = React.useRef()
 	const element = el.current;
 
@@ -501,7 +506,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	// console.log(suggestions);
 
 	return (
-		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''}`}>
+		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''} 
+												  ${modal == true ? '_modalActive' : ''}`}>
 			
 			<div id="titleWrapper">
 				<h3>Creating Entry for</h3>
@@ -529,22 +535,25 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 					<MultiSelect suggestions={suggestions} setSuggestions={setSuggestions}/>
 
-					<div id="options">
-						<button className={"buttonDefault"} type="submit">Submit</button>
-						<button className={"buttonDefault"} onClick={(e)=> {
-							e.preventDefault();
-							setEnter();
-							let delay = setTimeout(()=> {
-								setCurrent({
-									...current,
-									modal: false
-								})
-							}, 300)
-						}}>Close</button>
-					</div>
+					<button id="setPrivate" 
+							className={`buttonDefault ${isPrivate == true ? 'active' : 'nonActive'}`}
+							onClick={(e)=> {e.preventDefault(); setPrivate()}}>PRIVATE</button>
 				</fieldset>
 			</form>
 			
+			<div id="options">
+				<button className={"buttonDefault"} type="submit">Submit</button>
+				<button className={"buttonDefault"} onClick={(e)=> {
+					e.preventDefault();
+					setEnter();
+					let delay = setTimeout(()=> {
+						setCurrent({
+							...current,
+							modal: false
+						})
+					}, 300)
+				}}>Close</button>
+			</div>
 		</div>
 	)
 }
