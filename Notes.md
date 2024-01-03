@@ -5,11 +5,37 @@
 
 
 ### 01. 03. 2024
+
+@1350 newTag submission now works!
+
+****To Do Next:
+		- confirm process for adding new tag on backEnd + frontEnd response work properly
+		- refresh suggestions within <CreatePost> on submit (regardless of confirmation should be fine...)
+		- make sure getting user tags they saved works properly
+		- differentiate tags and topics in suggestions list
+
+upon all above working correctly, can commence building out <Macros> section
+
+
+@1345 backEnd now having issue running find() on Group model...
+
+@1320 set up process for creating new tag:
+			setSocketMessage with data on submit within <CreatePost>
+			primary useEffect in <Instant> socketMessage.action
+			- runs doAction_newTag
+				- if already exists, gives user option to join (should added whether already exists
+				and is private...)
+				- otherwise creates new tag
+
+****To Do Next:
+		- current issue is something wrong with the body included in the api call, seems like it
+			isnt being added ✅
+
 @0140 added styles to newTag modal
 			Added functionality for opening and closing it
 
 ****To Do Next:
-		- add functionality for creating new tag
+		- add functionality for creating new tag ✅
 		  - this process will be the same (more or less) for all <Manage* > functions
 
 

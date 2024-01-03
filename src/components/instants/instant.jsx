@@ -118,23 +118,58 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}, 1000)	
 	}
 
-	//let doAction_* = async(data) => {
-	// 	let request = await accessAPI._(data).then(res => {
-	// 		if(res.message) {
+	let action_NewTag = async(data) => {
 
-	// 		}
-	// 		else {
-	// 			setSocketMessage({
-	// 				type: 'confirmation',
-	// 				message: 'post'
-	// 			})
-	// 			setActive({
-	// 				state: true,
-	// 				type: 1
-	// 			})
-	// 		}
-	// 	})
-	// }
+		console.log(data);
+		// let request = await accessAPI.newGroup(data).then(res => {
+		// 	if(res.alreadyExists) {
+		// 		setSocketMessage({
+		// 			type: 'response',
+		// 			message: 'alreadyExists',
+		// 			groupID: res.id
+		// 		})
+		// 		setActive({
+		// 			state: true,
+		// 			type: 22
+		// 		})
+		// 	}
+		// 	else {
+		// 		setSocketMessage({
+		// 			type: 'confirmation',
+		// 			message: 'tagAdd',
+		// 			groupName: data.name
+		// 		})
+		// 		setActive({
+		// 			state: true,
+		// 			type: 1
+		// 		})
+		// 	}
+		// })
+		let request = await accessAPI.newGroup(data);
+
+			if(request.alreadyExists) {
+				setSocketMessage({
+					type: 'response',
+					message: 'alreadyExists',
+					groupID: request.id
+				})
+				setActive({
+					state: true,
+					type: 2
+				})
+			}
+			else if (request.confirm) {
+				setSocketMessage({
+					type: 'confirmation',
+					message: 'tagAdd',
+					groupName: request.name
+				})
+				setActive({
+					state: true,
+					type: 1
+				})
+			}
+	}
 
 
 	/*** 
@@ -227,7 +262,42 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			} else if(socketMessage.message == 'confirm_deleteComment') {
 
 			}
+		}
 
+		else if(arg == 'joinGroup') {
+			setActive({
+				type: null,
+				state: false
+			})
+
+			let data = {
+				groupID: socketMessage.groupID,
+				userID: userID
+			}
+
+			let request = await accessAPI.manageGroup('addUser', data).then((data)=> {
+				if(data.message == 'noAccess') {
+					setSocketMessage({
+						type: 'error',
+						message: `This ${data.type} is private`,
+						groupID: data.id
+					})
+					setActive({
+						state: true,
+						type: 1
+					})
+				} else if(data.message == 'confirm') {
+					setSocketMessage({
+						type: 'confirmation',
+						message: 'group',
+						groupName: data.name
+					})
+					setActive({
+						state: true,
+						type: 1
+					})
+				}
+			})
 		}
 	}
 
@@ -255,7 +325,10 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			});
 		}
 
-
+		if(socketMessage.action == 'newTag') {
+			action_NewTag(socketMessage);
+			// console.log(socketMessage);
+		}
 
 		else if(socketMessage.type == 'request' && socketMessage.message == 'accept') {
 			makeNotif_sendAcceptRequest(socketMessage);
@@ -343,12 +416,14 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				{(message.type == 'comment' && message.message == 'response-recieved') &&
 					<p>{socketMessage.senderUsername} responded to your comment on "{socketMessage.postTitle}"</p>
 				}
+
 				{(message.type == 'request' && message.message == 'initial') &&
 					<p>{message.senderUsername} has sent a connection request!</p>
 				}
 				{(message.type == 'request' && message.message == 'accepted') &&
 					<p>You are connected with {message.senderUsername} !</p>
 				}
+
 				{(message.type == 'confirmation' && message.message == 'accepted') &&
 					<p>You are now connected !</p>
 				}
@@ -373,8 +448,15 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				{(message.type == 'confirmation' && message.message == 'post') &&
 					<p>Post Uploaded !</p>
 				}
+				{(message.type == 'confirmation' && message.message == 'tagAdd') &&
+					<p>You've added <span>"{message.groupName}"</span> to your tags</p>
+				}
+
 				{message.type == 'error' &&
 					<p>{message.message}</p>
+				}
+				{(message.type == 'response' && message.message == 'alreadyExists') &&
+					<p>This {message.groupType} already exists. Would you like to join?</p>
 				}
 						
 				{/*<p>This is some demo text</p>*/}
@@ -401,8 +483,13 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 																	interact('viewPost');	
 																	console.log(accessID.postID)
 																}
+																else if(message.message == 'alreadyExists') {
+																	interact('joinGroup');
+																}
 															}}>Interact</button></li> 
-						{/*has button who's function changes based on */}
+						{/*has button who's function changes based on 
+							message.buttonText to contain varying wording
+						*/}
 					</ul>
 				}
 				{isActive.type == 22 &&

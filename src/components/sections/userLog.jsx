@@ -496,6 +496,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	const [modal, setModal] = React.useReducer(state => !state, false);
+	const [isPrivate_2, setIsPrivate_2] = React.useReducer(state => !state, false);
 	const [newTag_value, setNewTag_value] = React.useState('');
 	const el = React.useRef();
 	const tagModal = React.useRef();
@@ -505,18 +506,25 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 		const input = e.currentTarget.value;
 		setNewTag_value(e.currentTarget.value);
-		// const newFilteredSuggestions = topics.filter(topic => {
-		// 	if(topic.name.toLowerCase().indexOf(input.toLowerCase()) > -1) {
-		// 		return topic;
-		// 	}
-			
-		// });
-		// setActive(0);
-		// setFiltered(newFilteredSuggestions);
-		// setIsShow(true);
 	}
 
-	let newTag_submit = (e) => {}
+	let newTag_submit = async(e) => {
+
+		let data = {
+			type: 'tag',
+			name: newTag_value,
+			owner: isPrivate_2 == true ? userID : null,
+			hasAccess: [userID],
+			isPrivate: isPrivate_2 == true ? true : false,
+			action: 'newTag'
+		}
+		setSocketMessage(data);
+		console.log(data);
+
+		/*
+			need to call api again to get updated list 
+		*/
+	}
 
 	/* On Mount, fade away pseudo element for transition effect */
 	React.useEffect(()=> {
@@ -533,7 +541,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
 	}
 
-	console.log(suggestions);
+	// console.log(suggestions);
 
 	return (
 		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''} 
@@ -601,7 +609,14 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 										setModal();
 									}, 250);
 								}}>Cancel</button>
-						<button className={`buttonDefault`}>Save</button>
+						<button 
+							className={`buttonDefault ${isPrivate_2 == true ? 'active' : 'nonActive'}`}
+							onClick={(e)=> {
+								e.preventDefault()
+								setIsPrivate_2()
+							}}>PRIVATE</button>
+						<button className={`buttonDefault`}
+								onClick={newTag_submit}>Save</button>
 					</div>
 				</div>
 			}

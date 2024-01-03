@@ -467,6 +467,9 @@ section#HOME div#createPost div#createNewTag div#buttonWrapper button {
 	width: 50%;
 }
 
+section#HOME div#createPost div#createNewTag div#buttonWrapper button.nonActive {
+	color: var(--greyscale-accent);
+}
 
 /* * *
 	M a n a g e  C o n n e c t i o n s

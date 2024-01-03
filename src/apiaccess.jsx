@@ -443,7 +443,7 @@ export default function APIaccess () {
 		        	'Host': apiAddr,
 		        	'auth-token': userKey
 				},
-				body: body,
+				body: JSON.stringify(body)
 			}).then(data => data.json());
 
 			return request;
@@ -500,7 +500,7 @@ export default function APIaccess () {
 		        	'Host': apiAddr,
 		        	'auth-token': userKey
 				},
-				body: body,
+				body: JSON.stringify(body),
 			}).then(data => data.json());
 
 			return request;
