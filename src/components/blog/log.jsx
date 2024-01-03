@@ -15,6 +15,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 	const navigate = useNavigate();
 	let log = data;
 	let id = sessionStorage.getItem('userID')
+	// const [contentReady, setContentReady] = React.useReducer(state => !state, false);
 
 	function ifAnyPostsFromToday (posts) {
 		let fromToday,
@@ -85,7 +86,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 				{dateMatch == false  &&
 					<span className="postDate">{month + 1} . {day} . {year}</span>
 				}
-				<div className="entry" id={id} key={id} onClick={()=> {
+				<div className="entry" id={id} key={post._id} onClick={()=> {
 					
 					let thisEntry = document.getElementById(id);
 					thisEntry.classList.add('shiftLeft');
@@ -113,7 +114,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 					{post.content.some((data) => data.type == 'media') &&
 						<ul id="thumbnailsWrapper">
 							{post.content.filter(data => data.type == 'media').map(data => (
-								<li>
+								<li key={data._id}>
 									<img src={data.content} />
 								</li>
 							))
@@ -168,7 +169,9 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 			{((ifAnyPostsFromToday(log) !== true) && noHeading == false) &&
 				<h2 className="noPostsToday">No Posts Today</h2>
 			}
-			{log.map((post, index) => returnPostItem(post, index, id))}
+			{(data && data.length > 0) &&
+				log.map((post, index) => returnPostItem(post, index, id))
+			}
 		</div>
 	)
 

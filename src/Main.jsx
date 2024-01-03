@@ -124,7 +124,9 @@ function Home({
                    dateInView={dateInView}
                    set_dateInView={set_dateInView}
                    current={current}
-                   setCurrent={setCurrent}/>
+                   setCurrent={setCurrent}
+                   selectedDate={selectedDate}
+                   set_selectedDate={set_selectedDate}/>
 
         {current.monthChart &&
           <MonthChart 

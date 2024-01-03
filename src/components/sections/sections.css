@@ -136,7 +136,7 @@ section#HOME div#createPost {
 	}
 
 	div#createPost._modalActive::before {
-		background-color: rgba(255, 255, 255, 0.75);
+		background-color: rgba(236, 236, 236, 0.5);
 		transition: all ease-in-out 0.1s;
 		z-index: 20;
 		opacity: 1;
@@ -387,8 +387,8 @@ section#HOME div#createPost div#tagsSelection div#inputWrapper input {
  *   button#newTag
  */
 
-section#HOME div#createPost div#tagsSelection div#resultWrapper {
-
+section#HOME div#createPost div#tagsSelection div#resultsWrapper {
+	background-color: white;
 }
 
 section#HOME div#createPost div#tagsSelection ul#autocomplete {
@@ -404,6 +404,12 @@ section#HOME div#createPost div#tagsSelection ul#autocomplete li {
 	margin: 12px 0;
 }
 
+section#HOME div#createPost div#tagsSelection div#resultsWrapper button#makeNewTag {
+	width: 100%;
+	margin: 8px auto 20px;
+	text-align: center;
+}
+
 
 
 section#HOME div#createPost form button#setPrivate {
@@ -417,6 +423,49 @@ section#HOME div#createPost form button#setPrivate.nonActive {
 
 
 
+section#HOME div#createPost div#createNewTag {
+	width: 80%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	background-color: white;
+	border: 2px solid var(--greyscale-elements);
+	border-radius: 4px;
+	padding: 20px;
+
+	z-index: 21;
+/*	opacity: 0;*/
+	animation: 0.25s ease-in-out forwards _enter;
+}
+
+section#HOME div#createPost div#createNewTag.leave {
+	animation: 0.25s ease-in-out forwards _leave;
+}
+
+section#HOME div#createPost div#createNewTag h2 {
+	font-family: 'Raleway';
+    font-weight: 600;
+    font-size: 1.75em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+section#HOME div#createPost div#createNewTag input {
+	margin: 48px auto 36px;
+}
+
+section#HOME div#createPost div#createNewTag div#buttonWrapper {
+	margin: 8px auto 16px;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+section#HOME div#createPost div#createNewTag div#buttonWrapper button {
+	width: 50%;
+}
 
 
 /* * *

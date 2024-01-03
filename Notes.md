@@ -4,6 +4,40 @@
 -----------------------------------------------------------------------------------------
 
 
+### 01. 03. 2024
+@0140 added styles to newTag modal
+			Added functionality for opening and closing it
+
+****To Do Next:
+		- add functionality for creating new tag
+		  - this process will be the same (more or less) for all <Manage* > functions
+
+
+### 01. 02. 2024
+@1300 issue truly fixed now - had menuButton reset the date to the current date whenever
+			closing the monthChart
+
+@1230 Fixed issue with monthChart - frontEnd would crash after returning to monthChart on
+a different month
+
+@1110 fixed backend issue concerning returning old posts
+
+
+### 01. 01. 2024
+@1930 added skeleton for modal for creating new tags
+
+Not getting posts from last year, as it's a new year
+need to fix backend code...
+
+
+
+H A P P Y  
+	N E W
+		Y E A R S !!!
+2  0  2  4
+
+
+
 ### 12. 31. 2023
 @1420 additions made checked off below...
 

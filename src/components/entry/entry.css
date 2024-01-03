@@ -162,6 +162,7 @@ section#entry form fieldset {
 	width: 100%;
 	border: none;
 	padding: 0;
+	margin-left: -4px;
 }
 
 section#entry form fieldset input {

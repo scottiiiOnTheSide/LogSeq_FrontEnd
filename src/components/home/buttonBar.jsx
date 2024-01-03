@@ -1,7 +1,7 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
 
-export default function ButtonBar({current, setCurrent, dateInView, set_dateInView, cal}) {
+export default function ButtonBar({current, setCurrent, dateInView, set_dateInView, cal, selectedDate, set_selectedDate}) {
 
 	let [functionName, setFuncName] = React.useState('Create Post');
 
@@ -30,6 +30,14 @@ export default function ButtonBar({current, setCurrent, dateInView, set_dateInVi
 							...current,
 							monthChart: false,
 							transition: false
+						})
+
+						const hajime = new Date();
+						
+						set_selectedDate({
+							day: hajime.getDate(),
+							month: hajime.getMonth(),
+							year: hajime.getFullYear()
 						})
 					}, 300)
 				} else if(!current.monthChart) {

@@ -64,7 +64,7 @@ function DropSelect({tagged, setTagged}) {
 	)
 }
 
-function MultiSelect({suggestions, setSuggestions}) {
+function MultiSelect({suggestions, setSuggestions, setModal}) {
 
 	/**
 	 * component is input, which houses spans for selected items, +
@@ -171,7 +171,12 @@ function MultiSelect({suggestions, setSuggestions}) {
 				         	<em>No Results Found</em>
 			         	</div>
 					}
-					<button class={"buttonDefault"}id="makeNewTag">Create a New Tag</button>
+					<button className={"buttonDefault"}
+							id="makeNewTag"
+							onClick={(e)=> {
+								e.preventDefault();
+								setModal();
+							}}>Create a New Tag</button>
 				</div>
 			)
 		}
@@ -333,12 +338,18 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		event.preventDefault();
 		console.log(postContent)
 
-		if(!formData.title && postContent < 1) {
+		if(!formData.title) {
+				setSocketMessage({
+					type: 'error',
+					message: 'Both a Title and Content are needed to make a post!'
+				})
+		} else if (postContent.length < 1) {
 			setSocketMessage({
-				type: 'error',
-				message: 'Both a Title and Content are needed to make a post!'
-			})
-		} else {
+					type: 'error',
+					message: 'Both a Title and Content are needed to make a post!'
+				})
+		}  
+		else {
 			
 			let submission = new FormData();
 
@@ -485,8 +496,27 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	const [modal, setModal] = React.useReducer(state => !state, false);
-	const el = React.useRef()
+	const [newTag_value, setNewTag_value] = React.useState('');
+	const el = React.useRef();
+	const tagModal = React.useRef();
 	const element = el.current;
+
+	let newTag_onChange = (e) => {
+
+		const input = e.currentTarget.value;
+		setNewTag_value(e.currentTarget.value);
+		// const newFilteredSuggestions = topics.filter(topic => {
+		// 	if(topic.name.toLowerCase().indexOf(input.toLowerCase()) > -1) {
+		// 		return topic;
+		// 	}
+			
+		// });
+		// setActive(0);
+		// setFiltered(newFilteredSuggestions);
+		// setIsShow(true);
+	}
+
+	let newTag_submit = (e) => {}
 
 	/* On Mount, fade away pseudo element for transition effect */
 	React.useEffect(()=> {
@@ -503,7 +533,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
 	}
 
-	// console.log(suggestions);
+	console.log(suggestions);
 
 	return (
 		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''} 
@@ -533,7 +563,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 					<DropSelect tagged={tagged} setTagged={setTagged} />
 
-					<MultiSelect suggestions={suggestions} setSuggestions={setSuggestions}/>
+					<MultiSelect suggestions={suggestions} setSuggestions={setSuggestions} setModal={setModal}/>
 
 					<button id="setPrivate" 
 							className={`buttonDefault ${isPrivate == true ? 'active' : 'nonActive'}`}
@@ -542,7 +572,7 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 			</form>
 			
 			<div id="options">
-				<button className={"buttonDefault"} type="submit">Submit</button>
+				<button className={"buttonDefault"} onClick={handleSubmit}>Submit</button>
 				<button className={"buttonDefault"} onClick={(e)=> {
 					e.preventDefault();
 					setEnter();
@@ -554,6 +584,27 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 					}, 300)
 				}}>Close</button>
 			</div>
+
+			{modal &&
+				<div id="createNewTag" ref={tagModal} className={`${modal == true ? 'active' : 'leave'}`}>
+					<h2>Create New Tag</h2>
+					<input 
+						placeholder="Enter a single word phrase"
+						onChange={newTag_onChange} 
+						value={newTag_value}/>
+					<div id="buttonWrapper">
+						<button className={`buttonDefault`}
+								onClick={(e)=> {
+									tagModal.current.classList.remove('active');
+									tagModal.current.classList.add('leave');
+									setTimeout(()=> {
+										setModal();
+									}, 250);
+								}}>Cancel</button>
+						<button className={`buttonDefault`}>Save</button>
+					</div>
+				</div>
+			}
 		</div>
 	)
 }

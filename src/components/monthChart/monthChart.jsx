@@ -399,7 +399,10 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 			{postsPerDate.length == 0 &&
 				<h2 id="noPosts">No Posts</h2>
 			}
-			<Log data={postsPerDate} noHeading={noHeading} current={current} setCurrent={setCurrent}/>
+			{postsPerDate.length > 0 &&
+				<Log data={postsPerDate} noHeading={noHeading} current={current} setCurrent={setCurrent}/>
+			}
+			
 			
 		</div>
 
