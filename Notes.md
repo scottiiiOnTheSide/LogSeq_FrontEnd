@@ -4,14 +4,38 @@
 -----------------------------------------------------------------------------------------
 
 
-### 01. 03. 2024
+### 01. 04. 2024
 
+@2010 creating and getting user created tags works :D !
+
+Reminder: make special exception for 'admin' tag: 
+make it private tag everyone automatically subscribed to
+
+****To Do Next:
+		- fix issue where selecting an option from suggestions removes it xD (probably the filtered array)
+		- differentiate userTags from topics
+		- plan out macros section :D !
+
+Macros Section:
+- User tags and topics, their private posts and collections
+- macros subpage, which contains the posts in each section
+  - make variant of tags page
+- collections list initially expands macros page - each list
+	leads to it's own subpage
+
+
+
+@1900 write 2nd part of newTab submission process in useEffect watching for change to 
+			socketMessage. 
+
+
+### 01. 03. 2024
 @1350 newTag submission now works!
 
 ****To Do Next:
-		- confirm process for adding new tag on backEnd + frontEnd response work properly
-		- refresh suggestions within <CreatePost> on submit (regardless of confirmation should be fine...)
-		- make sure getting user tags they saved works properly
+		- confirm process for adding new tag on backEnd + frontEnd response work properly ✅
+		- refresh suggestions within <CreatePost> on submit (regardless of confirmation should be fine) ✅
+		- make sure getting user tags they saved works properly ✅
 		- differentiate tags and topics in suggestions list
 
 upon all above working correctly, can commence building out <Macros> section

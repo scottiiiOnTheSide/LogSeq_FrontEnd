@@ -520,6 +520,22 @@ export default function APIaccess () {
 			}).then(data => data.json());
 
 			return request;
+		},
+
+		async getUserTags() {
+
+			let request = await fetch(`${apiAddr}/groups/posts/getUserTags`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+		        	'Content-length': 0,
+		        	'Accept': 'application/json',
+		        	'Host': apiAddr,
+		        	'auth-token': userKey
+				}
+			}).then(data => data.json());
+
+			return request;
 		}
 	}
 }

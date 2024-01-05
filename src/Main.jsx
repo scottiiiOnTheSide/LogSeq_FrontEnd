@@ -109,6 +109,7 @@ function Home({
         {(current.modal && current.section == 2) &&
           <CreatePost setCurrent={setCurrent}
                       current={current} 
+                      socketMessage={socketMessage}
                       setSocketMessage={setSocketMessage} 
                       selectedDate={selectedDate}/>
         }
@@ -172,7 +173,10 @@ export default function Main() {
   let userID = sessionStorage.getItem('userID');
   const [socketURL, setSocketURL] = React.useState(``);
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketURL);
-  const [socketMessage, setSocketMessage] = React.useState({});
+  const [socketMessage, setSocketMessage] = React.useState({
+    type: null,
+    message: null
+  });
   const [accessID, setAccessID] = React.useState({})
   const [isActive, setActive] = React.useState({
     type: null,   //type of popUp notif to appear

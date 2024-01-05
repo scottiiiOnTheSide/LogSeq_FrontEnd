@@ -142,10 +142,6 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 		}
 	}
 
-	// let removeTag = (name) => {
-		
-	// }
-
 	let renderAutocomplete = () => {
 		if(isShow && input) {
 
@@ -176,6 +172,7 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 							onClick={(e)=> {
 								e.preventDefault();
 								setModal();
+								setIsShow(false);
 							}}>Create a New Tag</button>
 				</div>
 			)
@@ -249,7 +246,7 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 
 
 
-export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate}) {
+export function CreatePost({setCurrent, current, socketMessage, setSocketMessage, selectedDate}) {
 
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
@@ -481,6 +478,9 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 	const getSuggestions = async() => {
 
 		let topics = await accessAPI.getSuggestions();
+		let userTags = await accessAPI.getUserTags();
+		console.log(userTags)
+		let results = [];
 		let _topics = topics.map(topic => {
 			return {
 				name: topic,
@@ -488,7 +488,19 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 				selected: false
 			}
 		})
-		setSuggestions(_topics);
+		results.push(..._topics);
+		if(userTags != false) {
+			let _userTags = userTags.map(topic => {
+				return {
+					name: topic,
+					type: 'tag',
+					selected: false
+				}
+			})
+			results.push(..._userTags);
+		}
+		console.log(results)
+		setSuggestions(results);
 	}
 
 	
@@ -520,9 +532,8 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		}
 		setSocketMessage(data);
 		console.log(data);
-
 		/*
-			need to call api again to get updated list 
+			2nd part of operation in useEffect
 		*/
 	}
 
@@ -536,12 +547,21 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 		}
 	}, [element]);
 
+	React.useEffect(()=> {
+
+		if(socketMessage.type == 'confirmation' && socketMessage.message == 'tagAdd') {
+			getSuggestions();
+			setModal();
+		}
+		console.log(socketMessage)
+	}, [socketMessage]);
+
 	let writtenDate;
 	if(selectedDate.day) {
 		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
 	}
 
-	// console.log(suggestions);
+	// console.log(socketMessage);
 
 	return (
 		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''} 
@@ -571,7 +591,9 @@ export function CreatePost({setCurrent, current,  setSocketMessage, selectedDate
 
 					<DropSelect tagged={tagged} setTagged={setTagged} />
 
-					<MultiSelect suggestions={suggestions} setSuggestions={setSuggestions} setModal={setModal}/>
+					<MultiSelect suggestions={suggestions} 
+								 setSuggestions={setSuggestions} 
+								 setModal={setModal}/>
 
 					<button id="setPrivate" 
 							className={`buttonDefault ${isPrivate == true ? 'active' : 'nonActive'}`}

@@ -121,30 +121,6 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	let action_NewTag = async(data) => {
 
 		console.log(data);
-		// let request = await accessAPI.newGroup(data).then(res => {
-		// 	if(res.alreadyExists) {
-		// 		setSocketMessage({
-		// 			type: 'response',
-		// 			message: 'alreadyExists',
-		// 			groupID: res.id
-		// 		})
-		// 		setActive({
-		// 			state: true,
-		// 			type: 22
-		// 		})
-		// 	}
-		// 	else {
-		// 		setSocketMessage({
-		// 			type: 'confirmation',
-		// 			message: 'tagAdd',
-		// 			groupName: data.name
-		// 		})
-		// 		setActive({
-		// 			state: true,
-		// 			type: 1
-		// 		})
-		// 	}
-		// })
 		let request = await accessAPI.newGroup(data);
 
 			if(request.alreadyExists) {
