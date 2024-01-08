@@ -58,6 +58,7 @@ section#BASE {
 	text-transform: uppercase;
 	letter-spacing: 3px;
 
+	transition: all ease-in-out 0.25s;
 	background-color: transparent;
 	border: none;
 }

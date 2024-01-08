@@ -72,6 +72,15 @@ div#userLog {
 			animation: 0.5s ease-in-out forwards disappear;
 		}
 
+	div#macros.active {
+		animation: 0.5s ease-in-out forwards appear;
+	}
+
+		div#macros.not {
+			background-color: transparent;
+			animation: 0.5s ease-in-out forwards disappear;
+		}
+
 
 div#socialLog div.log h2.noPostsToday,
 div.log div.entry span.postDate {
@@ -471,10 +480,16 @@ section#HOME div#createPost div#createNewTag div#buttonWrapper button.nonActive 
 	color: var(--greyscale-accent);
 }
 
+
+
+
+
+
+
+
 /* * *
 	M a n a g e  C o n n e c t i o n s
 * * */
-
 section#HOME div#manageConnections {
 	position: absolute;
 	width: 100%;
@@ -542,9 +557,47 @@ section#HOME div#manageConnections button#exit {
 
 
 
+/* * *
+	M A C R O S   S E C T I O N 
+* * */
+
+section#HOME div#macros {
+	width: 100%;
+}
+
+section#HOME div#macros div#userTags, 
+section#HOME div#macros div#privatePosts,
+section#HOME div#macros div#collections {
+	width: 92%;
+	margin: 24px 8px 24px auto;
+}
+
+section#HOME div#macros div div.headerWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	border-bottom: 1px solid var(--greyscale-accent);
+}
 
 
+section#HOME div#macros div div.headerWrapper h2 {
+	font-family: "Raleway";
+	font-weight: 400;
+	letter-spacing: 4px;
+	color: var(--greyscale-text);
+	margin-bottom: 8px;
+}
 
+
+section#HOME div#macros div div.headerWrapper button {
+	font-size: 0.9em;
+	color: var(--greyscale-accent);
+	margin-bottom: -16px;
+}
+
+section#HOME div#macros div div.headerWrapper button:hover {
+	color: black;
+}
 
 
 

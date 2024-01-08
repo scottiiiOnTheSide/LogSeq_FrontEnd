@@ -26,6 +26,7 @@ import InteractionsList from './components/instants/interactionsList';
 import CarouselNav from './components/home/carouselNav';
 import ButtonBar from './components/home/buttonBar';
 import SectionsWrapper from './components/sections/sectionsWrapper';
+import Macros from './components/macros/macros';
 import Post from './components/blog/post';
 import Instant from './components/instants/instant'
 
@@ -355,8 +356,9 @@ export default function Main() {
                   set_selectedDate={set_selectedDate}
                 />
               </HomeOrEntry>
-            } 
-          />
+            }>
+            {/*<Route path=":macros" element={}/>*/}
+          </Route>
 
           <Route path="/entry" element={<Entry/>} 
           />
@@ -385,12 +387,37 @@ export default function Main() {
                   set_selectedDate={set_selectedDate}
                 />
               </HomeOrEntry>
-            }
-          />
+            }>
+            {/*<Route path=":macros" element={}/>*/}
+          </Route>
 
           <Route path="/post/:postID" element={
               <HomeOrEntry>
                 <Post 
+                  // socket stuff
+                  socketURL={socketURL}
+                  socketMessage={socketMessage}
+                  setSocketMessage={setSocketMessage}
+                  sendMessage={sendMessage}
+                  isActive={isActive}
+                  setActive={setActive}
+                  accessID={accessID}
+                  setAccessID={setAccessID}
+                  unreadCount={unreadCount}
+                  setUnreadCount={setUnreadCount}
+                  getUnreadCount={getUnreadCount}
+                  lastMessage={lastMessage}
+                  // socket stuff
+                  selectedDate={selectedDate}
+                  set_selectedDate={set_selectedDate}
+                />
+              </HomeOrEntry>
+            } 
+          />
+
+          <Route path="/macros/:name" element={
+              <HomeOrEntry>
+                <Macros 
                   // socket stuff
                   socketURL={socketURL}
                   socketMessage={socketMessage}

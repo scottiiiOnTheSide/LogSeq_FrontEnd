@@ -4,8 +4,39 @@
 -----------------------------------------------------------------------------------------
 
 
-### 01. 04. 2024
 
+### 01. 08. 2024
+@0230 added initial styling for Macros sections, their headers and functionality to expand
+			said sections
+
+****To Do Next:
+		- fix issue where selecting an option from suggestions removes it xD (probably the filtered array)
+		- differentiate userTags from topics
+		- ensure function for getting used tags and private posts works correctly
+		- displaying tags and private posts within sections
+		- macro subpages!
+
+
+### 01. 07. 2024
+@1615 made changes so that <Macros> section actually appears
+Below is still currentmost task...
+
+@1520 Current Task: Create User Tags Section for Macros
+Layout:
+- Headers for each section containing expansion button
+- For tags:
+	- each tag listed is styled different according to whether it's a
+		topic (no style) public tag (default) private user tag (faded)
+	- selecting each tag or topic leads to individual subpage
+
+Add all the basic stuff to new <Macros> external page
+
+
+### 01. 06. 2024
+@0730 Create New Tag -> Add New Tag
+
+
+### 01. 04. 2024
 @2010 creating and getting user created tags works :D !
 
 Reminder: make special exception for 'admin' tag: 

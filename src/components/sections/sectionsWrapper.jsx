@@ -6,13 +6,12 @@ import './sections.css'
 import UserLog from './userLog';
 import SocialLog from './socialLog';
 import GroupsList from './groupsList';
-import MacrosList from './macrosList';
+import Macros from './macros';
 import HomeLog from './homeLog';
 
 export default function SectionsWrapper({current, setCurrent, setModal, modal, setSocial}) {
 
 	/*** Set Wrapper Height ***/
-
 	let wrapper = React.useRef()
 	React.useEffect(()=> {
 		let viewportHeight = window.innerHeight;
@@ -102,9 +101,27 @@ export default function SectionsWrapper({current, setCurrent, setModal, modal, s
 				prePanes.socialLog = true;
 				setPanes(prePanes);
 				console.log(panes);
-			}, 700)			
-		}
+			}, 1100)	
 
+		} else if(currentSection == 3) {
+
+			setActive('x');
+
+			let nextStep = setTimeout(()=> {
+				Object.keys(prePanes).forEach(value => {
+					prePanes[value] = false;
+				})
+				console.log(prePanes);
+				setPanes(prePanes);
+			}, 550)
+
+			let thirdStep = setTimeout(()=> {
+				setActive(currentSection);
+				prePanes.macros = true;
+				setPanes(prePanes);
+				console.log(panes);
+			}, 1100)
+		}
 	}, [currentSection])
 
 	return (
@@ -122,7 +139,10 @@ export default function SectionsWrapper({current, setCurrent, setModal, modal, s
 						 setSocial={setSocial}/>
 			}
 			{panes.macros &&
-				<MacrosList active={active} />
+				<Macros active={active} 
+						current={current} 
+						setCurrent={setCurrent} 
+						setSocial={setSocial}/>
 			}
 			{panes.groups &&
 				<GroupsList active={active} />
