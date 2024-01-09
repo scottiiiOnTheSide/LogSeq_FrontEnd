@@ -5,10 +5,11 @@
  */
 
 
-export default function APIaccess () {
+export default function APIaccess(key) {
 
 	const apiAddr = "http://172.19.185.143:3333";
-	const userKey = sessionStorage.getItem('userKey');
+	let savedKey = sessionStorage.getItem('userKey')
+	// const userKey = savedKey ? savedKey : key;
 
 	return {
 
@@ -86,8 +87,7 @@ export default function APIaccess () {
 			} else if (request.error == true) {
 				console.log(request);
 				return request.message
-			}
-			
+			}	
 		},	
 
 		async pullUserLog(pull, lastID) {
@@ -101,6 +101,7 @@ export default function APIaccess () {
 			 */
 
 			//?pull=${pull}?lastID=${lastID} for future update
+			let userKey = sessionStorage.getItem('userKey');
 			let log = await fetch(`${apiAddr}/posts/log?social=false`, {
 				method: 'GET',
 				headers: {
@@ -119,6 +120,7 @@ export default function APIaccess () {
 
 			//?pull=${pull}?lastID=${lastID} for future update
 
+			let userKey = sessionStorage.getItem('userKey');
 			let log = await fetch(`${apiAddr}/posts/log?social=true`, {
 				method: 'GET',
 				headers: {
@@ -134,6 +136,8 @@ export default function APIaccess () {
 		},
 
 		async pullMonthChart(month, day, year, social) {
+
+			let userKey = sessionStorage.getItem('userKey');
 
 			if(day) { /*** Gets all posts per specific day ***/
 
@@ -176,6 +180,8 @@ export default function APIaccess () {
 
 		async getBlogPost(postID) {
 
+			let userKey = sessionStorage.getItem('userKey');
+
 			let post = await fetch(`${apiAddr}/posts/${postID}`, {
 				method: 'GET',
 				headers: {
@@ -192,7 +198,7 @@ export default function APIaccess () {
 
 		async createPost(content) {
 
-			console.log(content);
+			let userKey = sessionStorage.getItem('userKey');
 
 			let post = await fetch(`${apiAddr}/posts/createPost`, {
 				method: "POST",
@@ -222,6 +228,8 @@ export default function APIaccess () {
 
 		async deletePost(postID) {
 
+			let userKey = sessionStorage.getItem('userKey');
+
 			let response = await fetch(`${apiAddr}/posts/deletePost?id=${postID}`, {
 				method: "DELETE",
 				headers: {
@@ -236,6 +244,8 @@ export default function APIaccess () {
 		},
 
 		async postComment(type, parentID, body) {
+
+			let userKey = sessionStorage.getItem('userKey');
 
 			/**
 			 * type: *initial, *response
@@ -274,6 +284,7 @@ export default function APIaccess () {
 
 		async updateCommentCount(postID, count) {
 
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/posts/comment/updateCount/?postID=${postID}&count=${count}`, {
 					method: 'POST',
 					headers: {
@@ -289,6 +300,8 @@ export default function APIaccess () {
 		},
 
 		async getInteractions(arg) {
+
+			let userKey = sessionStorage.getItem('userKey');
 
 			if(arg == 'count') {
 
@@ -326,6 +339,8 @@ export default function APIaccess () {
 		 * For connection requests, commenting, tagging, group invites
 		 */
 		async newInteraction(notif) {
+
+			let userKey = sessionStorage.getItem('userKey');
 
 			/**
 			 * Notif object requirements:
@@ -433,7 +448,7 @@ export default function APIaccess () {
 			 * hasAccess: [userID]
 			 * isPrivate: boolean
 			 */
-
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/create`, {
 				method: 'POST',
 				headers: {
@@ -461,6 +476,7 @@ export default function APIaccess () {
 			 * postID: 
 			 */
 
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/posts/${action}`, {
 				method: 'POST',
 				headers: {
@@ -491,6 +507,7 @@ export default function APIaccess () {
 			 *   - should be owner or admin's userID
 			 */
 
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/manage/${action}`, {
 				method: 'POST',
 				headers: {
@@ -508,6 +525,7 @@ export default function APIaccess () {
 
 		async getSuggestions() {
 
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/posts/getSuggestions`, {
 				method: 'GET',
 				headers: {
@@ -524,6 +542,7 @@ export default function APIaccess () {
 
 		async getUserTags() {
 
+			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/posts/getUserTags`, {
 				method: 'GET',
 				headers: {
@@ -536,6 +555,57 @@ export default function APIaccess () {
 			}).then(data => data.json());
 
 			return request;
+		},
+
+		async getMacros(type) {
+
+			let userKey = sessionStorage.getItem('userKey');
+
+			if(type == 'tags') {
+
+				let request = await fetch(`${apiAddr}/groups/posts/allTagsUsed`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+			        	'Content-length': 0,
+			        	'Accept': 'application/json',
+			        	'Host': apiAddr,
+			        	'auth-token': userKey
+					}
+				}).then(data => data.json());
+
+				return request;
+			}
+			else if(type == 'private') {
+
+				let request = await fetch(`${apiAddr}/groups/posts/getPrivatePosts`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+			        	'Content-length': 0,
+			        	'Accept': 'application/json',
+			        	'Host': apiAddr,
+			        	'auth-token': userKey
+					}
+				}).then(data => data.json());
+
+				return request;
+			}
+			else if(type == 'collections') {
+
+				let request = await fetch(`${apiAddr}/groups/posts/getCollections`, {
+					method: 'GET',
+					headers: {
+						'Content-Type': 'application/json',
+			        	'Content-length': 0,
+			        	'Accept': 'application/json',
+			        	'Host': apiAddr,
+			        	'auth-token': userKey
+					}
+				}).then(data => data.json());
+
+				return request;
+			}
 		}
 	}
 }

@@ -4,7 +4,8 @@ import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import './sections.css';
 
-let accessAPI = APIaccess();
+let key = sessionStorage.getItem('userKey');
+let accessAPI = APIaccess(key);
 
 
 function DropSelect({tagged, setTagged}) {
@@ -67,42 +68,40 @@ function DropSelect({tagged, setTagged}) {
 function MultiSelect({suggestions, setSuggestions, setModal}) {
 
 	/**
-	 * component is input, which houses spans for selected items, +
-	 * dropdown with options.
+	 * component is input, which houses tags as selectable items within
+	 * a dropdown
 	 * 
 	 * typing in input adjusts the results,
-	 * selecting item puts it within span container, within input (?)
+	 * selecting item puts it within span container, within input
 	 * clicking on selected item removes it from selected
-	 * 	- use setState
 	 * 
 	 */
-
-	// let topics = suggestions.map(el => {el.name);
-	// let changer;
+	let changer;
 	let topics = suggestions;
 	const [active, setActive] = React.useState(0);
 	const [filtered, setFiltered] = React.useState([]);
 	const [isShow, setIsShow] = React.useState(false);
 	const [input, setInput] = React.useState("");
+	// console.log(topics);
 
 	let onChange = (e) => {
 
 		const input = e.currentTarget.value;
-		const newFilteredSuggestions = topics.filter(topic => {
-			if(topic.name.toLowerCase().indexOf(input.toLowerCase()) > -1) {
-				return topic;
+		console.log(suggestions[0].name)
+		const newFilteredSuggestions = topics.filter((el, index) => {
+			if(el.name.toLowerCase().indexOf(input.toLowerCase()) > -1) {
+				return el;
 			}
-			
 		});
-		setActive(0);
+		setActive('');
 		setFiltered(newFilteredSuggestions);
 		setIsShow(true);
 		setInput(e.currentTarget.value);
 	}
 
 	let onClick = (e) => {
-		setActive(0);
-		setFiltered([]);
+		setActive('');
+		// setFiltered([]);
 		// setIsShow(false);
 		// setInput(e.currentTarget.innerText);
 
@@ -164,7 +163,7 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 					}
 					{!filtered.length &&
 						<div id="no-autocomplete">
-				         	<em>No Results Found</em>
+				         	<p>No Results Found</p>
 			         	</div>
 					}
 					<button className={"buttonDefault"}
@@ -478,7 +477,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const getSuggestions = async() => {
 
 		let topics = await accessAPI.getSuggestions();
-		let userTags = await accessAPI.getUserTags();
+		let userTags = await accessAPI.getUserTags(); //gets all tags 
 		console.log(userTags)
 		let results = [];
 		let _topics = topics.map(topic => {
@@ -492,7 +491,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		if(userTags != false) {
 			let _userTags = userTags.map(topic => {
 				return {
-					name: topic,
+					name: topic.name,
 					type: 'tag',
 					selected: false
 				}
@@ -502,7 +501,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		console.log(results)
 		setSuggestions(results);
 	}
-
 	
 	const [tagged, setTagged] = React.useState([]);
 	

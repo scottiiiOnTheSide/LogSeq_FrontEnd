@@ -10,19 +10,14 @@ const accessAPI = APIaccess();
 
 function useAuth() {
 
-	const [authed, setAuth] = React.useState(() => {
+	const [authed, setAuth] = React.useState(()=> {
 		if(sessionStorage.getItem('userKey')) {
 			return true;
 		} else {
 			return false;
 		}
 	});
-	/**
-	 * 09. 18. 2023
-	 * If context works correctly, will create stateVars for userKey & and ID
-	 * instead
-	 */
-
+	
 	return {
 		authed,
 
@@ -31,8 +26,10 @@ function useAuth() {
 			let request = await APIaccess().logInUser(loginCredentials);
 
 			if(request == true) {
-				setAuth(true);
-				return true;
+				if(sessionStorage.getItem('userKey')) {
+					setAuth(true);
+					return true;
+				}
 			} else {
 				return request;
 			}

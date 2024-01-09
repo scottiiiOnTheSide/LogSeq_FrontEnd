@@ -4,16 +4,42 @@
 -----------------------------------------------------------------------------------------
 
 
+### 01. 09. 2024
+
+@1330 getting user's previously used tags works. Currently displaying in <Macros >
+
+****To Do Next:
+		- differentiate userTags from topics
+		- make test private posts, make sure they display properly
+		- macro subpages!
+
+Then, commence <ManageMacros >
+
+
+
+@1140 solved the issue by pulling the userKey in each API request.
+			Not a very DRY approach at all, will redesign that at some point...
+
+@1030 api call on intial sign in still not working...
+
+@0925 previous suggestions issue fixed...
+
+@0855 userID via sessionStorage is broken, again :/
+			really infuriating, as no code related to that had changed
+
+Currently, suggestions array isnt being read properly by filter function within onChange func
+within the tags selection component...
+
 
 ### 01. 08. 2024
 @0230 added initial styling for Macros sections, their headers and functionality to expand
 			said sections
 
 ****To Do Next:
-		- fix issue where selecting an option from suggestions removes it xD (probably the filtered array)
+		- fix issue where selecting an option from suggestions removes it xD (probably the filtered array) ✅
 		- differentiate userTags from topics
-		- ensure function for getting used tags and private posts works correctly
-		- displaying tags and private posts within sections
+		- ensure function for getting used tags and private posts works correctly ✅
+		- displaying tags and private posts within sections 1/2
 		- macro subpages!
 
 

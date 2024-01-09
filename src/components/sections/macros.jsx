@@ -1,4 +1,7 @@
 import * as React from 'react';
+import APIaccess from '../../apiaccess';
+
+let accessAPI = APIaccess();
 
 function ManageMacros() {
 
@@ -24,6 +27,28 @@ export default function Macros({active}) {
 		}
 	])
 
+	let [tags, setTags] = React.useState([]);
+	let [privatePosts, setPrivatePosts] = React.useState([]);
+	let [collections, setCollections] = React.useState([])
+
+	let updateMacros = async() => {
+
+		let tags = await accessAPI.getMacros('tags');
+		let userPrivatePosts = await accessAPI.getMacros('private');
+		// let collections = await accessAPI.getMacros('collections');
+
+		setTags(tags);
+		setPrivatePosts(userPrivatePosts);
+		// setCollections(collections);
+	}
+
+	console.log(tags);
+
+	React.useEffect(()=> {
+
+		updateMacros();
+	}, [])
+
 	return (
 		<div id="macros" className={`${isActive == 3 ? 'active' : 'not'}`}>
 			
@@ -45,9 +70,13 @@ export default function Macros({active}) {
 					}}>See All</button>
 				</div>
 
-				<div className={`tagsWrapper`}>
-					
-				</div>
+				<ul className={`tagsWrapper`}>
+					{tags.map(tag => (
+						<li className={tag.type} key={tag.name}>
+							{tag.name}
+						</li>
+					))}
+				</ul>
 			</div>
 
 			<div id="privatePosts" className={`${sectionOpen[1].expand ? 'open' : 'close'}`}>
@@ -68,6 +97,10 @@ export default function Macros({active}) {
 					}}>See All</button>
 				</div>
 
+				<ul className={`postsWrapper`}>
+					
+				</ul>
+
 			</div>
 
 			<div id="collections" className={`${sectionOpen[2].expand ? 'open' : 'close'}`}> 
@@ -86,6 +119,10 @@ export default function Macros({active}) {
 							})
 						}
 					}}>See All</button>				
+				</div>
+
+				<div className={`collectionsWrapper`}>
+					
 				</div>
 			</div>
 			
