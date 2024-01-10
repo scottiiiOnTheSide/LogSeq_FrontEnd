@@ -63,7 +63,7 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 	let el = React.useRef();
 	let element = el.current;
 
-	React.useEffect( ()=> {
+	React.useEffect(()=> {
 		updateConnections();
 		if(element) {
 			setEnter();
@@ -114,7 +114,8 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 					<button onClick={()=> {toggleResults(); setSearchFocus()}}>Close Search</button>
 				</div>
 			}
-			<button id="exit" className={"buttonDefault"}onClick={()=> {
+			<button id="exit" className={"buttonDefault"} onClick={(e)=> {
+				e.preventDefault();
 				setEnter()
 				let delay = setTimeout(()=> {
 					setCurrent({

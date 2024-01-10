@@ -4,8 +4,19 @@
 -----------------------------------------------------------------------------------------
 
 
-### 01. 09. 2024
+### 01. 10. 2024
 
+@1405 Alternative solution found to the loading affect for <ManageMacros >
+			is also slightly cleaner than the other implementation used on other sections...
+			may switch them all to this one ...
+
+@0825 done some styling for <ManageMacros >
+
+@0815 issue with the setEnter state func within <ManageMacros >
+			seeming like the useEffect wont trigger when the modal is active...
+
+
+### 01. 09. 2024
 @2130 began some skeleton work for <ManageMacros>
 
 need to have ::before psuedo class to main div for fading in and out on arrive and leave

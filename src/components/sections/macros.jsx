@@ -5,7 +5,7 @@ let accessAPI = APIaccess();
 
 export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
-	const [enter, setEnter] = React.useReducer(state => !state, true);
+	
 	const [sectionOpen, set_sectionOpen] = React.useState([
 		{
 			newTag: false
@@ -20,44 +20,59 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 			editCollections: false
 		}
 	])
-	const manageModal = React.useRef();
+	const [enter, setEnter] = React.useReducer(state => !state, true);
+	let modal = React.useRef();
+	// let modalCurrent = modal.current;
 
 	React.useEffect(()=> {
-
-		//run funcs to get neccessary info
-
-		if(manageModal.current) {
-			setEnter();
-		}
-	})
+		let modalCurrent = modal.current;
+		let delay = setTimeout(()=> {
+			modalCurrent.classList.remove('_enter');	
+		}, 200)
+	}, [])
 
 	return (
-		<div id="ManageMacros" ref={manageModal}>
+		// <div id="ManageMacros" ref={modal} className={`${current.transition == false ? '_enter' : ''}`}>
+		<div id="ManageMacros" ref={modal} className={'_enter'}>
+
 			
 			<h2>Macros</h2>
 
-			<ul id="menu">
+			<ul id="mainMenu">
 				
 				<li className={`option`} id="createNewTag">
-					<button className={`header`}>Create Tag</button>
+					<button className={`header buttonDefault`}>Create Tag</button>
 				</li>
 
 				<li className={`option`} id="deleteTags">
-					<button className={`header`}>Delete Tags</button>
+					<button className={`header buttonDefault`}>Delete Tags</button>
 				</li>
 
 				<li className={`option`} id="createNewCollection">
-					<button className={`header`}>New Collection</button>
+					<button className={`header buttonDefault`}>New Collection</button>
 				</li>
 
 				<li className={`option`} id="editCollections">
-					<button className={`header`}>Manage Collections</button>
+					<button className={`header buttonDefault`}>Manage Collections</button>
 				</li>
 
 			</ul>
 
-			<button id="exit" class="buttonDefault">Exit</button>
+			<button id="exit" 
+					className={`buttonDefault`} 
+					onClick={(e)=> {
+						e.preventDefault();
+						let modalCurrent = modal.current;
+						modalCurrent.classList.add('_enter');	
 
+						let secondDelay = setTimeout(()=> {
+							setCurrent({
+								...current,
+								modal: false
+							})
+						}, 400)
+					}}>Exit
+			</button>
 		</div>
 	)
 }

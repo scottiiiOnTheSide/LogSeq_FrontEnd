@@ -33,7 +33,7 @@ import Instant from './components/instants/instant'
 /*** Sub Sections ***/
 import { CreatePost } from './components/sections/userLog';
 import { ManageConnections } from './components/sections/socialLog';
-import { ManageMacros } from './components/macros/macros';
+import { ManageMacros } from './components/sections/macros';
 import MonthChart from './components/monthChart/monthChart';
 import './components/sections/sections.css';
 
@@ -422,7 +422,7 @@ export default function Main() {
             } 
           />
 
-          <Route path="/macros/:name" element={
+          {/*<Route path="/macros/:name" element={
               <HomeOrEntry>
                 <Macros 
                   // socket stuff
@@ -444,7 +444,7 @@ export default function Main() {
                 />
               </HomeOrEntry>
             } 
-          />
+          />*/}
 
         </Routes>
       </UIContextProvider>
