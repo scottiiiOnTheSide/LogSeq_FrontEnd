@@ -6,6 +6,12 @@
 
 ### 01. 09. 2024
 
+@2130 began some skeleton work for <ManageMacros>
+
+need to have ::before psuedo class to main div for fading in and out on arrive and leave
+header buttons in main menu expand wrapper li to fit content, height wise
+	- should be limited to size of header button before hand
+
 @1330 getting user's previously used tags works. Currently displaying in <Macros >
 
 ****To Do Next:

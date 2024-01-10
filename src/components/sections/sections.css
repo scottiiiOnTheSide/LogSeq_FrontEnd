@@ -590,8 +590,8 @@ section#HOME div#macros div div.headerWrapper h2 {
 
 
 section#HOME div#macros div div.headerWrapper button {
-	font-size: 0.9em;
-	color: var(--greyscale-accent);
+	font-size: 0.8em;
+/*	color: var(--greyscale-accent);*/
 	margin-bottom: -16px;
 }
 
@@ -630,3 +630,24 @@ section#HOME div#macros div#userTags ul.tagsWrapper li.topic {
 	border: none;
 }
 
+
+
+
+
+
+
+
+/* * *
+	M A N A G E 
+	M A C R O S   S E C T I O N 
+* * */
+
+section#HOME div#ManageMacros {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+
+	z-index: 20;
+	background-color: var(--greyscale-background);
+}

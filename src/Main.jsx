@@ -33,6 +33,7 @@ import Instant from './components/instants/instant'
 /*** Sub Sections ***/
 import { CreatePost } from './components/sections/userLog';
 import { ManageConnections } from './components/sections/socialLog';
+import { ManageMacros } from './components/macros/macros';
 import MonthChart from './components/monthChart/monthChart';
 import './components/sections/sections.css';
 
@@ -118,6 +119,12 @@ function Home({
           <ManageConnections current={current} 
                              setCurrent={setCurrent} 
                              setSocketMessage={setSocketMessage}/>
+        }
+
+        {(current.modal && current.section == 3) &&
+          <ManageMacros current={current} 
+                        setCurrent={setCurrent} 
+                        setSocketMessage={setSocketMessage}/>
         }
 
         <ButtonBar cal={cal} 
@@ -360,7 +367,7 @@ export default function Main() {
             {/*<Route path=":macros" element={}/>*/}
           </Route>
 
-          <Route path="/entry" element={<Entry/>} 
+          <Route path="/entry" element={<Entry />} 
           />
 
           <Route path="/home" element={

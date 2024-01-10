@@ -3,11 +3,62 @@ import APIaccess from '../../apiaccess';
 
 let accessAPI = APIaccess();
 
-function ManageMacros() {
+export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
-	/* element dimensions to be 100% viewport */
+	const [enter, setEnter] = React.useReducer(state => !state, true);
+	const [sectionOpen, set_sectionOpen] = React.useState([
+		{
+			newTag: false
+		},
+		{
+			deleteTags: false
+		},
+		{
+			newCollection: false
+		},
+		{
+			editCollections: false
+		}
+	])
+	const manageModal = React.useRef();
+
+	React.useEffect(()=> {
+
+		//run funcs to get neccessary info
+
+		if(manageModal.current) {
+			setEnter();
+		}
+	})
+
 	return (
-		<div id="ManageMacros_wrapper"></div>
+		<div id="ManageMacros" ref={manageModal}>
+			
+			<h2>Macros</h2>
+
+			<ul id="menu">
+				
+				<li className={`option`} id="createNewTag">
+					<button className={`header`}>Create Tag</button>
+				</li>
+
+				<li className={`option`} id="deleteTags">
+					<button className={`header`}>Delete Tags</button>
+				</li>
+
+				<li className={`option`} id="createNewCollection">
+					<button className={`header`}>New Collection</button>
+				</li>
+
+				<li className={`option`} id="editCollections">
+					<button className={`header`}>Manage Collections</button>
+				</li>
+
+			</ul>
+
+			<button id="exit" class="buttonDefault">Exit</button>
+
+		</div>
 	)
 }
 
