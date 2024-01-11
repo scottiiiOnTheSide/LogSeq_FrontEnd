@@ -697,6 +697,7 @@ section#HOME div#ManageMacros button#exit {
 }
 
 section#HOME div#ManageMacros ul#mainMenu {
+	width: calc(100% - 32px);
 	list-style-type: none;
 	position: absolute;
 	top: 50%;
@@ -707,11 +708,57 @@ section#HOME div#ManageMacros ul#mainMenu {
 }
 
 section#HOME div#ManageMacros ul#mainMenu li {
+	width: 100%;
 	margin: 24px 0;
+	transition: all ease-in-out 0.2s;
+	overflow-y: hidden;
 }
+
+	section#HOME div#ManageMacros ul#mainMenu li.open {
+/*		height: fit-content;*/
+		height: auto;
+	}
+
+	section#HOME div#ManageMacros ul#mainMenu li.close {
+		height: 30px;
+	}
+
 
 section#HOME div#ManageMacros ul#mainMenu li button {
 	font-size: 1.5em;
 	text-transform: capitalize;
 	letter-spacing: 2px;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper {
+	width: 96%;
+	margin: 32px auto 16px;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper input {
+	width: 100%;
+    display: block;
+    margin: 16px 0;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px;
+    background-color: transparent;
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 0.9em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper div.buttonWrapper {
+	display: flex;
+	flex-direction: row;
+	margin: 16px 0;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper div.buttonWrapper button {
+	font-size: 1.25em;
+	text-transform: uppercase;
+	width: 50%;
 }

@@ -4,8 +4,19 @@
 -----------------------------------------------------------------------------------------
 
 
-### 01. 10. 2024
+### 01. 11. 2024
+@0245 further development of <ManageMacros > menu options
+			Will limit height of options which have indefinite lists
 
+****To Be Done:
+		- finish layout frontEnd for <ManageMacros > options
+		- connect frontEnd to backEnd functions via <Instant>
+			- routing from initial useEffect, doAction & responses and or interaction options
+		and then
+		- macros subpages!
+
+
+### 01. 10. 2024
 @1405 Alternative solution found to the loading affect for <ManageMacros >
 			is also slightly cleaner than the other implementation used on other sections...
 			may switch them all to this one ...

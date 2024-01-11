@@ -6,7 +6,7 @@ let accessAPI = APIaccess();
 export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
 	
-	const [sectionOpen, set_sectionOpen] = React.useState([
+	const [section, setSection] = React.useState([
 		{
 			newTag: false
 		},
@@ -31,6 +31,14 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		}, 200)
 	}, [])
 
+	/* For Setting Function Operation */
+	const [newTag_value, setNewTag_value] = React.useState('');
+	let newTag_onChange = (e) => {
+
+		const input = e.currentTarget.value;
+		setNewTag_value(e.currentTarget.value);
+	}
+
 	return (
 		// <div id="ManageMacros" ref={modal} className={`${current.transition == false ? '_enter' : ''}`}>
 		<div id="ManageMacros" ref={modal} className={'_enter'}>
@@ -40,20 +48,88 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
 			<ul id="mainMenu">
 				
-				<li className={`option`} id="createNewTag">
-					<button className={`header buttonDefault`}>Create Tag</button>
+				<li className={`option ${section.newTag == true ? 'open' : 'close'}`} id="createNewTag">
+					<button className={`header buttonDefault`}
+							onClick={(e)=> {
+								e.preventDefault()
+								if(section.newTag) {
+									setSection({
+										...section,
+										newTag: false
+									}) 
+								} else {
+									setSection({
+										...section,
+										newTag: true
+									})
+								}
+					}}>Create Tag</button>
+
+					<div className={"functionWrapper"}>
+						
+						<input 
+							placeholder="Enter a single word phrase"
+							onChange={newTag_onChange} 
+							value={newTag_value}/>
+						<div className={'buttonWrapper'}>
+							<button className={`buttonDefault`}>Private</button>
+							<button className={`buttonDefault`}>Save</button>
+						</div>
+					</div>
 				</li>
 
-				<li className={`option`} id="deleteTags">
-					<button className={`header buttonDefault`}>Delete Tags</button>
+				<li className={`option ${section.deleteTags == true ? 'open' : 'close'}`} id="deleteTags">
+					<button className={`header buttonDefault`}
+							onClick={(e)=> {
+								e.preventDefault()
+								if(section.deleteTags) {
+									setSection({
+										...section,
+										deleteTags: false
+									}) 
+								} else {
+									setSection({
+										...section,
+										deleteTags: true
+									})
+								}
+					}}>Delete Tags</button>
 				</li>
 
-				<li className={`option`} id="createNewCollection">
-					<button className={`header buttonDefault`}>New Collection</button>
+				<li className={`option ${section.newCollection == true ? 'open' : 'close'}`} id="createNewCollection">
+					<button className={`header buttonDefault`}
+							onClick={(e)=> {
+								e.preventDefault()
+								if(section.newCollection) {
+									setSection({
+										...section,
+										newCollection: false
+									}) 
+								} else {
+									setSection({
+										...section,
+										newCollection: true
+									})
+								}
+					}}>New Collection</button>
 				</li>
 
-				<li className={`option`} id="editCollections">
-					<button className={`header buttonDefault`}>Manage Collections</button>
+				<li className={`option ${section.editCollections == true ? 'open' : 'close'}`} id="editCollections">
+					<button className={`header buttonDefault`}
+							onClick={(e)=> {
+								e.preventDefault()
+								if(section.editCollection) {
+									setSection({
+										...section,
+										editCollection: false
+									}) 
+								} else {
+									setSection({
+										...section,
+										editCollection: true
+									})
+								}
+					}}>Manage Collections</button>
 				</li>
 
 			</ul>
