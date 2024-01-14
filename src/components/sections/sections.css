@@ -730,12 +730,14 @@ section#HOME div#ManageMacros ul#mainMenu li button {
 	letter-spacing: 2px;
 }
 
-section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper {
+
+/* Create New Tag */
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper {
 	width: 96%;
 	margin: 32px auto 16px;
 }
 
-section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper input {
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper input {
 	width: 100%;
     display: block;
     margin: 16px 0;
@@ -751,14 +753,78 @@ section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper input {
     line-height: 22px;
 }
 
-section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper div.buttonWrapper {
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper div.buttonWrapper {
 	display: flex;
 	flex-direction: row;
 	margin: 16px 0;
 }
 
-section#HOME div#ManageMacros ul#mainMenu li.option div.functionWrapper div.buttonWrapper button {
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper div.buttonWrapper button {
 	font-size: 1.25em;
 	text-transform: uppercase;
 	width: 50%;
+}
+
+
+
+/* Delete Tags */
+section#HOME div#ManageMacros ul#deleteTags {
+/*	width: calc(100% - 32px);*/
+	width: 96%;
+	list-style-type: none;
+/*	position: absolute;*/
+/*	top: 50%;
+	transform: translateY(-50%);*/
+	margin: 0;
+	margin-top: 12px;
+	margin-left: 8px;
+	padding: 0;
+	max-height: 250px;
+	overflow-y: scroll;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li {
+	width: 100%;
+	position: relative;
+	margin: 8px 0;
+	padding: 16px 0;
+	transition: all ease-in-out 0.2s;
+	overflow-y: hidden;
+	margin: 0;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li p {
+	font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 1em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    margin: 0;
+    margin-left: 4px;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	position: absolute;
+	top: 0;
+	margin: 0 auto;
+	padding: 12px 0;
+	background-color: var(--greyscale-background);
+	opacity: 0;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation p {
+	margin: 0;
+	margin-left: 8px;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation div.buttonWrapper {
+	margin-right: 8px;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation button {
+	font-size: 1em;
 }

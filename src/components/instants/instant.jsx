@@ -427,7 +427,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				{(message.type == 'confirmation' && message.message == 'tagAdd') &&
 					<p>You've added <span>"{message.groupName}"</span> to your tags</p>
 				}
-
+				{(message.type == 'confirmation' && message.message == 'tagRemove') &&
+					<p>You've removed {message.groupName} from your tags</p>
+				}
 				{message.type == 'error' &&
 					<p>{message.message}</p>
 				}

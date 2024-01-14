@@ -4,6 +4,24 @@
 -----------------------------------------------------------------------------------------
 
 
+### 01. 14. 2024
+@0150 Began building out the deleteTags section of <ManageMacros >
+
+****To Do Next:
+		- copy onClick effect from <MonthChart> for li within deleteTags so that confirmation
+			div can appear
+		- connect buttons with backend api via <Instant>
+			- routing from initial useEffect, doAction & responses and or interaction options
+
+
+### 01. 13. 2024
+@2330 Made subroute for deleting groups (api/groups/manageGroups/deleteGroup)
+			verify to ensure it works:
+				- deleting a private tag
+				- being removing oneself from a public tag
+					(this route needs to include removing same tag from all user posts)
+
+
 ### 01. 11. 2024
 @0245 further development of <ManageMacros > menu options
 			Will limit height of options which have indefinite lists

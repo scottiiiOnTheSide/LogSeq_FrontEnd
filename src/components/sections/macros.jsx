@@ -22,22 +22,76 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 	])
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	let modal = React.useRef();
-	// let modalCurrent = modal.current;
 
-	React.useEffect(()=> {
-		let modalCurrent = modal.current;
-		let delay = setTimeout(()=> {
-			modalCurrent.classList.remove('_enter');	
-		}, 200)
-	}, [])
+	let updateMacros = async() => {
 
-	/* For Setting Function Operation */
+		let tags = await accessAPI.getMacros('tags');
+		// let userPrivatePosts = await accessAPI.getMacros('private');
+		// let collections = await accessAPI.getMacros('collections');
+
+		setDeleteTags(tags);
+		// setPrivatePosts(userPrivatePosts);
+		// setCollections(collections);
+	}
+
+
+	/* Creating a New Tag */
 	const [newTag_value, setNewTag_value] = React.useState('');
 	let newTag_onChange = (e) => {
 
 		const input = e.currentTarget.value;
 		setNewTag_value(e.currentTarget.value);
 	}
+
+	const [deleteTags, setDeleteTags] = React.useState([
+		{
+			name: 'thisIs',
+			id: 1234
+		},
+		{
+			name: 'aListOf',
+			id: 5678
+		}, 
+		{
+			name: 'tagsToBe',
+			id: 9101
+		},
+		{
+			name: 'deleted',
+			id: 1123
+		}
+	])
+	let requestTagDelete = async(name, id) => {
+
+		let body = {
+			name: name,
+			groupID: id 
+		}
+		let request = await accessAPI.manageGroup('deleteGroups', body);
+		
+		if(request == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'tagRemove',
+				groupName: name
+			})
+		}else {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+		}
+		updateMacros();
+	}
+
+
+	/* For opening animation */
+	React.useEffect(()=> {
+		let modalCurrent = modal.current;
+		let delay = setTimeout(()=> {
+			modalCurrent.classList.remove('_enter');	
+		}, 200)
+	}, [])
 
 	return (
 		// <div id="ManageMacros" ref={modal} className={`${current.transition == false ? '_enter' : ''}`}>
@@ -65,7 +119,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 								}
 					}}>Create Tag</button>
 
-					<div className={"functionWrapper"}>
+					<div className={"newTagWrapper"}>
 						
 						<input 
 							placeholder="Enter a single word phrase"
@@ -94,6 +148,22 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 									})
 								}
 					}}>Delete Tags</button>
+
+					<ul id="deleteTags">
+						{deleteTags.map(tag => (
+							<li key="tag.id">
+								<p>{tag.name}</p>
+								<div className={`confirmation`}>
+									<p>Are You Sure?</p>
+
+									<div className={`buttonWrapper`}>
+										<button className={`buttonDefault`}>Yes</button>
+										<button className={`buttonDefault`}>No</button>
+									</div>
+								</div>
+							</li>
+						))}
+					</ul>
 				</li>
 
 				<li className={`option ${section.newCollection == true ? 'open' : 'close'}`} id="createNewCollection">
