@@ -767,7 +767,9 @@ section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper div.button
 
 
 
-/* Delete Tags */
+/* 
+	Delete Tags 
+*/
 section#HOME div#ManageMacros ul#deleteTags {
 /*	width: calc(100% - 32px);*/
 	width: 96%;
@@ -813,7 +815,12 @@ section#HOME div#ManageMacros ul#deleteTags li div.confirmation {
 	margin: 0 auto;
 	padding: 12px 0;
 	background-color: var(--greyscale-background);
+	transition: all ease-in-out 0.2s;
 	opacity: 0;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li.selected div.confirmation {
+	opacity: 1;
 }
 
 section#HOME div#ManageMacros ul#deleteTags li div.confirmation p {

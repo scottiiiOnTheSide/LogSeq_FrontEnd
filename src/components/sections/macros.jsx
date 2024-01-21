@@ -46,18 +46,22 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 	const [deleteTags, setDeleteTags] = React.useState([
 		{
 			name: 'thisIs',
+			selected: false,
 			id: 1234
 		},
 		{
 			name: 'aListOf',
+			selected: false,
 			id: 5678
 		}, 
 		{
 			name: 'tagsToBe',
+			selected: false,
 			id: 9101
 		},
 		{
 			name: 'deleted',
+			selected: false,
 			id: 1123
 		}
 	])
@@ -83,6 +87,34 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		}
 		updateMacros();
 	}
+	let selectDeleteTag = (name, index) => {
+		let tags = deleteTags.map(ele => {
+			if(ele.name == name) {
+				
+				if(ele.selected == false) {
+					return {
+						...ele,
+						selected: true
+					}
+				}
+				else if(ele.selected == true) {
+					// return {
+					// 	...ele,
+					// 	selected: false
+					// }
+					return ele;
+				} 
+			} else {
+				return {
+					...ele,
+					selected: false
+				}
+			}
+		})
+		setDeleteTags(tags);
+		console.log(tags);
+		console.log(deleteTags[index].selected)
+	}
 
 
 	/* For opening animation */
@@ -92,6 +124,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 			modalCurrent.classList.remove('_enter');	
 		}, 200)
 	}, [])
+
 
 	return (
 		// <div id="ManageMacros" ref={modal} className={`${current.transition == false ? '_enter' : ''}`}>
@@ -150,8 +183,10 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					}}>Delete Tags</button>
 
 					<ul id="deleteTags">
-						{deleteTags.map(tag => (
-							<li key="tag.id">
+						{deleteTags.map((tag, index) => (
+							<li key={tag.id}
+								className={`${deleteTags[index].selected == true ? 'selected' : ''}`}
+								onClick={()=> {selectDeleteTag(tag.name, index)}}>
 								<p>{tag.name}</p>
 								<div className={`confirmation`}>
 									<p>Are You Sure?</p>
