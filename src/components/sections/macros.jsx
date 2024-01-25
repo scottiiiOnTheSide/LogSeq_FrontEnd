@@ -17,7 +17,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 			newCollection: false
 		},
 		{
-			editCollections: false
+			collections: false
 		}
 	])
 	const [enter, setEnter] = React.useReducer(state => !state, true);
@@ -116,6 +116,35 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		console.log(deleteTags[index].selected)
 	}
 
+	/*
+		for Confirmation & Rename
+		'selected' opens specific prompt
+
+	*/
+	const [collections, setCollections] = React.useState([
+		{
+			name: 'This is a Collection',
+			selected: false,
+			id: 1234,
+			confirmation: null,
+			rename: null
+		},
+		{
+			name: 'They can have spaces',
+			selected: false,
+			id: 5678,
+			confirmation: null,
+			rename: null 
+		}, 
+		{
+			name: 'In their names. Unlike Tags',
+			selected: false,
+			id: 9101,
+			confirmation: null,
+			rename: null
+		}
+	])
+
 
 	/* For opening animation */
 	React.useEffect(()=> {
@@ -135,6 +164,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
 			<ul id="mainMenu">
 				
+				{/* Create New Tag */}
 				<li className={`option ${section.newTag == true ? 'open' : 'close'}`} id="createNewTag">
 					<button className={`header buttonDefault`}
 							onClick={(e)=> {
@@ -165,6 +195,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					</div>
 				</li>
 
+				{/*Delete Tags*/}
 				<li className={`option ${section.deleteTags == true ? 'open' : 'close'}`} id="deleteTags">
 					<button className={`header buttonDefault`}
 							onClick={(e)=> {
@@ -201,6 +232,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					</ul>
 				</li>
 
+				{/*New Collection*/}
 				<li className={`option ${section.newCollection == true ? 'open' : 'close'}`} id="createNewCollection">
 					<button className={`header buttonDefault`}
 							onClick={(e)=> {
@@ -217,26 +249,77 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 									})
 								}
 					}}>New Collection</button>
+
+					<form id="newCollection">
+						<input name="collectionName" placeholder="Enter Name" />
+						<textarea name="collectionDescription" placeholder="Enter Description" rows="4" cols="20">
+						</textarea>
+
+						<div id="buttonWrapper">
+							<button className={`buttonDefault _inactive`} onClick={(e)=> {
+								e.preventDefault()
+							}}>Private</button>
+
+							<button className={`buttonDefault`} onClick={(e)=> {
+								e.preventDefault()
+							}}>Save</button>
+						</div>
+					</form>
 				</li>
 
-				<li className={`option ${section.editCollections == true ? 'open' : 'close'}`} id="editCollections">
+				{/*Manage Collections*/}
+				<li className={`option ${section.collections == true ? 'open' : 'close'}`} id="manageCollections">
 					<button className={`header buttonDefault`}
 							onClick={(e)=> {
 								e.preventDefault()
-								if(section.editCollection) {
+								if(section.collections) {
 									setSection({
 										...section,
-										editCollection: false
+										collections: false
 									}) 
 								} else {
 									setSection({
 										...section,
-										editCollection: true
+										collections: true
 									})
 								}
 					}}>Manage Collections</button>
-				</li>
 
+					<ul id="collections">
+						{collections.map((item, index) => (
+							<li key={item.id}
+								className={`${collections[index].selected == true ? 'selected' : ''}`}
+								onClick={()=> {selectDeleteTag(item.name, index)}}>
+								<p>{item.name}</p>
+								<div className={`options`}>
+
+									<div className={`initialChoiceWrapper`}>
+										<button className={`buttonDefault`}>Rename</button>
+										<button className={`buttonDefault`}>Private</button>
+										<button className={`buttonDefault`}>Delete</button>
+									</div>
+
+									<div className={`confirm ${collections[index].confirmation == true ? 'active' : ''}`}>
+											<p>Are You Sure?</p>
+
+											<div className={`choiceWrapper`}>
+												<button className={`buttonDefault`}>Yes</button>
+												<button className={`buttonDefault`}>No</button>
+											</div>
+										</div>
+
+									<form className={`${collections[index].rename == true ? 'active' : ''}`}>
+											<input placeholder="Enter New Title" />
+											<div className={'wrapper'}>
+												<button className={`buttonDefault`}>Private</button>
+												<button className={`buttonDefault`}>Save</button>
+											</div>
+										</form>
+								</div>
+							</li>
+						))}
+					</ul>
+				</li>
 			</ul>
 
 			<button id="exit" 
@@ -257,6 +340,10 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		</div>
 	)
 }
+
+
+
+
 
 export default function Macros({active}) {
 

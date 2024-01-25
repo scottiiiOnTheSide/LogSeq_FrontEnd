@@ -4,6 +4,18 @@
 -----------------------------------------------------------------------------------------
 
 
+### 01. 25. 2024
+@1445 finish building skeleton&style for NewCollection & ManageCollections options
+
+****To Do Next:
+		- functionality for option selection in ManageCollections list
+			- initial tap prompts div.initialChoiceWrapper
+			- selecting delete or private closes div.initialChoiceWrapper, opens div.confirm
+				- on click, make change to collection based on which item is selected in State var
+					- then check whether 'delete' or 'private' was also selected
+			- selecting rename opens form
+
+
 ### 01. 21. 2024
 @0140 It's been a week (T- T) Gomenasai desu yooo
 Anyhow,

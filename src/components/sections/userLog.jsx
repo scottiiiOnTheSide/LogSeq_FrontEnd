@@ -241,10 +241,6 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 	);
 }
 
-
-
-
-
 export function CreatePost({setCurrent, current, socketMessage, setSocketMessage, selectedDate}) {
 
 	const userID = sessionStorage.getItem('userID');
@@ -644,6 +640,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		</div>
 	)
 }
+
 
 
 export default function UserLog({active, setModal, modal, setSocial, setCurrent, current}) {

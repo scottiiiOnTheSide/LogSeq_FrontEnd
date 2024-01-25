@@ -51,7 +51,7 @@ section#BASE {
 		C O M M O N  S T Y L E S 
 * * * */
 
-.buttonDefault {
+button.buttonDefault {
 	font-family: "Raleway";
 	font-weight: 400;
 	font-size: 1.25em;
@@ -62,6 +62,15 @@ section#BASE {
 	background-color: transparent;
 	border: none;
 }
+
+button.buttonDefault._inactive {
+	color: var(--greyscale-accent);
+}
+
+button.buttonDefault._inactive:active {
+	color: black;
+}
+
 
 div.log {
 	overflow-y: scroll;
