@@ -116,10 +116,10 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		console.log(deleteTags[index].selected)
 	}
 
+
 	/*
 		for Confirmation & Rename
 		'selected' opens specific prompt
-
 	*/
 	const [collections, setCollections] = React.useState([
 		{
@@ -144,6 +144,41 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 			rename: null
 		}
 	])
+	let manageCollections = (name, type, value) => {
+		let newVer = collections.map(ele => {
+			if(ele.name == name) {
+
+				if(type == 'selected') {
+					return {
+						...ele,
+						selected: value 
+					}
+				}
+				else if(type == 'rename') {
+					return {
+						...ele,
+						selected: false,
+						rename: value
+
+					}
+				}
+				else if(type == 'confirmation') {
+					return {
+						...ele,
+						selected: false,
+						confirmation: value 
+					}
+				}
+			} else {
+				return {
+					...ele,
+					selected: false
+				}
+			}
+		})
+		setCollections(newVer);
+		console.log(newVer);
+	}
 
 
 	/* For opening animation */
@@ -288,27 +323,57 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					<ul id="collections">
 						{collections.map((item, index) => (
 							<li key={item.id}
-								className={`${collections[index].selected == true ? 'selected' : ''}`}
-								onClick={()=> {selectDeleteTag(item.name, index)}}>
+								className={`${collections[index].selected == true ? 'selected' : ''} 
+											${collections[index].rename == true ? '_rename' : ''}
+											${collections[index].confirmation == true ? '_confirm' : ''}`}
+								onClick={(e)=> {
+									e.preventDefault()
+									manageCollections(item.name, 'selected', true);
+								}}>
 								<p>{item.name}</p>
 								<div className={`options`}>
 
 									<div className={`initialChoiceWrapper`}>
-										<button className={`buttonDefault`}>Rename</button>
-										<button className={`buttonDefault`}>Private</button>
-										<button className={`buttonDefault`}>Delete</button>
+										<button className={`buttonDefault`}
+												onClick={(e)=> {
+													e.preventDefault();
+													setTimeout(()=> {
+														manageCollections(item.name, 'rename', true);
+													}, 100)
+												}}>Rename</button>
+										<button className={`buttonDefault`}
+												onClick={(e)=> {
+													e.preventDefault();
+													setTimeout(()=> {
+														manageCollections(item.name, 'confirmation', true);
+													}, 100)
+												}}>Private</button>
+										<button className={`buttonDefault`}
+												onClick={(e)=> {
+													e.preventDefault();
+													setTimeout(()=> {
+														manageCollections(item.name, 'confirmation', true);
+													}, 100)
+												}}>Delete</button>
 									</div>
 
-									<div className={`confirm ${collections[index].confirmation == true ? 'active' : ''}`}>
+									<div className={`confirm `}>
 											<p>Are You Sure?</p>
 
 											<div className={`choiceWrapper`}>
 												<button className={`buttonDefault`}>Yes</button>
-												<button className={`buttonDefault`}>No</button>
+												<button className={`buttonDefault`}
+														onClick={(e)=> {
+															e.preventDefault();
+															console.log('thing');
+															setTimeout(()=> {
+																manageCollections(item.name, 'confirmation', false);
+															}, 100)
+														}}>No</button>
 											</div>
 										</div>
 
-									<form className={`${collections[index].rename == true ? 'active' : ''}`}>
+									<form className={` `}>
 											<input placeholder="Enter New Title" />
 											<div className={'wrapper'}>
 												<button className={`buttonDefault`}>Private</button>
@@ -376,7 +441,7 @@ export default function Macros({active}) {
 		// setCollections(collections);
 	}
 
-	console.log(tags);
+	// console.log(tags);
 
 	React.useEffect(()=> {
 

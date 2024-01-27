@@ -4,6 +4,15 @@
 -----------------------------------------------------------------------------------------
 
 
+### 01. 27. 2024
+@1425 Options for manageCollections option in menu now working.
+Note: implementation is -abit- glitchy, but suffices for now...
+
+****To Do Next:
+		- plug in functionality...
+			plan beforehand, pls
+
+
 ### 01. 25. 2024
 @1445 finish building skeleton&style for NewCollection & ManageCollections options
 

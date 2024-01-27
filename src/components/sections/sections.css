@@ -946,10 +946,11 @@ section#HOME div#ManageMacros ul#collections li div.options div.initialChoiceWra
 	top: 50%;
 	transform: translateY(-50%);
 	margin: 0 auto;
-	padding: 12px 0;
+	padding: 24px 0;
 	background-color: var(--greyscale-background);
 	transition: all ease-in-out 0.2s;
 	opacity: 0;
+	z-index: -10;
 }
 
 section#HOME div#ManageMacros ul#collections li div.options div.initialChoiceWrapper > button {
@@ -963,7 +964,7 @@ section#HOME div#ManageMacros ul#collections li div.options div.confirm {
 	flex-direction: row;
 	justify-content: space-between;
 	margin: 0 auto;
-	padding: 12px 0;
+	padding: 24px 0;
 	background-color: var(--greyscale-background);
 	transition: all ease-in-out 0.2s;
 	position: absolute;
@@ -982,6 +983,7 @@ section#HOME div#ManageMacros ul#collections li div.options div.confirm div.choi
 }
 
 section#HOME div#ManageMacros ul#collections li div.options div.confirm div.choiceWrapper button {
+	position: relative;
 	margin: 0 8px;
 	font-size: 1em;
 }
@@ -1030,4 +1032,31 @@ section#HOME div#ManageMacros ul#collections li div.options form div.wrapper but
 	font-size: 1.25em;
 	text-transform: uppercase;
 	width: 50%;
+}
+
+/*
+section#HOME div#ManageMacros ul#collections li.selected {
+	z-index: 0;
+}*/
+
+section#HOME div#ManageMacros ul#collections li.selected div.options div.initialChoiceWrapper {
+	opacity: 1;
+	z-index: 21;
+}
+
+section#HOME div#ManageMacros ul#collections li._confirm {
+	
+}
+
+section#HOME div#ManageMacros ul#collections li._confirm div.options div.confirm {
+	opacity: 1;
+	z-index: 22;
+}
+
+section#HOME div#ManageMacros ul#collections li._confirm div.options div.confirm div.choiceWrapper button{
+	z-index: 23;
+}
+
+section#HOME div#ManageMacros ul#collections li._rename div.options form {
+	opacity: 1;
 }
