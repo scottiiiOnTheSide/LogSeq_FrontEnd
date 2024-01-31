@@ -115,7 +115,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 						<ul id="thumbnailsWrapper">
 							{post.content.filter(data => data.type == 'media').map(data => (
 								<li key={data._id}>
-									<img src={data.content} />
+									<img loading="lazy" src={data.content} />
 								</li>
 							))
 

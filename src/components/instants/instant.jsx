@@ -300,10 +300,11 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 22
 			});
 		}
-
+		/* 
+			M A N A G E  M A C R O S  F U N C T I O N S
+		*/
 		if(socketMessage.action == 'newTag') {
 			action_NewTag(socketMessage);
-			// console.log(socketMessage);
 		}
 
 		else if(socketMessage.type == 'request' && socketMessage.message == 'accept') {

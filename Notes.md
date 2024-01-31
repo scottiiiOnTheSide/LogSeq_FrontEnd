@@ -4,6 +4,22 @@
 -----------------------------------------------------------------------------------------
 
 
+### 01. 31. 2024
+@1210 newTag functionality already in place in <Instants >. Connected to the option within
+	    <ManageMacros > works just as expected :D ! It's great to see previous, well planned
+	    functionality be reimplemented to smoothly...
+
+****To Do Next:
+		- remaining functionality
+			- in <ManageMacros > create body object, then use setSocketMessage
+			- in <Instant > intepret socketMessage state change with conditional within Initial useEffect
+			- write action_ functions for
+				- deleting a tag ( accessAPI.manageGroup() )
+				- newCollection ( accessAPI.newGroup() )
+				- renaming a collection, deleting or making collection private ( accessAPI.manageGroup() )
+			- write 'makePrivate' conditional within groups/manage/:makePrivate
+
+
 ### 01. 27. 2024
 @1425 Options for manageCollections option in menu now working.
 Note: implementation is -abit- glitchy, but suffices for now...

@@ -21,12 +21,13 @@ div.log span.postDate {
 
 div.log div.entry {
 	position: relative;
-	margin: 30px 0 60px;
+	margin: 30px 0px;
+	padding: 20px 0;
 	transition: all ease-in-out 0.3s;
 }
 
 div.shiftLeft {
-	animation: shiftLeft ease-in-out forwards 1s;
+	animation: shiftLeft ease-in-out forwards 0.2s;
 }
 
 	@keyframes shiftLeft {

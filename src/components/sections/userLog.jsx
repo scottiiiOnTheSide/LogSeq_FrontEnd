@@ -520,6 +520,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			type: 'tag',
 			name: newTag_value,
 			owner: isPrivate_2 == true ? userID : null,
+			admins: [`${isPrivate_2 == true ? userID : null}`],
 			ownerUsername: isPrivate_2 == true ? username : null,
 			hasAccess: [userID],
 			isPrivate: isPrivate_2 == true ? true : false,

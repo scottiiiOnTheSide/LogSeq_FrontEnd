@@ -61,6 +61,7 @@ button.buttonDefault {
 	transition: all ease-in-out 0.25s;
 	background-color: transparent;
 	border: none;
+	cursor: pointer;
 }
 
 button.buttonDefault._inactive {

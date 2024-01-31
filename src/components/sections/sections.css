@@ -1031,7 +1031,7 @@ section#HOME div#ManageMacros ul#collections li div.options form div.buttonWrapp
 section#HOME div#ManageMacros ul#collections li div.options form div.wrapper button {
 	font-size: 1.25em;
 	text-transform: uppercase;
-	width: 50%;
+	width: 33%;
 }
 
 /*
@@ -1039,13 +1039,19 @@ section#HOME div#ManageMacros ul#collections li.selected {
 	z-index: 0;
 }*/
 
+section#HOME div#ManageMacros ul#collections li.selected._rename div.options div.initialChoiceWrapper,
+section#HOME div#ManageMacros ul#collections li.selected._confirm div.options div.initialChoiceWrapper{
+	opacity: 0;
+	z-index: 0;
+}
+
 section#HOME div#ManageMacros ul#collections li.selected div.options div.initialChoiceWrapper {
 	opacity: 1;
 	z-index: 21;
 }
 
 section#HOME div#ManageMacros ul#collections li._confirm {
-	
+
 }
 
 section#HOME div#ManageMacros ul#collections li._confirm div.options div.confirm {
@@ -1059,4 +1065,9 @@ section#HOME div#ManageMacros ul#collections li._confirm div.options div.confirm
 
 section#HOME div#ManageMacros ul#collections li._rename div.options form {
 	opacity: 1;
+	z-index: 23;
+}
+
+section#HOME div#ManageMacros ul#collections li._rename div.options form input {
+	z-index: 24;
 }

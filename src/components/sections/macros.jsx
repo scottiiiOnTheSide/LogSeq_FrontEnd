@@ -5,45 +5,8 @@ let accessAPI = APIaccess();
 
 export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
-	
-	const [section, setSection] = React.useState([
-		{
-			newTag: false
-		},
-		{
-			deleteTags: false
-		},
-		{
-			newCollection: false
-		},
-		{
-			collections: false
-		}
-	])
-	const [enter, setEnter] = React.useReducer(state => !state, true);
-	let modal = React.useRef();
-
-	let updateMacros = async() => {
-
-		let tags = await accessAPI.getMacros('tags');
-		// let userPrivatePosts = await accessAPI.getMacros('private');
-		// let collections = await accessAPI.getMacros('collections');
-
-		setDeleteTags(tags);
-		// setPrivatePosts(userPrivatePosts);
-		// setCollections(collections);
-	}
-
-
-	/* Creating a New Tag */
-	const [newTag_value, setNewTag_value] = React.useState('');
-	let newTag_onChange = (e) => {
-
-		const input = e.currentTarget.value;
-		setNewTag_value(e.currentTarget.value);
-	}
-
-	const [deleteTags, setDeleteTags] = React.useState([
+	const userID = sessionStorage.getItem('userID');
+	const [userTags, setUserTags] = React.useState([
 		{
 			name: 'thisIs',
 			selected: false,
@@ -64,64 +27,8 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 			selected: false,
 			id: 1123
 		}
-	])
-	let requestTagDelete = async(name, id) => {
-
-		let body = {
-			name: name,
-			groupID: id 
-		}
-		let request = await accessAPI.manageGroup('deleteGroups', body);
-		
-		if(request == true) {
-			setSocketMessage({
-				type: 'confirmation',
-				message: 'tagRemove',
-				groupName: name
-			})
-		}else {
-			setSocketMessage({
-				type: 'error',
-				message: request.message
-			})
-		}
-		updateMacros();
-	}
-	let selectDeleteTag = (name, index) => {
-		let tags = deleteTags.map(ele => {
-			if(ele.name == name) {
-				
-				if(ele.selected == false) {
-					return {
-						...ele,
-						selected: true
-					}
-				}
-				else if(ele.selected == true) {
-					// return {
-					// 	...ele,
-					// 	selected: false
-					// }
-					return ele;
-				} 
-			} else {
-				return {
-					...ele,
-					selected: false
-				}
-			}
-		})
-		setDeleteTags(tags);
-		console.log(tags);
-		console.log(deleteTags[index].selected)
-	}
-
-
-	/*
-		for Confirmation & Rename
-		'selected' opens specific prompt
-	*/
-	const [collections, setCollections] = React.useState([
+	]) 
+	const [userCollections, setUserCollections] = React.useState([
 		{
 			name: 'This is a Collection',
 			selected: false,
@@ -144,8 +51,127 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 			rename: null
 		}
 	])
+	let updateMacros = async() => {
+
+		let tags = await accessAPI.getMacros('tags');
+		// let userPrivatePosts = await accessAPI.getMacros('private');
+		let collections = await accessAPI.getMacros('collections');
+
+		setUserTags(tags); 
+		// setPrivatePosts(userPrivatePosts);
+		setUserCollections(collections);
+	}
+
+	
+	
+	//state for <ManageMacros > Options
+	const [section, setSection] = React.useState([
+		{
+			newTag: false
+		},
+		{
+			deleteTags: false
+		},
+		{
+			newCollection: false
+		},
+		{
+			collections: false
+		}
+	])
+	const [newTag_value, setNewTag_value] = React.useState({
+		name: '',
+		isPrivate: null
+	});
+	const [newCollection, setNewCollection] = React.useState({
+		name: null,
+		isPrivate: null,
+	});
+
+	let newTag_onChange = (e) => {
+		const input = e.currentTarget.value;
+		setNewTag_value({
+			...newTag_value,
+			name: e.currentTarget.value
+		});
+	}
+	let newTag_submit = async() => {
+
+		let body = {
+			 type: "tag",
+			 name: newTag_value.name,
+			 owner: newTag_value.isPrivate == true ? userID : null,
+			 admins: [`${newTag_value.isPrivate == true ? userID : null}`],
+			 hasAccess: [userID],
+			 isPrivate: newTag_value.isPrivate == true ? true : false,
+			 action: 'newTag'
+		}
+		console.log(body);
+		setSocketMessage(body);
+		//need to include catch for when newTag_value has spaces
+	}
+
+
+	let selectDeleteTag = (name, index) => {
+		let tags = userTags.map(ele => {
+			if(ele.name == name) {
+				
+				if(ele.selected == false) {
+					return {
+						...ele,
+						selected: true
+					}
+				}
+				else if(ele.selected == true) {
+					return ele;
+				} 
+			} else {
+				return {
+					...ele,
+					selected: false
+				}
+			}
+		})
+		setUserTags(tags);
+		console.log(tags);
+		// console.log(deleteTags[index].selected)
+	}
+	let deleteTag_submit = async(name, id) => {
+
+		let body = {
+			name: name,
+			groupID: id 
+		}
+		let request = await accessAPI.manageGroup('deleteGroups', body);
+		
+		if(request == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'tagRemove',
+				groupName: name
+			})
+		}else {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+		}
+		updateMacros();
+	}
+
+
+
+	let newCollection_onChange = (e) => {
+
+		const input = e.currentTarget.value;
+		setNewTag_value(e.currentTarget.value);
+	}
+	let newCollection_submit = async() => {}
+
+
+
 	let manageCollections = (name, type, value) => {
-		let newVer = collections.map(ele => {
+		let newVer = userCollections.map(ele => {
 			if(ele.name == name) {
 
 				if(type == 'selected') {
@@ -159,7 +185,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 						...ele,
 						selected: false,
 						rename: value
-
 					}
 				}
 				else if(type == 'confirmation') {
@@ -176,18 +201,42 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 				}
 			}
 		})
-		setCollections(newVer);
+		setUserCollections(newVer);
 		console.log(newVer);
 	}
+	
 
 
 	/* For opening animation */
+	let modal = React.useRef();
+
 	React.useEffect(()=> {
 		let modalCurrent = modal.current;
 		let delay = setTimeout(()=> {
 			modalCurrent.classList.remove('_enter');	
 		}, 200)
 	}, [])
+
+	/*
+		on response message from socket, any open menu option closes
+		update so that it only closes on success responses
+	*/
+	React.useEffect(()=> {
+		setSection([
+			{
+				newTag: false
+			},
+			{
+				deleteTags: false
+			},
+			{
+				newCollection: false
+			},
+			{
+				collections: false
+			}
+		])
+	}, [setSocketMessage])
 
 
 	return (
@@ -222,10 +271,29 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 						<input 
 							placeholder="Enter a single word phrase"
 							onChange={newTag_onChange} 
-							value={newTag_value}/>
+							value={`${newTag_value.name}`}/>
 						<div className={'buttonWrapper'}>
-							<button className={`buttonDefault`}>Private</button>
-							<button className={`buttonDefault`}>Save</button>
+							<button className={`buttonDefault ${newTag_value.isPrivate == true ? '' : '_inactive'}`} 
+									onClick={(e)=> {
+								e.preventDefault()
+
+								if(newTag_value.isPrivate == true) {
+									setNewTag_value({
+										...newTag_value,
+										isPrivate: false
+									})
+								} else {
+									setNewTag_value({
+										...newTag_value,
+										isPrivate: true
+									})
+								}
+							}}>Private</button>
+							<button className={`buttonDefault`}
+									onClick={(e)=> {
+										e.preventDefault()
+										newTag_submit()
+							}}>Save</button>
 						</div>
 					</div>
 				</li>
@@ -249,9 +317,9 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					}}>Delete Tags</button>
 
 					<ul id="deleteTags">
-						{deleteTags.map((tag, index) => (
+						{userTags.map((tag, index) => (
 							<li key={tag.id}
-								className={`${deleteTags[index].selected == true ? 'selected' : ''}`}
+								className={`${userTags[index].selected == true ? 'selected' : ''}`}
 								onClick={()=> {selectDeleteTag(tag.name, index)}}>
 								<p>{tag.name}</p>
 								<div className={`confirmation`}>
@@ -291,8 +359,19 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 						</textarea>
 
 						<div id="buttonWrapper">
-							<button className={`buttonDefault _inactive`} onClick={(e)=> {
+							<button className={`buttonDefault ${newCollection.isPrivate == true ? '' : '_inactive'}`} onClick={(e)=> {
 								e.preventDefault()
+								if(newCollection.isPrivate == true) {
+									setNewCollection({
+										...newTag_value,
+										isPrivate: false
+									})
+								} else {
+									setNewCollection({
+										...newTag_value,
+										isPrivate: true
+									})
+								}
 							}}>Private</button>
 
 							<button className={`buttonDefault`} onClick={(e)=> {
@@ -321,11 +400,11 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					}}>Manage Collections</button>
 
 					<ul id="collections">
-						{collections.map((item, index) => (
+						{userCollections.map((item, index) => (
 							<li key={item.id}
-								className={`${collections[index].selected == true ? 'selected' : ''} 
-											${collections[index].rename == true ? '_rename' : ''}
-											${collections[index].confirmation == true ? '_confirm' : ''}`}
+								className={`${userCollections[index].selected == true ? 'selected' : ''} 
+											${userCollections[index].rename == true ? '_rename' : ''}
+											${userCollections[index].confirmation == true ? '_confirm' : ''}`}
 								onClick={(e)=> {
 									e.preventDefault()
 									manageCollections(item.name, 'selected', true);
@@ -369,13 +448,20 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 															setTimeout(()=> {
 																manageCollections(item.name, 'confirmation', false);
 															}, 100)
-														}}>No</button>
+												}}>No</button>
 											</div>
 										</div>
 
 									<form className={` `}>
 											<input placeholder="Enter New Title" />
 											<div className={'wrapper'}>
+												<button className={`buttonDefault`}
+														onClick={(e)=> {
+															e.preventDefault();
+															setTimeout(()=> {
+																manageCollections(item.name, 'rename', false);
+															}, 100)
+												}}>Cancel</button>
 												<button className={`buttonDefault`}>Private</button>
 												<button className={`buttonDefault`}>Save</button>
 											</div>
