@@ -4,6 +4,36 @@
 -----------------------------------------------------------------------------------------
 
 
+### 02. 02. 2024
+@0850 
+added:
+	- newCollection works as intended b(^.^)b 
+
+After plugging in the manageCollection functions...
+gotta make the groupPages :D
+Then, styling the <ManageSocial> section
+
+and finally, profile pages
+the most involved aspects being to
+	- pin posts
+	- pin media 
+
+
+### 02. 01. 2024
+@1140 
+added:
+	- <Macros > refreshes data when <ManageMacros > closes
+	-	Main options in <ManageMacros > close after submission response
+		- may leave manageCollections option open after edit... 
+
+@0955 deleting tags works T- T (so much little errors)
+need to clean up UI process after success response
+also need to have <Macros > data refreshed after closing the menu...
+
+!? use same process for main options in <ManageMacros > for sections
+	 in <Macros >, the 'see all' button
+
+
 ### 01. 31. 2024
 @1210 newTag functionality already in place in <Instants >. Connected to the option within
 	    <ManageMacros > works just as expected :D ! It's great to see previous, well planned

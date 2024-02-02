@@ -3,7 +3,7 @@ import APIaccess from '../../apiaccess';
 
 let accessAPI = APIaccess();
 
-export function ManageMacros({current, setCurrent, setSocketMessage}) {
+export function ManageMacros({current, setCurrent, setSocketMessage, socketMessage}) {
 
 	const userID = sessionStorage.getItem('userID');
 	const [userTags, setUserTags] = React.useState([
@@ -54,12 +54,19 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 	let updateMacros = async() => {
 
 		let tags = await accessAPI.getMacros('tags');
-		// let userPrivatePosts = await accessAPI.getMacros('private');
-		let collections = await accessAPI.getMacros('collections');
+		tags = tags.filter(tag => tag.type == 'tag');
+		tags = tags.map(tag => {
+			return {
+				name: tag.name,
+				selected: false,
+				id: tag._id
+			}})
+			// let userPrivatePosts = await accessAPI.getMacros('private');
+		// let collections = await accessAPI.getMacros('collections');
 
 		setUserTags(tags); 
-		// setPrivatePosts(userPrivatePosts);
-		setUserCollections(collections);
+			// setPrivatePosts(userPrivatePosts);
+		// setUserCollections(collections);
 	}
 
 	
@@ -84,8 +91,9 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		isPrivate: null
 	});
 	const [newCollection, setNewCollection] = React.useState({
-		name: null,
-		isPrivate: null,
+		name: '',
+		isPrivate: false,
+		description: null
 	});
 
 	let newTag_onChange = (e) => {
@@ -123,7 +131,10 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					}
 				}
 				else if(ele.selected == true) {
-					return ele;
+					return {
+						...ele,
+						selected: false
+					}
 				} 
 			} else {
 				return {
@@ -136,37 +147,47 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		console.log(tags);
 		// console.log(deleteTags[index].selected)
 	}
-	let deleteTag_submit = async(name, id) => {
+	let deleteTag_submit = async(id) => {
 
 		let body = {
-			name: name,
-			groupID: id 
+			type: 'tag',
+			groupID: id,
+			action: 'deleteTag'
 		}
-		let request = await accessAPI.manageGroup('deleteGroups', body);
-		
-		if(request == true) {
-			setSocketMessage({
-				type: 'confirmation',
-				message: 'tagRemove',
-				groupName: name
-			})
-		}else {
-			setSocketMessage({
-				type: 'error',
-				message: request.message
-			})
-		}
-		updateMacros();
+		setSocketMessage(body);
 	}
 
 
 
-	let newCollection_onChange = (e) => {
+	let newCollectionName_onChange = (e) => {
 
 		const input = e.currentTarget.value;
-		setNewTag_value(e.currentTarget.value);
+		setNewCollection({
+			...newCollection,
+			name: e.currentTarget.value
+		});
 	}
-	let newCollection_submit = async() => {}
+	let newCollectionDescription_onChange = (e) => {
+
+		const input = e.currentTarget.value;
+		setNewCollection({
+			...newCollection,
+			description: e.currentTarget.value
+		});
+	}
+	let newCollection_submit = async() => {
+
+		let body = {
+			type: 'collection',
+            name: newCollection.name,
+            owner: userID,
+            isPrivate: newCollection.isPrivate == true ? true : false,
+            details: newCollection.description,
+            action: 'newCollection'
+		}
+		console.log(body);
+		setSocketMessage(body);
+	}
 
 
 
@@ -215,11 +236,13 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 		let delay = setTimeout(()=> {
 			modalCurrent.classList.remove('_enter');	
 		}, 200)
+
+		updateMacros();
 	}, [])
 
 	/*
-		on response message from socket, any open menu option closes
-		update so that it only closes on success responses
+		on response from socketMessage, any open menu option closes.
+		!update so that it only closes on success responses
 	*/
 	React.useEffect(()=> {
 		setSection([
@@ -236,7 +259,8 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 				collections: false
 			}
 		])
-	}, [setSocketMessage])
+		updateMacros();
+	}, [socketMessage])
 
 
 	return (
@@ -319,15 +343,22 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					<ul id="deleteTags">
 						{userTags.map((tag, index) => (
 							<li key={tag.id}
-								className={`${userTags[index].selected == true ? 'selected' : ''}`}
-								onClick={()=> {selectDeleteTag(tag.name, index)}}>
-								<p>{tag.name}</p>
+								className={`${userTags[index].selected == true ? 'selected' : ''}`}>
+								<button onClick={()=> {selectDeleteTag(tag.name, index)}}>{tag.name}</button>
 								<div className={`confirmation`}>
 									<p>Are You Sure?</p>
 
 									<div className={`buttonWrapper`}>
-										<button className={`buttonDefault`}>Yes</button>
-										<button className={`buttonDefault`}>No</button>
+										<button className={`buttonDefault`} 
+												onClick={(e)=> {
+													e.preventDefault()
+													deleteTag_submit(tag.id);
+												}}>Yes</button>
+										<button className={`buttonDefault`}
+												onClick={(e)=> {
+													e.preventDefault()
+													selectDeleteTag(tag.name, index)
+												}}>No</button>
 									</div>
 								</div>
 							</li>
@@ -354,8 +385,15 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 					}}>New Collection</button>
 
 					<form id="newCollection">
-						<input name="collectionName" placeholder="Enter Name" />
-						<textarea name="collectionDescription" placeholder="Enter Description" rows="4" cols="20">
+						<input  placeholder="Enter a Name"
+								name="collectionName" 
+							   	onChange={newCollectionName_onChange} 
+							   	value={`${newCollection.name}`}/>
+						<textarea name="collectionDescription" 
+									placeholder="Enter Description" 
+									rows="4" 
+									cols="20"
+									onChange={newCollectionDescription_onChange}>
 						</textarea>
 
 						<div id="buttonWrapper">
@@ -363,12 +401,12 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 								e.preventDefault()
 								if(newCollection.isPrivate == true) {
 									setNewCollection({
-										...newTag_value,
+										...newCollection,
 										isPrivate: false
 									})
 								} else {
 									setNewCollection({
-										...newTag_value,
+										...newCollection,
 										isPrivate: true
 									})
 								}
@@ -376,6 +414,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
+								newCollection_submit()
 							}}>Save</button>
 						</div>
 					</form>
@@ -496,7 +535,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage}) {
 
 
 
-export default function Macros({active}) {
+export default function Macros({active, current, setCurrent}) {
 
 	let isActive = active;
 	let [modal, setModal] = React.useReducer(state => !state, false);
@@ -530,9 +569,12 @@ export default function Macros({active}) {
 	// console.log(tags);
 
 	React.useEffect(()=> {
-
 		updateMacros();
 	}, [])
+
+	React.useEffect(()=> {
+		updateMacros();
+	}, [current])
 
 	return (
 		<div id="macros" className={`${isActive == 3 ? 'active' : 'not'}`}>

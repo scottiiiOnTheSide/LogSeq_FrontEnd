@@ -147,6 +147,59 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			}
 	}
 
+	let action_deleteTag = async(data) => {
+
+		let request = await accessAPI.manageGroup('deleteGroup', data);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'tagDelete',
+				groupName: request.groupName
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_newCollection = async(data) => {
+		let request = await accessAPI.newGroup(data);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'newCollection',
+				groupName: request.name
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.alreadyExists) {
+			setSocketMessage({
+				type: 'error',
+				message: request.alreadyExists
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -303,9 +356,19 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		/* 
 			M A N A G E  M A C R O S  F U N C T I O N S
 		*/
-		if(socketMessage.action == 'newTag') {
+		else if(socketMessage.action == 'newTag') {
 			action_NewTag(socketMessage);
 		}
+		else if(socketMessage.action == 'deleteTag') {
+			action_deleteTag(socketMessage)
+		}
+		else if(socketMessage.action == 'newCollection') {
+			action_newCollection(socketMessage);
+		}
+
+
+
+
 
 		else if(socketMessage.type == 'request' && socketMessage.message == 'accept') {
 			makeNotif_sendAcceptRequest(socketMessage);
@@ -428,7 +491,10 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				{(message.type == 'confirmation' && message.message == 'tagAdd') &&
 					<p>You've added <span>"{message.groupName}"</span> to your tags</p>
 				}
-				{(message.type == 'confirmation' && message.message == 'tagRemove') &&
+				{(message.type == 'confirmation' && message.message == 'newCollection') &&
+					<p>New collection <span>"{message.groupName}"</span> created </p>
+				}
+				{(message.type == 'confirmation' && message.message == 'tagDelete') &&
 					<p>You've removed {message.groupName} from your tags</p>
 				}
 				{message.type == 'error' &&

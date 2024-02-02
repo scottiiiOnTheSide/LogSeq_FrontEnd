@@ -124,6 +124,7 @@ function Home({
         {(current.modal && current.section == 3) &&
           <ManageMacros current={current} 
                         setCurrent={setCurrent} 
+                        socketMessage={socketMessage}
                         setSocketMessage={setSocketMessage}/>
         }
 

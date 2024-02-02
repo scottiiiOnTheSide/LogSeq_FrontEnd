@@ -9,7 +9,7 @@ import GroupsList from './groupsList';
 import Macros from './macros';
 import HomeLog from './homeLog';
 
-export default function SectionsWrapper({current, setCurrent, setModal, modal, setSocial}) {
+export default function SectionsWrapper({current, setCurrent}) {
 
 	/*** Set Wrapper Height ***/
 	let wrapper = React.useRef()
@@ -130,19 +130,17 @@ export default function SectionsWrapper({current, setCurrent, setModal, modal, s
 			{panes.socialLog &&
 				<SocialLog active={active} 
 						   current={current}
-						   setCurrent={setCurrent}/>
+						   setCurrent={setCurrent} />
 			}
 			{panes.userLog &&
 				<UserLog active={active} 
 						 current={current} 
-						 setCurrent={setCurrent} 
-						 setSocial={setSocial}/>
+						 setCurrent={setCurrent} />
 			}
 			{panes.macros &&
 				<Macros active={active} 
 						current={current} 
-						setCurrent={setCurrent} 
-						setSocial={setSocial}/>
+						setCurrent={setCurrent} />
 			}
 			{panes.groups &&
 				<GroupsList active={active} />

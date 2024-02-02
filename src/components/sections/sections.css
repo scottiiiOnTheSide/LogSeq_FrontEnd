@@ -802,7 +802,10 @@ section#HOME div#ManageMacros ul#deleteTags li {
 	margin: 0;
 }
 
-section#HOME div#ManageMacros ul#deleteTags li p {
+section#HOME div#ManageMacros ul#deleteTags li button {
+	border: none;
+	cursor: pointer;
+	background-color: transparent;
 	font-family: 'Raleway';
     font-weight: 400;
     font-size: 1em;
@@ -810,6 +813,8 @@ section#HOME div#ManageMacros ul#deleteTags li p {
     letter-spacing: 2px;
     margin: 0;
     margin-left: 4px;
+    position: relative;
+    z-index: 20;
 }
 
 section#HOME div#ManageMacros ul#deleteTags li div.confirmation {
@@ -824,10 +829,12 @@ section#HOME div#ManageMacros ul#deleteTags li div.confirmation {
 	background-color: var(--greyscale-background);
 	transition: all ease-in-out 0.2s;
 	opacity: 0;
+	z-index: 0;
 }
 
 section#HOME div#ManageMacros ul#deleteTags li.selected div.confirmation {
 	opacity: 1;
+	z-index: 21;
 }
 
 section#HOME div#ManageMacros ul#deleteTags li div.confirmation p {
@@ -836,10 +843,12 @@ section#HOME div#ManageMacros ul#deleteTags li div.confirmation p {
 }
 
 section#HOME div#ManageMacros ul#deleteTags li div.confirmation div.buttonWrapper {
+	z-index: 21;
 	margin-right: 8px;
 }
 
 section#HOME div#ManageMacros ul#deleteTags li div.confirmation button {
+	position: relative;
 	font-size: 1em;
 }
 
