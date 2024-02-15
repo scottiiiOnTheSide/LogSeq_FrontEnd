@@ -31,24 +31,30 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 	const [userCollections, setUserCollections] = React.useState([
 		{
 			name: 'This is a Collection',
+			_id: 1234,
 			selected: false,
-			id: 1234,
-			confirmation: null,
-			rename: null
+			delete: null,
+			rename: null,
+			isPrivate: false,
+			makePrivate: null
 		},
 		{
 			name: 'They can have spaces',
 			selected: false,
-			id: 5678,
-			confirmation: null,
-			rename: null 
+			_id: 5678,
+			delete: null,
+			rename: null,
+			isPrivate: false,
+			makePrivate: null
 		}, 
 		{
 			name: 'In their names. Unlike Tags',
 			selected: false,
-			id: 9101,
-			confirmation: null,
-			rename: null
+			_id: 9101,
+			delete: null,
+			rename: null,
+			isPrivate: false,
+			makePrivate: null
 		}
 	])
 	let updateMacros = async() => {
@@ -64,9 +70,24 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 			// let userPrivatePosts = await accessAPI.getMacros('private');
 		// let collections = await accessAPI.getMacros('collections');
 
-		setUserTags(tags); 
-			// setPrivatePosts(userPrivatePosts);
-		// setUserCollections(collections);
+		//02. 15. 2024
+		//collections need to have 'confirmation, rename and selected' added to 
+		//objects when placed within state array
+		let collections = await accessAPI.getMacros('collections');
+		collections = collections.map(el => {
+			return {
+				name: el.name,
+				_id: el._id,
+				selected: false,
+				delete: null,
+				rename: null,
+				isPrivate: false,
+				makePrivate: null
+			}
+		})
+
+		setUserTags(tags);
+		setUserCollections(collections); 
 	}
 
 	
@@ -208,11 +229,26 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 						rename: value
 					}
 				}
+				else if(type == 'makePrivate') {
+					return {
+						...ele,
+						selected: false,
+						makePrivate: value 
+					}
+				}
+				else if(type == 'delete') {
+					return {
+						...ele,
+						selected: false,
+						delete: value 
+					}
+				}
 				else if(type == 'confirmation') {
 					return {
 						...ele,
 						selected: false,
-						confirmation: value 
+						delete: false,
+						makePrivate: false 
 					}
 				}
 			} else {
@@ -224,6 +260,53 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		})
 		setUserCollections(newVer);
 		console.log(newVer);
+	}
+	let [editCollection, setEditCollection] = React.useState({
+		newName: '',
+		isPrivate: null,
+		id: null
+	})
+
+	let editCollectionName_onChange = (e) => {
+
+		const input = e.currentTarget.value;
+		setEditCollection({
+			...editCollection,
+			newName: e.currentTarget.value
+		});
+	}
+
+	let renameCollection = async(groupID) => {
+
+		let body = {
+			newName: editCollection.newName,
+			groupID: groupID,
+			action: 'renameCollection'
+		}
+		setSocketMessage(body);
+
+		setEditCollection({
+			...editCollection,
+			newName: ''
+		})
+	}
+
+	let privatizeCollection = async(isPrivate, groupID) => {
+
+		let body = {
+			isPrivate: isPrivate,
+			groupID: groupID,
+			action: 'privatizeCollection',
+		}
+		setSocketMessage(body);
+	}
+
+	let deleteCollection = async(groupID) => {
+		let body = {
+			groupID: groupID,
+			action: 'deleteCollection',
+		}
+		setSocketMessage(body);
 	}
 	
 
@@ -430,6 +513,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 										...section,
 										collections: false
 									}) 
+									manageCollections();
 								} else {
 									setSection({
 										...section,
@@ -443,7 +527,8 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 							<li key={item.id}
 								className={`${userCollections[index].selected == true ? 'selected' : ''} 
 											${userCollections[index].rename == true ? '_rename' : ''}
-											${userCollections[index].confirmation == true ? '_confirm' : ''}`}
+											${userCollections[index].delete == true ? '_confirm' : ''}
+											${userCollections[index].makePrivate == true ? '_confirm' : ''}`}
 								onClick={(e)=> {
 									e.preventDefault()
 									manageCollections(item.name, 'selected', true);
@@ -463,14 +548,14 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 												onClick={(e)=> {
 													e.preventDefault();
 													setTimeout(()=> {
-														manageCollections(item.name, 'confirmation', true);
+														manageCollections(item.name, 'makePrivate', true);
 													}, 100)
 												}}>Private</button>
 										<button className={`buttonDefault`}
 												onClick={(e)=> {
 													e.preventDefault();
 													setTimeout(()=> {
-														manageCollections(item.name, 'confirmation', true);
+														manageCollections(item.name, 'delete', true);
 													}, 100)
 												}}>Delete</button>
 									</div>
@@ -479,7 +564,18 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 											<p>Are You Sure?</p>
 
 											<div className={`choiceWrapper`}>
-												<button className={`buttonDefault`}>Yes</button>
+												<button className={`buttonDefault`}
+														onClick={()=> {
+
+															if(userCollections[index].delete == "true") {
+																deleteCollection(item._id)
+															}
+															else if(userCollections[index].makePrivate == "true") {
+																let change = userCollections[index].isPrivate == true ? false : true;
+																privatizeCollection(change, item._id);
+															}
+														}}>Yes</button>
+
 												<button className={`buttonDefault`}
 														onClick={(e)=> {
 															e.preventDefault();
@@ -492,7 +588,9 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 										</div>
 
 									<form className={` `}>
-											<input placeholder="Enter New Title" />
+											<input placeholder="Enter New Title" 
+												   value={`${editCollection.newName}`}
+												   onChange={editCollectionName_onChange}/>
 											<div className={'wrapper'}>
 												<button className={`buttonDefault`}
 														onClick={(e)=> {
@@ -500,9 +598,16 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 															setTimeout(()=> {
 																manageCollections(item.name, 'rename', false);
 															}, 100)
+															setEditCollection({
+																...editCollection,
+																newName: '',
+															})
 												}}>Cancel</button>
-												<button className={`buttonDefault`}>Private</button>
-												<button className={`buttonDefault`}>Save</button>
+												<button className={`buttonDefault`}
+														onClick={(e)=> {
+															e.preventDefault();
+															renameCollection(item._id)
+														}}>Save</button>	
 											</div>
 										</form>
 								</div>

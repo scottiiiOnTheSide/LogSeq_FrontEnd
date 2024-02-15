@@ -4,6 +4,31 @@
 -----------------------------------------------------------------------------------------
 
 
+### 02. 15. 2024
+@0515 it worked on the first try :D !!!
+			code written for all <ManageMacros > functions.
+			Rename func tested and works perfectly d(T- T)
+			will test Delete later, and Privatize.
+
+To Do Next:
+	- have 'private' button class be dependant on collection.isPrivate 
+	- test to ensure Privatize and Delete funcs work
+	- !!! groupPages !!!
+
+
+### 02. 14. 2024
+@0100 Added 'renameCollection' process 
+(button function in <ManageMacros> --> <Instant> call action function)
+
+To Do Next:
+ - add privatize and delete collection functions ✅
+ 		- front and backend ✅
+
+ - create new collections, test functions ✅
+ - clean up <ManageMacros>
+ 		- populate tags and collection state arrays from backEnd ✅
+
+
 ### 02. 02. 2024
 @0850 
 added:

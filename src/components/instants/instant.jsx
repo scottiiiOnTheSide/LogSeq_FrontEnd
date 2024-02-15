@@ -200,6 +200,83 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}
 	}
 
+	let action_renameCollection = async(data) => {
+		let request = await accessAPI.manageGroup('renameGroup', data);
+
+		if(request == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'renamedCollection',
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_deleteCollection = async(data) => {
+		let request = await accessAPI.manageGroup('deleteGroup', data);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'deletedCollection',
+				groupName: request.groupName
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_privatizeCollection = async(data) => {
+		let request = await accessAPI.manageGroup('privatizeGroup', data);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'privatizedCollection',
+				isPrivate: request.isPrivate
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -353,6 +430,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 22
 			});
 		}
+
 		/* 
 			M A N A G E  M A C R O S  F U N C T I O N S
 		*/
@@ -365,11 +443,20 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if(socketMessage.action == 'newCollection') {
 			action_newCollection(socketMessage);
 		}
+		else if(socketMessage.action == 'renameCollection') {
+			action_renameCollection(socketMessage);
+		}
+		else if(socketMessage.action == 'deleteCollection') {
+			action_deleteCollection(socketMessage);
+		}
+		else if(socketMessage.action == 'privatizeCollection') {
+			action_privatizeCollection(socketMessage);
+		}
 
 
-
-
-
+		/*
+			I N T E R A C T I O N S 
+		*/
 		else if(socketMessage.type == 'request' && socketMessage.message == 'accept') {
 			makeNotif_sendAcceptRequest(socketMessage);
 		}
@@ -394,6 +481,8 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				makeNotif_taggedPost(socketMessage);
 			}
 		}
+
+
 		else if(socketMessage.confirm === 'postRemoval') {
 			setSocketMessage({
 				type: 'confirmation',
@@ -493,6 +582,15 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 				{(message.type == 'confirmation' && message.message == 'newCollection') &&
 					<p>New collection <span>"{message.groupName}"</span> created </p>
+				}
+				{(message.type == 'confirmation' && message.message == 'renamedCollection') &&
+					<p>Collection has been renamed</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'deletedCollection') &&
+					<p>You've deleted your collection "{message.groupName}"</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'privatizedCollection') &&
+					<p>Collection is now {message.isPrivate}</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'tagDelete') &&
 					<p>You've removed {message.groupName} from your tags</p>

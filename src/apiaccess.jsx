@@ -494,9 +494,10 @@ export default function APIaccess(key) {
 
 		async manageGroup(action, body) {
 
-			/***
+			/*** 
 			 * Action Types:
-			 * request, addUser, removeUser, addAdmin, removeAdmin, deleteGroup
+			 * request, addUser, removeUser, addAdmin, removeAdmin, 
+			 * 	deleteGroup, renameGroup, privatizeGroup
 			 * 
 			 * Necessary body values:
 			 * id: groupID,
