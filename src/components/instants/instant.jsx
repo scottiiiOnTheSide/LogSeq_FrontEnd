@@ -226,6 +226,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	}
 
 	let action_deleteCollection = async(data) => {
+
 		let request = await accessAPI.manageGroup('deleteGroup', data);
 
 		if(request.confirmation == true) {
@@ -430,7 +431,6 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 22
 			});
 		}
-
 		/* 
 			M A N A G E  M A C R O S  F U N C T I O N S
 		*/
@@ -440,17 +440,19 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if(socketMessage.action == 'deleteTag') {
 			action_deleteTag(socketMessage)
 		}
+		
 		else if(socketMessage.action == 'newCollection') {
 			action_newCollection(socketMessage);
 		}
 		else if(socketMessage.action == 'renameCollection') {
 			action_renameCollection(socketMessage);
 		}
-		else if(socketMessage.action == 'deleteCollection') {
-			action_deleteCollection(socketMessage);
-		}
 		else if(socketMessage.action == 'privatizeCollection') {
 			action_privatizeCollection(socketMessage);
+		}
+		else if(socketMessage.action == 'deleteCollection') {
+			console.log('recieved');
+			action_deleteCollection(socketMessage);
 		}
 
 

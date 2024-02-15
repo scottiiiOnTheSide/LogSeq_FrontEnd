@@ -3,16 +3,19 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
-
 ### 02. 15. 2024
+
+@1605 Privatize and Delete funcs now working :D !
+			Collection's private button active state now dependant on isPrivate value
+
 @0515 it worked on the first try :D !!!
 			code written for all <ManageMacros > functions.
 			Rename func tested and works perfectly d(T- T)
 			will test Delete later, and Privatize.
 
 To Do Next:
-	- have 'private' button class be dependant on collection.isPrivate 
-	- test to ensure Privatize and Delete funcs work
+	- have 'private' button class be dependant on collection.isPrivate ✅
+	- test to ensure Privatize and Delete funcs work ✅
 	- !!! groupPages !!!
 
 

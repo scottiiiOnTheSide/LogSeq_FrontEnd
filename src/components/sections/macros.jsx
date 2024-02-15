@@ -81,7 +81,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 				selected: false,
 				delete: null,
 				rename: null,
-				isPrivate: false,
+				isPrivate: el.isPrivate,
 				makePrivate: null
 			}
 		})
@@ -90,7 +90,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		setUserCollections(collections); 
 	}
 
-	
 	
 	//state for <ManageMacros > Options
 	const [section, setSection] = React.useState([
@@ -208,6 +207,11 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		}
 		console.log(body);
 		setSocketMessage(body);
+		setNewCollection({
+			name: '',
+			description: '',
+			isPrivate: false
+		})
 	}
 
 
@@ -243,23 +247,17 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 						delete: value 
 					}
 				}
-				else if(type == 'confirmation') {
-					return {
-						...ele,
-						selected: false,
-						delete: false,
-						makePrivate: false 
-					}
-				}
 			} else {
 				return {
 					...ele,
-					selected: false
+					selected: false,
+					rename: false,
+					delete: false,
+					makePrivate: false 
 				}
 			}
 		})
 		setUserCollections(newVer);
-		console.log(newVer);
 	}
 	let [editCollection, setEditCollection] = React.useState({
 		newName: '',
@@ -293,6 +291,9 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 
 	let privatizeCollection = async(isPrivate, groupID) => {
 
+		console.log(isPrivate)
+		console.log(groupID)
+
 		let body = {
 			isPrivate: isPrivate,
 			groupID: groupID,
@@ -302,14 +303,15 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 	}
 
 	let deleteCollection = async(groupID) => {
-		let body = {
+		console.log('si')
+
+		setSocketMessage({
 			groupID: groupID,
-			action: 'deleteCollection',
-		}
-		setSocketMessage(body);
+			action: 'deleteCollection'
+		});
 	}
 	
-
+	// console.log(socketMessage);
 
 	/* For opening animation */
 	let modal = React.useRef();
@@ -345,6 +347,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		updateMacros();
 	}, [socketMessage])
 
+	console.log(userCollections)
 
 	return (
 		// <div id="ManageMacros" ref={modal} className={`${current.transition == false ? '_enter' : ''}`}>
@@ -519,6 +522,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 										...section,
 										collections: true
 									})
+									manageCollections();
 								}
 					}}>Manage Collections</button>
 
@@ -544,7 +548,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 														manageCollections(item.name, 'rename', true);
 													}, 100)
 												}}>Rename</button>
-										<button className={`buttonDefault`}
+										<button className={`buttonDefault ${userCollections[index].isPrivate == true ? '' : '_inactive'}`}
 												onClick={(e)=> {
 													e.preventDefault();
 													setTimeout(()=> {
@@ -565,12 +569,13 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 
 											<div className={`choiceWrapper`}>
 												<button className={`buttonDefault`}
-														onClick={()=> {
-
-															if(userCollections[index].delete == "true") {
+														onClick={(e)=> {
+															e.preventDefault()
+															console.log(item.name)
+															if(userCollections[index].delete == true) {
 																deleteCollection(item._id)
 															}
-															else if(userCollections[index].makePrivate == "true") {
+															else if(userCollections[index].makePrivate == true) {
 																let change = userCollections[index].isPrivate == true ? false : true;
 																privatizeCollection(change, item._id);
 															}
@@ -581,7 +586,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 															e.preventDefault();
 															console.log('thing');
 															setTimeout(()=> {
-																manageCollections(item.name, 'confirmation', false);
+																manageCollections();
 															}, 100)
 												}}>No</button>
 											</div>
@@ -607,7 +612,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 														onClick={(e)=> {
 															e.preventDefault();
 															renameCollection(item._id)
-														}}>Save</button>	
+												}}>Save</button>	
 											</div>
 										</form>
 								</div>
