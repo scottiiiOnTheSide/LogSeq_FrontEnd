@@ -3,8 +3,23 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
-### 02. 15. 2024
 
+### 02. 16. 2024
+
+@1245 Started building out <Macros > page . . .
+			Will list objective tasks ...
+
+@1240 <Log > when showing combination of user's and other's posts should have user's on right
+							and others on the left.
+
+@1210 for Macros section, Tags and Collections to be links to <Macros > page...
+			onClick needs to:
+				- get all posts for tag or within collection,
+					add to location.state
+				- navigate() to macros, using name of Tag or Collection as param
+
+
+### 02. 15. 2024
 @1605 Privatize and Delete funcs now working :D !
 			Collection's private button active state now dependant on isPrivate value
 
