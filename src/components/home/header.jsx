@@ -36,7 +36,7 @@ function ReturnElement ({}) {
 }
 
 
-export default function Header ({cal, isPost, setNotifList, unreadCount}) {
+export default function Header ({cal, isReturnable, setNotifList, unreadCount}) {
 
 	/**
 	 * 09. 18. 2023
@@ -44,8 +44,8 @@ export default function Header ({cal, isPost, setNotifList, unreadCount}) {
 	 * - interactionsList Toggle
 	 * - unread notif count
 	 */
-	let setter = isPost;
-	let [returnable, setReturnable] = React.useState(setter);
+	// let setter = isPost;
+	let [returnable, setReturnable] = React.useState(isReturnable);
 
 	return (
 		<header>

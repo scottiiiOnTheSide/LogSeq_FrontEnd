@@ -6,6 +6,14 @@
 
 ### 02. 16. 2024
 
+@1355 Skeleton created for <Macros > page ...
+
+@1315 for security measures, may need to more of the user confirmation on the backEnd
+			When user clicks private collection or tag, privateMacro's owner name should be
+			send from backEnd.
+			request to join macro should result in backEnd sending a adding a request notif
+			in user's notifList - without sending owner's ID to frontEnd 
+
 @1245 Started building out <Macros > page . . .
 			Will list objective tasks ...
 

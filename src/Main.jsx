@@ -26,7 +26,7 @@ import InteractionsList from './components/instants/interactionsList';
 import CarouselNav from './components/home/carouselNav';
 import ButtonBar from './components/home/buttonBar';
 import SectionsWrapper from './components/sections/sectionsWrapper';
-import Macros from './components/macros/macros';
+import Macrospage from './components/macros/macros';
 import Post from './components/blog/post';
 import Instant from './components/instants/instant'
 
@@ -423,9 +423,9 @@ export default function Main() {
             } 
           />
 
-          {/*<Route path="/macros/:name" element={
+          <Route path="/macros/:name" element={
               <HomeOrEntry>
-                <Macros 
+                <Macrospage
                   // socket stuff
                   socketURL={socketURL}
                   socketMessage={socketMessage}
@@ -445,7 +445,7 @@ export default function Main() {
                 />
               </HomeOrEntry>
             } 
-          />*/}
+          />
 
         </Routes>
       </UIContextProvider>
