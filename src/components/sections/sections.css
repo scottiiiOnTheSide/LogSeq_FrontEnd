@@ -120,7 +120,8 @@ section#HOME div#createPost {
 	height: 100vh;
 
 	z-index: 20;
-	background-color: var(--greyscale-background);
+/*	background-color: var(--greyscale-background);*/
+	background-color: white;
 }
 
 	div#createPost::before {
@@ -277,7 +278,7 @@ section#HOME div#createPost div#options button {
 	background-color: transparent;
 	border: none;
 	outline: none;
-	width: 47%;
+	width: 50%;
 	padding: 24px 0;
 }
 
@@ -607,7 +608,7 @@ section#HOME div#macros div#userTags ul.tagsWrapper {
 	display: flex;
 	flex-wrap: wrap;
 	list-style-type: none;
-	padding-left: 20px;
+	padding-left: 0px;
 }
 
 section#HOME div#macros div#userTags ul.tagsWrapper li {
@@ -616,19 +617,30 @@ section#HOME div#macros div#userTags ul.tagsWrapper li {
     /* top: 7px; */
     margin: 4px;
     margin-top: 6px;
-    border: 2.5px solid var(--greyscale-text);
+}
+
+section#HOME div#macros div#userTags ul.tagsWrapper li button {
+	border: 2.5px solid var(--greyscale-text);
     border-radius: 12px;
-    padding: 6px 8px;
+    padding: 8px 10px;
 
     font-family: "Raleway";
     font-weight: 400;
+    font-size: 1em;
     letter-spacing: 2px;
     color: var(--greyscale-text);
+    background-color: transparent;
 }
 
-section#HOME div#macros div#userTags ul.tagsWrapper li.topic {
+section#HOME div#macros div#userTags ul.tagsWrapper li button.topic {
 	border: none;
+	background-color: transparent;
 }
+
+section#HOME div#macros div#userTags ul.tagsWrapper li button.private {
+	/*slightly faded appearance	*/
+}
+
 
 
 

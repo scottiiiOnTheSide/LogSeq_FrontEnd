@@ -3,6 +3,9 @@ import * as React from 'react';
 import {useParams, useLocation} from 'react-router-dom';
 import Calendar from '../calendar'
 import APIaccess from '../../apiaccess';
+import {useNavigate} from 'react-router-dom';
+
+import './macros.css';
 
 /* * * C O M P O N E N T S * * */
 import Header from '../../components/home/header';
@@ -35,15 +38,16 @@ export default function Macrospage({
 	const location = useLocation();
 	const [postData, setPostData] = React.useState(location.state.posts);
 	const [macroInfo, setMacroInfo] = React.useState({
-		userHasAccess: location.state.userHasAccess, //boolean
-		userCount: location.state.userCount,
+		userHasAccess: location.state.hasAccess, //boolean
+		userCount: location.state.hasAccess.length,
 		isMacroPrivate: location.state.isPrivate,
 		ownerUsername: location.state.ownerUsername,
 		name: location.state.name,
-		type: location.state.macroType
+		type: location.state.type
 	})
 	const macroID = location.state.macroID;
 	const cal = Calendar();
+	console.log(macroInfo)
 	
 
 	/* Opening animation */
@@ -54,7 +58,18 @@ export default function Macrospage({
 		let delay = setTimeout(()=> {
 			elCurrent.classList.remove('_enter');	
 		}, 200)
-	}, [])
+	}, []);
+
+	let addRemoveRequest;
+	if(macroInfo.userHasAccess == true) {
+		addRemoveRequest = 'Remove'
+	}
+	if(macroInfo.isMacroPrivate == false && macroInfo.userHasAccess == false) {
+		addRemoveRequest = 'Add To Macros'
+	}	
+	if(macroInfo.isMacroPrivate == true && macroInfo.userHasAccess == false) {
+		addRemoveRequest = 'Request'
+	}
 
 	return (
 		<section id="MACROS" ref={el} className={`_enter`}>
@@ -62,29 +77,23 @@ export default function Macrospage({
 
 			<div id="pageHeader">
 				
-				<button>
-					{/*
-						Three modes: 
-							Add To Macros (if public), 
-							Request (if private), 
-							Remove (if user is member)
-					*/}
-				</button>
+				<button className={`buttonDefault`} id="addRemoveRequest">{addRemoveRequest}</button>
 
 				<h3 id="subHeading">
-					{`${macroInfo.isMacroPrivate == true ? macroInfo.ownerUsername : 'PUBLIC'}`} /
-					{macroInfo.type}
+					{`${macroInfo.isMacroPrivate == true ? macroInfo.ownerUsername : 'PUBLIC'}`} / {macroInfo.type} /
 				</h3>
 
-				<h2>{macroInfo.name}</h2>
+				<h2 id="macroName">{macroInfo.name}</h2>
 
-				<h4 id="postAmount">
-					{postData.length}
+				<h4 id="postCount">
+					{/*{postData.length}*/}
+					128
 					<span>Posts</span>
 				</h4>
 
-				<h4 id="userAmount">
-					{macroInfo.userCount}
+				<h4 id="userCount">
+					{/*{macroInfo.userCount}*/}
+					64K
 					<span>Users Engaged</span>
 				</h4>
 			</div>

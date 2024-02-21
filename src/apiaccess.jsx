@@ -279,7 +279,6 @@ export default function APIaccess(key) {
 
 				return request;
 			}
-			
 		},
 
 		async updateCommentCount(postID, count) {
@@ -464,7 +463,7 @@ export default function APIaccess(key) {
 			return request;
 		},
 
-		async groupPosts(action, body) {
+		async groupPosts(action, groupID) {
 
 			/***
 			 * Action Types:
@@ -476,17 +475,17 @@ export default function APIaccess(key) {
 			 * postID: 
 			 */
 
+			console.log(action)
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/groups/posts/${action}`, {
-				method: 'POST',
+			let request = await fetch(`${apiAddr}/groups/posts?action=${action}&groupID=${groupID}`, {
+				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 		        	'Content-length': 0,
 		        	'Accept': 'application/json',
 		        	'Host': apiAddr,
 		        	'auth-token': userKey
-				},
-				body: body,
+				}
 			}).then(data => data.json());
 
 			return request;
@@ -507,10 +506,9 @@ export default function APIaccess(key) {
 			 * 	 - necessary when giving access to private group.
 			 *   - should be owner or admin's userID
 			 */
-
 			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/manage/${action}`, {
-				method: 'POST',
+				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 		        	'Content-length': 0,
@@ -564,7 +562,7 @@ export default function APIaccess(key) {
 
 			if(type == 'tags') {
 
-				let request = await fetch(`${apiAddr}/groups/posts/allTagsUsed`, {
+				let request = await fetch(`${apiAddr}/groups/posts?action=allTagsUsed`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -579,7 +577,7 @@ export default function APIaccess(key) {
 			}
 			else if(type == 'private') {
 
-				let request = await fetch(`${apiAddr}/groups/posts/getPrivatePosts`, {
+				let request = await fetch(`${apiAddr}/groups/posts?action=getPrivatePosts`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',
@@ -594,7 +592,7 @@ export default function APIaccess(key) {
 			}
 			else if(type == 'collections') {
 
-				let request = await fetch(`${apiAddr}/groups/posts/getCollections`, {
+				let request = await fetch(`${apiAddr}/groups/posts?action=getCollections`, {
 					method: 'GET',
 					headers: {
 						'Content-Type': 'application/json',

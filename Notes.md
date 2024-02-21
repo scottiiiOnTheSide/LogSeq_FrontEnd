@@ -4,8 +4,22 @@
 -----------------------------------------------------------------------------------------
 
 
-### 02. 16. 2024
 
+### 02. 21. 2024
+@1215 CSS added for <Macros > page. 
+
+Need to have clicking on a tag or collection trigger the <Home > exit animation...
+
+
+### 02. 20. 2024
+@1115 Fixed issue with api call for getting a macro's posts ...
+
+@0820 started working on navigate function to <Macros > page
+			api call for tags's posts (accessAPI.groupPosts) currently not working
+			not being recieved by back end when called...
+
+
+### 02. 16. 2024
 @1355 Skeleton created for <Macros > page ...
 
 @1315 for security measures, may need to more of the user confirmation on the backEnd

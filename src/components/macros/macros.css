@@ -26,3 +26,76 @@ section#MACROS::after {
 		z-index: 20;
 		opacity: 1;
 	}
+
+
+
+
+
+section#MACROS div#pageHeader {
+	padding-top: 96px;
+	width: 94%;
+	margin: 0 auto;
+
+	padding-bottom: 20px;
+	border-bottom: 2px solid var(--greyscale-accent);
+}
+
+section#MACROS div#pageHeader button#addRemoveRequest {
+	display: block;
+	position: relative;
+	margin-left: auto;
+	font-size: 1em;
+}
+
+section#MACROS div#pageHeader h3#subHeading {
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 0.9em;
+	letter-spacing: 2px;
+	word-spacing: 2px;
+	color: var(--greyscale-text);
+	margin-bottom: 8px;
+}
+
+section#MACROS div#pageHeader h2#macroName {
+	font-family: "Raleway";
+	font-weight: 400;
+	font-size: 2.75em;
+	letter-spacing: 4px;
+	color: var(--greyscale-text);
+	margin-bottom: 8px;
+	text-transform: capitalize;
+
+	margin-top: 24px;
+}
+
+section#MACROS div#pageHeader h4#postCount,
+section#MACROS div#pageHeader h4#userCount {
+	display: inline-block;
+	font-family: "Raleway";
+	font-weight: 600;
+	font-size: 2.5em;
+	letter-spacing: 2px;
+	color: var(--greyscale-accent);
+
+	margin: 20px 0;
+}
+
+section#MACROS div#pageHeader h4#postCount span,
+section#MACROS div#pageHeader h4#userCount span {
+	position: relative;
+    font-weight: 400;
+    font-size: 0.5em;
+    left: -55px;
+    top: 8px;
+    color: var(--greyscale-text);
+}
+
+
+section#MACROS div#pageHeader h4#postCount {}
+
+section#MACROS div#pageHeader h4#userCount {}
+
+section#MACROS div#pageHeader h4#userCount span {
+	left: -60px;
+}

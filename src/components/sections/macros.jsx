@@ -1,5 +1,6 @@
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
+import {useNavigate} from 'react-router-dom';
 
 let accessAPI = APIaccess();
 
@@ -647,6 +648,8 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 
 export default function Macros({active, current, setCurrent}) {
 
+	const userID = sessionStorage.getItem('userID');
+	const navigate = useNavigate();
 	let isActive = active;
 	let [modal, setModal] = React.useReducer(state => !state, false);
 	let [sectionOpen, set_sectionOpen] = React.useState([
@@ -660,7 +663,6 @@ export default function Macros({active, current, setCurrent}) {
 			expand2: false
 		}
 	])
-
 	let [tags, setTags] = React.useState([]);
 	let [privatePosts, setPrivatePosts] = React.useState([]);
 	let [collections, setCollections] = React.useState([])
@@ -676,7 +678,28 @@ export default function Macros({active, current, setCurrent}) {
 		// setCollections(collections);
 	}
 
-	// console.log(tags);
+	let goToMacrosPage = async(tag) => {
+
+		let posts = await accessAPI.groupPosts('getPosts', tag._id)
+
+		let doesHaveAccess = tag.hasAccess.filter(el => el == userID);
+		doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
+									
+		setTimeout(()=> {
+			navigate(`/macros/${tag.name}`, {
+					state: {
+						name: tag.name,
+						posts: posts,
+						macroID: tag._id,
+						isPrivate: tag.isPrivate,
+						hasAccess: doesHaveAccess,
+						ownerUsername: tag.ownerUsername,
+						type: tag.type
+					}
+				})
+		}, 300)
+	}
+
 
 	React.useEffect(()=> {
 		updateMacros();
@@ -709,8 +732,11 @@ export default function Macros({active, current, setCurrent}) {
 
 				<ul className={`tagsWrapper`}>
 					{tags.map(tag => (
-						<li className={tag.type} key={tag.name}>
-							{tag.name}
+						<li className={`${tag.type} ${tag.isPrivate == true ? 'private' : ''}`} key={tag.name}>
+							<button className={tag.type} onClick={(e)=> {
+								e.preventDefault();
+								goToMacrosPage(tag);
+							}}>{tag.name}</button>
 						</li>
 					))}
 				</ul>
