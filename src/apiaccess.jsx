@@ -508,7 +508,7 @@ export default function APIaccess(key) {
 			 */
 			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/manage/${action}`, {
-				method: 'GET',
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 		        	'Content-length': 0,
@@ -525,7 +525,7 @@ export default function APIaccess(key) {
 		async getSuggestions() {
 
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/groups/posts/getSuggestions`, {
+			let request = await fetch(`${apiAddr}/groups/posts/?action=getSuggestions`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -542,7 +542,7 @@ export default function APIaccess(key) {
 		async getUserTags() {
 
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/groups/posts/getUserTags`, {
+			let request = await fetch(`${apiAddr}/groups/posts/?action=getUserTags`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

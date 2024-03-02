@@ -147,6 +147,33 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			}
 	}
 
+	let action_addTag = async(data) => {
+
+		let request = await accessAPI.manageGroup('addUser', data);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'tagAdd',
+				groupName: request.groupName
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
 	let action_deleteTag = async(data) => {
 
 		let request = await accessAPI.manageGroup('deleteGroup', data);
@@ -436,6 +463,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		*/
 		else if(socketMessage.action == 'newTag') {
 			action_NewTag(socketMessage);
+		}
+		else if(socketMessage.action == 'addTag') {
+			action_addTag(socketMessage);
 		}
 		else if(socketMessage.action == 'deleteTag') {
 			action_deleteTag(socketMessage)

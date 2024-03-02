@@ -4,6 +4,53 @@
 -----------------------------------------------------------------------------------------
 
 
+### 03. 02. 2024
+@1715 Remove & Add functions of addRemoveRequest now functional (request to be implemented
+			at a later time...)
+
+addition to To Be Done: 
+post amount and hasAccess amount should always be sent when tags
+are sent...
+
+could something equivalent for topics - <Macros > page does api request on load for the info...
+
+
+
+
+### 02. 27. 2024
+@0815 Site is now able to be viewed, used in 100% full screen on mobile browsers :D
+			Will be able to commence unifying and appropiately sizing text elements for more 
+			clean UI design
+
+****To Be Done Next:
+		- finish <Macros > page...
+			- functionality for addRemoveRequest button ✅
+			- postAmount and userAmount should be accurate 
+			- display user's collections within <Macros > section
+			- create a private post, have them be displayed in <Macros > section
+
+Some minor things to note:
+- Need to have clicking on a tag or collection trigger the <Home > exit animation...
+	will probably need to create stateVar to toggle this...
+
+- functionality for 'See Comment' button in <interactionList>
+	it works in the <popUpNotif >
+
+- speed up transition animations between sections
+
+- apply menu opening animation code in <Macros > section to the others
+
+LONG TERM
+- let each option in navBar be selectable if present. 
+	animation for navBar should be similar (moves opposite of direction of section chosen)
+	transitions between sections themselves should be same as well...
+
+
+@0800 "Pull Up on Header to Make FullScreen" addition to body...somehow
+
+@0700 Created rysnc command for copying project over to Windows side, in order to host
+			publicly on network and view project from mah phone.
+
 
 ### 02. 21. 2024
 @1215 CSS added for <Macros > page. 

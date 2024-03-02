@@ -39,7 +39,7 @@ export default function Macrospage({
 	const [postData, setPostData] = React.useState(location.state.posts);
 	const [macroInfo, setMacroInfo] = React.useState({
 		userHasAccess: location.state.hasAccess, //boolean
-		userCount: location.state.hasAccess.length,
+		userCount: location.state.hasAccess ? location.state.hasAccess.length : undefined,
 		isMacroPrivate: location.state.isPrivate,
 		ownerUsername: location.state.ownerUsername,
 		name: location.state.name,
@@ -48,9 +48,19 @@ export default function Macrospage({
 	const macroID = location.state.macroID;
 	const cal = Calendar();
 	console.log(macroInfo)
+
+
+	let removeThyself = async(groupID) => {
+
+	}
+
+	let addThyself = async(groupID) => {
+
+	}
 	
 
-	/* Opening animation */
+	/* Element Related */
+	const [notifList, setNotifList] = React.useReducer(state => !state, false);
 	let el = React.useRef();
 
 	React.useEffect(()=> {
@@ -58,27 +68,52 @@ export default function Macrospage({
 		let delay = setTimeout(()=> {
 			elCurrent.classList.remove('_enter');	
 		}, 200)
+
+		if(macroInfo.userHasAccess == true) {
+			set_addRemoveRequest('Remove')
+		}
+		if(macroInfo.isMacroPrivate == false && macroInfo.userHasAccess == false) {
+			set_addRemoveRequest("Add To Macros")
+		}	
+		if(macroInfo.isMacroPrivate == true && macroInfo.userHasAccess == false) {
+			set_addRemoveRequest('Request')
+		}
 	}, []);
 
-	let addRemoveRequest;
-	if(macroInfo.userHasAccess == true) {
-		addRemoveRequest = 'Remove'
-	}
-	if(macroInfo.isMacroPrivate == false && macroInfo.userHasAccess == false) {
-		addRemoveRequest = 'Add To Macros'
-	}	
-	if(macroInfo.isMacroPrivate == true && macroInfo.userHasAccess == false) {
-		addRemoveRequest = 'Request'
-	}
+	/* For addRemoveRequest Button atop the page */
+	let [addRemoveRequest, set_addRemoveRequest] = React.useState("")
+	
 
 	return (
 		<section id="MACROS" ref={el} className={`_enter`}>
-			<Header cal={cal} isReturnable={true} unreadCount={unreadCount}/>
+			<Header cal={cal} isReturnable={true} setNotifList={setNotifList} unreadCount={unreadCount}/>
 
 			<div id="pageHeader">
+				{macroInfo.type != 'collection' &&
+					<button className={`buttonDefault`} 
+							id="addRemoveRequest"
+							onClick={()=> {
+								if(addRemoveRequest == 'Remove') {
+									let body = {
+										type: macroInfo.type,
+										groupID: macroID,
+										action: 'deleteTag'
+									}
+									setSocketMessage(body);
+									set_addRemoveRequest("Add To Macros")
+								}
+								else if(addRemoveRequest == 'Add To Macros') {
+									let body = {
+										type: macroInfo.type,
+										groupID: macroID,
+										action: 'addTag'
+									}
+									setSocketMessage(body);
+									set_addRemoveRequest('Remove')
+								}
+							}}>{addRemoveRequest}</button>
+				}
 				
-				<button className={`buttonDefault`} id="addRemoveRequest">{addRemoveRequest}</button>
-
 				<h3 id="subHeading">
 					{`${macroInfo.isMacroPrivate == true ? macroInfo.ownerUsername : 'PUBLIC'}`} / {macroInfo.type} /
 				</h3>
@@ -91,14 +126,36 @@ export default function Macrospage({
 					<span>Posts</span>
 				</h4>
 
-				<h4 id="userCount">
-					{/*{macroInfo.userCount}*/}
-					64K
-					<span>Users Engaged</span>
-				</h4>
+				{macroInfo.type != 'topic' &&
+					<h4 id="userCount">
+						{/*{macroInfo.userCount}*/}
+						64K
+						<span>Users Engaged</span>
+					</h4>
+				}
+				
 			</div>
 
 			{/*log component to go here*/}
+
+			{notifList &&
+	          <InteractionsList 
+	            setNotifList={setNotifList} 
+	            unreadCount={unreadCount}
+	            setUnreadCount={setUnreadCount}
+	            setSocketMessage={setSocketMessage}/>
+	        }
+			<Instant 
+				socketURL={socketURL}
+                socketMessage={socketMessage}
+                setSocketMessage={setSocketMessage}
+                sendMessage={sendMessage}
+                isActive={isActive}
+                setActive={setActive}
+                accessID={accessID}
+                setAccessID={setAccessID}
+                getUnreadCount={getUnreadCount}
+			/>
 
 		</section>
 	)

@@ -87,7 +87,7 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 	let onChange = (e) => {
 
 		const input = e.currentTarget.value;
-		console.log(suggestions[0].name)
+		// console.log(suggestions[0].name)
 		const newFilteredSuggestions = topics.filter((el, index) => {
 			if(el.name.toLowerCase().indexOf(input.toLowerCase()) > -1) {
 				return el;

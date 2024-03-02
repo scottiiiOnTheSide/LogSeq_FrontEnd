@@ -667,6 +667,8 @@ export default function Macros({active, current, setCurrent}) {
 	let [privatePosts, setPrivatePosts] = React.useState([]);
 	let [collections, setCollections] = React.useState([])
 
+	console.log(tags)
+
 	let updateMacros = async() => {
 
 		let tags = await accessAPI.getMacros('tags');
@@ -682,8 +684,12 @@ export default function Macros({active, current, setCurrent}) {
 
 		let posts = await accessAPI.groupPosts('getPosts', tag._id)
 
-		let doesHaveAccess = tag.hasAccess.filter(el => el == userID);
-		doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
+		let doesHaveAccess;
+		if(tag.hasAccess ) {
+			doesHaveAccess = tag.hasAccess.filter(el => el == userID);
+			doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
+		}
+		
 									
 		setTimeout(()=> {
 			navigate(`/macros/${tag.name}`, {
