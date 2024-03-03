@@ -4,6 +4,15 @@
 -----------------------------------------------------------------------------------------
 
 
+### 03. 03. 2024
+@0225 <Macros > page now displays revelant posts, for tags
+
+addition to To Be Done:
+- have user's posts on right, everyone else on left
+
+- needs to work for: Topics & Collections
+
+
 ### 03. 02. 2024
 @1715 Remove & Add functions of addRemoveRequest now functional (request to be implemented
 			at a later time...)
@@ -15,8 +24,6 @@ are sent...
 could something equivalent for topics - <Macros > page does api request on load for the info...
 
 
-
-
 ### 02. 27. 2024
 @0815 Site is now able to be viewed, used in 100% full screen on mobile browsers :D
 			Will be able to commence unifying and appropiately sizing text elements for more 
@@ -25,6 +32,7 @@ could something equivalent for topics - <Macros > page does api request on load 
 ****To Be Done Next:
 		- finish <Macros > page...
 			- functionality for addRemoveRequest button ✅
+			- display posts within macro ✅
 			- postAmount and userAmount should be accurate 
 			- display user's collections within <Macros > section
 			- create a private post, have them be displayed in <Macros > section

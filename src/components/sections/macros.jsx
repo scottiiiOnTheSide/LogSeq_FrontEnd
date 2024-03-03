@@ -61,13 +61,16 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 	let updateMacros = async() => {
 
 		let tags = await accessAPI.getMacros('tags');
+		
 		tags = tags.filter(tag => tag.type == 'tag');
 		tags = tags.map(tag => {
 			return {
 				name: tag.name,
 				selected: false,
 				id: tag._id
-			}})
+			}
+		})
+		tags.filter(Boolean);
 			// let userPrivatePosts = await accessAPI.getMacros('private');
 		// let collections = await accessAPI.getMacros('collections');
 
@@ -91,6 +94,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		setUserCollections(collections); 
 	}
 
+	console.log(userTags);
 	
 	//state for <ManageMacros > Options
 	const [section, setSection] = React.useState([
@@ -667,11 +671,11 @@ export default function Macros({active, current, setCurrent}) {
 	let [privatePosts, setPrivatePosts] = React.useState([]);
 	let [collections, setCollections] = React.useState([])
 
-	console.log(tags)
-
 	let updateMacros = async() => {
 
 		let tags = await accessAPI.getMacros('tags');
+		tags = tags.filter(e => e);
+		console.log(tags)
 		let userPrivatePosts = await accessAPI.getMacros('private');
 		// let collections = await accessAPI.getMacros('collections');
 

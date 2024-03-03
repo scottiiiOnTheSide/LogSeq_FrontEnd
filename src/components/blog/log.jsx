@@ -17,6 +17,8 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 	let id = sessionStorage.getItem('userID')
 	// const [contentReady, setContentReady] = React.useReducer(state => !state, false);
 
+	let [unison, setUnison] = React.useState()
+
 	function ifAnyPostsFromToday (posts) {
 		let fromToday,
 			today = new Date().getDate(),
@@ -81,12 +83,17 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 		dateObserved = post.postedOn_day;
 		monthObserved = post.postedOn_month;
 
+		let leftAlign;
+		if(unison == true && owner != id) {
+			leftAlign = true;
+		}
+
 		return (
 			<>
 				{dateMatch == false  &&
 					<span className="postDate">{month + 1} . {day} . {year}</span>
 				}
-				<div className="entry" id={id} key={post._id} onClick={()=> {
+				<div className={`entry ${leftAlign == true ? 'left' : ''}`} id={id} key={post._id} onClick={()=> {
 					
 					let thisEntry = document.getElementById(id);
 					thisEntry.classList.add('shiftLeft');

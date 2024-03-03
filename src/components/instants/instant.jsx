@@ -420,7 +420,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 						state: true,
 						type: 1
 					})
-				} else if(data.message == 'confirm') {
+				} else if(data.confirm == true) {
 					setSocketMessage({
 						type: 'confirmation',
 						message: 'group',

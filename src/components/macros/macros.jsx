@@ -11,6 +11,7 @@ import './macros.css';
 import Header from '../../components/home/header';
 import Instant from '../../components/instants/instant';
 import InteractionsList from '../../components/instants/interactionsList';
+import Log from '../../components/blog/log';
 
 
 const accessAPI = APIaccess(); 
@@ -32,9 +33,12 @@ export default function Macrospage({
     getUnreadCount,
     lastMessage,
     selectedDate,
-    set_selectedDate
+    set_selectedDate,
+    current,
+    setCurrent
 }) {
 
+	const userID = sessionStorage.getItem('userID');
 	const location = useLocation();
 	const [postData, setPostData] = React.useState(location.state.posts);
 	const [macroInfo, setMacroInfo] = React.useState({
@@ -48,6 +52,7 @@ export default function Macrospage({
 	const macroID = location.state.macroID;
 	const cal = Calendar();
 	console.log(macroInfo)
+	console.log(postData)
 
 
 	let removeThyself = async(groupID) => {
@@ -136,7 +141,11 @@ export default function Macrospage({
 				
 			</div>
 
-			{/*log component to go here*/}
+			<Log data={postData} 
+				 userID={userID} 
+				 noHeading={false} 
+				 current={current} 
+				 setCurrent={setCurrent}/>
 
 			{notifList &&
 	          <InteractionsList 
@@ -156,7 +165,6 @@ export default function Macrospage({
                 setAccessID={setAccessID}
                 getUnreadCount={getUnreadCount}
 			/>
-
 		</section>
 	)
 }

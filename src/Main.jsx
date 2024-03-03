@@ -439,6 +439,8 @@ export default function Main() {
                   setUnreadCount={setUnreadCount}
                   getUnreadCount={getUnreadCount}
                   lastMessage={lastMessage}
+                  current={current}
+                  setCurrent={setCurrent}
                   // socket stuff
                   selectedDate={selectedDate}
                   set_selectedDate={set_selectedDate}
