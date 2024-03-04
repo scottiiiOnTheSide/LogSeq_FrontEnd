@@ -5,10 +5,26 @@
 
 
 ### 03. 03. 2024
+
+Organize list of task most necessary for Macros section work to be complete
+- subroute option for when topic's posts are needed, rather than a tag's
+- postAmount and userAmount info to be sent with tag / topic
+- create a private post, have them be displayed in <Macros > section
+- display user's collections within <Macros > section
+	- option for bookmarks & collections needs to be added to <Post> 
+
+- Need to have clicking on a tag or collection trigger the <Home > exit animation...
+	will probably need to create stateVar to toggle this...
+- speed up transition animations between sections
+- apply menu opening animation code in <Macros > section to the others
+
+@2350 isUnified option added to <Log> component. Displays user's post to the right, everyone
+			else's to the left
+
 @0225 <Macros > page now displays revelant posts, for tags
 
 addition to To Be Done:
-- have user's posts on right, everyone else on left
+- have user's posts on right, everyone else on left ✅
 
 - needs to work for: Topics & Collections
 

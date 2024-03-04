@@ -145,7 +145,8 @@ export default function Macrospage({
 				 userID={userID} 
 				 noHeading={false} 
 				 current={current} 
-				 setCurrent={setCurrent}/>
+				 setCurrent={setCurrent}
+				 isUnified={true}/>
 
 			{notifList &&
 	          <InteractionsList 

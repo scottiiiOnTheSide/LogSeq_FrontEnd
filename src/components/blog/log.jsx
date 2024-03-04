@@ -9,15 +9,15 @@ import './blog.css';
  * be distinguished
  */
 
-export default function Log({userID, data, noHeading, current, setCurrent}) {
+export default function Log({userID, data, noHeading, current, setCurrent, isUnified}) {
 
 	let dateObserved, monthObserved;
 	const navigate = useNavigate();
 	let log = data;
-	let id = sessionStorage.getItem('userID')
+	let _id = sessionStorage.getItem('userID')
 	// const [contentReady, setContentReady] = React.useReducer(state => !state, false);
 
-	let [unison, setUnison] = React.useState()
+	// let [unison, setUnison] = React.useState(isUnified);
 
 	function ifAnyPostsFromToday (posts) {
 		let fromToday,
@@ -83,9 +83,9 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 		dateObserved = post.postedOn_day;
 		monthObserved = post.postedOn_month;
 
-		let leftAlign;
-		if(unison == true && owner != id) {
-			leftAlign = true;
+		let rightAlign;
+		if(isUnified == true && owner == _id) {
+			rightAlign = true;
 		}
 
 		return (
@@ -93,7 +93,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 				{dateMatch == false  &&
 					<span className="postDate">{month + 1} . {day} . {year}</span>
 				}
-				<div className={`entry ${leftAlign == true ? 'left' : ''}`} id={id} key={post._id} onClick={()=> {
+				<div className={`entry ${rightAlign == true ? 'right' : ''}`} id={id} key={post._id} onClick={()=> {
 					
 					let thisEntry = document.getElementById(id);
 					thisEntry.classList.add('shiftLeft');
@@ -177,7 +177,7 @@ export default function Log({userID, data, noHeading, current, setCurrent}) {
 				<h2 className="noPostsToday">No Posts Today</h2>
 			}
 			{(data && data.length > 0) &&
-				log.map((post, index) => returnPostItem(post, index, id))
+				log.map((post, index) => returnPostItem(post, index, _id))
 			}
 		</div>
 	)

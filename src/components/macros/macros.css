@@ -99,3 +99,21 @@ section#MACROS div#pageHeader h4#userCount {}
 section#MACROS div#pageHeader h4#userCount span {
 	left: -60px;
 }
+
+
+
+
+
+
+
+section#MACROS div.log {
+	width: 94%;
+	margin: -24px auto 0;
+}
+
+section#MACROS div.log div.entry.right {
+	text-align: right;
+}
+section#MACROS div.log div.entry.right ul#details {
+	flex-direction: row-reverse;
+} 
