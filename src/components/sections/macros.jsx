@@ -61,7 +61,9 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 	let updateMacros = async() => {
 
 		let tags = await accessAPI.getMacros('tags');
-		
+		tags = tags.filter(Boolean);
+		console.log(tags);
+
 		tags = tags.filter(tag => tag.type == 'tag');
 		tags = tags.map(tag => {
 			return {
@@ -70,7 +72,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 				id: tag._id
 			}
 		})
-		tags.filter(Boolean);
+		
 			// let userPrivatePosts = await accessAPI.getMacros('private');
 		// let collections = await accessAPI.getMacros('collections');
 
@@ -686,7 +688,8 @@ export default function Macros({active, current, setCurrent}) {
 
 	let goToMacrosPage = async(tag) => {
 
-		let posts = await accessAPI.groupPosts('getPosts', tag._id)
+		let posts = await accessAPI.groupPosts('getPosts', tag._id);
+		let postsCount = posts.length;
 
 		let doesHaveAccess;
 		if(tag.hasAccess ) {
@@ -704,12 +707,15 @@ export default function Macros({active, current, setCurrent}) {
 						isPrivate: tag.isPrivate,
 						hasAccess: doesHaveAccess,
 						ownerUsername: tag.ownerUsername,
-						type: tag.type
+						type: tag.type,
+						userCount: tag.userCount,
+						postCount: postsCount
 					}
 				})
 		}, 300)
 	}
 
+	// console.log(parseInt(tags[4]._id))
 
 	React.useEffect(()=> {
 		updateMacros();

@@ -47,12 +47,15 @@ export default function Macrospage({
 		isMacroPrivate: location.state.isPrivate,
 		ownerUsername: location.state.ownerUsername,
 		name: location.state.name,
-		type: location.state.type
+		type: location.state.type,
+		userCount: location.state.userCount,
+		postCount: location.state.postCount
 	})
 	const macroID = location.state.macroID;
 	const cal = Calendar();
 	console.log(macroInfo)
 	console.log(postData)
+
 
 
 	let removeThyself = async(groupID) => {
@@ -91,33 +94,36 @@ export default function Macrospage({
 
 	return (
 		<section id="MACROS" ref={el} className={`_enter`}>
+
 			<Header cal={cal} isReturnable={true} setNotifList={setNotifList} unreadCount={unreadCount}/>
 
-			<div id="pageHeader">
-				{macroInfo.type != 'collection' &&
-					<button className={`buttonDefault`} 
-							id="addRemoveRequest"
-							onClick={()=> {
-								if(addRemoveRequest == 'Remove') {
-									let body = {
-										type: macroInfo.type,
-										groupID: macroID,
-										action: 'deleteTag'
+			<div id="mainWrapper">
+				
+				<div id="pageHeader">
+					{macroInfo.type != 'collection' &&
+						<button className={`buttonDefault`} 
+								id="addRemoveRequest"
+								onClick={()=> {
+									if(addRemoveRequest == 'Remove') {
+										let body = {
+											type: macroInfo.type,
+											groupID: macroID,
+											action: 'deleteTag'
+										}
+										setSocketMessage(body);
+										set_addRemoveRequest("Add To Macros")
 									}
-									setSocketMessage(body);
-									set_addRemoveRequest("Add To Macros")
-								}
-								else if(addRemoveRequest == 'Add To Macros') {
-									let body = {
-										type: macroInfo.type,
-										groupID: macroID,
-										action: 'addTag'
+									else if(addRemoveRequest == 'Add To Macros') {
+										let body = {
+											type: macroInfo.type,
+											groupID: macroID,
+											action: 'addTag'
+										}
+										setSocketMessage(body);
+										set_addRemoveRequest('Remove')
 									}
-									setSocketMessage(body);
-									set_addRemoveRequest('Remove')
-								}
-							}}>{addRemoveRequest}</button>
-				}
+								}}>{addRemoveRequest}</button>
+					}
 				
 				<h3 id="subHeading">
 					{`${macroInfo.isMacroPrivate == true ? macroInfo.ownerUsername : 'PUBLIC'}`} / {macroInfo.type} /
@@ -125,25 +131,25 @@ export default function Macrospage({
 
 				<h2 id="macroName">{macroInfo.name}</h2>
 
-				<h4 id="postCount">
-					{/*{postData.length}*/}
-					128
-					<span>Posts</span>
-				</h4>
-
-				{macroInfo.type != 'topic' &&
-					<h4 id="userCount">
-						{/*{macroInfo.userCount}*/}
-						64K
-						<span>Users Engaged</span>
+				<div id="infoWrapper">
+					<h4 id="postCount">
+						{macroInfo.postCount}
+						<span>Posts</span>
 					</h4>
-				}
-				
+
+					{macroInfo.type != 'topic' &&
+						<h4 id="userCount">
+							{macroInfo.userCount}
+							<span>Users Engaged</span>
+						</h4>
+					}
+				</div>
+					
 			</div>
 
 			<Log data={postData} 
 				 userID={userID} 
-				 noHeading={false} 
+				 noHeading={true} 
 				 current={current} 
 				 setCurrent={setCurrent}
 				 isUnified={true}/>
@@ -166,6 +172,8 @@ export default function Macrospage({
                 setAccessID={setAccessID}
                 getUnreadCount={getUnreadCount}
 			/>
+
+			</div>
 		</section>
 	)
 }

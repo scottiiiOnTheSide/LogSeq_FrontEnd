@@ -30,11 +30,17 @@ section#MACROS::after {
 
 
 
-
+section#MACROS div#mainWrapper {
+	position: relative;
+	height: calc(100vh - 160px);
+	margin-top: 80px;
+	overflow-y: scroll;
+}
 section#MACROS div#pageHeader {
-	padding-top: 96px;
+	position: relative;
+/*	padding-top: 96px;*/
 	width: 94%;
-	margin: 0 auto;
+	margin: 24px auto 0;
 
 	padding-bottom: 20px;
 	border-bottom: 2px solid var(--greyscale-accent);
@@ -69,8 +75,17 @@ section#MACROS div#pageHeader h2#macroName {
 	margin-top: 24px;
 }
 
+
+section#MACROS div#pageHeader div#infoWrapper {
+	margin: 24px 0 0px;
+	display: flex;
+	flex-direction: row;
+}
+
+
 section#MACROS div#pageHeader h4#postCount,
 section#MACROS div#pageHeader h4#userCount {
+	position: relative;
 	display: inline-block;
 	font-family: "Raleway";
 	font-weight: 600;
@@ -78,26 +93,30 @@ section#MACROS div#pageHeader h4#userCount {
 	letter-spacing: 2px;
 	color: var(--greyscale-accent);
 
-	margin: 20px 0;
+	margin: 0 20px;
+/*	padding: 0 20px;*/
 }
 
 section#MACROS div#pageHeader h4#postCount span,
 section#MACROS div#pageHeader h4#userCount span {
+	display: block;
 	position: relative;
     font-weight: 400;
     font-size: 0.5em;
-    left: -55px;
-    top: 8px;
+    left: 16px;
+    top: -16px;
     color: var(--greyscale-text);
 }
 
 
-section#MACROS div#pageHeader h4#postCount {}
+section#MACROS div#pageHeader h4#postCount {
+	margin-left: 0;
+}
 
 section#MACROS div#pageHeader h4#userCount {}
 
 section#MACROS div#pageHeader h4#userCount span {
-	left: -60px;
+/*	left: -60px;*/
 }
 
 

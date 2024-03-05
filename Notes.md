@@ -4,11 +4,33 @@
 -----------------------------------------------------------------------------------------
 
 
-### 03. 03. 2024
+### 03. 05. 2024
 
+@1515 Remember for sections within <Macros > sections, have a minimum height 5 rows worth for
+			(5 posts or 5 rows of tags)
+			See all button expands said lists...
+
+@1400 issue with scrolling + header fixed in <Macros >
+!!! Need to make sure new posts get added to Tag's internal list of post
+		as of now: postCount in <Macros > page is based on initial amount pulled,
+								will eventually need true total
+
+!!! current section in <SectionWrapper> needs to be saved when refreshing page on /home
+
+!!! when posts are sent for Tags and Topics, have order reversed and remove any with future
+		date.
+		for collections, just reverse
+
+
+### 03. 04. 2024
+@1030 header gets messed up when returning to <Macros > page from a <Post > ✅
+
+
+### 03. 03. 2024
 Organize list of task most necessary for Macros section work to be complete
-- subroute option for when topic's posts are needed, rather than a tag's
-- postAmount and userAmount info to be sent with tag / topic
+- subroute option for when topic's posts are needed, rather than a tag's ✅
+- postAmount and userAmount info to be sent with tag / topic ✅
+
 - create a private post, have them be displayed in <Macros > section
 - display user's collections within <Macros > section
 	- option for bookmarks & collections needs to be added to <Post> 
