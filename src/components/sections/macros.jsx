@@ -777,7 +777,36 @@ export default function Macros({active, current, setCurrent}) {
 				</div>
 
 				<ul className={`postsWrapper`}>
-					
+					{privatePosts.map(post => {
+
+						let cmntcount = 0, commentCount;
+						let countComments = (comments) => {
+			
+							for(let cmnt of comments) {
+								cmntcount++;
+								countComments(cmnt.replies)
+							}
+
+							commentCount = cmntcount;
+						}
+						countComments(post.comments)
+						
+						return (
+							<li onClick={()=> {}}>
+								<h4>{post.postedOn_month}. {post.postedOn_day}. {post.postedOn_year}</h4>
+								<h3>{post.title}</h3>
+
+								<ul className={`deets`}>
+									{post.tags.length > 0 &&
+										<li>{post.tags.length} tags</li>
+									}
+									{commentCount > 0 &&
+										<li>{commentCount} comments</li>
+									}
+								</ul>
+							</li>
+						)
+					})}
 				</ul>
 
 			</div>

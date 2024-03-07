@@ -4,8 +4,14 @@
 -----------------------------------------------------------------------------------------
 
 
-### 03. 05. 2024
+### 03. 06. 2024
+@0800 
+- Clean up style of privatePosts list in <Macros >section 
+	- navigate() function for posts within list
+- <Home> exit animation needs to be linked to a prop 
 
+
+### 03. 05. 2024
 @1515 Remember for sections within <Macros > sections, have a minimum height 5 rows worth for
 			(5 posts or 5 rows of tags)
 			See all button expands said lists...
