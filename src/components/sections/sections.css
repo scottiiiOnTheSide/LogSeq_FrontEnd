@@ -645,6 +645,50 @@ section#HOME div#macros div#userTags ul.tagsWrapper li button.private {
 
 
 
+section#HOME div#macros div#privatePosts ul.postsWrapper {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li {
+	margin: 20px 0 20px 12px;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li h4 {
+	margin: 0;
+	font-family: 'Raleway';
+	font-weight: 300;
+	font-size: 1em;
+	letter-spacing: 1px;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li h3 {
+	margin-top: 4px;
+	font-family: 'Raleway';
+	font-weight: 400;
+	font-size: 1.5em;
+	letter-spacing: 1px;
+	color: var(--greyscale-text);
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets {
+	display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 8px 0 0 -4px;
+    padding: 0;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets li {
+	font-size: 0.9em;
+    letter-spacing: 1px;
+    margin: 0 8px;
+}
+
+
+
+
 
 
 

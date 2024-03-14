@@ -4,10 +4,32 @@
 -----------------------------------------------------------------------------------------
 
 
+### 03. 08. 2024
+@1025 
+Roadmap to 1.0A...
+- Collections
+- Styling <ManageConnections>
+- User Profile
+
+****To Do Next
+		- make several private posts so that we can create the expand function for
+			the sections...
+		- make seperate note of all the small fixes and changes I've made recently...
+		- create BOOKMARKS collection for user
+			- should have a special case on backEnd where deleting BOOKMARKS simply empties it
+			- all users should have BOOKMARKS collection upon signup
+		- adjust details for collections on <Macros >page
+		- add functions for adding to collections on <Post> page
+
+!!! in <Macros > page for collections, menuButton toggles 'delete' option to appear over
+		posts within list...
+		- will have to create div within those li's that only appear upon menuButton being toggled
+
+
 ### 03. 06. 2024
 @0800 
-- Clean up style of privatePosts list in <Macros >section 
-	- navigate() function for posts within list
+- Clean up style of privatePosts list in <Macros >section ✅ 
+	- navigate() function for posts within list ✅
 - <Home> exit animation needs to be linked to a prop 
 
 
@@ -37,7 +59,7 @@ Organize list of task most necessary for Macros section work to be complete
 - subroute option for when topic's posts are needed, rather than a tag's ✅
 - postAmount and userAmount info to be sent with tag / topic ✅
 
-- create a private post, have them be displayed in <Macros > section
+- create a private post, have them be displayed in <Macros > section ✅
 - display user's collections within <Macros > section
 	- option for bookmarks & collections needs to be added to <Post> 
 
@@ -77,9 +99,9 @@ could something equivalent for topics - <Macros > page does api request on load 
 		- finish <Macros > page...
 			- functionality for addRemoveRequest button ✅
 			- display posts within macro ✅
-			- postAmount and userAmount should be accurate 
+			- postAmount and userAmount should be accurate ✅
 			- display user's collections within <Macros > section
-			- create a private post, have them be displayed in <Macros > section
+			- create a private post, have them be displayed in <Macros > section ✅
 
 Some minor things to note:
 - Need to have clicking on a tag or collection trigger the <Home > exit animation...

@@ -715,7 +715,15 @@ export default function Macros({active, current, setCurrent}) {
 		}, 300)
 	}
 
-	// console.log(parseInt(tags[4]._id))
+	let goToPost = async(postData) => {
+		setTimeout(()=> {
+			navigate(`/post/${postData._id}`, {
+						state: {post: postData}
+					});
+		}, 600)
+	}
+
+	console.log(privatePosts)
 
 	React.useEffect(()=> {
 		updateMacros();
@@ -792,7 +800,7 @@ export default function Macros({active, current, setCurrent}) {
 						countComments(post.comments)
 						
 						return (
-							<li onClick={()=> {}}>
+							<li onClick={()=> {goToPost(post)}}>
 								<h4>{post.postedOn_month}. {post.postedOn_day}. {post.postedOn_year}</h4>
 								<h3>{post.title}</h3>
 
