@@ -702,7 +702,7 @@ export default function Macros({active, current, setCurrent}) {
 						hasAccess: doesHaveAccess,
 						ownerUsername: tag.ownerUsername,
 						type: tag.type,
-						userCount: tag.userCount,
+						userCount: tag.hasAccess.length,
 						postCount: postsCount
 					}
 				})
@@ -754,6 +754,7 @@ export default function Macros({active, current, setCurrent}) {
 				</ul>
 			</div>
 
+
 			<div id="privatePosts" className={`${privatePostsSection == true ? 'open' : 'close'}`}>
 				<div className={`headerWrapper`}>
 					<h2>Private Posts</h2>
@@ -798,6 +799,7 @@ export default function Macros({active, current, setCurrent}) {
 
 			</div>
 
+
 			<div id="collections" className={`${collectionsSection == true ? 'open' : 'close'}`}> 
 				<div className={`headerWrapper`}>
 					<h2>Collections</h2>
@@ -811,7 +813,7 @@ export default function Macros({active, current, setCurrent}) {
 					{collections.map(item => {
 
 						return (
-							<li onClick={()=> {}}>
+							<li onClick={()=> {goToMacrosPage(item)}}>
 								{item.name}
 							</li>
 						)

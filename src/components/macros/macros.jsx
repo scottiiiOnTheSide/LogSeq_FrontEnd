@@ -57,7 +57,6 @@ export default function Macrospage({
 	console.log(postData)
 
 
-
 	let removeThyself = async(groupID) => {
 
 	}

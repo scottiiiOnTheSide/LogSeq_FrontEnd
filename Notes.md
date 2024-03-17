@@ -5,11 +5,14 @@
 
 
 ### 03. 17. 2024
+
+@1455 working on emptying bookmarks when deleting them...
+
 @0105 
 To Do Next:
 - clicking on collection titles goes to <Macros > page. make sure necessary changes to
-	page layout
-- make BOOKMARKS first in macros section and manageMacros
+	page layout ✅
+- make BOOKMARKS first in macros section and manageMacros ✅
 	- add unique option in backEnd where deleting BOOKMARKS simply empties it
 - add options for BOOKMARK and collections in <Post>
 	- use api function to get collections
