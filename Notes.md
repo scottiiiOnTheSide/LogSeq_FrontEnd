@@ -4,6 +4,21 @@
 -----------------------------------------------------------------------------------------
 
 
+### 03. 17. 2024
+@0105 
+To Do Next:
+- clicking on collection titles goes to <Macros > page. make sure necessary changes to
+	page layout
+- make BOOKMARKS first in macros section and manageMacros
+	- add unique option in backEnd where deleting BOOKMARKS simply empties it
+- add options for BOOKMARK and collections in <Post>
+	- use api function to get collections
+
+
+### 03. 15. 2024
+@0945 !!! in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+
+
 ### 03. 08. 2024
 @1025 
 Roadmap to 1.0A...
@@ -13,7 +28,7 @@ Roadmap to 1.0A...
 
 ****To Do Next
 		- make several private posts so that we can create the expand function for
-			the sections...
+			the sections... ✅
 		- make seperate note of all the small fixes and changes I've made recently...
 		- create BOOKMARKS collection for user
 			- should have a special case on backEnd where deleting BOOKMARKS simply empties it

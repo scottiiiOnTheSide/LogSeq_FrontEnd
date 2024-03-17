@@ -564,13 +564,35 @@ section#HOME div#manageConnections button#exit {
 
 section#HOME div#macros {
 	width: 100%;
+	overflow-y: scroll;
+	padding-bottom: 80px;
 }
 
 section#HOME div#macros div#userTags, 
 section#HOME div#macros div#privatePosts,
 section#HOME div#macros div#collections {
 	width: 92%;
+	max-height: 400px;
 	margin: 24px 8px 24px auto;
+	transition: height ease-in-out 0.2s;
+}
+
+section#HOME div#macros div#userTags {
+	margin-top: 0px;
+}
+
+section#HOME div#macros div#userTags.open, 
+section#HOME div#macros div#privatePosts.open,
+section#HOME div#macros div#collections.open {
+	overflow-y: auto;
+	max-height: fit-content;
+}
+
+section#HOME div#macros div#userTags.close, 
+section#HOME div#macros div#privatePosts.close,
+section#HOME div#macros div#collections.close {
+	overflow-y: hidden;
+	max-height: 400px;
 }
 
 section#HOME div#macros div div.headerWrapper {
@@ -652,7 +674,7 @@ section#HOME div#macros div#privatePosts ul.postsWrapper {
 }
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li {
-	margin: 20px 0 20px 12px;
+	margin: 20px 0 32px 12px;
 }
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li h4 {
@@ -665,6 +687,7 @@ section#HOME div#macros div#privatePosts ul.postsWrapper li h4 {
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li h3 {
 	margin-top: 4px;
+	margin-bottom: 4px;
 	font-family: 'Raleway';
 	font-weight: 400;
 	font-size: 1.5em;
@@ -676,7 +699,7 @@ section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets {
 	display: flex;
     flex-direction: row;
     list-style-type: none;
-    margin: 8px 0 0 -4px;
+    margin: 8px 0 0 -8px;
     padding: 0;
 }
 
@@ -688,6 +711,22 @@ section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets li {
 
 
 
+
+section#HOME div#macros div#collections ul.collectionsWrapper {
+	list-style-type: none;
+	margin: 20px 8px;
+	padding: 0;
+}
+
+section#HOME div#macros div#collections ul.collectionsWrapper li {
+	font-family: 'Raleway';
+	font-weight: 400;
+	font-size: 1.25em;
+	letter-spacing: 1px;
+	color: var(--greyscale-text);
+
+	margin: 28px 0;
+}
 
 
 

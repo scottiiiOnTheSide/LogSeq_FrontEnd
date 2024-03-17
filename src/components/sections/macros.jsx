@@ -30,33 +30,33 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		}
 	]) 
 	const [userCollections, setUserCollections] = React.useState([
-		{
-			name: 'This is a Collection',
-			_id: 1234,
-			selected: false,
-			delete: null,
-			rename: null,
-			isPrivate: false,
-			makePrivate: null
-		},
-		{
-			name: 'They can have spaces',
-			selected: false,
-			_id: 5678,
-			delete: null,
-			rename: null,
-			isPrivate: false,
-			makePrivate: null
-		}, 
-		{
-			name: 'In their names. Unlike Tags',
-			selected: false,
-			_id: 9101,
-			delete: null,
-			rename: null,
-			isPrivate: false,
-			makePrivate: null
-		}
+		// {
+		// 	name: 'This is a Collection',
+		// 	_id: 1234,
+		// 	selected: false,
+		// 	delete: null,
+		// 	rename: null,
+		// 	isPrivate: false,
+		// 	makePrivate: null
+		// },
+		// {
+		// 	name: 'They can have spaces',
+		// 	selected: false,
+		// 	_id: 5678,
+		// 	delete: null,
+		// 	rename: null,
+		// 	isPrivate: false,
+		// 	makePrivate: null
+		// }, 
+		// {
+		// 	name: 'In their names. Unlike Tags',
+		// 	selected: false,
+		// 	_id: 9101,
+		// 	delete: null,
+		// 	rename: null,
+		// 	isPrivate: false,
+		// 	makePrivate: null
+		// }
 	])
 	let updateMacros = async() => {
 
@@ -79,6 +79,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		//02. 15. 2024
 		//collections need to have 'confirmation, rename and selected' added to 
 		//objects when placed within state array
+		//03. 16. 2024 have BOOKMARKS rearranged to the top of the list
 		let collections = await accessAPI.getMacros('collections');
 		collections = collections.map(el => {
 			return {
@@ -354,7 +355,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		updateMacros();
 	}, [socketMessage])
 
-	console.log(userCollections)
+	console.log(section.newTag)
 
 	return (
 		// <div id="ManageMacros" ref={modal} className={`${current.transition == false ? '_enter' : ''}`}>
@@ -658,32 +659,25 @@ export default function Macros({active, current, setCurrent}) {
 	const navigate = useNavigate();
 	let isActive = active;
 	let [modal, setModal] = React.useReducer(state => !state, false);
-	let [sectionOpen, set_sectionOpen] = React.useState([
-		{
-			expand0: false
-		},
-		{
-			expand1: false
-		},
-		{
-			expand2: false
-		}
-	])
+	let [tagsSection, toggleTags] = React.useReducer(state => !state, false);
+	let [privatePostsSection, togglePrivatePosts] = React.useReducer(state => !state, false);
+	let [collectionsSection, toggleCollections] = React.useReducer(state => !state, false);
 	let [tags, setTags] = React.useState([]);
 	let [privatePosts, setPrivatePosts] = React.useState([]);
 	let [collections, setCollections] = React.useState([])
 
+	//03. 16. 2024 Have BOOKMARKS rearranged to the top 
 	let updateMacros = async() => {
 
 		let tags = await accessAPI.getMacros('tags');
 		tags = tags.filter(e => e);
 		console.log(tags)
 		let userPrivatePosts = await accessAPI.getMacros('private');
-		// let collections = await accessAPI.getMacros('collections');
+		let collections = await accessAPI.getMacros('collections');
 
 		setTags(tags);
 		setPrivatePosts(userPrivatePosts);
-		// setCollections(collections);
+		setCollections(collections);
 	}
 
 	let goToMacrosPage = async(tag) => {
@@ -723,7 +717,8 @@ export default function Macros({active, current, setCurrent}) {
 		}, 600)
 	}
 
-	console.log(privatePosts)
+	console.log(tagsSection)
+	console.log(collections)
 
 	React.useEffect(()=> {
 		updateMacros();
@@ -733,24 +728,17 @@ export default function Macros({active, current, setCurrent}) {
 		updateMacros();
 	}, [current])
 
+	// 03. 15. 2024 @ 2225 - use individual useReducer toggles for section toggles
+
 	return (
 		<div id="macros" className={`${isActive == 3 ? 'active' : 'not'}`}>
 			
-			<div id="userTags" className={`${sectionOpen.expand0 ? 'open' : 'close'}`}>
+			<div id="userTags" className={`${tagsSection == true ? 'open' : 'close'}`}>
 				<div className={`headerWrapper`}>
 					<h2>Your Tags</h2>
-					<button className={`buttonDefault`} onClick={()=> {
-						if(sectionOpen.expand0) {
-							set_sectionOpen({
-								...sectionOpen,
-								expand0: false
-							})
-						} else {
-							set_sectionOpen({
-								...sectionOpen,
-								expand0: true
-							})
-						}
+					<button className={`buttonDefault`} onClick={(e)=> {
+						e.preventDefault()
+						toggleTags();
 					}}>See All</button>
 				</div>
 
@@ -766,21 +754,12 @@ export default function Macros({active, current, setCurrent}) {
 				</ul>
 			</div>
 
-			<div id="privatePosts" className={`${sectionOpen[1].expand ? 'open' : 'close'}`}>
+			<div id="privatePosts" className={`${privatePostsSection == true ? 'open' : 'close'}`}>
 				<div className={`headerWrapper`}>
 					<h2>Private Posts</h2>
-					<button className={`buttonDefault`} onClick={()=> {
-						if(sectionOpen.expand1) {
-							set_sectionOpen({
-								...sectionOpen,
-								expand1: false
-							})
-						} else {
-							set_sectionOpen({
-								...sectionOpen,
-								expand1: true
-							})
-						}
+					<button className={`buttonDefault`} onClick={(e)=> {
+						e.preventDefault()
+						togglePrivatePosts()
 					}}>See All</button>
 				</div>
 
@@ -819,27 +798,25 @@ export default function Macros({active, current, setCurrent}) {
 
 			</div>
 
-			<div id="collections" className={`${sectionOpen[2].expand ? 'open' : 'close'}`}> 
+			<div id="collections" className={`${collectionsSection == true ? 'open' : 'close'}`}> 
 				<div className={`headerWrapper`}>
 					<h2>Collections</h2>
-					<button className={`buttonDefault`} onClick={()=> {
-						if(sectionOpen.expand2) {
-							set_sectionOpen({
-								...sectionOpen,
-								expand2: false
-							})
-						} else {
-							set_sectionOpen({
-								...sectionOpen,
-								expand2: true
-							})
-						}
+					<button className={`buttonDefault`} onClick={(e)=> {
+						e.preventDefault();
+						toggleCollections()
 					}}>See All</button>				
 				</div>
 
-				<div className={`collectionsWrapper`}>
-					
-				</div>
+				<ul className={`collectionsWrapper`}>
+					{collections.map(item => {
+
+						return (
+							<li onClick={()=> {}}>
+								{item.name}
+							</li>
+						)
+					})}
+				</ul>
 			</div>
 			
 		</div>
