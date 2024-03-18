@@ -256,7 +256,18 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 
 		let request = await accessAPI.manageGroup('deleteGroup', data);
 
-		if(request.confirmation == true) {
+		if(request.groupName === 'BOOKMARKS') {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'emptyBookmarks',
+				groupName: request.groupName
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.confirmation == true) {
 			setSocketMessage({
 				type: 'confirmation',
 				message: 'deletedCollection',
@@ -287,6 +298,32 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 'confirmation',
 				message: 'privatizedCollection',
 				isPrivate: request.isPrivate
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_addToCollection = async(data) => {
+		let request = await accessAPI.groupPosts('addPost', data.groupID, data.postID);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'addToCollection',
+				groupName: request.groupName
 			})
 			setActive({
 				state: true,
@@ -484,6 +521,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			console.log('recieved');
 			action_deleteCollection(socketMessage);
 		}
+		else if(socketMessage.action == 'addToCollection') {
+			action_addToCollection(socketMessage);
+		}
 
 
 		/*
@@ -618,11 +658,17 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				{(message.type == 'confirmation' && message.message == 'renamedCollection') &&
 					<p>Collection has been renamed</p>
 				}
+				{(message.type == 'confirmation' && message.message == 'emptyBookmarks') &&
+					<p>{message.groupName} have been emptied</p>
+				}
 				{(message.type == 'confirmation' && message.message == 'deletedCollection') &&
 					<p>You've deleted your collection "{message.groupName}"</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'privatizedCollection') &&
 					<p>Collection is now {message.isPrivate}</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'addToCollection') &&
+					<p>Post added to {message.groupName}</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'tagDelete') &&
 					<p>You've removed {message.groupName} from your tags</p>

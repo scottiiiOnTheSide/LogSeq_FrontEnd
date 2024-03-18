@@ -76,10 +76,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 			// let userPrivatePosts = await accessAPI.getMacros('private');
 		// let collections = await accessAPI.getMacros('collections');
 
-		//02. 15. 2024
-		//collections need to have 'confirmation, rename and selected' added to 
-		//objects when placed within state array
-		//03. 16. 2024 have BOOKMARKS rearranged to the top of the list
 		let collections = await accessAPI.getMacros('collections');
 		collections = collections.map(el => {
 			return {

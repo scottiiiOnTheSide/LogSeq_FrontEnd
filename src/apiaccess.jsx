@@ -463,7 +463,7 @@ export default function APIaccess(key) {
 			return request;
 		},
 
-		async groupPosts(action, groupID) {
+		async groupPosts(action, groupID, postID) {
 
 			/***
 			 * Action Types:
@@ -477,7 +477,7 @@ export default function APIaccess(key) {
 
 			console.log(action)
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/groups/posts?action=${action}&groupID=${groupID}`, {
+			let request = await fetch(`${apiAddr}/groups/posts?action=${action}&groupID=${groupID}&postID=${postID}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

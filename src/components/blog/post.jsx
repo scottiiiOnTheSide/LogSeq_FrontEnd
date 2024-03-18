@@ -1,6 +1,6 @@
 /* * * V I T A L S * * */
 import * as React from 'react';
-import {useParams, useLocation} from 'react-router-dom';
+import {useParams, useLocation, useNavigate} from 'react-router-dom';
 import Calendar from '../calendar'
 import APIaccess from '../../apiaccess';
 import bodyParse from '../bodyParse';
@@ -42,6 +42,7 @@ export default function Post({
 }) {
 	let { postID } = useParams();
 	let	location = useLocation();
+	let navigate = useNavigate();
 	let [postData, setPostData] = React.useState(location.state.post);
 	let [comments, setComments] = React.useState([]);
 	let [commentCount, setCommentCount] = React.useState('');
@@ -72,9 +73,6 @@ export default function Post({
 
 		setCommentCount(count)
 	};
-
-	// let b = countComments(post.comments);
-	
 
 	/*** 
 	 	updates post & comments on initial load and page refresh 
@@ -129,6 +127,7 @@ export default function Post({
 	const [isOptionsOpen, toggleOptions] = React.useReducer(state => !state, false);
 	const [isComment, toggleComment] = React.useReducer(state => !state, false);
 	const [messageContent, setMessage] = React.useState('');
+	const [collections, setCollections] = React.useState([]);
 	const [access, setAccess] = React.useState({
 		type: null, //"initial" or "response"
 		commentID: null, 
@@ -140,7 +139,6 @@ export default function Post({
 	let handleMessage = (e) => {
 		setMessage(e.target.value);
 	}
-
 	let handleSubmit = async(e) => {
 		e.preventDefault();
 		let date = new Date();
@@ -249,6 +247,22 @@ export default function Post({
 			</li>
 	}
 
+	let getCollections = async()=> {
+		let collections = await accessAPI.getMacros('collections');
+		setCollections(collections);
+	}
+
+	let addToBookmarks = ()=> {
+
+		let body = {
+			groupID: collections[0]._id,
+      		postID: postID,
+      		type: 'collection',
+      		action: 'addToCollection'
+		}
+		setSocketMessage(body);
+	}
+	console.log(collections)
 
 	/*
 		If user visits page via notif concerning comment
@@ -285,6 +299,8 @@ export default function Post({
 			hasLoaded = false;
 			return
 		}
+
+		getCollections();
 	}, [element]);
 
 	return (
@@ -320,7 +336,6 @@ export default function Post({
 								<button>REPORT</button>
 							</li>
 						}
-
 					</ul>
 				</div>
 
@@ -385,6 +400,7 @@ export default function Post({
 
 				{isOptionsOpen &&
 					<ul id="optionsMenu">
+
 						<li>
 							<button className="buttonDefault" onClick={()=> {
 								toggleComment(); 
@@ -396,9 +412,26 @@ export default function Post({
 
 							}}>Comment</button>
 						</li>
+
 						<li>
-							<button className="buttonDefault">Exit Post</button>
+							<button className="buttonDefault" onClick={(e)=> {
+								e.preventDefault()
+								addToBookmarks()
+								let delay = setTimeout(()=> {
+									toggleOptions()
+								}, 150);
+							}}>Bookmark</button>
 						</li>
+
+						<li>
+							<button className="buttonDefault" onClick={(e)=> {
+								e.preventDefault()
+								setTimeout(()=> {
+									navigate(-1)
+								}, 500)
+							}}>Exit Post</button>
+						</li> 
+
 						<li>
 							<button className="buttonDefault" onClick={()=> {
 								let optionsMenu = document.getElementById('optionsMenu');

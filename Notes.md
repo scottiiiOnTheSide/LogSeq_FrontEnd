@@ -4,8 +4,25 @@
 -----------------------------------------------------------------------------------------
 
 
-### 03. 17. 2024
+### 03. 18. 2024
 
+@1655 
+****To Do Next:
+		- create route option on backEnd posts/checkPost that discerns whether viewed post
+			is already in any of a user's collections
+		- change 'groupPosts' apiaccess func to 'POST' instead of 'GET'
+			(when necessary to delete multiple posts at once, this will be necessary)
+		- have subMenu in <Posts> for other collections
+			- both BOOKMARKS option and any collection should be faded if post is already within it
+
+!!! Will need to add 'remove' option for posts within <Log>
+		selecting a post will add it t the [access] stateVar, which can be seen in <Macros > (will nest
+			down from <Home>)
+??? other options with <Macros> page???
+
+@1610 !!! going back to post in log (scroll to post) after returning from a <Post> is off
+
+### 03. 17. 2024
 @1455 working on emptying bookmarks when deleting them...
 
 @0105 
@@ -13,9 +30,9 @@ To Do Next:
 - clicking on collection titles goes to <Macros > page. make sure necessary changes to
 	page layout ✅
 - make BOOKMARKS first in macros section and manageMacros ✅
-	- add unique option in backEnd where deleting BOOKMARKS simply empties it
-- add options for BOOKMARK and collections in <Post>
-	- use api function to get collections
+	- add unique option in backEnd where deleting BOOKMARKS simply empties it ✅
+- add options for BOOKMARK and collections in <Post> ✅
+	- use api function to get collections ✅
 
 
 ### 03. 15. 2024
