@@ -22,20 +22,20 @@ div#homeLog {
 	margin: 0 auto;
 	opacity: 0;
 	transition: all 0.5s linear;
-	transform: scale(0.8);
+	transform: scale(0.9);
 }
 
 
 /* As userLog is currently the default, it will have 'already present' styling */
 div#userLog {
-	animation: 0.5s ease-in-out forwards appear;
+	animation: 0.2s ease-in-out forwards appear;
 }
 
 
 @keyframes appear {
 	0% {
 		opacity: 0;
-		transform: scale(0.8);
+		transform: scale(0.9);
 	}
 	100% {
 		opacity: 1;
@@ -50,7 +50,7 @@ div#userLog {
 	}
 	100% {
 		opacity: 0;
-		transform: scale(0.8);
+		transform: scale(0.9);
 	}
 }
 
@@ -58,28 +58,17 @@ div#userLog {
 /*		animation: 0.5s ease-in-out forwards appear;*/
 	}
 
-		div#userLog.not {
-			background-color: transparent;
-			animation: 0.5s ease-in-out forwards disappear;
-		}
-
-	div#socialLog.active {
-		animation: 0.5s ease-in-out forwards appear;
-	}
-
-		div#socialLog.not {
-			background-color: transparent;
-			animation: 0.5s ease-in-out forwards disappear;
-		}
-
+	div#socialLog.active,
 	div#macros.active {
-		animation: 0.5s ease-in-out forwards appear;
+		animation: 0.2s ease-in-out forwards appear;
 	}
 
-		div#macros.not {
-			background-color: transparent;
-			animation: 0.5s ease-in-out forwards disappear;
-		}
+	div#userLog.not,
+	div#socialLog.not,
+	div#macros.not {
+		background-color: transparent;
+		animation: 0.2s ease-in-out forwards disappear;
+	}
 
 
 div#socialLog div.log h2.noPostsToday,

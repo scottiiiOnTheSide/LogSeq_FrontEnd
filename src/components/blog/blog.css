@@ -126,7 +126,7 @@ section#POST {
 	overflow: hidden;
 
 	font-family: "Open Sans";
-	background-color: var(--greyscale-background);
+/*	background-color: var(--greyscale-background);*/
 }
 
 	section#POST::before {
@@ -215,7 +215,7 @@ article div#details ul#options li {
 
 section#POST header {
 	top: -2px;
-	background-color: var(--greyscale-background);
+/*	background-color: var(--greyscale-background);*/
 }
 
 section#POST article {

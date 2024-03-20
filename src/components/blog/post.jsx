@@ -126,6 +126,7 @@ export default function Post({
 	const [toggleDetails, openDetails] = React.useReducer(state => !state, false);
 	const [isOptionsOpen, toggleOptions] = React.useReducer(state => !state, false);
 	const [isComment, toggleComment] = React.useReducer(state => !state, false);
+	const [isCollections, toggleCollections] = React.useReducer(state => !state, false);
 	const [messageContent, setMessage] = React.useState('');
 	const [collections, setCollections] = React.useState([]);
 	const [access, setAccess] = React.useState({
@@ -401,7 +402,7 @@ export default function Post({
 				{isOptionsOpen &&
 					<ul id="optionsMenu">
 
-						<li>
+						<li> {/*Comment Button*/}
 							<button className="buttonDefault" onClick={()=> {
 								toggleComment(); 
 								console.log(comments.length)
@@ -413,7 +414,7 @@ export default function Post({
 							}}>Comment</button>
 						</li>
 
-						<li>
+						<li> {/*Bookmark Button*/}
 							<button className="buttonDefault" onClick={(e)=> {
 								e.preventDefault()
 								addToBookmarks()
@@ -423,7 +424,7 @@ export default function Post({
 							}}>Bookmark</button>
 						</li>
 
-						<li>
+						<li> {/*Exit Button*/}
 							<button className="buttonDefault" onClick={(e)=> {
 								e.preventDefault()
 								setTimeout(()=> {
@@ -432,7 +433,7 @@ export default function Post({
 							}}>Exit Post</button>
 						</li> 
 
-						<li>
+						<li> {/* X Button*/}
 							<button className="buttonDefault" onClick={()=> {
 								let optionsMenu = document.getElementById('optionsMenu');
 								optionsMenu.classList.add('leave')
@@ -456,6 +457,10 @@ export default function Post({
 							<button className="buttonDefault" type="submit">Submit</button>
 						</div>
 					</form>
+				}
+				{isCollections &&
+					<div id="collections">
+					</div>
 				}
 			</div>
 			

@@ -4,8 +4,11 @@
 -----------------------------------------------------------------------------------------
 
 
-### 03. 18. 2024
+### 03. 20. 2024
+@0100 Fixed issue with scrolling back to original post in <Log> after returning from <Post>
 
+
+### 03. 18. 2024
 @1655 
 ****To Do Next:
 		- create route option on backEnd posts/checkPost that discerns whether viewed post
@@ -19,6 +22,7 @@
 		selecting a post will add it t the [access] stateVar, which can be seen in <Macros > (will nest
 			down from <Home>)
 ??? other options with <Macros> page???
+		- share & delete for collections
 
 @1610 !!! going back to post in log (scroll to post) after returning from a <Post> is off
 

@@ -103,7 +103,7 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 
 					setCurrent({
 						...current,
-						scrollTo: index + 1
+						scrollTo: id
 					})
 
 					setTimeout(()=> {
@@ -160,8 +160,8 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 				if(current.monthChart == true) {
 					return;
 				} else {
-					let selected = logRefC.children[current.scrollTo];
-					selected.scrollIntoView({behavior: "smooth"});
+					let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
+					post[0].scrollIntoView({behavior: "smooth"});
 				}
 			}	
 		} else {
