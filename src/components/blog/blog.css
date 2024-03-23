@@ -456,6 +456,36 @@ div#optionsBar form div#buttonBox button {
 
 
 
+div#optionsBar ul#collections {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	position: absolute;
+	width: 100%;
+	bottom: 0px;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	z-index: 12;
+	background-color: white;
+	padding: 24px 0;
+}
+
+div#optionsBar ul#collections li {
+	margin: 8px 0;
+}
+
+div#optionsBar ul#collections li:last-child button {
+	margin-bottom: -30px;
+	font-size: 3em;
+}
+
+div#optionsBar ul#collections li button {
+	text-transform: none;
+}
+
+
+
 
 
 

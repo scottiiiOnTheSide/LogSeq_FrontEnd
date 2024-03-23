@@ -4,6 +4,16 @@
 -----------------------------------------------------------------------------------------
 
 
+### 03. 23. 2024
+@0420 in posts/collectionsCheck subroute, filter user's collections by whether current post
+is already within any of them. if so, add 'hasCurrentPost', field to them. can possibly use
+filter then .includes on arrays within each collection
+
+remove bookmarks from collections.map (filter then map)
+use hasCurrentPost field to discern whether bookmark option should appear faded or not,
+ternary in className
+
+
 ### 03. 20. 2024
 @0100 Fixed issue with scrolling back to original post in <Log> after returning from <Post>
 
@@ -15,7 +25,7 @@
 			is already in any of a user's collections
 		- change 'groupPosts' apiaccess func to 'POST' instead of 'GET'
 			(when necessary to delete multiple posts at once, this will be necessary)
-		- have subMenu in <Posts> for other collections
+		- have subMenu in <Posts> for other collections ✅
 			- both BOOKMARKS option and any collection should be faded if post is already within it
 
 !!! Will need to add 'remove' option for posts within <Log>

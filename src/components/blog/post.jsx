@@ -250,6 +250,7 @@ export default function Post({
 
 	let getCollections = async()=> {
 		let collections = await accessAPI.getMacros('collections');
+		collections.shift();
 		setCollections(collections);
 	}
 
@@ -424,6 +425,16 @@ export default function Post({
 							}}>Bookmark</button>
 						</li>
 
+						<li>
+							<button className="buttonDefault" onClick={(e)=> {
+								e.preventDefault();
+								toggleCollections();
+								let delay = setTimeout(()=> {
+									toggleOptions()
+								}, 50);
+							}}>Add to Collection</button>
+						</li>
+
 						<li> {/*Exit Button*/}
 							<button className="buttonDefault" onClick={(e)=> {
 								e.preventDefault()
@@ -459,8 +470,28 @@ export default function Post({
 					</form>
 				}
 				{isCollections &&
-					<div id="collections">
-					</div>
+						<ul id="collections">
+							{collections.map(item => (
+								<li key={item._id}>
+									<button className={`buttonDefault`}>
+										{item.name}
+									</button>
+								</li>
+							))
+							}
+							<li>
+								<button className="buttonDefault" onClick={()=> {
+									// let optionsMenu = document.getElementById('optionsMenu');
+									// optionsMenu.classList.add('leave')
+
+									toggleCollections()
+									let delay = setTimeout(()=> {
+										toggleOptions()
+									}, 50);
+								}}>x</button>
+							</li>
+						</ul>
+
 				}
 			</div>
 			
