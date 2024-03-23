@@ -250,17 +250,41 @@ export default function Post({
 
 	let getCollections = async()=> {
 		let collections = await accessAPI.getMacros('collections');
-		collections.shift();
-		setCollections(collections);
+		let filtered = collections.map(item => {
+            if(item.posts.includes(postID)) {
+                return {
+                	...item,
+                    hasThisPost: true,
+			    }
+            }
+            else {
+            	return {
+                    ...item,
+                    hasThisPost: false
+                }
+            }
+        })
+		setCollections(filtered);
 	}
 
-	let addToBookmarks = ()=> {
+	let addToCollections = (collectionID)=> {
 
 		let body = {
-			groupID: collections[0]._id,
+			groupID: collectionID == undefined ? collections[0]._id : collectionID,
       		postID: postID,
       		type: 'collection',
       		action: 'addToCollection'
+		}
+		setSocketMessage(body);
+	}
+
+	let removeFromCollections = (collectionID) => {
+
+		let body = {
+			groupID: collectionID == undefined ? collections[0]._id : collectionID,
+      		postID: postID,
+      		type: 'collection',
+      		action: 'removeFromCollection'
 		}
 		setSocketMessage(body);
 	}
@@ -395,7 +419,7 @@ export default function Post({
 
 
 			{/* * * 
-					O P T I O N S  B A R  
+					M E N U   
 			* * */}
 			<div id='optionsBar'>
 				<button id="optionsToggle"className="buttonDefault" ref={optionsButton} onClick={toggleOptions}>OPTIONS</button>
@@ -416,12 +440,18 @@ export default function Post({
 						</li>
 
 						<li> {/*Bookmark Button*/}
-							<button className="buttonDefault" onClick={(e)=> {
-								e.preventDefault()
-								addToBookmarks()
-								let delay = setTimeout(()=> {
-									toggleOptions()
-								}, 150);
+							<button className={`buttonDefault ${collections[0].hasThisPost == true ? '_inactive' : ''}`} 
+									onClick={(e)=> {
+										e.preventDefault()
+										if(collections[0].hasThisPost == true) {
+											removeFromCollections()
+										} else {
+											addToCollections()
+										}
+										let delay = setTimeout(()=> {
+											toggleOptions()
+											getCollections()
+										}, 150);
 							}}>Bookmark</button>
 						</li>
 

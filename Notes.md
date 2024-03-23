@@ -5,6 +5,17 @@
 
 
 ### 03. 23. 2024
+
+@1230 moved collectionsCheck to frontEnd. Functionality added for BOOKMARKS, need to add
+			for rest of collection options
+
+*** To Do Next:
+		- functionality to collections options: add, remove, is inactive based on whether collection
+			already has current post
+		- in <Macros > page for collections, menuButton toggles 'delete' option to appear over
+			posts within list...
+				- will have to create div within those li's that only appear upon menuButton being toggled
+
 @0420 in posts/collectionsCheck subroute, filter user's collections by whether current post
 is already within any of them. if so, add 'hasCurrentPost', field to them. can possibly use
 filter then .includes on arrays within each collection
@@ -22,7 +33,7 @@ ternary in className
 @1655 
 ****To Do Next:
 		- create route option on backEnd posts/checkPost that discerns whether viewed post
-			is already in any of a user's collections
+			is already in any of a user's collections ✅
 		- change 'groupPosts' apiaccess func to 'POST' instead of 'GET'
 			(when necessary to delete multiple posts at once, this will be necessary)
 		- have subMenu in <Posts> for other collections ✅
@@ -64,11 +75,11 @@ Roadmap to 1.0A...
 		- make several private posts so that we can create the expand function for
 			the sections... ✅
 		- make seperate note of all the small fixes and changes I've made recently...
-		- create BOOKMARKS collection for user
+		- create BOOKMARKS collection for user ✅
 			- should have a special case on backEnd where deleting BOOKMARKS simply empties it
 			- all users should have BOOKMARKS collection upon signup
-		- adjust details for collections on <Macros >page
-		- add functions for adding to collections on <Post> page
+		- adjust details for collections on <Macros >page ✅
+		- add functions for adding to collections on <Post> page ✅
 
 !!! in <Macros > page for collections, menuButton toggles 'delete' option to appear over
 		posts within list...
@@ -149,7 +160,7 @@ could something equivalent for topics - <Macros > page does api request on load 
 			- functionality for addRemoveRequest button ✅
 			- display posts within macro ✅
 			- postAmount and userAmount should be accurate ✅
-			- display user's collections within <Macros > section
+			- display user's collections within <Macros > section ✅
 			- create a private post, have them be displayed in <Macros > section ✅
 
 Some minor things to note:
@@ -223,7 +234,7 @@ Need to have clicking on a tag or collection trigger the <Home > exit animation.
 To Do Next:
 	- have 'private' button class be dependant on collection.isPrivate ✅
 	- test to ensure Privatize and Delete funcs work ✅
-	- !!! groupPages !!!
+	- !!! groupPages !!! ✅
 
 
 ### 02. 14. 2024

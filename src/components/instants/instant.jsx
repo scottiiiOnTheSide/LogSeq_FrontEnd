@@ -342,6 +342,32 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}
 	}
 
+	let action_removeFromCollection = async(data) => {
+		let request = await accessAPI.groupPosts('removePost', data.groupID, data.postID);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'removedFromCollection',
+				groupName: request.groupName
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -524,6 +550,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if(socketMessage.action == 'addToCollection') {
 			action_addToCollection(socketMessage);
 		}
+		else if(socketMessage.action == 'removeFromCollection') {
+			action_removeFromCollection(socketMessage);
+		}
 
 
 		/*
@@ -669,6 +698,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 				{(message.type == 'confirmation' && message.message == 'addToCollection') &&
 					<p>Post added to {message.groupName}</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'removedFromCollection') &&
+					<p>Post removed from {message.groupName}</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'tagDelete') &&
 					<p>You've removed {message.groupName} from your tags</p>
