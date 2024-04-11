@@ -475,6 +475,10 @@ div#optionsBar ul#collections li {
 	margin: 8px 0;
 }
 
+div#optionsBar ul#collections li:first-child {
+	display: none;
+}
+
 div#optionsBar ul#collections li:last-child button {
 	margin-bottom: -30px;
 	font-size: 3em;

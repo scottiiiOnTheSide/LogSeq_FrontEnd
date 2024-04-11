@@ -4,14 +4,97 @@
 -----------------------------------------------------------------------------------------
 
 
+### 04. 11. 2024
+
+@1640 added submenu options and functionality for Profile option
+
+****To Do Next:
+		- Create html elements for
+			- Profile sub options
+			- Privacy: 3 buttons and underlying text which changes based on option active
+			- Invitation: number count behind text, referral link with user's referral code (click to copy)
+			- Add arrow svg to 'About Project'
+			- Log Out: full page element confirming log out (exclaimation mark within cirle)
+
+****Side Mission:
+		- replace full page components opening and closing animations
+
+@1425 CSS done for layout in <UserSettings>
+
+!!! new format for opening / closing animations.
+		1.) full page components have 'enter' animation by default
+		2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
+		3.) animation speed of 0.2s - close component with setTimeout after 300ms
+
+
+### 04. 09. 2024
+@1700 made skeleton for <UserSettings>. Can open via button in <InteractionsList> and close from
+			within itself
+
+****To Do Next
+		- CSS for elementss
+
+!!! Will need to plan changes to backEnd, including user model and adding routes forr settings
+
+### 03. 27. 2024
+@2115 Last thing necessary for Collections are the page options (delete & share) and the <FullList> component
+			for deleting posts from one
+
+Leaving aside for now . . .
+Now commencing <UserSettings>
+
+Options to be added:
+- profile
+  - userName
+  - profilePicture
+  - bio
+- privacy
+	On:
+		- Only Connections see *fullName*
+		- only connections see *profileDetails*
+		- No subscribers (can be added)
+		- All Posts only visible to connections
+		- Pinned Stuff only visible to connections
+
+	1/2
+		- Only Connections see *fullName*
+		- only connections see *profileDetails*
+		- Subscribers can request
+		- Posts visible to anyone
+		- Pinnned Stuff visible to anyone
+
+	Off
+		- anyone can see *fullName*
+		- anyone can view *profileDetails*
+		- anyone can subscribe
+		- posts visible to anyone
+
+		*profileDetails* includes Posts, Connections and Subscription Count and Lists
+
+- logout
+( About Project & Invitation can be added much later . . .)
+
+
+
+### 03. 24. 2024
+@1000 menuBar to say 'Manage' within collections, 'Delete', 'Delete All', 'Share' to be 
+			options...
+			URL may need have more details in order for it to be shareable...
+
+
 ### 03. 23. 2024
+@1240
+Roadmap to 1.0A...
+- Collections 3/4
+- Styling <ManageConnections>
+- User Profile & Settings
 
 @1230 moved collectionsCheck to frontEnd. Functionality added for BOOKMARKS, need to add
 			for rest of collection options
 
 *** To Do Next:
 		- functionality to collections options: add, remove, is inactive based on whether collection
-			already has current post
+			already has current post ✅
 		- in <Macros > page for collections, menuButton toggles 'delete' option to appear over
 			posts within list...
 				- will have to create div within those li's that only appear upon menuButton being toggled

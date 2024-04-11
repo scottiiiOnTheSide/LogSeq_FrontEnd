@@ -17,18 +17,19 @@ import Calendar from './components/calendar'
 import {UIContextProvider, UIContext} from './UIcontext';
 
 import './Main.css';
-import './components/home/home.css';
+import './components/base/home.css';
 
 /* * * C o m p o n e n t s * * */
 import Entry from './components/entry/entry';
-import Header from './components/home/header';
-import InteractionsList from './components/instants/interactionsList';
-import CarouselNav from './components/home/carouselNav';
-import ButtonBar from './components/home/buttonBar';
+import Header from './components/base/header';
+import InteractionsList from './components/notifs/interactionsList';
+import CarouselNav from './components/base/carouselNav';
+import ButtonBar from './components/base/buttonBar';
 import SectionsWrapper from './components/sections/sectionsWrapper';
 import Macrospage from './components/macros/macros';
 import Post from './components/blog/post';
-import Instant from './components/instants/instant'
+import Instant from './components/notifs/instant';
+import UserSettings from './components/base/userSettings';
 
 /*** Sub Sections ***/
 import { CreatePost } from './components/sections/userLog';
@@ -73,6 +74,7 @@ function Home({
   set_selectedDate
 }) {
   const [notifList, setNotifList] = React.useReducer(state => !state, false);
+  const [userSettings, setUserSettings] = React.useReducer(state => !state, false);
   const isPost = false;
   const [dateInView, set_dateInView] = React.useState({
     month: null,
@@ -103,7 +105,14 @@ function Home({
             setSocketMessage={setSocketMessage}
             socketMessage={socketMessage}
             accessID={accessID}
-            setAccessID={setAccessID}/>
+            setAccessID={setAccessID}
+            setUserSettings={setUserSettings}/>
+        }
+
+        {userSettings &&
+          <UserSettings 
+            setUserSettings={setUserSettings}
+            userSettings={userSettings}/>
         }
 
         <SectionsWrapper current={current} setCurrent={setCurrent} />

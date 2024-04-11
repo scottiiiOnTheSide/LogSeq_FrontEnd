@@ -7,9 +7,9 @@ import bodyParse from '../bodyParse';
 import './blog.css';
 
 /* * * C O M P O N E N T S * * */
-import Header from '../../components/home/header';
-import Instant from '../../components/instants/instant';
-import InteractionsList from '../../components/instants/interactionsList';
+import Header from '../../components/base/header';
+import Instant from '../../components/notifs/instant';
+import InteractionsList from '../../components/notifs/interactionsList';
 
 const accessAPI = APIaccess(); 
 
@@ -501,23 +501,35 @@ export default function Post({
 				}
 				{isCollections &&
 						<ul id="collections">
-							{collections.map(item => (
+							{collections.map((item, index) => (
 								<li key={item._id}>
-									<button className={`buttonDefault`}>
-										{item.name}
+									<button className={`buttonDefault ${collections[index].hasThisPost == true ? '_inactive' : ''}`}
+											onClick={(e)=> {
+
+												e.preventDefault()
+												if(collections[index].hasThisPost == true) {
+													removeFromCollections(item._id)
+												} else {
+													addToCollections(item._id)
+												}
+												let delay = setTimeout(()=> {
+													// toggleOptions()
+													toggleCollections()
+													getCollections()
+												}, 150);
+											}}>{item.name}
 									</button>
 								</li>
 							))
 							}
 							<li>
-								<button className="buttonDefault" onClick={()=> {
-									// let optionsMenu = document.getElementById('optionsMenu');
-									// optionsMenu.classList.add('leave')
+								<button className={`buttonDefault`} 
+										onClick={()=> {
 
-									toggleCollections()
-									let delay = setTimeout(()=> {
-										toggleOptions()
-									}, 50);
+											toggleCollections()
+											let delay = setTimeout(()=> {
+												toggleOptions()
+											}, 50);
 								}}>x</button>
 							</li>
 						</ul>

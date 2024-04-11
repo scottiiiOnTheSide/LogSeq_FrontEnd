@@ -8,26 +8,26 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 
 	const userID = sessionStorage.getItem('userID');
 	const [userTags, setUserTags] = React.useState([
-		{
-			name: 'thisIs',
-			selected: false,
-			id: 1234
-		},
-		{
-			name: 'aListOf',
-			selected: false,
-			id: 5678
-		}, 
-		{
-			name: 'tagsToBe',
-			selected: false,
-			id: 9101
-		},
-		{
-			name: 'deleted',
-			selected: false,
-			id: 1123
-		}
+		// {
+		// 	name: 'thisIs',
+		// 	selected: false,
+		// 	id: 1234
+		// },
+		// {
+		// 	name: 'aListOf',
+		// 	selected: false,
+		// 	id: 5678
+		// }, 
+		// {
+		// 	name: 'tagsToBe',
+		// 	selected: false,
+		// 	id: 9101
+		// },
+		// {
+		// 	name: 'deleted',
+		// 	selected: false,
+		// 	id: 1123
+		// }
 	]) 
 	const [userCollections, setUserCollections] = React.useState([
 		// {

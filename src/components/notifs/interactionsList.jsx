@@ -3,20 +3,20 @@ import {useNavigate} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
 import useAuth from '../../useAuth';
 
-import '../../components/home/home.css';
+import '../../components/base/home.css';
 import './notifs.css';
 
 let accessAPI = APIaccess();
 
 
-export default function InteractionsList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage, accessID, setAccessID }) {
+export default function InteractionsList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage, accessID, setAccessID, setUserSettings}) {
 
 	let [notifs, setNotifs] = React.useState([]);
 	let username = sessionStorage.getItem('userName');
 	let userID = sessionStorage.getItem('userID');
 	let navigate = useNavigate();
 	const { logout } = useAuth();
-	const [confirm, setConfirm] = React.useReducer(state => !state, false);
+	// const [confirm, setConfirm] = React.useReducer(state => !state, false);
 
 	let updateList = async() => {
 		let data = await accessAPI.getInteractions(); 
@@ -35,14 +35,6 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 	    setUnreadCount(count);
 		setNotifs(data);
 	}
-	React.useEffect(()=> {
-		updateList();
-	}, [])
-	React.useEffect(()=> {
-		updateList();
-	}, [socketMessage])
-
-
 	let interact = (arg, ID, username, postID, notif) => {
 
 		/* 
@@ -104,6 +96,15 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 		
 		}
 	}
+	React.useEffect(()=> {
+		updateList();
+	}, [])
+	React.useEffect(()=> {
+		updateList();
+	}, [socketMessage])
+
+
+	
 	let returnNotifType = (notif) => {
 
 		let details
@@ -162,7 +163,6 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 				</div>
 			   </li>
 	}
-
 	let [enter, setEnter] = React.useReducer(state => !state, true)
 	let el = React.useRef();
 	let element = el.current;
@@ -185,7 +185,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 							setEnter();
 							let delay = setTimeout(()=> {
 								setNotifList();
-							}, 400)
+							}, 300)
 				}}>
 					<p>{unreadCount}</p>
 					<span>x</span>
@@ -202,10 +202,12 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 
 			<div id="buttonBar">
 				<button className="buttonDefault">PROFILE</button>
-				<button className="buttonDefault" onClick={setConfirm}>LOGOUT</button>
+				<button className="buttonDefault" onClick={()=> {
+					setUserSettings()
+				}}>SETTINGS</button>
 			</div>
 
-			{confirm &&
+			{/*{confirm &&
 				<div id="logoutConfirm">
 					<h2>Confirm</h2>
 					<p>Are you sure you wish to Log Out?</p>
@@ -224,7 +226,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 						}}>Logout</button>
 					</div>
 				</div>
-			}
+			}*/}
 			
 
 		</div>

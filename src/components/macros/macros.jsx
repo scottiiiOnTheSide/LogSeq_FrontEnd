@@ -8,9 +8,9 @@ import {useNavigate} from 'react-router-dom';
 import './macros.css';
 
 /* * * C O M P O N E N T S * * */
-import Header from '../../components/home/header';
-import Instant from '../../components/instants/instant';
-import InteractionsList from '../../components/instants/interactionsList';
+import Header from '../../components/base/header';
+import Instant from '../../components/notifs/instant';
+import InteractionsList from '../../components/notifs/interactionsList';
 import Log from '../../components/blog/log';
 
 

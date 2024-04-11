@@ -73,6 +73,8 @@ section#MACROS div#pageHeader h2#macroName {
 	text-transform: capitalize;
 
 	margin-top: 24px;
+	max-width: 90%;
+	word-wrap: break-word;
 }
 
 
