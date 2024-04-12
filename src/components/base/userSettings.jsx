@@ -35,7 +35,19 @@ export default function UserSettings({setUserSettings, userSettings }) {
 			invitation: false,
 		}
 	])
+	const [profilePhoto, setProfilePhoto] = React.useState("");
 
+	const handleChange = (event) => {
+ 
+		if(event.target.name == 'image') {
+			setProfilePhoto(URL.createObjectURL(event.target.files[0]));
+		} 
+	}
+
+	const handleSubmit = (event) => {
+
+		//sends necessary data over via socketMessage
+	}
 
 	return (
 		<div id="userSettings" className={`${exit == true ? '_exit' : ''}`}>
@@ -61,7 +73,7 @@ export default function UserSettings({setUserSettings, userSettings }) {
 					}}>Profile</button>
 
 					<ul>
-						<li className={`${section.photo == true ? 'open' : 'close'}`}>
+						<li id="profilePhoto" className={`${section.photo == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
 								if(section.photo) {
@@ -77,9 +89,35 @@ export default function UserSettings({setUserSettings, userSettings }) {
 								}
 							}}>Photo</button>
 
+							<fieldset id="photoAdd">
+								{/*<img src={profilePhoto}/>*/}
+								<div id="photo">
+									<img src={profilePhoto}/>
+									<label className="imageAdd" onChange={handleChange} htmlFor="addProfileImage" onClick={()=> {
+									document.getElementById('addProfileImage').click();
+									}}>
+										<input hidden
+											id={'addProfileImage'} 
+											onChange={handleChange} 
+											type="file" 
+											accept="image/"
+											name='image'
+											hidden />
+										ADD IMAGE
+									</label>
+								</div>
+								
+								
+								<button 
+									id="submitProfilePhoto"
+									className={`buttonDefault`} 
+									onClick={handleSubmit}>
+								SAVE IMAGE</button>
+							</fieldset>
+
 						</li>
 							
-						<li className={`${section.username == true ? 'open' : 'close'}`}>
+						<li id="username" className={`${section.username == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
 								if(section.username) {
@@ -97,7 +135,7 @@ export default function UserSettings({setUserSettings, userSettings }) {
 
 						</li>
 
-						<li className={`${section.biography == true ? 'open' : 'close'}`}>
+						<li id="biography" className={`${section.biography == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
 								if(section.biography) {
@@ -115,7 +153,7 @@ export default function UserSettings({setUserSettings, userSettings }) {
 
 						</li>
 
-						<li className={`${section.changePassword == true ? 'open' : 'close'}`}>
+						<li id="changePassword" className={`${section.changePassword == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
 								if(section.changePassword) {

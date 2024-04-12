@@ -4,13 +4,25 @@
 -----------------------------------------------------------------------------------------
 
 
-### 04. 11. 2024
+### 04. 12. 2024
+@1220 
 
+!!! image upload for profile photo glitches and needs to be selected twice? see if we can fix
+
+!!! Everything in <Macros> section IS in fact blurry. Due to some fixed height somewhere or 
+		something else. find and fix
+
+
+### 04. 11. 2024
 @1640 added submenu options and functionality for Profile option
 
 ****To Do Next:
 		- Create html elements for
 			- Profile sub options
+					- photo ✅
+					- username
+					- biography
+					- change password
 			- Privacy: 3 buttons and underlying text which changes based on option active
 			- Invitation: number count behind text, referral link with user's referral code (click to copy)
 			- Add arrow svg to 'About Project'
