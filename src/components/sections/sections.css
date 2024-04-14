@@ -553,7 +553,7 @@ section#HOME div#manageConnections button#exit {
 
 section#HOME div#macros {
 	width: 100%;
-	overflow-y: scroll;
+/*	overflow-y: scroll;*/
 	padding-bottom: 80px;
 }
 

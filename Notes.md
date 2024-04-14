@@ -4,13 +4,25 @@
 -----------------------------------------------------------------------------------------
 
 
+### 04. 14. 2024
+
+@1440 
+****To Do Next:
+		- active / inactive states for privacy options
+		- Invitation option html/css
+		- Log Out Confimation modal
+
+@1350 
+!!! all forms, when in focus within profile subOption causes blurriness of elements.... 
+		unsure how to fix currently...
+
+
 ### 04. 12. 2024
 @1220 
-
 !!! image upload for profile photo glitches and needs to be selected twice? see if we can fix
 
 !!! Everything in <Macros> section IS in fact blurry. Due to some fixed height somewhere or 
-		something else. find and fix
+		something else. find and fix ✅
 
 
 ### 04. 11. 2024
@@ -18,12 +30,8 @@
 
 ****To Do Next:
 		- Create html elements for
-			- Profile sub options
-					- photo ✅
-					- username
-					- biography
-					- change password
-			- Privacy: 3 buttons and underlying text which changes based on option active
+			- Profile sub options ✅
+			- Privacy: 3 buttons and underlying text which changes based on option active ✅
 			- Invitation: number count behind text, referral link with user's referral code (click to copy)
 			- Add arrow svg to 'About Project'
 			- Log Out: full page element confirming log out (exclaimation mark within cirle)
@@ -72,7 +80,7 @@ Options to be added:
 		- Only Connections see *fullName*
 		- only connections see *profileDetails*
 		- Subscribers can request
-		- Posts visible to anyone
+		- All Posts visible to Subscribers, Connections
 		- Pinnned Stuff visible to anyone
 
 	Off

@@ -487,6 +487,126 @@ div#userSettings ul#mainMenu li#profile ul li#profilePhoto fieldset button#submi
 
 
 
+
+
+div#userSettings ul#mainMenu li#profile ul li#username {}
+
+div#userSettings ul#mainMenu li#profile ul li#username fieldset {
+	border: none;
+	margin: 12px auto 0;
+}
+
+div#userSettings ul#mainMenu li#profile ul li#username fieldset input {
+
+}
+
+div#userSettings ul#mainMenu li#profile ul li#username fieldset button {
+	display: block;
+	margin: 12px auto;
+}
+
+
+
+
+
+
+
+div#userSettings ul#mainMenu li#profile ul li#biography {}
+
+div#userSettings ul#mainMenu li#profile ul li#biography fieldset {
+	border: none;
+	margin: 12px auto 0;
+}
+
+div#userSettings ul#mainMenu li#profile ul li#biography fieldset textarea {
+	
+}
+
+div#userSettings ul#mainMenu li#profile ul li#biography fieldset button {
+	display: block;
+	margin: 12px auto;
+}
+
+
+
+
+
+
+
+div#userSettings ul#mainMenu li#profile ul li#changePassword {}
+
+div#userSettings ul#mainMenu li#profile ul li#changePassword fieldset {
+	border: none;
+	margin: 12px auto 0;
+}
+
+div#userSettings ul#mainMenu li#profile ul li#changePassword fieldset input {
+	margin-bottom: 24px;
+}
+
+div#userSettings ul#mainMenu li#profile ul li#changePassword fieldset button {
+	display: block;
+	margin: 36px auto 0px;
+}
+
+
+
+
+
+
+
+
+
+div#userSettings ul#mainMenu li#privacy {}
+
+
+div#userSettings ul#mainMenu li#privacy div#optionsWrapper {
+	margin: 36px auto 0;
+}
+
+div#userSettings ul#mainMenu li#privacy div#optionsWrapper ul#options {
+	display: flex;
+	width: 90%;
+	flex-direction: row;
+	padding: 0;
+	margin: 0 auto;
+}
+
+div#userSettings ul#mainMenu li#privacy div#optionsWrapper ul#options li {
+	margin: 12px 0;
+}
+
+div#userSettings ul#mainMenu li#privacy div#optionsWrapper ul#options li button {
+	text-align: center;
+	width: 100%;
+}
+
+div#userSettings ul#mainMenu li#privacy div#optionsWrapper p {
+	font-family: 'Raleway';
+	text-align: center;
+	line-height: 28px;
+	white-space: pre-line;
+	color: var(--greyscale-text);
+}
+
+div#userSettings ul#mainMenu li#privacy div#optionsWrapper p span {
+	color: black;
+	font-weight: 600;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 div#userSettings button#closeSettings {
 	font-weight: 600;
 	position: absolute;

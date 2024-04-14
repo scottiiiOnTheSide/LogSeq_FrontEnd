@@ -75,6 +75,30 @@ button.buttonDefault._inactive:active {
 }
 
 
+input.inputDefault,
+textarea.inputDefault {
+	  width: 100%;
+    display: block;
+    margin: 16px 0;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px;
+    background-color: transparent;
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 0.9em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+input.inputDefault:focus,
+textarea.inputDefault:focus {
+	  outline: none;
+    border-bottom-color: var(--greyscale-text);
+}
+
+
 div.log {
 	overflow-y: scroll;
 }

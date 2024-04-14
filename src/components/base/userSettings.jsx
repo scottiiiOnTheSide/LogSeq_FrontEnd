@@ -11,6 +11,7 @@ let accessAPI = APIaccess();
 
 export default function UserSettings({setUserSettings, userSettings }) {
 
+	const username = sessionStorage.getItem('userName');
 	const [exit, setExit] = React.useReducer(state => !state, false)
 	const [section, setSection] = React.useState([
 		{
@@ -35,13 +36,34 @@ export default function UserSettings({setUserSettings, userSettings }) {
 			invitation: false,
 		}
 	])
+	const [changedUsername, setUsername] = React.useState("");
+	const [biography, setBiography] = React.useState("");
+	const [currentPass, setCurrentPass] = React.useState("");
+	const [newPass, setNewPass] = React.useState("");
 	const [profilePhoto, setProfilePhoto] = React.useState("");
+	const [privacyOption, setPrivacyOption] = React.useState("off"); //on, off, half
 
 	const handleChange = (event) => {
  
 		if(event.target.name == 'image') {
 			setProfilePhoto(URL.createObjectURL(event.target.files[0]));
 		} 
+
+		else if(event.target.name == 'username') {
+			setUsername(event.target.value)
+			console.log(event.target.value)
+		}
+
+		else if(event.target.name == 'biography') {
+			setBiography(event.target.value)
+		}
+
+		else if(event.target.name == 'currentPass') {
+			setCurrentPass(event.target.value)
+		}
+		else if(event.target.name == 'newPass') {
+			setNewPass(event.target.value)
+		}
 	}
 
 	const handleSubmit = (event) => {
@@ -94,7 +116,7 @@ export default function UserSettings({setUserSettings, userSettings }) {
 								<div id="photo">
 									<img src={profilePhoto}/>
 									<label className="imageAdd" onChange={handleChange} htmlFor="addProfileImage" onClick={()=> {
-									document.getElementById('addProfileImage').click();
+										document.getElementById('addProfileImage').click();
 									}}>
 										<input hidden
 											id={'addProfileImage'} 
@@ -133,6 +155,19 @@ export default function UserSettings({setUserSettings, userSettings }) {
 								}
 							}}>Username</button>
 
+							<fieldset>
+								<input 
+									className={`inputDefault`}
+									name="username"
+									placeholder={`${username}`}
+									onChange={handleChange} />
+								<button className={`buttonDefault`}
+										onClick={(e)=> {
+											e.preventDefault()
+											// newTag_submit()
+								}}>UPDATE</button>
+							</fieldset>
+
 						</li>
 
 						<li id="biography" className={`${section.biography == true ? 'open' : 'close'}`}>
@@ -151,6 +186,20 @@ export default function UserSettings({setUserSettings, userSettings }) {
 								}
 							}}>Biography</button>
 
+							<fieldset>
+								<textarea
+									rows="4"
+									className={`inputDefault`}
+									name="biography"
+									placeholder="What should the world know about you?"
+									onChange={handleChange}>
+								</textarea>
+								<button className={`buttonDefault`}
+										onClick={(e)=> {
+											e.preventDefault()
+											// newTag_submit()
+								}}>UPDATE</button>
+							</fieldset>
 						</li>
 
 						<li id="changePassword" className={`${section.changePassword == true ? 'open' : 'close'}`}>
@@ -168,12 +217,30 @@ export default function UserSettings({setUserSettings, userSettings }) {
 									})
 								}
 							}}>Change Password</button>
+
+							<fieldset>
+								<input 
+									className={`inputDefault`}
+									name="currentPass"
+									placeholder="Current Password"
+									onChange={handleChange}/>
+								<input 
+									className={`inputDefault`}
+									name="newPass"
+									placeholder="New Password"
+									onChange={handleChange}/>
+								
+								<button className={`buttonDefault`}
+										onClick={(e)=> {
+											e.preventDefault()
+											// newTag_submit()
+								}}>UPDATE</button>
+							</fieldset>
 						</li>
 					</ul>
-
 				</li>
 
-				<li className={`${section.privacy == true ? 'open' : 'close'}`}>
+				<li id="privacy" className={`${section.privacy == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault ${section.privacy == true ? 'open' : 'close'}`} onClick={(e)=> {
 								e.preventDefault()
 								if(section.privacy) {
@@ -188,6 +255,52 @@ export default function UserSettings({setUserSettings, userSettings }) {
 									})
 								}
 					}}>Privacy</button>
+
+					<div id="optionsWrapper">
+						
+						<ul id="options">
+							<li>
+								<button className={`buttonDefault`}>ON</button>	
+							</li>
+							<li>
+								<button className={`buttonDefault`}>1 / 2</button>	
+							</li>
+							<li>
+								<button className={`buttonDefault`}>OFF</button>	
+							</li>
+						</ul>
+
+						{privacyOption == 'on' &&
+							<p>
+								Only Connections see <span>full name</span>{`\n`}
+								Only Connections see <span>Profile Metrics</span>{`\n`}
+								No Subscribers{`\n`} 
+								All Posts visible only to Connections{`\n`}
+								Pinned Posts and Media only visible to Connections
+							</p>
+						}
+						{privacyOption == 'half' &&
+							<p>
+								Only Connections see <span>full name</span>{`\n`}
+								Only Connections, Subscribers see <span>Profile Metrics</span>{`\n`}
+								Subscribers Can Request{`\n`}
+								All Posts visible only to Connections & Subscribers{`\n`}
+								Pinned Posts and Media visible to Everyone
+							</p>
+						}
+						{privacyOption == 'off' &&
+							<p>
+								Everyone can see <span>full name</span>{`\n`}
+								Everyone can see <span>Profile Metrics</span>{`\n`}
+								Subscribers need not Request{`\n`}
+								All Posts visible to Everyone{`\n`}
+								Pinned Posts and Media visible to Everyone
+							</p>
+						}
+
+					</div>
+
+
 				</li>
 
 				<li className={`${section.invitation == true ? 'open' : 'close'}`}>
