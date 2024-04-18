@@ -360,7 +360,7 @@ div#userSettings {
 
 
 
-div#userSettings h2 {
+div#userSettings h2#mainHeader {
 	font-family: 'Raleway';
 	font-size: 2.5em;
     font-weight: 600;
@@ -587,6 +587,8 @@ div#userSettings ul#mainMenu li#privacy div#optionsWrapper p {
 	line-height: 28px;
 	white-space: pre-line;
 	color: var(--greyscale-text);
+	max-width: 90%;
+	margin: 16px auto;
 }
 
 div#userSettings ul#mainMenu li#privacy div#optionsWrapper p span {
@@ -602,6 +604,117 @@ div#userSettings ul#mainMenu li#privacy div#optionsWrapper p span {
 
 
 
+div#userSettings ul#mainMenu li#invites {}
+
+
+div#userSettings ul#mainMenu li#invites div#mainWrapper {
+	margin: 24px auto 0;
+	margin-left: 24px;
+}
+
+div#userSettings ul#mainMenu li#invites div#mainWrapper h3 {
+	font-family: 'Raleway';
+	font-weight: 600;
+}
+
+div#userSettings ul#mainMenu li#invites div#mainWrapper h3 {}
+
+div#userSettings ul#mainMenu li#invites div#mainWrapper h3#inviteCount {
+	margin-left: 12px;
+	position: relative;
+	font-size: 1.5em;
+	color: var(--greyscale-text);
+}
+div#userSettings ul#mainMenu li#invites div#mainWrapper h3#inviteCount span {
+	position: absolute;
+	top: -18px;
+	left: -24px;
+	font-size: 2em;
+	color: var(--greyscale-accent);
+}
+
+div#userSettings ul#mainMenu li#invites div#mainWrapper h3#referralHeader {
+	font-size: 1.25em;
+}
+
+div#userSettings ul#mainMenu li#invites div#mainWrapper button#referralLink {
+	display: block;
+	font-size: 1em;
+/*	text-transform: lowercase;*/
+	width: 90%;
+	padding: 12px;
+	margin: 0 auto;
+
+	font-family: 'Raleway';
+	font-weight: 600;
+	color: var(--greyscale-accent);
+	border: 2px solid var(--greyscale-accent);
+	border-radius: 4px;
+
+}
+
+
+
+
+
+
+
+
+
+div#userSettings div#logoutModal {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	position: relative;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    z-index: 22;
+    transition: all 0.2s ease-in-out;
+    animation: 0.2s ease-in-out forwards _enter
+}
+
+div#userSettings div#logoutModal div#wrapper {
+	/*position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);*/
+}
+
+div#userSettings div#logoutModal div#wrapper span#exclaimation {
+	font-size: 3em;
+	font-weight: 500;
+	color: var(--greyscale-accent);
+
+	width: fit-content;
+	display: block;
+	margin: 0 auto;
+
+	border: 4px solid var(--greyscale-accent);
+	border-radius: 100%;
+	padding: 4px 30px;
+}
+
+
+div#userSettings div#logoutModal div#wrapper h2 {
+	font-family: 'Raleway';
+	font-size: 2.5em;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: var(--greyscale-accent);
+    text-align: center;
+}
+
+div#userSettings div#logoutModal div#wrapper div#options {
+	width: fit-content;
+	margin: 0 auto;
+}
+
+div#userSettings div#logoutModal div#wrapper div#options button {
+	margin: 0 16px;
+}
 
 
 

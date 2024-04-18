@@ -43,6 +43,8 @@ export default function UserSettings({setUserSettings, userSettings }) {
 	const [profilePhoto, setProfilePhoto] = React.useState("");
 	const [privacyOption, setPrivacyOption] = React.useState("off"); //on, off, half
 
+	const [logout, setLogout] = React.useReducer(state => !state, false)
+
 	const handleChange = (event) => {
  
 		if(event.target.name == 'image') {
@@ -69,12 +71,15 @@ export default function UserSettings({setUserSettings, userSettings }) {
 	const handleSubmit = (event) => {
 
 		//sends necessary data over via socketMessage
+		if(event.target.name == 'privacyOn') {
+			console.log('privacy on')
+		}
 	}
 
 	return (
 		<div id="userSettings" className={`${exit == true ? '_exit' : ''}`}>
 			
-			<h2>User Settings</h2>
+			<h2 id="mainHeader">User Settings</h2>
 
 			<ul id="mainMenu">
 				
@@ -260,13 +265,35 @@ export default function UserSettings({setUserSettings, userSettings }) {
 						
 						<ul id="options">
 							<li>
-								<button className={`buttonDefault`}>ON</button>	
+								<button 
+									name="privacyOn"
+									className={`buttonDefault ${privacyOption == 'on' ? '' : '_inactive'}`}
+									onClick={(e)=> {	
+										e.preventDefault()
+										setPrivacyOption("on");
+										handleSubmit(e)
+									}}>
+									ON</button>	
 							</li>
 							<li>
-								<button className={`buttonDefault`}>1 / 2</button>	
+								<button 
+									className={`buttonDefault ${privacyOption == 'half' ? '' : '_inactive'}`}
+									onClick={(e)=> {	
+										e.preventDefault()
+										setPrivacyOption("half");
+										handleSubmit(e)
+									}}>
+									1 / 2</button>	
 							</li>
 							<li>
-								<button className={`buttonDefault`}>OFF</button>	
+								<button 
+									className={`buttonDefault ${privacyOption == 'off' ? '' : '_inactive'}`}
+									onClick={(e)=> {	
+										e.preventDefault()
+										setPrivacyOption("off");
+										handleSubmit(e)
+									}}>
+									OFF</button>	
 							</li>
 						</ul>
 
@@ -299,11 +326,9 @@ export default function UserSettings({setUserSettings, userSettings }) {
 						}
 
 					</div>
-
-
 				</li>
 
-				<li className={`${section.invitation == true ? 'open' : 'close'}`}>
+				<li id="invites" className={`${section.invitation == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault ${section.invitation == true ? 'open' : 'close'}`} onClick={(e)=> {
 								e.preventDefault()
 								if(section.invitation) {
@@ -318,15 +343,38 @@ export default function UserSettings({setUserSettings, userSettings }) {
 									})
 								}
 					}}>Invitation</button>
+
+					<div id="mainWrapper">
+							
+						<h3 id="inviteCount"><span>32</span>Users Invited</h3>
+
+						<h3 id="referralHeader">Referral Link</h3>
+						<button className={`buttonDefault`} id="referralLink">CLICK TO COPY</button>
+					</div>
 				</li>
 
 				<li>
 					<button className={`buttonDefault`}>About Project</button>
 				</li>
 				<li>
-					<button className={`buttonDefault`}>Log Out</button>
+					<button className={`buttonDefault`} onClick={setLogout}>Log Out</button>
 				</li>
 			</ul>
+
+			{logout &&
+				<div id="logoutModal" className={``}>
+						
+					<div id="wrapper">
+						<span id="exclaimation">!</span>
+						<h2>Are you sure you wish to log out?</h2>
+
+						<div id="options">
+							<button className={`buttonDefault`} onClick={setLogout}>Cancel</button>
+							<button className={`buttonDefault`}>Log Out</button>
+						</div>
+						</div>
+				</div>
+			}
 
 			<button id="closeSettings" className={`buttonDefault`} onClick={()=> {
 				setExit()

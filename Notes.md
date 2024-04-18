@@ -4,13 +4,37 @@
 -----------------------------------------------------------------------------------------
 
 
-### 04. 14. 2024
+### 04. 18. 2024
+@0150 Done with logout modal - however, entirity of it is blurry... pls find fix
 
+****To Do Next:
+		- add svg arrow to 'About Project'
+		- plan and add subroute options for userSettings on backEnd
+		- change option opening method so only one is open at a time
+
+****Side Mission:
+		- replace full page components opening and closing animations
+
+
+Additions until 1.0A...
+- ManageConnections CSS 
+- User Profile
+	- fullList
+	- pinning posts and media
+- Editting posts
+	- pinning media
+
+
+### 04. 16. 2024
+@0940 HTML & CSS done for invitation section
+
+
+### 04. 14. 2024
 @1440 
 ****To Do Next:
-		- active / inactive states for privacy options
-		- Invitation option html/css
-		- Log Out Confimation modal
+		- active / inactive states for privacy options ✅
+		- Invitation option html/css ✅
+		- Log Out Confimation modal ✅
 
 @1350 
 !!! all forms, when in focus within profile subOption causes blurriness of elements.... 
@@ -32,9 +56,9 @@
 		- Create html elements for
 			- Profile sub options ✅
 			- Privacy: 3 buttons and underlying text which changes based on option active ✅
-			- Invitation: number count behind text, referral link with user's referral code (click to copy)
+			- Invitation: number count behind text, referral link with user's referral code (click to copy) ✅
 			- Add arrow svg to 'About Project'
-			- Log Out: full page element confirming log out (exclaimation mark within cirle)
+			- Log Out: full page element confirming log out (exclaimation mark within cirle) ✅
 
 ****Side Mission:
 		- replace full page components opening and closing animations
