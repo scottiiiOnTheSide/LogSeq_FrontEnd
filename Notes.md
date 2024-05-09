@@ -4,25 +4,78 @@
 -----------------------------------------------------------------------------------------
 
 
+### 05. 09. 2024
+
+@1510 There was some issue with changing the username back to 'admin' again, but it seemed
+			to have worked regardless
+
+@1235 
+****To Do Next:
+		- finish all backend subroutes for userSettings
+				- profilePhoto ✅
+				- username ✅
+				- biography
+				- changePassword
+				- privacySetting
+		- change option opening method so only one is open at a time
+		- subroute for getting userSetting details
+		- add privacyToggleable to <Posts> model in backEnd
+		- have Social option for Log route filter out isPrivate:true posts
+		- for now, have subroute option for tags filter out posts with privacyToggleable: On
+
+@1055 profilePhoto upload works ( T-T)b 
+
+!!! Make settings option for sending user details,
+		profile photo,
+		bio,
+		privacy,
+		invitation count
+		get info and fill data upon opening user settings 
+
+### 05. 08. 2024
+@1155
+!!! Unable to access images from GCS
+		(05. 09. 2024) For some reason, the old images aren't accessible, yet new uploads are
+		will have to monitor the situation to see when, if, it reoccurs.
+
+!!! Upon deleting a post, clear 'scrollToView' from access global state var
+
+
+### 05. 07. 2024
+@1920 added all necessary parts for 'profilePhoto' option within <UserSettings>
+			however nothing is included in the formData and the backend recieves nothing...
+
+
+### 04. 24. 2024
+@1310 Working on submit function for profilePhoto. Copy functionality from <CreatePost> 
+
+
 ### 04. 18. 2024
-@0150 Done with logout modal - however, entirity of it is blurry... pls find fix
+@0150 Done with logout modal - however, entirity of it is blurry... pls find fix ✅
 
 ****To Do Next:
-		- add svg arrow to 'About Project'
+		- add logout functionality ✅
+		- add svg arrow to 'About Project' ✅
 		- plan and add subroute options for userSettings on backEnd
 		- change option opening method so only one is open at a time
+		- move logoutModal to Main.jsx instead, fixes blurry issue ✅
 
 ****Side Mission:
 		- replace full page components opening and closing animations
 
 
-Additions until 1.0A...
+****Additions until 1.0A...
 - ManageConnections CSS 
 - User Profile
 	- fullList
 	- pinning posts and media
 - Editting posts
 	- pinning media
+
+
+!!! for topics, need to address issue preventing page from opening...
+Will need memoization for homepage...
+All data reloads upon revisiting page
 
 
 ### 04. 16. 2024

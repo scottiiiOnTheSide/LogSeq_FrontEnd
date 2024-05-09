@@ -374,7 +374,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			} else {
 				submission.append('usePostedByDate', true);
 			}	
-			// console.log(submission);
+			console.log(submission);
 			console.log(tags);
 
 			let submit = await accessAPI.createPost(submission);
@@ -447,7 +447,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			}}>
 				<input hidden
 					className={'addImage'} 
-					onChange={handleChange} 
+					// onChange={handleChange} 
 					type="file" 
 					accept="image/"
 					name='image' 

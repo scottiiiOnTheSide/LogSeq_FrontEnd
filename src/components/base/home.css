@@ -143,17 +143,17 @@ section#HOME {
 		}
 	}
 
-	header svg#return polyline {
+	svg#return polyline {
 		fill: rgba(255, 255, 255, 0);
 	    stroke-width: 8px;
 	}
 
-		header svg#return polyline#top {
+		svg#return polyline#top {
 		    stroke: rgba(0, 0, 0, 0.5);
 	/*		stroke: red;*/
 		}
 
-		header svg#return polyline#bottom {
+		svg#return polyline#bottom {
 			stroke: rgba(0, 0, 0, 0.1);
 		}
 
@@ -410,6 +410,17 @@ div#userSettings ul#mainMenu li button {
     letter-spacing: 2px;
 }
 
+div#userSettings ul#mainMenu li button svg {
+	display: inline-block;
+	transform: rotate(180deg);
+	width: 44px;
+	margin-left: 12px;
+	position: relative;
+	top: 2px;
+}
+
+
+
 
 
 div#userSettings ul#mainMenu li#profile ul {
@@ -661,7 +672,7 @@ div#userSettings ul#mainMenu li#invites div#mainWrapper button#referralLink {
 
 
 
-div#userSettings div#logoutModal {
+ div#logoutModal {
 	display: flex;
 	flex-direction: column;
 	justify-content: center;
@@ -676,14 +687,14 @@ div#userSettings div#logoutModal {
     animation: 0.2s ease-in-out forwards _enter
 }
 
-div#userSettings div#logoutModal div#wrapper {
+ div#logoutModal div#wrapper {
 	/*position: absolute;
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);*/
 }
 
-div#userSettings div#logoutModal div#wrapper span#exclaimation {
+ div#logoutModal div#wrapper span#exclaimation {
 	font-size: 3em;
 	font-weight: 500;
 	color: var(--greyscale-accent);
@@ -698,7 +709,7 @@ div#userSettings div#logoutModal div#wrapper span#exclaimation {
 }
 
 
-div#userSettings div#logoutModal div#wrapper h2 {
+ div#logoutModal div#wrapper h2 {
 	font-family: 'Raleway';
 	font-size: 2.5em;
     font-weight: 600;
@@ -707,12 +718,12 @@ div#userSettings div#logoutModal div#wrapper h2 {
     text-align: center;
 }
 
-div#userSettings div#logoutModal div#wrapper div#options {
+ div#logoutModal div#wrapper div#options {
 	width: fit-content;
 	margin: 0 auto;
 }
 
-div#userSettings div#logoutModal div#wrapper div#options button {
+ div#logoutModal div#wrapper div#options button {
 	margin: 0 16px;
 }
 

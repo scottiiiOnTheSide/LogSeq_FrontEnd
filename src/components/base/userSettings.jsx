@@ -9,9 +9,12 @@ let accessAPI = APIaccess();
 
 
 
-export default function UserSettings({setUserSettings, userSettings }) {
+export default function UserSettings({setUserSettings, userSettings, setLogout, setSocketMessage}) {
 
+	let navigate = useNavigate();
+	const { logout } = useAuth();
 	const username = sessionStorage.getItem('userName');
+
 	const [exit, setExit] = React.useReducer(state => !state, false)
 	const [section, setSection] = React.useState([
 		{
@@ -36,24 +39,28 @@ export default function UserSettings({setUserSettings, userSettings }) {
 			invitation: false,
 		}
 	])
-	const [changedUsername, setUsername] = React.useState("");
+	const [changedUsername, setChangedUsername] = React.useState("");
 	const [biography, setBiography] = React.useState("");
 	const [currentPass, setCurrentPass] = React.useState("");
 	const [newPass, setNewPass] = React.useState("");
-	const [profilePhoto, setProfilePhoto] = React.useState("");
+	const [profilePhoto, setProfilePhoto] = React.useState({
+		url: null,
+		content: ''
+	});
 	const [privacyOption, setPrivacyOption] = React.useState("off"); //on, off, half
-
-	const [logout, setLogout] = React.useReducer(state => !state, false)
 
 	const handleChange = (event) => {
  
 		if(event.target.name == 'image') {
-			setProfilePhoto(URL.createObjectURL(event.target.files[0]));
+			setProfilePhoto({
+				url: URL.createObjectURL(event.target.files[0]),
+				content: event.target.files[0]
+			});
 		} 
 
 		else if(event.target.name == 'username') {
-			setUsername(event.target.value)
-			console.log(event.target.value)
+			setChangedUsername(event.target.value)
+			// console.log(event.target.value)
 		}
 
 		else if(event.target.name == 'biography') {
@@ -71,11 +78,39 @@ export default function UserSettings({setUserSettings, userSettings }) {
 	const handleSubmit = (event) => {
 
 		//sends necessary data over via socketMessage
-		if(event.target.name == 'privacyOn') {
+		if(event.target.name == 'photoSubmit') {
+			if(profilePhoto.content == "") {
+				setSocketMessage({
+					type: 'error',
+					message: 'Please upload a photo'
+				})
+			}
+			else {
+				setSocketMessage({
+					content: profilePhoto.content,
+					action: 'profilePhoto'
+				})
+			}
+		}
+
+		else if(event.target.name == 'usernameUpdate') {
+			if(changedUsername == "") {
+				setSocketMessage({
+					type: 'error',
+					message: 'Please enter a new username'
+				})
+			} else {
+				setSocketMessage({
+					action: 'usernameUpdate',
+					newUsername: changedUsername
+				})
+			}
+		}
+
+		else if(event.target.name == 'privacyOn') {
 			console.log('privacy on')
 		}
 	}
-
 	return (
 		<div id="userSettings" className={`${exit == true ? '_exit' : ''}`}>
 			
@@ -83,6 +118,7 @@ export default function UserSettings({setUserSettings, userSettings }) {
 
 			<ul id="mainMenu">
 				
+				{/*P R O F I L E*/}
 				<li id="profile" className={`${section.profile == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
@@ -100,6 +136,7 @@ export default function UserSettings({setUserSettings, userSettings }) {
 					}}>Profile</button>
 
 					<ul>
+						{/*P H O T O*/}
 						<li id="profilePhoto" className={`${section.photo == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
@@ -117,15 +154,14 @@ export default function UserSettings({setUserSettings, userSettings }) {
 							}}>Photo</button>
 
 							<fieldset id="photoAdd">
-								{/*<img src={profilePhoto}/>*/}
 								<div id="photo">
-									<img src={profilePhoto}/>
-									<label className="imageAdd" onChange={handleChange} htmlFor="addProfileImage" onClick={()=> {
+									<img src={profilePhoto.url}/>
+									<label className="imageAdd" onChange={handleChange} htmlFor="addProfileImage"onClick={()=> {
 										document.getElementById('addProfileImage').click();
 									}}>
 										<input hidden
-											id={'addProfileImage'} 
-											onChange={handleChange} 
+											id='addProfileImage'
+											// onChange={handleChange} 
 											type="file" 
 											accept="image/"
 											name='image'
@@ -136,14 +172,15 @@ export default function UserSettings({setUserSettings, userSettings }) {
 								
 								
 								<button 
+									name="photoSubmit"
 									id="submitProfilePhoto"
 									className={`buttonDefault`} 
 									onClick={handleSubmit}>
 								SAVE IMAGE</button>
 							</fieldset>
-
 						</li>
 							
+						{/*U S E R N A M E*/}
 						<li id="username" className={`${section.username == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
@@ -166,11 +203,11 @@ export default function UserSettings({setUserSettings, userSettings }) {
 									name="username"
 									placeholder={`${username}`}
 									onChange={handleChange} />
-								<button className={`buttonDefault`}
-										onClick={(e)=> {
-											e.preventDefault()
-											// newTag_submit()
-								}}>UPDATE</button>
+								<button 
+									name="usernameUpdate"
+									className={`buttonDefault`}
+									onClick={handleSubmit}>
+								UPDATE</button>
 							</fieldset>
 
 						</li>
@@ -354,27 +391,27 @@ export default function UserSettings({setUserSettings, userSettings }) {
 				</li>
 
 				<li>
-					<button className={`buttonDefault`}>About Project</button>
+					<button className={`buttonDefault`}>About Project
+						<svg 
+							xml version="1.0"
+							viewBox="109.21 220.42 140.874 69.937" 
+							xmlns="http://www.w3.org/2000/svg"
+							id="return">
+					  		<polyline 
+					  			id="top"
+					  			points="249.644 250.369 109.21 250.393 159.165 220.42" 
+					  			transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, 0, 1.4210854715202004e-14)"/>
+					  		<polyline 
+					  			id="bottom"
+					  			points="250.084 260.408 109.65 260.384 159.605 290.357" 
+					  			transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, 0, 1.4210854715202004e-14)"/>
+						</svg>
+					</button>
 				</li>
 				<li>
 					<button className={`buttonDefault`} onClick={setLogout}>Log Out</button>
 				</li>
 			</ul>
-
-			{logout &&
-				<div id="logoutModal" className={``}>
-						
-					<div id="wrapper">
-						<span id="exclaimation">!</span>
-						<h2>Are you sure you wish to log out?</h2>
-
-						<div id="options">
-							<button className={`buttonDefault`} onClick={setLogout}>Cancel</button>
-							<button className={`buttonDefault`}>Log Out</button>
-						</div>
-						</div>
-				</div>
-			}
 
 			<button id="closeSettings" className={`buttonDefault`} onClick={()=> {
 				setExit()

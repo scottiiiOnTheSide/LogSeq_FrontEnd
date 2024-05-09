@@ -368,6 +368,81 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}
 	}
 
+	let action_profilePhoto = async(data) => {
+
+		let body = new FormData();
+			body.append('option', 'profile');
+			body.append('type', 'profilePhoto');
+			body.append('photo', data.content)
+		console.log(data.content)
+		console.log(body)
+
+		// let body = {
+		// 	option: 'profile',
+		// 	type: 'profilePhoto',
+		// 	photo: data.content
+		// }
+		console.log(body)
+
+		let request = await accessAPI.userSettings_profilePhoto(body);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'profilePhoto',
+				message: request.message	
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_usernameUpdate = async(data) => {
+
+		let body = {
+			newUsername: data.newUsername,
+			option: 'username'
+		};
+
+		let request = await accessAPI.userSettings(body);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'usernameUpdated',
+				message: request.message	
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+
+			sessionStorage.setItem('userName', data.newUsername);
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -501,14 +576,25 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	/**
 	 * Primary useEffect
 	 * Upon change of 'socketMessage'
-	 * execute a makeNotif function with socketMessage
+	 * execute a make or action function with socketMessage
 	 * 
 	 * 12. 31. 2023
 	 * could probably use switch n case here...
 	 */
 	useEffect(()=> {
 
-		if(socketMessage.action == 'deletePost') {
+		/* U S E R   S E T T I N G S */
+		if(socketMessage.action == 'profilePhoto') {
+			action_profilePhoto(socketMessage);
+		}
+
+		else if(socketMessage.action == 'usernameUpdate') {
+			action_usernameUpdate(socketMessage);
+		}
+
+
+		/* P O S T  O P T I O N S */
+		else if(socketMessage.action == 'deletePost') {
 			setAccessID({
 				remove: socketMessage.postID
 			})
@@ -521,6 +607,8 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 22
 			});
 		}
+
+
 		/* 
 			M A N A G E  M A C R O S  F U N C T I O N S
 		*/
@@ -705,6 +793,15 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				{(message.type == 'confirmation' && message.message == 'tagDelete') &&
 					<p>You've removed {message.groupName} from your tags</p>
 				}
+
+				{(message.type == 'confirmation' && message.label == 'profilePhoto') &&
+					<p>{message.message}</p>
+				}
+
+				{(message.type == 'confirmation' && message.label == 'usernameUpdated') &&
+					<p>{message.message}</p>
+				}
+
 				{message.type == 'error' &&
 					<p>{message.message}</p>
 				}

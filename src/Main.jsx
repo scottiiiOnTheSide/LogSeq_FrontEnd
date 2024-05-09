@@ -1,6 +1,7 @@
 /* * * B a s e  L a y e r * * */
 import React from 'react';
 import ReactDOM from 'react-dom/client';
+import {useNavigate} from 'react-router-dom';
 import {
   Routes,
   Route,
@@ -73,8 +74,12 @@ function Home({
   selectedDate,
   set_selectedDate
 }) {
+
+  const navigate = useNavigate();
+  const { logout } = useAuth();
   const [notifList, setNotifList] = React.useReducer(state => !state, false);
   const [userSettings, setUserSettings] = React.useReducer(state => !state, false);
+  const [isLogout, setLogout] = React.useReducer(state => !state, false);
   const isPost = false;
   const [dateInView, set_dateInView] = React.useState({
     month: null,
@@ -112,7 +117,27 @@ function Home({
         {userSettings &&
           <UserSettings 
             setUserSettings={setUserSettings}
-            userSettings={userSettings}/>
+            userSettings={userSettings}
+            setLogout={setLogout}
+            setSocketMessage={setSocketMessage}/>
+        }
+        {isLogout &&
+          <div id="logoutModal" className={``}>
+            
+            <div id="wrapper">
+              <span id="exclaimation">!</span>
+              <h2>Are you sure you wish to log out?</h2>
+
+              <div id="options">
+                <button className={`buttonDefault`} onClick={setLogout}>Cancel</button>
+                <button className={`buttonDefault`} onClick={async()=> {
+                  await logout().then(()=> {
+                    navigate('/entry');
+                  })
+                }}>Log Out</button>
+              </div>
+              </div>
+          </div>
         }
 
         <SectionsWrapper current={current} setCurrent={setCurrent} />
@@ -221,7 +246,7 @@ export default function Main() {
    */
   React.useEffect(()=> {
     if(authed == true) {
-      setSocketURL(`ws://172.22.20.212:3333/?${userID}`);
+      setSocketURL(`ws://172.30.61.188:3333/?${userID}`);
       getUnreadCount();
     }
   }, [authed])

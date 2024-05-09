@@ -7,7 +7,7 @@
 
 export default function APIaccess(key) {
 
-	const apiAddr = "http://172.22.20.212:3333";
+	const apiAddr = "http://172.30.61.188:3333";
 	let savedKey = sessionStorage.getItem('userKey')
 	// const userKey = savedKey ? savedKey : key;
 
@@ -605,6 +605,47 @@ export default function APIaccess(key) {
 
 				return request;
 			}
+		},
+
+		async userSettings(body) {
+
+			/**
+			 * Necessary Body Values
+			 * option: Profile, Privacy, InvitationCount
+			 * type: username, profilePhoto, bio, changePassword
+			 * 
+			 *
+			 **/
+				let userKey = sessionStorage.getItem('userKey');
+
+				let request = await fetch(`${apiAddr}/users/settings`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+			        	'Content-length': 0,
+			        	'Accept': 'application/json',
+			        	'Host': apiAddr,
+			        	'auth-token': userKey
+					},
+					body: JSON.stringify(body),
+				}).then(data => data.json());
+
+				return request;
+		},
+
+		async userSettings_profilePhoto(body) {
+
+			let userKey = sessionStorage.getItem('userKey');
+
+			let request = await fetch(`${apiAddr}/users/settings`, {
+				method: "POST",
+				headers: {
+					'auth-token': userKey,
+				},
+				body: body,
+			}).then(data => data.json())
+
+			return request;
 		}
 	}
 }
