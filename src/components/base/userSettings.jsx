@@ -49,6 +49,56 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 	});
 	const [privacyOption, setPrivacyOption] = React.useState("off"); //on, off, half
 
+	const openSection = (selection) => {
+		if(selection == 'profile') {
+			if(section.profile) {
+				setSection({
+					...section,
+					profile: false
+				}) 
+			} else {
+				setSection({
+					...section,
+					profile: true,
+					privacy: false,
+					invitation: false
+				})
+			}
+		}
+		else if(selection == 'privacy') {
+			if(section.privacy) {
+				setSection({
+					...section,
+					privacy: false
+				}) 
+			} 
+			else {
+				setSection({
+					...section,
+					privacy: true,
+					profile: false,
+					invitation: false
+				})
+			}
+		} 
+		else if(selection == 'invitation') {
+			if(section.invitation) {
+				setSection({
+					...section,
+					invitation: false
+				}) 
+			} 
+			else {
+				setSection({
+					...section,
+					invitation: true,
+					profile: false,
+					privacy: false
+				})
+			}
+		} 
+	}
+
 	const handleChange = (event) => {
  
 		if(event.target.name == 'image') {
@@ -166,17 +216,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 				<li id="profile" className={`${section.profile == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
-								if(section.profile) {
-									setSection({
-										...section,
-										profile: false
-									}) 
-								} else {
-									setSection({
-										...section,
-										profile: true
-									})
-								}
+								openSection('profile');
 					}}>Profile</button>
 
 					<ul>
@@ -329,17 +369,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 				<li id="privacy" className={`${section.privacy == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault ${section.privacy == true ? 'open' : 'close'}`} onClick={(e)=> {
 								e.preventDefault()
-								if(section.privacy) {
-									setSection({
-										...section,
-										privacy: false
-									}) 
-								} else {
-									setSection({
-										...section,
-										privacy: true
-									})
-								}
+								openSection('privacy');
 					}}>Privacy</button>
 
 					<div id="optionsWrapper">
@@ -407,24 +437,13 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 								Pinned Posts and Media visible to Everyone
 							</p>
 						}
-
 					</div>
 				</li>
 
 				<li id="invites" className={`${section.invitation == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault ${section.invitation == true ? 'open' : 'close'}`} onClick={(e)=> {
 								e.preventDefault()
-								if(section.invitation) {
-									setSection({
-										...section,
-										invitation: false
-									}) 
-								} else {
-									setSection({
-										...section,
-										invitation: true
-									})
-								}
+								openSection('invitation');
 					}}>Invitation</button>
 
 					<div id="mainWrapper">

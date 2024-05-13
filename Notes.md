@@ -4,6 +4,79 @@
 -----------------------------------------------------------------------------------------
 
 
+### 05. 13. 2024
+@1625 I made a mistake saving this Notes file, as a few days worth of notes was missing 
+			after a push. Fortunately, I was able to view an older version of it on the github
+			website and restore some....
+
+
+****To Do Next:
+		- change option opening method so only one is open at a time ✅
+		- subroute for getting userSetting details
+		- have Social option for Log route filter out isPrivate:true posts
+		- for now, have subroute option for tags filter out posts with privacyToggleable: On
+
+****Side Quests:
+		- for topics, need to address issue preventing page from opening...
+			- issue with length variable
+		- Upon deleting a post, clear 'scrollToView' from access global state var
+		- replace full page components opening and closing animations
+				1.) full page components have 'enter' animation by default
+				2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
+				3.) animation speed of 0.2s - close component with setTimeout after 300ms
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+
+Will need memoization for homepage...at some point
+
+****Additions until 1.0A...
+		- ManageConnections CSS 
+		- User Profile
+			- fullList
+			- pinning posts and media
+		- Editting posts
+			- pinning media
+
+
+### 05. 09. 2024
+@1510 There was some issue with changing the username back to 'admin' again, but it seemed
+			to have worked regardless
+
+@1235 
+****To Do Next:
+		- finish all backend subroutes for userSettings
+				- profilePhoto ✅
+				- username ✅
+				- biography ✅
+				- changePassword ✅
+				- privacySetting ✅
+		- change option opening method so only one is open at a time
+		- subroute for getting userSetting details
+		- add privacyToggleable to <Posts> model in backEnd ✅
+		- have Social option for Log route filter out isPrivate:true posts
+		- for now, have subroute option for tags filter out posts with privacyToggleable: On
+
+@1055 profilePhoto upload works ( T-T)b 
+
+!!! Make settings option for sending user details,
+		profile photo,
+		bio,
+		privacy,
+		invitation count
+		get info and fill data upon opening user settings 
+
+### 05. 08. 2024
+@1155
+!!! Unable to access images from GCS
+		(05. 09. 2024) For some reason, the old images aren't accessible, yet new uploads are
+		will have to monitor the situation to see when, if, it reoccurs.
+
+!!! Upon deleting a post, clear 'scrollToView' from access global state var
+
+
+### 05. 07. 2024
+@1920 added all necessary parts for 'profilePhoto' option within <UserSettings>
+			however nothing is included in the formData and the backend recieves nothing...
+
 ### 04. 24. 2024
 @1310 Working on submit function for profilePhoto. Copy functionality from <CreatePostt> 
 

@@ -221,6 +221,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 
 
 	let manageCollections = (name, type, value) => {
+		
 		let newVer = userCollections.map(ele => {
 			if(ele.name == name) {
 
@@ -295,9 +296,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 
 	let privatizeCollection = async(isPrivate, groupID) => {
 
-		console.log(isPrivate)
-		console.log(groupID)
-
 		let body = {
 			isPrivate: isPrivate,
 			groupID: groupID,
@@ -307,7 +305,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 	}
 
 	let deleteCollection = async(groupID) => {
-		console.log('si')
 
 		setSocketMessage({
 			groupID: groupID,
@@ -315,7 +312,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		});
 	}
 	
-	// console.log(socketMessage);
 
 	/* For opening animation */
 	let modal = React.useRef();
