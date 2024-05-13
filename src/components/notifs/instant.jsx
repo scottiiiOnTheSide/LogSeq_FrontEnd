@@ -443,6 +443,92 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}
 	}
 
+	let action_changePassword = async(data) => {
+		let body = {
+			option: 'changePassword',
+			currentPassword: data.currentPassword,
+			newPassword: data.newPassword
+		};
+
+		let request = await accessAPI.userSettings(body);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'passwordUpdated',
+				message: "Password successfully updated"	
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_updateBio = async(data) => {
+
+		let request = await accessAPI.userSettings(data);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'bioUpdated',
+				message: "Biography updated!"	
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_privacySetting = async(data) => {
+
+		let request = await accessAPI.userSettings(data);
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'privacyUpdated',
+				message: `Privacy setting is now ${data.state}` 	
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -590,6 +676,18 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 
 		else if(socketMessage.action == 'usernameUpdate') {
 			action_usernameUpdate(socketMessage);
+		}
+
+		else if(socketMessage.action == 'changePassword') {
+			action_changePassword(socketMessage)
+		}
+
+		else if(socketMessage.action == 'bioUpdate') {
+			action_updateBio(socketMessage)
+		}
+
+		else if(socketMessage.action == 'privacy') {
+			action_privacySetting(socketMessage)
 		}
 
 
@@ -799,6 +897,18 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 
 				{(message.type == 'confirmation' && message.label == 'usernameUpdated') &&
+					<p>{message.message}</p>
+				}
+
+				{(message.type == 'confirmation' && message.label == 'passwordUpdated') &&
+					<p>{message.message}</p>
+				}
+
+				{(message.type == 'confirmation' && message.label == 'bioUpdated') &&
+					<p>{message.message}</p>
+				}
+
+				{(message.type == 'confirmation' && message.label == 'privacyUpdated') &&
 					<p>{message.message}</p>
 				}
 

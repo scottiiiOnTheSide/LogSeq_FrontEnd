@@ -67,7 +67,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 			setBiography(event.target.value)
 		}
 
-		else if(event.target.name == 'currentPass') {
+		else if(event.target.name == 'password') {
 			setCurrentPass(event.target.value)
 		}
 		else if(event.target.name == 'newPass') {
@@ -107,8 +107,52 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 			}
 		}
 
+		else if(event.target.name == 'bioUpdate') {
+			setSocketMessage({
+					action: 'bioUpdate',
+					biography: biography,
+					option: 'biography'
+				})
+		}
+
+		else if(event.target.name == 'changePassword') {
+			if(currentPass == ''|| newPass == '') {
+				setSocketMessage({
+					type: 'error',
+					message: 'One or both of the fields are empty'
+				})
+			}
+			else {
+				setSocketMessage({
+					action: 'changePassword',
+					currentPassword: currentPass,
+					newPassword: newPass
+				})
+			}
+		}
+
 		else if(event.target.name == 'privacyOn') {
-			console.log('privacy on')
+			setSocketMessage({
+				action: 'privacy',
+				option: 'privacy',
+				state: 'On'
+			})
+		}
+
+		else if(event.target.name == 'privacyHalf') {
+			setSocketMessage({
+				action: 'privacy',
+				option: 'privacy',
+				state: 'Half'
+			})
+		}
+
+		else if(event.target.name == 'privacyOff') {
+			setSocketMessage({
+				action: 'privacy',
+				option: 'privacy',
+				state: 'Off'
+			})
 		}
 	}
 	return (
@@ -209,9 +253,9 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 									onClick={handleSubmit}>
 								UPDATE</button>
 							</fieldset>
-
 						</li>
 
+						{/*B I O G R A P H Y*/}
 						<li id="biography" className={`${section.biography == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
@@ -236,14 +280,14 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 									placeholder="What should the world know about you?"
 									onChange={handleChange}>
 								</textarea>
-								<button className={`buttonDefault`}
-										onClick={(e)=> {
-											e.preventDefault()
-											// newTag_submit()
-								}}>UPDATE</button>
+								<button name="bioUpdate"
+										className={`buttonDefault`}
+										onClick={handleSubmit}>
+								UPDATE</button>
 							</fieldset>
 						</li>
 
+						{/*P A S S W O R D*/}
 						<li id="changePassword" className={`${section.changePassword == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
@@ -263,7 +307,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 							<fieldset>
 								<input 
 									className={`inputDefault`}
-									name="currentPass"
+									name="password"
 									placeholder="Current Password"
 									onChange={handleChange}/>
 								<input 
@@ -272,16 +316,16 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 									placeholder="New Password"
 									onChange={handleChange}/>
 								
-								<button className={`buttonDefault`}
-										onClick={(e)=> {
-											e.preventDefault()
-											// newTag_submit()
-								}}>UPDATE</button>
+								<button name="changePassword"	
+										className={`buttonDefault`}
+										onClick={handleSubmit}>
+									UPDATE</button>
 							</fieldset>
 						</li>
 					</ul>
 				</li>
 
+				{/*P R I V A C Y*/}
 				<li id="privacy" className={`${section.privacy == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault ${section.privacy == true ? 'open' : 'close'}`} onClick={(e)=> {
 								e.preventDefault()
@@ -314,6 +358,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 							</li>
 							<li>
 								<button 
+									name="privacyHalf"
 									className={`buttonDefault ${privacyOption == 'half' ? '' : '_inactive'}`}
 									onClick={(e)=> {	
 										e.preventDefault()
@@ -324,6 +369,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 							</li>
 							<li>
 								<button 
+									name="privacyOff"
 									className={`buttonDefault ${privacyOption == 'off' ? '' : '_inactive'}`}
 									onClick={(e)=> {	
 										e.preventDefault()
