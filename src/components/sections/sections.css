@@ -8,7 +8,7 @@ div#sectionsWrapper {
 	display: flex;
 	position: fixed;
 	width: 100%;
-	top: 140px;
+	top: 148px;
 	overflow-y: scroll;
 }
 
@@ -560,9 +560,9 @@ section#HOME div#macros {
 section#HOME div#macros div#userTags, 
 section#HOME div#macros div#privatePosts,
 section#HOME div#macros div#collections {
-	width: 92%;
+	width: 96%;
 	max-height: 400px;
-	margin: 24px 8px 24px auto;
+	margin: 24px auto 24px auto;
 	transition: height ease-in-out 0.2s;
 }
 
@@ -588,23 +588,28 @@ section#HOME div#macros div div.headerWrapper {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	border-bottom: 1px solid var(--greyscale-accent);
+/*	border-bottom: 1px solid var(--greyscale-accent);*/
 }
 
 
 section#HOME div#macros div div.headerWrapper h2 {
 	font-family: "Raleway";
-	font-weight: 400;
+	font-weight: 600;
+	font-size: 2.75em;
 	letter-spacing: 4px;
-	color: var(--greyscale-text);
+	color: var(--greyscale-accent);
 	margin-bottom: 8px;
 }
+
+	section#HOME div#macros div div.headerWrapper h2:first-child {
+		margin-top: 16px;
+	}
 
 
 section#HOME div#macros div div.headerWrapper button {
 	font-size: 0.8em;
-/*	color: var(--greyscale-accent);*/
 	margin-bottom: -16px;
+	padding: 0;
 }
 
 section#HOME div#macros div div.headerWrapper button:hover {
@@ -620,6 +625,8 @@ section#HOME div#macros div#userTags ul.tagsWrapper {
 	flex-wrap: wrap;
 	list-style-type: none;
 	padding-left: 0px;
+	width: 96%;
+	margin-left: auto;
 }
 
 section#HOME div#macros div#userTags ul.tagsWrapper li {
@@ -663,7 +670,7 @@ section#HOME div#macros div#privatePosts ul.postsWrapper {
 }
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li {
-	margin: 20px 0 32px 12px;
+	margin: 20px 0 32px 16px;
 }
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li h4 {
@@ -703,7 +710,7 @@ section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets li {
 
 section#HOME div#macros div#collections ul.collectionsWrapper {
 	list-style-type: none;
-	margin: 20px 8px;
+	margin: 20px 0px 20px 16px;
 	padding: 0;
 }
 

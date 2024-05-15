@@ -749,7 +749,7 @@ export default function Macros({active, current, setCurrent}) {
 
 			<div id="privatePosts" className={`${privatePostsSection == true ? 'open' : 'close'}`}>
 				<div className={`headerWrapper`}>
-					<h2>Private Posts</h2>
+					<h2>PrivatePosts</h2>
 					<button className={`buttonDefault`} onClick={(e)=> {
 						e.preventDefault()
 						togglePrivatePosts()

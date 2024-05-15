@@ -3,6 +3,17 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 05. 15. 2024
+@1515 skeleton created for <FullList>
+
+****Next Tasks
+		- create post with multiple images, then add it to Bookmarks
+		- add menuBar to <Macros> page for collections,
+			add exitButton for tags
+		- fix issue with getting posts for tags,
+			issue at /backEnd/routes/groups.js:177
+
+
 ### 05. 14. 2024
 @2245 Need to test privacy concerning posts with privacyToggleable On and Half in <Macros>
 			tags page
@@ -37,7 +48,8 @@ Will need memoization for homepage...at some point
 		- ManageConnections CSS 
 		- User Profile
 			- fullList
-			- pinning posts and media
+				- pinning posts and media
+				- deleting posts from collections
 		- Editting posts
 			- pinning media
 
