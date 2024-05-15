@@ -14,6 +14,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 	let navigate = useNavigate();
 	const { logout } = useAuth();
 	const username = sessionStorage.getItem('userName');
+	const [currentSettings, setCurrentSettings] = React.useState({});
 
 	const [exit, setExit] = React.useReducer(state => !state, false)
 	const [section, setSection] = React.useState([
@@ -47,7 +48,13 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 		url: null,
 		content: ''
 	});
-	const [privacyOption, setPrivacyOption] = React.useState("off"); //on, off, half
+	const [privacyOption, setPrivacyOption] = React.useState(''); 
+
+	const getUserSettings = async() => {
+		let settings = await accessAPI.userSettings({option: 'getUserSettings'});
+		setCurrentSettings(settings);
+		setPrivacyOption(settings.privacy)
+	}
 
 	const openSection = (selection) => {
 		if(selection == 'profile') {
@@ -205,6 +212,11 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 			})
 		}
 	}
+
+	React.useEffect(()=> {
+		getUserSettings();
+	}, [])
+
 	return (
 		<div id="userSettings" className={`${exit == true ? '_exit' : ''}`}>
 			
@@ -239,7 +251,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 
 							<fieldset id="photoAdd">
 								<div id="photo">
-									<img src={profilePhoto.url}/>
+									<img src={profilePhoto.url == null ? currentSettings.profilePhoto : profilePhoto.url}/>
 									<label className="imageAdd" onChange={handleChange} htmlFor="addProfileImage"onClick={()=> {
 										document.getElementById('addProfileImage').click();
 									}}>
@@ -317,7 +329,8 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 									rows="4"
 									className={`inputDefault`}
 									name="biography"
-									placeholder="What should the world know about you?"
+									placeholder={`${currentSettings.biography == undefined ? 
+										'What should the world know about you?' : currentSettings.biography}`}
 									onChange={handleChange}>
 								</textarea>
 								<button name="bioUpdate"
@@ -378,10 +391,10 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 							<li>
 								<button 
 									name="privacyOn"
-									className={`buttonDefault ${privacyOption == 'on' ? '' : '_inactive'}`}
+									className={`buttonDefault ${privacyOption == 'On' ? '' : '_inactive'}`}
 									onClick={(e)=> {	
 										e.preventDefault()
-										setPrivacyOption("on");
+										setPrivacyOption("On");
 										handleSubmit(e)
 									}}>
 									ON</button>	
@@ -389,10 +402,10 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 							<li>
 								<button 
 									name="privacyHalf"
-									className={`buttonDefault ${privacyOption == 'half' ? '' : '_inactive'}`}
+									className={`buttonDefault ${privacyOption == 'Half' ? '' : '_inactive'}`}
 									onClick={(e)=> {	
 										e.preventDefault()
-										setPrivacyOption("half");
+										setPrivacyOption("Half");
 										handleSubmit(e)
 									}}>
 									1 / 2</button>	
@@ -400,17 +413,17 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 							<li>
 								<button 
 									name="privacyOff"
-									className={`buttonDefault ${privacyOption == 'off' ? '' : '_inactive'}`}
+									className={`buttonDefault ${privacyOption == 'Off' ? '' : '_inactive'}`}
 									onClick={(e)=> {	
 										e.preventDefault()
-										setPrivacyOption("off");
+										setPrivacyOption("Off");
 										handleSubmit(e)
 									}}>
 									OFF</button>	
 							</li>
 						</ul>
 
-						{privacyOption == 'on' &&
+						{privacyOption == 'On' &&
 							<p>
 								Only Connections see <span>full name</span>{`\n`}
 								Only Connections see <span>Profile Metrics</span>{`\n`}
@@ -419,7 +432,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 								Pinned Posts and Media only visible to Connections
 							</p>
 						}
-						{privacyOption == 'half' &&
+						{privacyOption == 'Half' &&
 							<p>
 								Only Connections see <span>full name</span>{`\n`}
 								Only Connections, Subscribers see <span>Profile Metrics</span>{`\n`}
@@ -428,7 +441,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 								Pinned Posts and Media visible to Everyone
 							</p>
 						}
-						{privacyOption == 'off' &&
+						{privacyOption == 'Off' &&
 							<p>
 								Everyone can see <span>full name</span>{`\n`}
 								Everyone can see <span>Profile Metrics</span>{`\n`}
@@ -440,6 +453,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 					</div>
 				</li>
 
+				{/*I N V I T A T I O N*/}
 				<li id="invites" className={`${section.invitation == true ? 'open' : 'close'}`}>
 					<button className={`buttonDefault ${section.invitation == true ? 'open' : 'close'}`} onClick={(e)=> {
 								e.preventDefault()
@@ -448,7 +462,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 
 					<div id="mainWrapper">
 							
-						<h3 id="inviteCount"><span>32</span>Users Invited</h3>
+						<h3 id="inviteCount"><span>{currentSettings.invites}</span>Users Invited</h3>
 
 						<h3 id="referralHeader">Referral Link</h3>
 						<button className={`buttonDefault`} id="referralLink">CLICK TO COPY</button>

@@ -3,6 +3,9 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 05. 14. 2024
+@2245 Need to test privacy concerning posts with privacyToggleable On and Half in <Macros>
+			tags page
 
 ### 05. 13. 2024
 @1625 I made a mistake saving this Notes file, as a few days worth of notes was missing 
@@ -12,9 +15,9 @@
 
 ****To Do Next:
 		- change option opening method so only one is open at a time ✅
-		- subroute for getting userSetting details
-		- have Social option for Log route filter out isPrivate:true posts
-		- for now, have subroute option for tags filter out posts with privacyToggleable: On
+		- subroute for getting userSetting details ✅
+		- have Social option for Log route filter out isPrivate:true posts ✅
+		- for now, have subroute option for tags filter out posts with privacyToggleable: On ✅
 
 ****Side Quests:
 		- for topics, need to address issue preventing page from opening...
@@ -25,6 +28,8 @@
 				2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
 				3.) animation speed of 0.2s - close component with setTimeout after 300ms
 		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+		- set user.isPrivate setting to 'off' on initial create user
+		- add admin account to user connections list on initial create user
 
 Will need memoization for homepage...at some point
 
@@ -183,6 +188,7 @@ Options to be added:
 		- No subscribers (can be added)
 		- All Posts only visible to connections
 		- Pinned Stuff only visible to connections
+		- No posts are public
 
 	1/2
 		- Only Connections see *fullName*
