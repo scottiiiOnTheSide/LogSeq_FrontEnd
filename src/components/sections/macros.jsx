@@ -643,8 +643,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 
 
 
-
-
 export default function Macros({active, current, setCurrent}) {
 
 	const userID = sessionStorage.getItem('userID');

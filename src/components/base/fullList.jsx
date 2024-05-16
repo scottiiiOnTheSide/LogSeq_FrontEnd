@@ -13,10 +13,12 @@ let accessAPI = APIaccess();
 		view,
 		delete,
 		pinMedia
+
+	source: name of whatever data is from (a user's posts, a collection)
 */
 
 
-export default function FullList({ data, mode, source }) {
+export default function FullList({ data, mode, source, setSocketMessage }) {
 
 	/* add 'selected' to data items, then add to dataList */
 	const [dataList, setDataList] = React.useState([]);

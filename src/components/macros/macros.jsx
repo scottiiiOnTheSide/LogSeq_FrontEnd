@@ -68,6 +68,7 @@ export default function Macrospage({
 
 	/* Element Related */
 	const [notifList, setNotifList] = React.useReducer(state => !state, false);
+	const [menu, toggleMenu] = React.useReducer(state => !state, false);
 	let el = React.useRef();
 
 	React.useEffect(()=> {
@@ -124,34 +125,67 @@ export default function Macrospage({
 								}}>{addRemoveRequest}</button>
 					}
 				
-				<h3 id="subHeading">
-					{`${macroInfo.isMacroPrivate == true ? macroInfo.ownerUsername : 'PUBLIC'}`} / {macroInfo.type} /
-				</h3>
+					<h3 id="subHeading">
+						{`${macroInfo.isMacroPrivate == true ? macroInfo.ownerUsername : 'PUBLIC'}`} / {macroInfo.type} /
+					</h3>
 
-				<h2 id="macroName">{macroInfo.name}</h2>
+					<h2 id="macroName">{macroInfo.name}</h2>
 
-				<div id="infoWrapper">
-					<h4 id="postCount">
-						{macroInfo.postCount}
-						<span>Posts</span>
-					</h4>
-
-					{macroInfo.type != 'topic' &&
-						<h4 id="userCount">
-							{macroInfo.userCount}
-							<span>Users Engaged</span>
+					<div id="infoWrapper">
+						<h4 id="postCount">
+							{macroInfo.postCount}
+							<span>Posts</span>
 						</h4>
-					}
-				</div>
-					
-			</div>
 
-			<Log data={postData} 
+						{macroInfo.type != 'topic' &&
+							<h4 id="userCount">
+								{macroInfo.userCount}
+								<span>Users Engaged</span>
+							</h4>
+						}
+					</div>
+					
+				</div>
+
+				<Log data={postData} 
 				 userID={userID} 
 				 noHeading={true} 
 				 current={current} 
 				 setCurrent={setCurrent}
 				 isUnified={true}/>
+			</div>
+
+			<div id="menuBar">
+						
+				{macroInfo.type == 'tag' || macroInfo.type == 'topic' &&
+					<button className="buttonDefault">EXIT</button>
+				}
+				{macroInfo.type == 'collection' &&
+					<button className="buttonDefault" onClick={toggleMenu}>MENU</button>
+				}
+				{menu &&
+					<ul id="menu">
+						<li>
+							<button className="buttonDefault">REMOVE ITEMS</button>
+						</li>
+						<li>
+							<button className="buttonDefault">SHARE</button>
+						</li>
+						<li>
+							<button className="buttonDefault"
+									onClick={(e)=> {
+										e.preventDefault()
+										let menu = document.getElementById('menu');
+										menu.classList.add('leave')
+
+										let delay = setTimeout(()=> {
+											toggleMenu()
+										}, 150);
+									}}>x</button>
+						</li>
+					</ul>
+				}					
+			</div>
 
 			{notifList &&
 	          <InteractionsList 
@@ -171,8 +205,6 @@ export default function Macrospage({
                 setAccessID={setAccessID}
                 getUnreadCount={getUnreadCount}
 			/>
-
-			</div>
 		</section>
 	)
 }

@@ -4,12 +4,20 @@
 -----------------------------------------------------------------------------------------
 
 ### 05. 15. 2024
+@2250 Menu added for <Macros>
+
+@2225 Fixed an issue in <Macros>, where returning after viewing a post messes up page layout
+
+??? is there a way to have page load at scrollTo, rather than scrolling to it?
+
 @1515 skeleton created for <FullList>
 
 ****Next Tasks
+		- have 'Remove Items' toggle opening of <FullList>
+		- css for <FullList>
 		- create post with multiple images, then add it to Bookmarks
-		- add menuBar to <Macros> page for collections,
-			add exitButton for tags
+		- add menuBar & menu <Macros> page for collections ✅
+		-	add exitButton for tags, make functional
 		- fix issue with getting posts for tags,
 			issue at /backEnd/routes/groups.js:177
 

@@ -5,6 +5,10 @@ L o G  &  P o s t
 
 div.log {}
 
+div.log h2.noPostsToday {
+	margin: 48px 0;
+}
+
 div.log h2.noPostsToday,
 div.log span.postDate {
 	display: block;
@@ -12,16 +16,17 @@ div.log span.postDate {
 	font-size: 2.5em;
 	color: var(--greyscale-elements);
 	text-align: right;
+	font-weight: 600;
 }
 
 div.log span.postDate {
-	margin: 30px 0 30px;
+	margin: 16px 0;
 }
 
 
 div.log div.entry {
 	position: relative;
-	margin: 30px 0px;
+	margin: 16px 0px 36px;
 	padding: 20px 0;
 	transition: all ease-in-out 0.3s;
 }
