@@ -12,6 +12,7 @@ import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
 import InteractionsList from '../../components/notifs/interactionsList';
 import Log from '../../components/blog/log';
+import FullList from '../../components/base/fullList';
 
 
 const accessAPI = APIaccess(); 
@@ -69,6 +70,10 @@ export default function Macrospage({
 	/* Element Related */
 	const [notifList, setNotifList] = React.useReducer(state => !state, false);
 	const [menu, toggleMenu] = React.useReducer(state => !state, false);
+	const [fullList, toggleFullList] = React.useReducer(state => !state, false);
+
+	const source = macroInfo.name == 'BOOKMARKS' ? `${macroInfo.ownerUsername}'s ${macroInfo.name}` : macroInfo.name;
+
 	let el = React.useRef();
 
 	React.useEffect(()=> {
@@ -166,7 +171,8 @@ export default function Macrospage({
 				{menu &&
 					<ul id="menu">
 						<li>
-							<button className="buttonDefault">REMOVE ITEMS</button>
+							<button className="buttonDefault" 
+									onClick={toggleFullList}>REMOVE ITEMS</button>
 						</li>
 						<li>
 							<button className="buttonDefault">SHARE</button>
@@ -186,6 +192,14 @@ export default function Macrospage({
 					</ul>
 				}					
 			</div>
+
+			{fullList &&
+				<FullList 
+					mode={'remove'}
+					data={postData}
+					source={source}
+					setFullList={toggleFullList}/>
+			}
 
 			{notifList &&
 	          <InteractionsList 

@@ -3,6 +3,20 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+
+### 05. 16. 2024
+@1555 
+to do next:
+	- remove # needs to count how many items in dataList are selected
+		- could make a use effect to count it everytime dataList changes
+	- functionality for remove # and removeAll
+	- implement <Log> if mode is 'view'
+
+Might have to come up with new way of seeing user's entire log on their page,
+as using <FullList> would require it still being up after user makes a post 
+selection, which it wouldnt be.
+
+
 ### 05. 15. 2024
 @2250 Menu added for <Macros>
 
@@ -13,13 +27,18 @@
 @1515 skeleton created for <FullList>
 
 ****Next Tasks
-		- have 'Remove Items' toggle opening of <FullList>
-		- css for <FullList>
+		- have 'Remove Items' toggle opening of <FullList> ✅
+		- css for <FullList> ✅
 		- create post with multiple images, then add it to Bookmarks
 		- add menuBar & menu <Macros> page for collections ✅
-		-	add exitButton for tags, make functional
+		-	add exitButton for tags, make functional 
 		- fix issue with getting posts for tags,
 			issue at /backEnd/routes/groups.js:177
+		- plan backend api functions for FullList, in <Instants>
+			- removing items from collections
+			- adding posts to user's pinnedPosts
+			- adding media to user's pinnedMedia
+				- pinnedMedia to include link to corresponding post (url and post id)
 
 
 ### 05. 14. 2024

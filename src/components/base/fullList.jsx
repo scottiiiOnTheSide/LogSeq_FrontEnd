@@ -2,6 +2,8 @@ import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import {useNavigate} from 'react-router-dom';
 
+import './home.css';
+
 let accessAPI = APIaccess();
 
 
@@ -11,55 +13,112 @@ let accessAPI = APIaccess();
 
 	modes:
 		view,
-		delete,
+		remove,
 		pinMedia
 
 	source: name of whatever data is from (a user's posts, a collection)
 */
 
 
-export default function FullList({ data, mode, source, setSocketMessage }) {
+export default function FullList({ data, mode, source, setSocketMessage, setFullList }) {
 
 	/* add 'selected' to data items, then add to dataList */
 	const [dataList, setDataList] = React.useState([]);
 	const [selection, setSelection] = React.useState([]);
 
-	return (
-		<div id="fullList">
+	console.log(data)
+
+	React.useEffect(()=> {	
+
+		if(mode == 'remove' || mode == 'view') {
+			let newData = data.map(post => {
+
+				let content;
+				let images = [];
+				post.content.some(piece => {
+					if(piece.type == 'text') {
+						content = piece.content
+					}
+				})
+				post.content.every(piece => {
+					if(piece.type == 'media') {
+						images.push(piece.media)
+					}
+				})
+
+				return {
+					title: post.title,
+					content: content,
+					images: images,
+					selected: false
+				}
+			})
+
+			setDataList(newData);
+		}
+		else if(mode == 'pinMedia') {
+
+			let newData = data.map(media => {
+				return {
+					url: media,
+					selected: false
+				}
+			})
+			setDataList(newData);
+		}
 			
-			<h2>
-				{mode == 'view' &&
-					Viewing
-				}
-				{mode == 'delete' &&
-					Deleting
-				}
-				{mode == 'pinMedia' &&
-					Pinning From
-				}
+	}, [])
+
+	console.log(dataList)
+
+	return (
+		<div id="FullList">
+			
+			<h2 id="title">
+				{`${mode == 'view' ? "Viewing" : '' }`}
+				{`${mode == 'remove' ? "Removing From" : '' }`}
+				{`${mode == 'pinMedia' ? "Pinning From" : '' }`}
+				
 				<span>{source}</span>
 			</h2>
 
 
 			<ul id="dataList">
-				{mode == 'pinMedia' || mode == 'delete' &&
+				{mode == 'pinMedia' || mode == 'remove' &&
 					dataList.map((entry, index) => (
-						<li>
-							<button>
+						<li className={`${entry.selected == true ? 'selected' : ''}`}>
+							<button onClick={()=> {
+
+								let copy = dataList.map(ele => {
+
+									if(ele.title == entry.title && ele.selected != true ) {
+										ele.selected = true;
+										return ele;
+									}
+									else if(ele.title == entry.title && ele.selected == true ) {
+										ele.selected = false;
+										return ele;
+									}
+									else {
+										return ele;
+									}
+								})
+								setDataList(copy)
+							}}>
 								<span className={`bullet ${entry.selected == true ? 'selected' : ''}`}>
 								</span>
 
 								{mode == 'pinMedia' &&
 									<img src={entry.imageURL}/>
 								}
-								{mode == 'delete' &&
+								{mode == 'remove' &&
 									<p>{entry.title}</p>
 								}
 							</button>	
 						</li>
 					))
 				}
-				{mode == 'view' &&
+				{/*{mode == 'view' &&
 					dataList.map(entry => (
 						<li>
 							<h3>{entry.title}</h3>
@@ -74,9 +133,10 @@ export default function FullList({ data, mode, source, setSocketMessage }) {
 									))}
 								</ul>
 							}
-						<li>
+						</li>
 					))
-				}
+				}*/}
+				{/*may have to use log here*/}
 			</ul>
 
 
@@ -84,36 +144,43 @@ export default function FullList({ data, mode, source, setSocketMessage }) {
 				<button>Exit</button>
 			}
 
-			{mode == 'delete' &&
-				<ul class="optionsMenu" id="deleteMenu">
+			{mode == 'remove' &&
+				<ul className="optionsMenu" id="deleteMenu">
 				
 					<li>
-						<button>Delete {selection.length}</button>
+						<button className="buttonDefault">Remove {selection.length}</button>
 					</li>
 					<li>
-						<button>Delete All</button>
+						<button className="buttonDefault">Remove All</button>
 					</li>
 					<li>
-						<button>Exit</button>
+						<button className="buttonDefault"
+								onClick={(e)=> {
+									e.preventDefault()
+									let fullList = document.getElementById('FullList');
+									fullList.classList.add('leave')
+
+									let delay = setTimeout(()=> {
+										setFullList()
+									}, 150);
+								}}>Exit</button>
 					</li>
 				</ul>
 			}
 			{mode == 'pinMedia' &&
-				<ul class="optionsMenu" id="deleteMenu">
+				<ul className="optionsMenu" id="pinningMenu">
 				
 					<li>
-						<button>Pinning {selection.length}</button>
+						<button className="buttonDefault">Pinning {selection.length}</button>
 					</li>
 					<li>
-						<button>Pin All</button>
+						<button className="buttonDefault">Pin All</button>
 					</li>
 					<li>
-						<button>Exit</button>
+						<button className="buttonDefault">Exit</button>
 					</li>
 				</ul>
 			}
-			
-
 		</div>
 	)
 }
