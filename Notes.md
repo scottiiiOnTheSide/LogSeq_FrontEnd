@@ -4,12 +4,25 @@
 -----------------------------------------------------------------------------------------
 
 
+### 05. 17. 2024
+
+@0130 
+	- after removal in <FullList> remove selected items from dataList, empty out selected
+	- after closing <FullList>, update <Macros> page with new group.posts 
+		- use groupPosts api function to update posts, also update post amount
+	- remove 'users engaged' for bookmarks
+	- functionality for removeAll 
+	- implement <Log> if mode is 'view'
+
+@1235 need to adjust groups route for posts/removePost to accomdate multiple ids
+
+
 ### 05. 16. 2024
 @1555 
 to do next:
-	- remove # needs to count how many items in dataList are selected
-		- could make a use effect to count it everytime dataList changes
-	- functionality for remove # and removeAll
+	- remove # needs to count how many items in dataList are selected ✅
+		could make a use effect to count it everytime dataList changes
+	- functionality for remove # ✅
 	- implement <Log> if mode is 'view'
 
 Might have to come up with new way of seeing user's entire log on their page,
@@ -31,7 +44,7 @@ selection, which it wouldnt be.
 		- css for <FullList> ✅
 		- create post with multiple images, then add it to Bookmarks
 		- add menuBar & menu <Macros> page for collections ✅
-		-	add exitButton for tags, make functional 
+		-	add exitButton for tags <Macros> page, make functional 
 		- fix issue with getting posts for tags,
 			issue at /backEnd/routes/groups.js:177
 		- plan backend api functions for FullList, in <Instants>

@@ -463,7 +463,7 @@ export default function APIaccess(key) {
 			return request;
 		},
 
-		async groupPosts(action, groupID, postID) {
+		async groupPosts(body) {
 
 			/***
 			 * Action Types:
@@ -475,17 +475,38 @@ export default function APIaccess(key) {
 			 * postID: 
 			 */
 
-			console.log(action)
+			// console.log(action)
+			// let userKey = sessionStorage.getItem('userKey');
+			// let request = await fetch(`${apiAddr}/groups/posts?action=${action}&groupID=${groupID}&postID=${postID}`, {
+			// 	method: 'GET',
+			// 	headers: {
+			// 		'Content-Type': 'application/json',
+		    //     	'Content-length': 0,
+		    //     	'Accept': 'application/json',
+		    //     	'Host': apiAddr,
+		    //     	'auth-token': userKey
+			// 	}
+			// }).then(data => data.json());
+
+			// return request;
+			// let body = {
+			// 	action: action,
+			// 	groupID: groupID,
+			// 	postID: postID
+			// }
+
+			// console.log(action)
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/groups/posts?action=${action}&groupID=${groupID}&postID=${postID}`, {
-				method: 'GET',
+			let request = await fetch(`${apiAddr}/groups/posts`, {
+				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 		        	'Content-length': 0,
 		        	'Accept': 'application/json',
 		        	'Host': apiAddr,
 		        	'auth-token': userKey
-				}
+				},
+				body: JSON.stringify(body),
 			}).then(data => data.json());
 
 			return request;
@@ -562,45 +583,48 @@ export default function APIaccess(key) {
 
 			if(type == 'tags') {
 
-				let request = await fetch(`${apiAddr}/groups/posts?action=allTagsUsed`, {
-					method: 'GET',
+				let request = await fetch(`${apiAddr}/groups/posts`, {
+					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 			        	'Content-length': 0,
 			        	'Accept': 'application/json',
 			        	'Host': apiAddr,
 			        	'auth-token': userKey
-					}
+					},
+					body: JSON.stringify({action: 'allTagsUsed'})
 				}).then(data => data.json());
 
 				return request;
 			}
 			else if(type == 'private') {
 
-				let request = await fetch(`${apiAddr}/groups/posts?action=getPrivatePosts`, {
-					method: 'GET',
+				let request = await fetch(`${apiAddr}/groups/posts`, {
+					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 			        	'Content-length': 0,
 			        	'Accept': 'application/json',
 			        	'Host': apiAddr,
 			        	'auth-token': userKey
-					}
+					},
+					body: JSON.stringify({action: 'getPrivatePosts'})
 				}).then(data => data.json());
 
 				return request;
 			}
 			else if(type == 'collections') {
 
-				let request = await fetch(`${apiAddr}/groups/posts?action=getCollections`, {
-					method: 'GET',
+				let request = await fetch(`${apiAddr}/groups/posts`, {
+					method: 'POST',
 					headers: {
 						'Content-Type': 'application/json',
 			        	'Content-length': 0,
 			        	'Accept': 'application/json',
 			        	'Host': apiAddr,
 			        	'auth-token': userKey
-					}
+					},
+					body: JSON.stringify({action: 'getCollections'})
 				}).then(data => data.json());
 
 				return request;

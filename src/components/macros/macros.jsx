@@ -172,7 +172,13 @@ export default function Macrospage({
 					<ul id="menu">
 						<li>
 							<button className="buttonDefault" 
-									onClick={toggleFullList}>REMOVE ITEMS</button>
+									onClick={()=> {
+										toggleFullList()
+										let delay = setTimeout(()=> {
+											toggleMenu()	
+										}, 200)
+										
+									}}>REMOVE ITEMS</button>
 						</li>
 						<li>
 							<button className="buttonDefault">SHARE</button>
@@ -198,7 +204,9 @@ export default function Macrospage({
 					mode={'remove'}
 					data={postData}
 					source={source}
-					setFullList={toggleFullList}/>
+					setFullList={toggleFullList}
+					setSocketMessage={setSocketMessage}
+					groupID={macroID}/>
 			}
 
 			{notifList &&

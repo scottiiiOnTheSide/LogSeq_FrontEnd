@@ -343,7 +343,11 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	}
 
 	let action_removeFromCollection = async(data) => {
-		let request = await accessAPI.groupPosts('removePost', data.groupID, data.postID);
+		let request = await accessAPI.groupPosts({
+			action: 'removePost', 
+			groupID: data.groupID, 
+			postID: data.postID
+		});
 
 		if(request.confirmation == true) {
 			setSocketMessage({

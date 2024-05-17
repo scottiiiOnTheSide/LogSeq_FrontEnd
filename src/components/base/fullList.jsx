@@ -20,13 +20,52 @@ let accessAPI = APIaccess();
 */
 
 
-export default function FullList({ data, mode, source, setSocketMessage, setFullList }) {
+export default function FullList({ data, mode, source, setSocketMessage, setFullList, groupID }) {
 
 	/* add 'selected' to data items, then add to dataList */
 	const [dataList, setDataList] = React.useState([]);
 	const [selection, setSelection] = React.useState([]);
 
-	console.log(data)
+	const handleSubmit = (event) => {
+
+		if(event.target.name == 'remove') {
+			if(selection.length == 0) {
+				setSocketMessage({
+					type: 'error',
+					message: 'No items selected'
+				})
+			}
+			else {
+				setSocketMessage({
+					action: 'removeFromCollection',
+					groupID: groupID,
+					postID: selection.map(ele => ele.id)
+				})
+			}
+		}
+
+		else if(event.target.name == 'removeAll') {}
+
+		else if(event.target.name == 'pinMedia') {}
+
+		else if(event.target.name == 'pinAllMedia') {}
+	}
+
+
+	React.useEffect(()=> {
+		let newData = [];
+
+		dataList.map(data => {
+			if(data.selected == true) {
+				newData.push(data);
+			}
+			else {
+				return null;
+			}
+		})
+
+		setSelection(newData);
+	}, [dataList])
 
 	React.useEffect(()=> {	
 
@@ -50,6 +89,7 @@ export default function FullList({ data, mode, source, setSocketMessage, setFull
 					title: post.title,
 					content: content,
 					images: images,
+					id: post._id,
 					selected: false
 				}
 			})
@@ -66,7 +106,6 @@ export default function FullList({ data, mode, source, setSocketMessage, setFull
 			})
 			setDataList(newData);
 		}
-			
 	}, [])
 
 	console.log(dataList)
@@ -103,6 +142,7 @@ export default function FullList({ data, mode, source, setSocketMessage, setFull
 										return ele;
 									}
 								})
+
 								setDataList(copy)
 							}}>
 								<span className={`bullet ${entry.selected == true ? 'selected' : ''}`}>
@@ -148,7 +188,10 @@ export default function FullList({ data, mode, source, setSocketMessage, setFull
 				<ul className="optionsMenu" id="deleteMenu">
 				
 					<li>
-						<button className="buttonDefault">Remove {selection.length}</button>
+						<button 
+								name="remove"
+								className="buttonDefault"
+								onClick={handleSubmit}>Remove {selection.length}</button>
 					</li>
 					<li>
 						<button className="buttonDefault">Remove All</button>
