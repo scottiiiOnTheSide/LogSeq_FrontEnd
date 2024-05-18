@@ -4,27 +4,51 @@
 -----------------------------------------------------------------------------------------
 
 
-### 05. 17. 2024
+### 05. 18. 2024
+@1440 
+To Do Next...
+	- functionality for removeAll
+	- implement <Log> if mode is 'view'
+	- fix issue with getting posts for tags,
+			issue at /backEnd/routes/groups.js:177
+	-	add exitButton for tags <Macros> page, make functional
+	- adding posts to user's pinnedPosts 
+		button to add to menu within posts (only if post owner is current user)
+	- pinMedia option for <FullList> / pinMedia button in <Post>
+			- pinnedMedia to include link to corresponding post (url and post id)
 
+THEN...
+<UserProfile>
+...I may just have user's full log unravel within the <UserProfile> page...
+
+****Side Quests:
+		- for topics, need to address issue preventing page from opening...
+			- issue with length variable
+		- Upon deleting a post, clear 'scrollToView' from access global state var
+		- replace full page components opening and closing animations
+				1.) full page components have 'enter' animation by default
+				2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
+				3.) animation speed of 0.2s - close component with setTimeout after 300ms
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+		- set user.isPrivate setting to 'off' on initial create user
+		- add admin account to user connections list on initial create user
+
+
+
+### 05. 17. 2024
 @0130 
-	- after removal in <FullList> remove selected items from dataList, empty out selected
+	- after removal in <FullList> remove selected items from dataList, empty out selected ✅
 	- after closing <FullList>, update <Macros> page with new group.posts 
-		- use groupPosts api function to update posts, also update post amount
-	- remove 'users engaged' for bookmarks
+		use groupPosts api function to update posts, also update post amount ✅
+	- remove 'users engaged' for bookmarks ✅
 	- functionality for removeAll 
 	- implement <Log> if mode is 'view'
-
-@1235 need to adjust groups route for posts/removePost to accomdate multiple ids
+ 
+@1235 need to adjust groups route for posts/removePost to accomdate multiple ids ✅
 
 
 ### 05. 16. 2024
 @1555 
-to do next:
-	- remove # needs to count how many items in dataList are selected ✅
-		could make a use effect to count it everytime dataList changes
-	- functionality for remove # ✅
-	- implement <Log> if mode is 'view'
-
 Might have to come up with new way of seeing user's entire log on their page,
 as using <FullList> would require it still being up after user makes a post 
 selection, which it wouldnt be.
@@ -42,13 +66,12 @@ selection, which it wouldnt be.
 ****Next Tasks
 		- have 'Remove Items' toggle opening of <FullList> ✅
 		- css for <FullList> ✅
-		- create post with multiple images, then add it to Bookmarks
 		- add menuBar & menu <Macros> page for collections ✅
 		-	add exitButton for tags <Macros> page, make functional 
 		- fix issue with getting posts for tags,
 			issue at /backEnd/routes/groups.js:177
 		- plan backend api functions for FullList, in <Instants>
-			- removing items from collections
+			- removing items from collections ✅
 			- adding posts to user's pinnedPosts
 			- adding media to user's pinnedMedia
 				- pinnedMedia to include link to corresponding post (url and post id)

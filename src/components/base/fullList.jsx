@@ -20,7 +20,7 @@ let accessAPI = APIaccess();
 */
 
 
-export default function FullList({ data, mode, source, setSocketMessage, setFullList, groupID }) {
+export default function FullList({ data, mode, source, setSocketMessage, socketMessage, setFullList, groupID }) {
 
 	/* add 'selected' to data items, then add to dataList */
 	const [dataList, setDataList] = React.useState([]);
@@ -51,7 +51,6 @@ export default function FullList({ data, mode, source, setSocketMessage, setFull
 		else if(event.target.name == 'pinAllMedia') {}
 	}
 
-
 	React.useEffect(()=> {
 		let newData = [];
 
@@ -67,6 +66,15 @@ export default function FullList({ data, mode, source, setSocketMessage, setFull
 		setSelection(newData);
 	}, [dataList])
 
+	React.useEffect(()=> {
+		if(socketMessage.type == 'confirmation' && socketMessage.message == 'removedFromCollection') {
+			let newData = dataList.filter(data => !data.selected);
+			setDataList(newData);
+			setSelection([]);
+		}
+	}, [socketMessage])
+
+	/* For adjusting data before putting in dataList variable */
 	React.useEffect(()=> {	
 
 		if(mode == 'remove' || mode == 'view') {

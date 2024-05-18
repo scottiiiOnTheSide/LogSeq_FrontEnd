@@ -59,23 +59,29 @@ export default function Macrospage({
 
 
 	let removeThyself = async(groupID) => {
-
 	}
 
 	let addThyself = async(groupID) => {
-
 	}
 	
+	let updatePosts = async() => {
+		let posts = await accessAPI.groupPosts({action: 'getPosts', type: 'collection', groupID: macroID});
+		setPostData(posts);
+		setMacroInfo({
+			...macroInfo,
+			postCount: posts.length
+		})
+	}
 
 	/* Element Related */
 	const [notifList, setNotifList] = React.useReducer(state => !state, false);
 	const [menu, toggleMenu] = React.useReducer(state => !state, false);
+	/* For addRemoveRequest Button atop the page */
+	let [addRemoveRequest, set_addRemoveRequest] = React.useState("")
 	const [fullList, toggleFullList] = React.useReducer(state => !state, false);
-
 	const source = macroInfo.name == 'BOOKMARKS' ? `${macroInfo.ownerUsername}'s ${macroInfo.name}` : macroInfo.name;
 
 	let el = React.useRef();
-
 	React.useEffect(()=> {
 		let elCurrent = el.current;
 		let delay = setTimeout(()=> {
@@ -93,10 +99,13 @@ export default function Macrospage({
 		}
 	}, []);
 
-	/* For addRemoveRequest Button atop the page */
-	let [addRemoveRequest, set_addRemoveRequest] = React.useState("")
-	
 
+	// Update posts when fullList is closed
+	React.useEffect(()=> {
+		updatePosts()
+	}, [fullList])
+
+		
 	return (
 		<section id="MACROS" ref={el} className={`_enter`}>
 
@@ -142,7 +151,7 @@ export default function Macrospage({
 							<span>Posts</span>
 						</h4>
 
-						{macroInfo.type != 'topic' &&
+						{(macroInfo.type != 'topic' && macroInfo.name != 'BOOKMARKS') &&
 							<h4 id="userCount">
 								{macroInfo.userCount}
 								<span>Users Engaged</span>
@@ -206,6 +215,7 @@ export default function Macrospage({
 					source={source}
 					setFullList={toggleFullList}
 					setSocketMessage={setSocketMessage}
+					socketMessage={socketMessage}
 					groupID={macroID}/>
 			}
 
