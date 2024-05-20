@@ -56,12 +56,17 @@ section#HOME {
 		z-index: 10;
 	}
 
-	header div#thePresent {
+	/*header div#thePresent {
+		position: relative;
+		top: 4px;
+	}*/
+
+	header div#location {
 		position: relative;
 		top: 4px;
 	}
 
-	header div#thePresent h1 {
+	/*header div#thePresent h1 {
 		font-weight: 600;
 		font-size: 2.75em;
 		letter-spacing: 12px;
@@ -69,6 +74,17 @@ section#HOME {
 
 		margin: 0;
 		position: absolute;
+	}*/
+
+	header div#location h1 {
+		font-weight: 600;
+		font-size: 2.5em;
+		letter-spacing: 6px;
+		color: var(--greyscale-elements);
+
+		margin: 0;
+		position: absolute;
+		text-transform: uppercase;
 	}
 
 	header div#thePresent span {
@@ -127,7 +143,7 @@ section#HOME {
 		position: relative;
 		top: 5px;
 		transition: all 0.3s ease-in-out;
-		margin-right: -60px;
+		margin-right: -240px;
 	}
 
 	header svg#return.leave {
@@ -218,6 +234,7 @@ section#HOME {
 
 		padding: 0 10px;
 		transition: all 0.5s ease;
+		text-transform: uppercase;
 	}
 
 	/* for GROUPS */
@@ -231,14 +248,13 @@ section#HOME {
 	}
 
 		nav ul li.active {
-			font-size: 1.75em;
+			font-size: 1.9em;
 			padding: 0 16px;
-			color: var(--greyscale-accent);
+			color: var(--greyscale-elements);
 		}
 
 		nav ul li.not {
-			font-size: 1.15em;
-			font-size: 1em;
+			font-size: 0.85em;
 			letter-spacing: 4px;
 			color: var(--greyscale-details);
 		}

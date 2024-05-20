@@ -676,7 +676,7 @@ export default function Macros({active, current, setCurrent}) {
 		let postsCount = posts.length;
 
 		let doesHaveAccess;
-		if(tag.hasAccess ) {
+		if(tag.hasAccess) {
 			doesHaveAccess = tag.hasAccess.filter(el => el == userID);
 			doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
 		}
@@ -692,8 +692,8 @@ export default function Macros({active, current, setCurrent}) {
 						hasAccess: doesHaveAccess,
 						ownerUsername: tag.ownerUsername,
 						type: tag.type,
-						userCount: tag.hasAccess.length,
-						postCount: postsCount
+						userCount: tag.hasAccess ? tag.hasAccess.length : null,
+						postCount: postsCount ? postsCount : 0
 					}
 				})
 		}, 300)
@@ -755,36 +755,38 @@ export default function Macros({active, current, setCurrent}) {
 				</div>
 
 				<ul className={`postsWrapper`}>
-					{privatePosts.map(post => {
+					{privatePosts.length > 0 &&
+						privatePosts.map(post => {
 
-						let cmntcount = 0, commentCount;
-						let countComments = (comments) => {
-			
-							for(let cmnt of comments) {
-								cmntcount++;
-								countComments(cmnt.replies)
+							let cmntcount = 0, commentCount;
+							let countComments = (comments) => {
+				
+								for(let cmnt of comments) {
+									cmntcount++;
+									countComments(cmnt.replies)
+								}
+
+								commentCount = cmntcount;
 							}
+							countComments(post.comments)
+							
+							return (
+								<li onClick={()=> {goToPost(post)}}>
+									<h4>{post.postedOn_month}. {post.postedOn_day}. {post.postedOn_year}</h4>
+									<h3>{post.title}</h3>
 
-							commentCount = cmntcount;
-						}
-						countComments(post.comments)
-						
-						return (
-							<li onClick={()=> {goToPost(post)}}>
-								<h4>{post.postedOn_month}. {post.postedOn_day}. {post.postedOn_year}</h4>
-								<h3>{post.title}</h3>
-
-								<ul className={`deets`}>
-									{post.tags.length > 0 &&
-										<li>{post.tags.length} tags</li>
-									}
-									{commentCount > 0 &&
-										<li>{commentCount} comments</li>
-									}
-								</ul>
-							</li>
-						)
-					})}
+									<ul className={`deets`}>
+										{post.tags.length > 0 &&
+											<li>{post.tags.length} tags</li>
+										}
+										{commentCount > 0 &&
+											<li>{commentCount} comments</li>
+										}
+									</ul>
+								</li>
+							)
+						})
+					}
 				</ul>
 
 			</div>
@@ -800,14 +802,16 @@ export default function Macros({active, current, setCurrent}) {
 				</div>
 
 				<ul className={`collectionsWrapper`}>
-					{collections.map(item => {
+					{collections.length > 0 &&
+						collections.map(item => {
 
-						return (
-							<li onClick={()=> {goToMacrosPage(item)}}>
-								{item.name}
-							</li>
-						)
-					})}
+							return (
+								<li onClick={()=> {goToMacrosPage(item)}}>
+									{item.name}
+								</li>
+							)
+						})
+					}
 				</ul>
 			</div>
 			

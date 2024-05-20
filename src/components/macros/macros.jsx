@@ -41,6 +41,7 @@ export default function Macrospage({
 
 	const userID = sessionStorage.getItem('userID');
 	const location = useLocation();
+	const navigate = useNavigate();
 	const [postData, setPostData] = React.useState(location.state.posts);
 	const [macroInfo, setMacroInfo] = React.useState({
 		userHasAccess: location.state.hasAccess, //boolean
@@ -66,11 +67,19 @@ export default function Macrospage({
 	
 	let updatePosts = async() => {
 		let posts = await accessAPI.groupPosts({action: 'getPosts', type: 'collection', groupID: macroID});
-		setPostData(posts);
-		setMacroInfo({
-			...macroInfo,
-			postCount: posts.length
-		})
+		if(posts.length > 1) {
+			setPostData(posts);
+			setMacroInfo({
+				...macroInfo,
+				postCount: posts.length
+			})
+		}
+		else{
+			setMacroInfo({
+				...macroInfo,
+				postCount: 0
+			})
+		}
 	}
 
 	/* Element Related */
@@ -99,7 +108,7 @@ export default function Macrospage({
 		}
 	}, []);
 
-
+	console.log(macroInfo)
 	// Update posts when fullList is closed
 	React.useEffect(()=> {
 		updatePosts()
@@ -109,12 +118,17 @@ export default function Macrospage({
 	return (
 		<section id="MACROS" ref={el} className={`_enter`}>
 
-			<Header cal={cal} isReturnable={true} setNotifList={setNotifList} unreadCount={unreadCount}/>
+			<Header cal={cal} 
+					isReturnable={true} 
+					setNotifList={setNotifList} 
+					unreadCount={unreadCount}
+					siteLocation={'MACROS'}/>
 
 			<div id="mainWrapper">
 				
 				<div id="pageHeader">
-					{macroInfo.type != 'collection' &&
+					
+					{macroInfo.type == 'tag' &&
 						<button className={`buttonDefault`} 
 								id="addRemoveRequest"
 								onClick={()=> {
@@ -171,8 +185,13 @@ export default function Macrospage({
 
 			<div id="menuBar">
 						
-				{macroInfo.type == 'tag' || macroInfo.type == 'topic' &&
-					<button className="buttonDefault">EXIT</button>
+				{(macroInfo.type == 'tag' || macroInfo.type == 'topic') &&
+					<button className="buttonDefault"
+							onClick={()=> {
+								setTimeout(()=> {
+									navigate(-1)
+								}, 300);
+							}}>EXIT</button>
 				}
 				{macroInfo.type == 'collection' &&
 					<button className="buttonDefault" onClick={toggleMenu}>MENU</button>

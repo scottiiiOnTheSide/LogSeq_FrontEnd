@@ -99,7 +99,12 @@ function Home({
 
   return (
     <section id="HOME" ref={el} className={`${enter == true ? '_enter' : ''}`}>  
-        <Header cal={cal} isPost={isPost} setNotifList={setNotifList} unreadCount={unreadCount}/>
+        <Header 
+          cal={cal} 
+          isPost={isPost} 
+          setNotifList={setNotifList} 
+          unreadCount={unreadCount}
+          siteLocation={"home"}/>
         <CarouselNav current={current} setCurrent={setCurrent}/>
 
         {notifList &&

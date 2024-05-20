@@ -36,7 +36,7 @@ function ReturnElement ({}) {
 }
 
 
-export default function Header ({cal, isReturnable, setNotifList, unreadCount}) {
+export default function Header ({cal, isReturnable, setNotifList, unreadCount, siteLocation}) {
 
 	/**
 	 * 09. 18. 2023
@@ -54,11 +54,14 @@ export default function Header ({cal, isReturnable, setNotifList, unreadCount}) 
 				<ReturnElement />
 			}
 			
-			<div id="thePresent">
+			{/*<div id="thePresent">
 				<h1>Today</h1>
 				<span>{cal.currentMonth}</span>
 				<span>{cal.currentDate},</span>
 				<span>{cal.currentYear}</span>
+			</div>*/}
+			<div id="location">
+				<h1>{siteLocation}</h1>
 			</div>
 
 			<button id="interactionsToggle" onClick={setNotifList}>

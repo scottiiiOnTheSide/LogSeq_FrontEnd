@@ -4,14 +4,21 @@
 -----------------------------------------------------------------------------------------
 
 
+### 05. 20. 2024
+@1615 Next up, pinnedPosts and PinnedMedia...
+
+@1500 Would be nice to have a confirmation option for <Instants>
+			perhaps a base function which provides the confirmation prompt,
+			then runs the intended function as a callback
+
+
 ### 05. 18. 2024
 @1440 
 To Do Next...
-	- functionality for removeAll
+	- functionality for removeAll ✅
 	- implement <Log> if mode is 'view'
-	- fix issue with getting posts for tags,
-			issue at /backEnd/routes/groups.js:177
-	-	add exitButton for tags <Macros> page, make functional
+	- fix issue with getting posts for tags ✅
+	-	add exitButton for tags <Macros> page, make functional ✅
 	- adding posts to user's pinnedPosts 
 		button to add to menu within posts (only if post owner is current user)
 	- pinMedia option for <FullList> / pinMedia button in <Post>

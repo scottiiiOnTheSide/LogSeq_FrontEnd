@@ -44,7 +44,13 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 			}
 		}
 
-		else if(event.target.name == 'removeAll') {}
+		else if(event.target.name == 'removeAll') {
+			setSocketMessage({
+					action: 'removeAllFromCollection',
+					groupID: groupID,
+					postID: dataList.map(ele => ele.id)
+				})
+		}
 
 		else if(event.target.name == 'pinMedia') {}
 
@@ -67,10 +73,15 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 	}, [dataList])
 
 	React.useEffect(()=> {
-		if(socketMessage.type == 'confirmation' && socketMessage.message == 'removedFromCollection') {
-			let newData = dataList.filter(data => !data.selected);
-			setDataList(newData);
-			setSelection([]);
+		if(socketMessage.type == 'confirmation') {
+			if (socketMessage.message == 'removedFromCollection') {
+				let newData = dataList.filter(data => !data.selected);
+				setDataList(newData);
+				setSelection([]);
+			}
+			else if(socketMessage.message == 'removedAllFromCollection') {
+				setDataList([]);
+			}
 		}
 	}, [socketMessage])
 
@@ -202,7 +213,9 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 								onClick={handleSubmit}>Remove {selection.length}</button>
 					</li>
 					<li>
-						<button className="buttonDefault">Remove All</button>
+						<button name="removeAll"
+								className="buttonDefault"
+								onClick={handleSubmit}>Remove All</button>
 					</li>
 					<li>
 						<button className="buttonDefault"

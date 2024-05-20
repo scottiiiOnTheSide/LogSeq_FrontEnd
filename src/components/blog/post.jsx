@@ -331,7 +331,11 @@ export default function Post({
 
 	return (
 		<section id="POST" ref={el} className={`${enter == true ? '_enter' : ''}`}>
-			<Header cal={cal} isReturnable={true} setNotifList={setNotifList} unreadCount={unreadCount}/>
+			<Header cal={cal} 
+					isReturnable={true} 
+					setNotifList={setNotifList} 
+					unreadCount={unreadCount}
+					siteLocation={"POST"}/>
 
 			<article>
 

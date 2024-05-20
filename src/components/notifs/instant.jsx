@@ -347,13 +347,27 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	}
 
 	let action_removeFromCollection = async(data) => {
+		console.log(data)
 		let request = await accessAPI.groupPosts({
 			action: 'removePost', 
 			groupID: data.groupID, 
 			postID: data.postID
 		});
 
-		if(request.confirmation == true) {
+		
+
+		if(request.confirmation == true && data.action == 'removeAllFromCollection') {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'removedAllFromCollection',
+				groupName: request.groupName
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.confirmation == true) {
 			setSocketMessage({
 				type: 'confirmation',
 				message: 'removedFromCollection',
@@ -747,6 +761,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if(socketMessage.action == 'removeFromCollection') {
 			action_removeFromCollection(socketMessage);
 		}
+		else if(socketMessage.action == 'removeAllFromCollection') {
+			action_removeFromCollection(socketMessage);
+		}
 
 
 		/*
@@ -895,6 +912,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 				{(message.type == 'confirmation' && message.message == 'removedFromCollection') &&
 					<p>Post removed from {message.groupName}</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'removedAllFromCollection') &&
+					<p>All posts removed {message.groupName}</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'tagDelete') &&
 					<p>You've removed {message.groupName} from your tags</p>

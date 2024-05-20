@@ -392,10 +392,10 @@ div#monthChart h2#noPosts {
 
 div#monthChart div.log {
 	width: 96%;
-	margin: -60px auto 0;
+	margin: 20px auto 0;
 }
 
 div#monthChart div.log div.entry {
-	margin-top: 40px;
+	margin-top: 20px;
 }
 

@@ -173,9 +173,9 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 
 	return (
 		<div className={"log"} ref={logRef}>
-			{((ifAnyPostsFromToday(log) !== true) && noHeading == false) &&
+			{/*{((ifAnyPostsFromToday(log) !== true) && noHeading == false) &&
 				<h2 className="noPostsToday">No Posts Today</h2>
-			}
+			}*/}
 			{(data && data.length > 0) &&
 				log.map((post, index) => returnPostItem(post, index, _id))
 			}
