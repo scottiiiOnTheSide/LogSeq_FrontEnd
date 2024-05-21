@@ -474,28 +474,6 @@ export default function APIaccess(key) {
 			 * name: groupName,
 			 * postID: 
 			 */
-
-			// console.log(action)
-			// let userKey = sessionStorage.getItem('userKey');
-			// let request = await fetch(`${apiAddr}/groups/posts?action=${action}&groupID=${groupID}&postID=${postID}`, {
-			// 	method: 'GET',
-			// 	headers: {
-			// 		'Content-Type': 'application/json',
-		    //     	'Content-length': 0,
-		    //     	'Accept': 'application/json',
-		    //     	'Host': apiAddr,
-		    //     	'auth-token': userKey
-			// 	}
-			// }).then(data => data.json());
-
-			// return request;
-			// let body = {
-			// 	action: action,
-			// 	groupID: groupID,
-			// 	postID: postID
-			// }
-
-			// console.log(action)
 			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/posts`, {
 				method: 'POST',

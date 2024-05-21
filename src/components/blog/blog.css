@@ -27,11 +27,18 @@ div.log span.postDate {
 div.log div.entry {
 	position: relative;
 	margin: 16px 0px 36px;
-	padding: 20px 0;
-	transition: all ease-in-out 0.3s;
+	padding: 20px 8px;
+	transition: all ease-in-out 0.5s;
 }
 
-div.shiftLeft {
+div.log div.entry:hover {
+	background-color: rgba(112, 112, 112, 0.05);
+	transform: scale(1.05);
+/*	box-sizing: border-box;*/
+/*	padding: 12px;*/
+}
+
+/*div.shiftLeft {
 	animation: shiftLeft ease-in-out forwards 0.2s;
 }
 
@@ -42,7 +49,7 @@ div.shiftLeft {
 		100% {
 			left: 100px;
 		}
-	}
+	}*/
 
 div.log div.entry:first-child {
 	margin-top: 40px;

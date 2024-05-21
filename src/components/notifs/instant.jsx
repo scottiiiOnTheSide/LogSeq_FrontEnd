@@ -824,6 +824,12 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				type: 1
 			});
 		}
+		else if(socketMessage.type == 'simpleNotif') {
+			setActive({
+				state: true,
+				type: 1
+			});
+		}
 	}, [socketMessage]);
 
 	
@@ -941,6 +947,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 
 				{message.type == 'error' &&
+					<p>{message.message}</p>
+				}
+				{message.type == 'simpleNotif' &&
 					<p>{message.message}</p>
 				}
 				{(message.type == 'response' && message.message == 'alreadyExists') &&

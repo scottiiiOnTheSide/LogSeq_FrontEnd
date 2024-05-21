@@ -4,6 +4,13 @@
 -----------------------------------------------------------------------------------------
 
 
+### 05. 21. 2024
+@1630 had an issue with the scrollTo function within <SocialLog>. Added fix where it wont
+			run if Log has under 3 posts, but need to test to determine whether it fixes the issue.
+
+Up Next: pinMedia
+
+
 ### 05. 20. 2024
 @1615 Next up, pinnedPosts and PinnedMedia...
 
@@ -19,8 +26,7 @@ To Do Next...
 	- implement <Log> if mode is 'view'
 	- fix issue with getting posts for tags ✅
 	-	add exitButton for tags <Macros> page, make functional ✅
-	- adding posts to user's pinnedPosts 
-		button to add to menu within posts (only if post owner is current user)
+	- adding posts to user's pinnedPosts ✅
 	- pinMedia option for <FullList> / pinMedia button in <Post>
 			- pinnedMedia to include link to corresponding post (url and post id)
 

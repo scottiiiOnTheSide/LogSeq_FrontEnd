@@ -644,7 +644,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 
 
-export default function UserLog({active, setModal, modal, setSocial, setCurrent, current}) {
+export default function UserLog({active, setCurrent, current}) {
 
 	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
 	let [log, setLog] = React.useState([]);
@@ -660,6 +660,7 @@ export default function UserLog({active, setModal, modal, setSocial, setCurrent,
 		let data = await accessAPI.pullUserLog();
 		setLog(data);
 	} 
+
 	React.useEffect(()=> {
 		updateLog();
 		setCurrent({
@@ -667,6 +668,7 @@ export default function UserLog({active, setModal, modal, setSocial, setCurrent,
 			social: false
 		})
 	}, [])
+
 	React.useEffect(()=> {
 		updateLog();
 	}, [current.modal])

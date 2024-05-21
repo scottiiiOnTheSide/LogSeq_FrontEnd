@@ -40,12 +40,13 @@ export default function Post({
 	setUnreadCount,
 	getUnreadCount
 }) {
-	let { postID } = useParams();
-	let	location = useLocation();
-	let navigate = useNavigate();
-	let [postData, setPostData] = React.useState(location.state.post);
-	let [comments, setComments] = React.useState([]);
-	let [commentCount, setCommentCount] = React.useState('');
+	const userID = sessionStorage.getItem('userID');
+	const { postID } = useParams();
+	const	location = useLocation();
+	const navigate = useNavigate();
+	const [postData, setPostData] = React.useState(location.state.post);
+	const [comments, setComments] = React.useState([]);
+	const [commentCount, setCommentCount] = React.useState('');
 	// let commentCount;
 
 	let cmntcount = 0;
@@ -79,6 +80,7 @@ export default function Post({
 	***/
 	React.useEffect(()=> {
 		getPost();
+		pinPost('check')
 	}, [])
 
 
@@ -98,8 +100,6 @@ export default function Post({
 			AoP = 'am';
 		}
 		let timeStamp = hour+ ":" +minute+ " " +AoP;
-
-		let userID = sessionStorage.getItem('userID');
 		let userName = sessionStorage.getItem('userName');
 		let isOwner = postData.owner == userID ? true : false;
 
@@ -129,6 +129,7 @@ export default function Post({
 	const [isCollections, toggleCollections] = React.useReducer(state => !state, false);
 	const [messageContent, setMessage] = React.useState('');
 	const [collections, setCollections] = React.useState([]);
+	const [pinnedPost, setPinnedPost] = React.useState('');
 	const [access, setAccess] = React.useState({
 		type: null, //"initial" or "response"
 		commentID: null, 
@@ -288,7 +289,54 @@ export default function Post({
 		}
 		setSocketMessage(body);
 	}
-	console.log(collections)
+
+	let pinPost = async(condition) => {
+
+		if(condition == 'check') {
+
+			// run api request checking whether postID is within user's pinnedPosts array
+			let request = await accessAPI.userSettings({
+				option: 'pinnedPosts',
+				type: 'check',
+				postID: postID
+			}).then(data => {
+				if(data.confirmation == true) {
+					setPinnedPost('true')
+				}
+			})
+		}
+		else if(condition == 'add') {
+
+			let request = await accessAPI.userSettings({
+				option: 'pinnedPosts',
+				type: 'add',
+				postID: postID
+			});
+
+			if(request.confirmation == true) {
+				setPinnedPost('true');
+				setSocketMessage({
+					type: 'simpleNotif',
+					message: 'Post added to Pinned Posts'
+				})
+			}
+		}
+		else if(condition == 'remove') {
+			let request = await accessAPI.userSettings({
+				option: 'pinnedPosts',
+				type: 'remove',
+				postID: postID
+			});
+
+			if(request.confirmation == true) {
+				setPinnedPost('false')
+				setSocketMessage({
+					type: 'simpleNotif',
+					message: 'Post removed from Pinned Posts'
+				})
+			}
+		}
+	}
 
 	/*
 		If user visits page via notif concerning comment
@@ -416,7 +464,6 @@ export default function Post({
 							createComment(comment)
 						))}
 					</ul>
-
 				</div>
 			</article>
 
@@ -459,7 +506,7 @@ export default function Post({
 							}}>Bookmark</button>
 						</li>
 
-						<li>
+						<li>{/*Add to Collections Button*/}
 							<button className="buttonDefault" onClick={(e)=> {
 								e.preventDefault();
 								toggleCollections();
@@ -468,6 +515,26 @@ export default function Post({
 								}, 50);
 							}}>Add to Collection</button>
 						</li>
+
+						{isOwner &&
+							<li>{/*Pin Post Button*/}
+								<button className={`buttonDefault ${pinnedPost == 'true' ? '_inactive' : ''}`}  onClick={(e)=> {
+									e.preventDefault();
+									
+									if(pinnedPost == 'true') {
+										pinPost('remove');
+										setPinnedPost('false');
+									} else {
+										pinPost('add');
+										setPinnedPost('true');
+									}
+
+									let delay = setTimeout(()=> {
+										toggleOptions()
+									}, 50);
+								}}>Pin Post</button>
+							</li>
+						}
 
 						<li> {/*Exit Button*/}
 							<button className="buttonDefault" onClick={(e)=> {

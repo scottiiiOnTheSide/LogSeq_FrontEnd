@@ -19,22 +19,22 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 
 	// let [unison, setUnison] = React.useState(isUnified);
 
-	function ifAnyPostsFromToday (posts) {
-		let fromToday,
-			today = new Date().getDate(),
-			month = new Date().getMonth();
+	// function ifAnyPostsFromToday (posts) {
+	// 	let fromToday,
+	// 		today = new Date().getDate(),
+	// 		month = new Date().getMonth();
 
-		for(let i = 0; i < posts.length; i++) {
-			if(posts[i].postedOn_day == today && posts[i].postedOn_month == month) {
-				fromToday = true;
-				break;
-			} else {
-				fromToday = false;
-			}
-		}
+	// 	for(let i = 0; i < posts.length; i++) {
+	// 		if(posts[i].postedOn_day == today && posts[i].postedOn_month == month) {
+	// 			fromToday = true;
+	// 			break;
+	// 		} else {
+	// 			fromToday = false;
+	// 		}
+	// 	}
 
-		return fromToday;
-	}
+	// 	return fromToday;
+	// }
 
 	function returnPostItem (post, index, userID) {
 
@@ -94,11 +94,7 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 					<span className="postDate">{month + 1} . {day} . {year}</span>
 				}
 				<div className={`entry ${rightAlign == true ? 'right' : ''}`} id={id} key={post._id} onClick={()=> {
-					
-					let thisEntry = document.getElementById(id);
-					thisEntry.classList.add('shiftLeft');
-					console.log(thisEntry);
-
+				
 					console.log(post)
 
 					setCurrent({
@@ -155,13 +151,20 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 	React.useEffect(()=> {
 		if(isMounted.current) {
 			let logRefC = logRef.current;
+			let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
 
 			if(current.scrollTo) {
+				console.log(post.length)
 				if(current.monthChart == true) {
 					return;
-				} else {
-					let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
+				}
+				else if(post.length < 3) {
+					return;
+				} 
+				else {
+					// let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
 					post[0].scrollIntoView({behavior: "smooth"});
+					console.log(post[0]);
 				}
 			}	
 		} else {
@@ -170,6 +173,8 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 			}
 		}
 	}, [log])
+
+	console.log(current)
 
 	return (
 		<div className={"log"} ref={logRef}>

@@ -67,7 +67,7 @@ export default function Macrospage({
 	
 	let updatePosts = async() => {
 		let posts = await accessAPI.groupPosts({action: 'getPosts', type: 'collection', groupID: macroID});
-		if(posts.length > 1) {
+		if(posts.length > 0) {
 			setPostData(posts);
 			setMacroInfo({
 				...macroInfo,
