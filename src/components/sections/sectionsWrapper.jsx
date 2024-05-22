@@ -22,12 +22,19 @@ export default function SectionsWrapper({current, setCurrent}) {
 	let prePanes = {
 		groups: false, //0
 		socialLog: false, //1
-		userLog: true, //2
+		userLog: false, //2
 		macros: false, //3
 		home: false //4
 	}
-	let [panes, setPanes] = React.useState(prePanes);
-	let [active, setActive] = React.useState(); 
+	// let prePanes = {};
+	let [panes, setPanes] = React.useState({
+		groups: current.section == 0 ? true : false, //0
+		socialLog: current.section == 1 ? true : false, //1
+		userLog: current.section == 2 ? true : false, //2
+		macros: current.section == 3 ? true : false, //3
+		home: current.section == 4 ? true : false
+	});
+	let [active, setActive] = React.useState(current.section); 
 	let currentSection = current.section;
 	// when is number corresponding to section, said section is active
 	// switch to null for no active classes
@@ -43,6 +50,10 @@ export default function SectionsWrapper({current, setCurrent}) {
 	 * set state object for currentSection to true,
 	 * change active state var to number of currentSection;
 	 */
+
+	console.log(currentSection);
+	console.log(panes)
+	console.log(active)
 
 	React.useEffect(()=> {
 

@@ -95,7 +95,20 @@ function Home({
     if(element) {
       setEnter();
     }
-  }, [element])
+  }, [element]);
+
+  // let initialLogin = React.useRef(true);
+  // // React.useEffect(()=> {
+  //   if(initialLogin == true) {
+  //     setCurrent({
+  //       ...current,
+  //       section: 2
+  //     })
+  //     initialLogin(false);
+  //   }
+  // }, [])
+
+
 
   return (
     <section id="HOME" ref={el} className={`${enter == true ? '_enter' : ''}`}>  
@@ -358,7 +371,7 @@ export default function Main() {
   
   const cal = Calendar();
   const [current, setCurrent] = React.useState({
-    section: 2, //0, 1, 2, 3, 4
+    section: null, //0, 1, 2, 3, 4
     social: false, //true, false or social
     monthChart: false, //true or false
     scrollTo: null,
@@ -373,6 +386,17 @@ export default function Main() {
     month: kongetsu,
     year: kotoshi
   })
+
+
+  let [initialLogin, setInitialLogin] = React.useState(true);
+  if(initialLogin == true) {
+
+    setCurrent({
+        ...current,
+        section: 2
+      })
+      setInitialLogin(false);
+  }
 
   
   return(

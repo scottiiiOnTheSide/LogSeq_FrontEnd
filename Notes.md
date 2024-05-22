@@ -3,12 +3,18 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 05. 22. 2024
+@0345 The issue with scrollTo not working on social section had to do with the <SectionsWrapper>
+			defaulting to the userSection, and then changing.
+			fix includes:
+			- having current.section null by default, then setting it to 1 for user section on initialLogin
+			- active state var in <SectionsWrapper> is also set to current.section by default
 
 ### 05. 21. 2024
+@1645 the fix allows the app to load back into <Home>, but scrollTo isnt running
+
 @1630 had an issue with the scrollTo function within <SocialLog>. Added fix where it wont
 			run if Log has under 3 posts, but need to test to determine whether it fixes the issue.
-
-Up Next: pinMedia
 
 
 ### 05. 20. 2024

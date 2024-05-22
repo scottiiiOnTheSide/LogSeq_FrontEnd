@@ -1,6 +1,8 @@
 import * as React from 'react';
 import {useNavigate} from 'react-router-dom';
+import APIaccess from '../../apiaccess';
 import './blog.css';
+const accessAPI = APIaccess(); 
 
 /**
  * 09. 24. 2023
@@ -9,15 +11,11 @@ import './blog.css';
  * be distinguished
  */
 
-export default function Log({userID, data, noHeading, current, setCurrent, isUnified}) {
+export default function Log({section, noHeading, current, setCurrent, isUnified, updateLog, setUpdateLog}) {
 
-	let dateObserved, monthObserved;
 	const navigate = useNavigate();
-	let log = data;
-	let _id = sessionStorage.getItem('userID')
-	// const [contentReady, setContentReady] = React.useReducer(state => !state, false);
-
-	// let [unison, setUnison] = React.useState(isUnified);
+	const _id = sessionStorage.getItem('userID');
+	const [data, setData] = React.useState([]);
 
 	// function ifAnyPostsFromToday (posts) {
 	// 	let fromToday,
@@ -36,6 +34,22 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 	// 	return fromToday;
 	// }
 
+	let getPosts = async() => {
+		if(section == 'social') {
+
+			let data = await accessAPI.pullSocialLog();
+			setData(data);
+		}
+		else if(section == 'user') {
+
+			let data = await accessAPI.pullUserLog();
+			setData(data)
+		}
+	}
+
+
+
+	let dateObserved, monthObserved;
 	function returnPostItem (post, index, userID) {
 
 		let title = post.title,
@@ -149,32 +163,73 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 	    after viewing it in <Post>
 	*/
 	React.useEffect(()=> {
-		if(isMounted.current) {
-			let logRefC = logRef.current;
-			let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
 
+		if(data.length) {
+			console.log(data.length)
 			if(current.scrollTo) {
-				console.log(post.length)
+
 				if(current.monthChart == true) {
+
 					return;
 				}
-				else if(post.length < 3) {
+				else if(data.length < 3) {
+
 					return;
 				} 
 				else {
-					// let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
-					post[0].scrollIntoView({behavior: "smooth"});
-					console.log(post[0]);
-				}
-			}	
-		} else {
-			if(log.length > 0) {
-				isMounted.current = true
-			}
-		}
-	}, [log])
 
-	console.log(current)
+					let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
+					post = post.pop();
+					post.scrollIntoView({behavior: "smooth"});
+				}
+			}			
+		}
+		// if(isMounted.current) {
+		// if(logRefC) {
+		// 	// let logRefC = logRef.current;
+		// 	let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
+		// 	post = post.pop()
+
+		// 	if(current.scrollTo) {
+		// 		console.log(post)
+
+		// 		if(current.monthChart == true) {
+		// 			return;
+		// 		}
+		// 		else {
+		// 			// 
+		// 			console.log(current.scrollTo)
+		// 			let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
+		// 			post = post.pop()
+		// 			post.scrollIntoView({behavior: "smooth"});
+		// 		// 	console.log(post[0]);
+		// 		}
+				// else if(post.length < 3) {
+				// 	return;
+				// } 
+				// else if(post.length > 3){
+				// 	// let post = Array.from(logRefC.children).filter(el => el.id == current.scrollTo);
+				// 	post[0].scrollIntoView({behavior: "smooth"});
+				// 	console.log(post[0]);
+				// }
+		// 	}	
+		// } 
+
+		// else {
+		// 	if(data.length > 0) {
+		// 		isMounted.current = true;
+		// 		console.log(`isMounted now ${isMounted.current}`)
+		// 	}
+		// }
+	}, [data])
+
+	React.useEffect(()=> {
+		getPosts();
+	}, [])
+
+	React.useEffect(()=> {
+		getPosts();
+	}, [updateLog])
 
 	return (
 		<div className={"log"} ref={logRef}>
@@ -182,7 +237,7 @@ export default function Log({userID, data, noHeading, current, setCurrent, isUni
 				<h2 className="noPostsToday">No Posts Today</h2>
 			}*/}
 			{(data && data.length > 0) &&
-				log.map((post, index) => returnPostItem(post, index, _id))
+				data.map((post, index) => returnPostItem(post, index, _id))
 			}
 		</div>
 	)
