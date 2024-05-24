@@ -227,7 +227,7 @@ article div#details ul#options li {
 
 section#POST header {
 	top: -2px;
-/*	background-color: var(--greyscale-background);*/
+	background-color: white;
 }
 
 section#POST article {

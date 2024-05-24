@@ -22,7 +22,6 @@ let accessAPI = APIaccess();
 
 export default function FullList({ data, mode, source, setSocketMessage, socketMessage, setFullList, groupID }) {
 
-	/* add 'selected' to data items, then add to dataList */
 	const [dataList, setDataList] = React.useState([]);
 	const [selection, setSelection] = React.useState([]);
 
@@ -52,26 +51,42 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 				})
 		}
 
-		else if(event.target.name == 'pinMedia') {}
-
-		else if(event.target.name == 'pinAllMedia') {}
-	}
-
-	React.useEffect(()=> {
-		let newData = [];
-
-		dataList.map(data => {
-			if(data.selected == true) {
-				newData.push(data);
+		else if(event.target.name == 'pinMedia') {
+			if(selection.length == 0) {
+				setSocketMessage({
+					type: 'error',
+					message: 'No items selected'
+				})
 			}
 			else {
-				return null;
+				setSocketMessage({
+					action: 'addToPinnedMedia',
+					groupID: groupID,
+					content: selection.map(ele => {
+						return {
+							url: ele.url,
+							postID: groupID
+						}
+					})
+				})
 			}
-		})
+		}
 
-		setSelection(newData);
-	}, [dataList])
+		else if(event.target.name == 'pinAllMedia') {
+			setSocketMessage({
+					action: 'addToPinnedMedia',
+					groupID: groupID,
+					content: dataList.map(ele => {
+						return {
+							url: ele.url,
+							postID: groupID
+						}
+					})
+				})
+		}
+	}
 
+	/* Empties Selection and Removes Selected Items after socketMessage confirmation*/
 	React.useEffect(()=> {
 		if(socketMessage.type == 'confirmation') {
 			if (socketMessage.message == 'removedFromCollection') {
@@ -117,17 +132,35 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 		}
 		else if(mode == 'pinMedia') {
 
-			let newData = data.map(media => {
+			let newData = data.content.filter(item => item.type == 'media').map(item => {
 				return {
-					url: media,
+					url: item.content,
+					place: item.place,
 					selected: false
 				}
 			})
 			setDataList(newData);
+			console.log(dataList)
 		}
 	}, [])
 
-	console.log(dataList)
+	/* Adds selected content to state array */
+	React.useEffect(()=> {
+		let newData = [];
+
+		dataList.map(data => {
+			if(data.selected == true) {
+				newData.push(data);
+			}
+			else {
+				return null;
+			}
+		})
+
+		setSelection(newData);
+	}, [dataList])
+
+	// console.log(dataList)
 
 	return (
 		<div id="FullList">
@@ -142,36 +175,58 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 
 
 			<ul id="dataList">
-				{mode == 'pinMedia' || mode == 'remove' &&
-					dataList.map((entry, index) => (
-						<li className={`${entry.selected == true ? 'selected' : ''}`}>
-							<button onClick={()=> {
+				{(mode == 'pinMedia' || mode == 'remove') &&
 
-								let copy = dataList.map(ele => {
+					dataList.map((entry) => (
+						<li className={`${entry.selected == true ? 'selected' : ''}`} key={entry.place}>
+							<button onClick={()=> {	
 
-									if(ele.title == entry.title && ele.selected != true ) {
-										ele.selected = true;
-										return ele;
-									}
-									else if(ele.title == entry.title && ele.selected == true ) {
-										ele.selected = false;
-										return ele;
-									}
-									else {
-										return ele;
-									}
-								})
+								let copy;
+								if(mode == 'remove') {
+									copy = dataList.map(ele => {
+										// console.log(ele.place);
+										// console.log(entry.place);
+										if(ele.title == entry.title && ele.selected != true ) {
+											ele.selected = true;
+											return ele;
+										}
+										else if(ele.title == entry.title && ele.selected == true ) {
+											ele.selected = false;
+											return ele;
+										}
+										else {
+											return ele;
+										}
+									})
+								}
+								
+								else if(mode == 'pinMedia') {
+									copy = dataList.map(ele => {
+										if(entry.place == ele.place && ele.selected != true ) {
+											ele.selected = true;
+											return ele;
+										}
+										else if(entry.place == ele.place && ele.selected == true ) {
+											ele.selected = false;
+											return ele;
+										}
+										else {
+											return ele;
+										}
+									});
+								}
 
 								setDataList(copy)
 							}}>
-								<span className={`bullet ${entry.selected == true ? 'selected' : ''}`}>
+								<span className={`bullet ${entry.selected == true ? 'selected' : ''} ${mode == 'pinMedia' ? 'media' : ''}`}>
 								</span>
 
-								{mode == 'pinMedia' &&
-									<img src={entry.imageURL}/>
-								}
 								{mode == 'remove' &&
 									<p>{entry.title}</p>
+								}
+								{mode == 'pinMedia' &&
+									<img src={entry.url}/>
+									// <p>{entry.selected}</p>
 								}
 							</button>	
 						</li>
@@ -235,13 +290,26 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 				<ul className="optionsMenu" id="pinningMenu">
 				
 					<li>
-						<button className="buttonDefault">Pinning {selection.length}</button>
+						<button name="pinMedia"
+								className="buttonDefault"
+								onClick={handleSubmit}>Pinning {selection.length}</button>
 					</li>
 					<li>
-						<button className="buttonDefault">Pin All</button>
+						<button name="pinAllMedia"
+								className="buttonDefault"
+								onClick={handleSubmit}>Pin All</button>
 					</li>
 					<li>
-						<button className="buttonDefault">Exit</button>
+						<button className="buttonDefault"
+								onClick={(e)=> {
+									e.preventDefault()
+									let fullList = document.getElementById('FullList');
+									fullList.classList.add('leave')
+
+									let delay = setTimeout(()=> {
+										setFullList()
+									}, 150);
+								}}>Exit</button>
 					</li>
 				</ul>
 			}

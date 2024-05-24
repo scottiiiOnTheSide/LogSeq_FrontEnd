@@ -3,6 +3,43 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 05. 24. 2024
+@1355 Should modify the pinnedMedia content check to add the unique items and exclude duplicates.
+			As of now, it simply discerns duplicates then fails the operation xD
+
+****TO DO NEXT
+
+<UserProfile>
+	- can make a new page for a user's full log of posts utilizing <FullList> or similar design
+		rectifies issue of user going to post from said list, but losing scroll position upon returning
+		from post... a ui inconsistency
+	- either add user.profilePhotos to each post,
+		or get profilePhoto for each post during log creation on backend...
+
+****Side Quests:
+		- for topics, need to address issue preventing page from opening... ✅
+		- Upon deleting a post, clear 'scrollToView' from access global state var
+		- replace full page components opening and closing animations
+				1.) full page components have 'enter' animation by default
+				2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
+				3.) animation speed of 0.2s - close component with setTimeout after 300ms
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+		- set user.isPrivate setting to 'off' on initial create user
+		- add admin account to user connections list on initial create user
+
+
+
+### 05. 23. 2024
+@0305 Got the images to appear for pinnedMedia (:D )b
+			- need to style them properly (add ternary class to span so that button is at top of image)✅
+			- selecting one image currently selects all. Need to fix this also (fixed)✅
+			- add functionality to buttons ✅
+
+@0245 begun adding pinnedMedia to <Post>. ul isnt populating with images, however.
+			need to adjust <log> to recieve data externally again (T-T )
+			bookmarks not showing up (probably issues in other areas too)
+
+
 ### 05. 22. 2024
 @0345 The issue with scrollTo not working on social section had to do with the <SectionsWrapper>
 			defaulting to the userSection, and then changing.
@@ -33,9 +70,9 @@ To Do Next...
 	- fix issue with getting posts for tags ✅
 	-	add exitButton for tags <Macros> page, make functional ✅
 	- adding posts to user's pinnedPosts ✅
-	- pinMedia option for <FullList> / pinMedia button in <Post>
-			- pinnedMedia to include link to corresponding post (url and post id)
-
+	- pinMedia option for <FullList> / pinMedia button in <Post> ✅
+			- pinnedMedia to include link to corresponding post (url and post id) ✅
+ 
 THEN...
 <UserProfile>
 ...I may just have user's full log unravel within the <UserProfile> page...

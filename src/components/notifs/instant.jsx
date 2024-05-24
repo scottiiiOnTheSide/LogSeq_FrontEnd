@@ -551,6 +551,36 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		}
 	}
 
+	let action_addToPinnedMedia = async(data) => {
+		let request = await accessAPI.userSettings({
+			option: 'pinnedMedia',
+			type: 'add',
+			content: data.content
+		});
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'pinnedMedia',
+				message: `Content added to Pinned Media`
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -711,6 +741,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if(socketMessage.action == 'privacy') {
 			action_privacySetting(socketMessage)
 		}
+		else if(socketMessage.action == 'addToPinnedMedia') {
+			action_addToPinnedMedia(socketMessage)
+		}
 
 
 		/* P O S T  O P T I O N S */
@@ -848,6 +881,12 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	 */
 	let [level, setLevel] = React.useState('')
 
+	/*
+		05. 24. 2024
+		Update this all so that 'confirmation' messages simply display message
+		set within action function. Remove need for 'message.message' 
+	*/
+
 	let returnPopUpType = (message) => {
 
 		return (
@@ -943,6 +982,10 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 				}
 
 				{(message.type == 'confirmation' && message.label == 'privacyUpdated') &&
+					<p>{message.message}</p>
+				}
+
+				{(message.type == 'confirmation' && message.label == 'pinnedMedia') &&
 					<p>{message.message}</p>
 				}
 

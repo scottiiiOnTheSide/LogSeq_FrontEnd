@@ -10,6 +10,7 @@ import './blog.css';
 import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
 import InteractionsList from '../../components/notifs/interactionsList';
+import FullList from '../../components/base/fullList';
 
 const accessAPI = APIaccess(); 
 
@@ -130,6 +131,7 @@ export default function Post({
 	const [messageContent, setMessage] = React.useState('');
 	const [collections, setCollections] = React.useState([]);
 	const [pinnedPost, setPinnedPost] = React.useState('');
+	const [pinnedMedia, setPinnedMedia] = React.useReducer(state => !state, false);
 	const [access, setAccess] = React.useState({
 		type: null, //"initial" or "response"
 		commentID: null, 
@@ -377,6 +379,8 @@ export default function Post({
 		getCollections();
 	}, [element]);
 
+	console.log(postData)
+
 	return (
 		<section id="POST" ref={el} className={`${enter == true ? '_enter' : ''}`}>
 			<Header cal={cal} 
@@ -535,6 +539,19 @@ export default function Post({
 								}}>Pin Post</button>
 							</li>
 						}
+						{isOwner &&
+							<li>{/*Pin Media Button*/}
+								<button className={`buttonDefault`} 
+										onClick={(e)=> {
+											e.preventDefault()
+											setPinnedMedia()
+											let delay = setTimeout(()=> {
+												toggleOptions()	
+											}, 200)
+										}}>
+								Pin Media</button>
+							</li>
+						}
 
 						<li> {/*Exit Button*/}
 							<button className="buttonDefault" onClick={(e)=> {
@@ -608,7 +625,16 @@ export default function Post({
 				}
 			</div>
 			
-
+			{pinnedMedia &&
+				<FullList 
+					data={postData}
+					mode={'pinMedia'}
+					source={postData.title}
+					socketMessage={socketMessage}
+					setSocketMessage={setSocketMessage}
+					setFullList={setPinnedMedia}
+					groupID={postID}/>
+			}
 			{notifList &&
 	          <InteractionsList 
 	            setNotifList={setNotifList} 

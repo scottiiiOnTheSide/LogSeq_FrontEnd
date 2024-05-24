@@ -394,8 +394,8 @@ export default function Main() {
     setCurrent({
         ...current,
         section: 2
-      })
-      setInitialLogin(false);
+    })
+    setInitialLogin(false);
   }
 
   
