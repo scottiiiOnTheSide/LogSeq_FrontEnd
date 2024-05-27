@@ -201,10 +201,19 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 
 
 			<div id="buttonBar">
-				<button className="buttonDefault">PROFILE</button>
-				<button className="buttonDefault" onClick={()=> {
-					setUserSettings()
-				}}>SETTINGS</button>
+				<button className="buttonDefault"
+						onClick={()=> {
+
+							setTimeout(()=> {
+								navigate(`/user/${username}`, {
+									state: {
+										userID: userID
+									}
+								})
+							}, [])
+						}}>PROFILE</button>
+				<button className="buttonDefault" 
+						onClick={setUserSettings}>SETTINGS</button>
 			</div>
 
 			{/*{confirm &&

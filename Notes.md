@@ -3,6 +3,25 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+
+### 05. 27. 2024
+
+@1645 Have to add userProfile data to location.state when going to <UserProfile>
+			or find other way to have data loaded before render method
+
+@1025 Need to fix issuw with <Log> data hydration. It's utilized in many places and it's probably
+			best if it's parent component feeds it the logData
+
+### 05. 25. 2024
+@1230 
+Concerning Getting User Profile Images per Post:
+*Cons*:
+	- an operation where the userProfle photo is updated for all of a user's posts could potentially
+		have a high cost (a user with 1000 posts + many of these operations occuring at once)
+*Pros*
+	- where as a coOperation to get and add a profilePhoto for each post would have a limit: 32 posts
+		per log operation ...
+
 ### 05. 24. 2024
 @1355 Should modify the pinnedMedia content check to add the unique items and exclude duplicates.
 			As of now, it simply discerns duplicates then fails the operation xD
@@ -26,6 +45,7 @@
 		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
 		- set user.isPrivate setting to 'off' on initial create user
 		- add admin account to user connections list on initial create user
+		- tags need to appear within <Post> and go to their macro page upon being clicked
 
 
 

@@ -15,7 +15,7 @@ import useWebSocket, {ReadyState} from 'react-use-websocket';
 import APIaccess from './apiaccess';
 import useAuth from "./useAuth";
 import Calendar from './components/calendar'
-import {UIContextProvider, UIContext} from './UIcontext';
+// import {UIContextProvider, UIContext} from './UIcontext';
 
 import './Main.css';
 import './components/base/home.css';
@@ -31,6 +31,7 @@ import Macrospage from './components/macros/macros';
 import Post from './components/blog/post';
 import Instant from './components/notifs/instant';
 import UserSettings from './components/base/userSettings';
+import UserProfile from './components/base/userProfile';
 
 /*** Sub Sections ***/
 import { CreatePost } from './components/sections/userLog';
@@ -264,7 +265,7 @@ export default function Main() {
    */
   React.useEffect(()=> {
     if(authed == true) {
-      setSocketURL(`ws://172.29.208.96:3333/?${userID}`);
+      setSocketURL(`ws://172.20.214.76:3333/?${userID}`);
       getUnreadCount();
     }
   }, [authed])
@@ -274,9 +275,7 @@ export default function Main() {
 
 
   
-  
-
-  // could possibly implement reconnect redundancy here
+  // need to implement reconnect redundancy here
   React.useEffect(() => { 
     if(readyState === ReadyState.OPEN) {
       console.log('Websocket connection established')
@@ -400,7 +399,6 @@ export default function Main() {
 
   
   return(
-      <UIContextProvider>
         <Routes>
 
           <Route path="/" element={
@@ -511,9 +509,32 @@ export default function Main() {
               </HomeOrEntry>
             } 
           />
-
+          <Route path="/user/:username" element={
+            <HomeOrEntry>
+              <UserProfile
+                  // socket stuff
+                  socketURL={socketURL}
+                  socketMessage={socketMessage}
+                  setSocketMessage={setSocketMessage}
+                  sendMessage={sendMessage}
+                  isActive={isActive}
+                  setActive={setActive}
+                  accessID={accessID}
+                  setAccessID={setAccessID}
+                  unreadCount={unreadCount}
+                  setUnreadCount={setUnreadCount}
+                  getUnreadCount={getUnreadCount}
+                  lastMessage={lastMessage}
+                  current={current}
+                  setCurrent={setCurrent}
+                  // socket stuff
+                  selectedDate={selectedDate}
+                  set_selectedDate={set_selectedDate}
+              />
+            </HomeOrEntry>
+            }
+          />
         </Routes>
-      </UIContextProvider>
   )
 }
 

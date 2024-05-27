@@ -7,7 +7,7 @@
 
 export default function APIaccess(key) {
 
-	const apiAddr = "http://172.29.208.96:3333";
+	const apiAddr = "http://172.20.214.76:3333";
 	let savedKey = sessionStorage.getItem('userKey')
 	// const userKey = savedKey ? savedKey : key;
 
@@ -404,7 +404,7 @@ export default function APIaccess(key) {
 
 			/* For return user's page*/
 			let userKey = sessionStorage.getItem('userKey');
-			let user = await fetch(`${apiAddr}/users/${userID}/?query=singleUser`, {
+			let user = await fetch(`${apiAddr}/users/user/${userID}/?query=singleUser`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

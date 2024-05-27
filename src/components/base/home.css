@@ -883,3 +883,60 @@ div#FullList ul.optionsMenu li {
 div#FullList ul.optionsMenu li button {
 	font-size: 1.4em;
 }
+
+
+
+
+
+
+
+
+
+/* * *
+	U s e r  
+	  P r o f i l e 
+* * */
+
+section#USERPROFILE {
+	display: block;
+	position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    transition: all 0.2s ease-in-out;
+    animation: 0.5s ease-in-out forwards _enter
+}
+
+div#main {
+	position: relative;
+	margin-top: 88px;
+}
+
+div#main img#userPhoto {
+	display: block;
+	width: 90%;
+	margin: 36px auto;
+}
+
+div#main div#title {
+	width: 90%;
+	margin: auto;
+	font-family: 'Raleway';
+}
+
+div#main div#title h2 {
+	font-size: 1.5em;
+	letter-spacing: 2px;
+	color: var(--greyscale-text);
+	margin-bottom: 8px;
+}
+
+div#main div#title h3 {
+	width: fit-content;
+	font-size: 1em;
+	letter-spacing: 2px;
+	color: var(--greyscale-accent);
+	border-top: 1.5px solid  var(--greyscale-accent);
+	padding-top: 8px;
+}
