@@ -35,18 +35,18 @@ export default function UserProfile({
 	const navigate = useNavigate();
 	const cal = Calendar();
 	const isOwner = location.state.userID == userID ? true : false;
-	const [userInfo, setUserInfo] = React.useState();
+	const [userInfo, setUserInfo] = React.useState(location.state.data);
 
-	const getUserInfo = async() => {
+	// const getUserInfo = async() => {
 
-		let request = await accessAPI.getSingleUser(location.state.userID);
-		setUserInfo(request);
-		console.log(request);
-	}
+	// 	let request = await accessAPI.getSingleUser(location.state.userID);
+	// 	setUserInfo(request);
+	// 	console.log(request);
+	// }
 
-	React.useEffect(()=> {
-		getUserInfo();
-	}, [])
+	// React.useEffect(()=> {
+	// 	getUserInfo();
+	// }, [])
 
 
 
@@ -83,8 +83,8 @@ export default function UserProfile({
 					<p>
 						9
 						<span>Posts</span>
-					<p>
 					</p>
+					<p>
 						{userInfo.connections.length}
 						<span>Connections</span>
 					</p>
@@ -105,10 +105,10 @@ export default function UserProfile({
 			<div id="menuBar">
 				
 				{isOwner &&
-					<p id="title">Settings</p>
+					<button className={`buttonDefault`}>Settings</button>
 				}
 				{!isOwner &&
-					<p id="title">Options</p>
+					<button className={`buttonDefault`}>Options</button>
 				}
 			</div>
 

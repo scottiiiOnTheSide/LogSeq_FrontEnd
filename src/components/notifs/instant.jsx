@@ -393,10 +393,9 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 	let action_profilePhoto = async(data) => {
 
 		let body = new FormData();
-			body.append('option', 'profile');
-			body.append('type', 'profilePhoto');
+			body.append('option', 'profilePhoto');
 			body.append('photo', data.content)
-		console.log(data.content)
+		// console.log(data.content)
 		console.log(body)
 
 		// let body = {
@@ -404,7 +403,6 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		// 	type: 'profilePhoto',
 		// 	photo: data.content
 		// }
-		console.log(body)
 
 		let request = await accessAPI.userSettings_profilePhoto(body);
 

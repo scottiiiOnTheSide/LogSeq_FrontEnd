@@ -96,6 +96,19 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 		
 		}
 	}
+	let goToUserProfile = async() => {
+
+		let data = await accessAPI.getSingleUser(userID);
+		
+		let delay = setTimeout(()=> {
+			navigate(`/user/${username}`, {
+				state: {
+					data: data
+				}
+			})
+		}, 150)
+	}
+
 	React.useEffect(()=> {
 		updateList();
 	}, [])
@@ -202,16 +215,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 
 			<div id="buttonBar">
 				<button className="buttonDefault"
-						onClick={()=> {
-
-							setTimeout(()=> {
-								navigate(`/user/${username}`, {
-									state: {
-										userID: userID
-									}
-								})
-							}, [])
-						}}>PROFILE</button>
+						onClick={goToUserProfile}>PROFILE</button>
 				<button className="buttonDefault" 
 						onClick={setUserSettings}>SETTINGS</button>
 			</div>

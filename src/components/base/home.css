@@ -905,24 +905,31 @@ section#USERPROFILE {
     height: 100%;
     background-color: white;
     transition: all 0.2s ease-in-out;
-    animation: 0.5s ease-in-out forwards _enter
+    animation: 0.5s ease-in-out forwards _enter;
+    font-family: 'Raleway';
 }
 
 div#main {
 	position: relative;
-	margin-top: 88px;
+	margin-top: 80px;
+	height: calc(100vh - 150px);
+	overflow-y: scroll;
 }
 
 div#main img#userPhoto {
 	display: block;
-	width: 90%;
-	margin: 36px auto;
+	width: 50%;
+/*	margin: 96px 0 36px;*/
+/*	margin-left: 16px;*/
+	margin: 48px auto 36px;
+	border-radius: 16px;
 }
 
 div#main div#title {
 	width: 90%;
 	margin: auto;
 	font-family: 'Raleway';
+	text-align: center;
 }
 
 div#main div#title h2 {
@@ -939,4 +946,76 @@ div#main div#title h3 {
 	color: var(--greyscale-accent);
 	border-top: 1.5px solid  var(--greyscale-accent);
 	padding-top: 8px;
+	margin: 12px auto auto;
+}
+
+div#main p#bio {
+	width: fit-content;
+	max-width: 80%;
+	margin: 64px auto 36px;
+	font-family: 'Raleway';
+	color: var(--greyscale-text);
+}
+
+div#main div#stats {
+	display: flex;
+	position: relative;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-top: -16px;
+}
+
+div#main div#stats p {
+	display: inline-block;
+	font-size: 48px;
+	font-weight: 600;
+	text-align: center;
+	color: var(--greyscale-elements);
+}
+
+div#main div#stats p span {
+	display: block;
+	top: 0px;
+	position: relative;
+	font-weight: 400;
+	font-size: 20px;
+	letter-spacing: 2px;
+	color: var(--greyscale-text);
+}
+
+
+
+
+div#main div#pinnedMedia,
+div#main div#pinnedPosts {
+	text-align: right;
+}
+
+div#main div#pinnedMedia h2,
+div#main div#pinnedPosts h2 {
+	margin-right: 16px;
+	letter-spacing: 2px;
+	color: var(--greyscale-text);
+}
+
+
+
+div#main div#pinnedMedia {}
+div#main div#pinnedPosts {}
+
+
+
+
+section#USERPROFILE div#menuBar {
+	position: fixed;
+    bottom: 0px;
+    width: 100%;
+}
+
+section#USERPROFILE div#menuBar button {
+	height: 100%;
+    position: relative;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 24px 0;
 }

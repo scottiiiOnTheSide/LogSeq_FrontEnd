@@ -4,8 +4,22 @@
 -----------------------------------------------------------------------------------------
 
 
-### 05. 27. 2024
+### 05. 29. 2024
 
+@1525 CSS and HTML more or less set up for <UserProfile>
+
+****To Do Next:
+		- add to pinnedMedia and pinnedPosts, add function to <UserProfile> page for getting
+			postInfo for pinnedPosts, add elements and style
+		- add large quotation marks to bio using before:: and after::
+
+@1440 <UserSettings> should be it's own page...
+			Forms for the profile functions should have their own modals
+
+!!! websocket randomly disconnecting...
+
+
+### 05. 27. 2024
 @1645 Have to add userProfile data to location.state when going to <UserProfile>
 			or find other way to have data loaded before render method
 
