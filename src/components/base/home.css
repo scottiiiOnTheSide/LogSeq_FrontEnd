@@ -78,12 +78,13 @@ section#HOME {
 
 	header div#location h1 {
 		font-weight: 600;
-		font-size: 2.5em;
+		font-size: 2.25em;
 		letter-spacing: 6px;
 		color: var(--greyscale-elements);
 
 		margin: 0;
 		position: absolute;
+		top: 6px;
 		text-transform: uppercase;
 	}
 
@@ -141,7 +142,7 @@ section#HOME {
 	/*	transform: scale(0.6);*/
 		width: 50px;
 		position: relative;
-		top: 5px;
+		top: 4px;
 		transition: all 0.3s ease-in-out;
 		margin-right: -240px;
 	}
@@ -907,6 +908,7 @@ section#USERPROFILE {
     transition: all 0.2s ease-in-out;
     animation: 0.5s ease-in-out forwards _enter;
     font-family: 'Raleway';
+    overflow-x: hidden;
 }
 
 div#main {
@@ -949,13 +951,38 @@ div#main div#title h3 {
 	margin: 12px auto auto;
 }
 
-div#main p#bio {
+div#main div#bio {
+	position: relative;
 	width: fit-content;
-	max-width: 80%;
+	max-width: 75%;
 	margin: 64px auto 36px;
 	font-family: 'Raleway';
 	color: var(--greyscale-text);
 }
+
+div#main div#bio p {
+	line-height: 28px;
+}
+
+div#main div#bio svg {
+	width: 32px;
+	position: absolute;
+/*	transform: scale(0.1);*/
+	margin: -20px 0;
+}
+
+div#main div#bio svg g path {
+	fill: var(--greyscale-elements);
+}
+
+div#main div#bio svg:first-child {
+	right: 100%;
+}
+
+div#main div#bio svg:last-child {
+	left: 100%;
+}
+
 
 div#main div#stats {
 	display: flex;
@@ -998,12 +1025,46 @@ div#main div#pinnedPosts h2 {
 	color: var(--greyscale-text);
 }
 
+div#main div#pinnedMedia h2.none,
+div#main div#pinnedPosts h2.none {
+	text-align: left;
+	margin: 32px 16px 64px;
+	color: var(--greyscale-elements);
+}
+
 
 
 div#main div#pinnedMedia {}
 div#main div#pinnedPosts {}
 
 
+
+div#main div#pinnedMedia ul {
+	list-style-type: none;
+/*	display: flex;*/
+/*	flex-direction: row;*/
+	display: block;
+	margin: 36px auto 64px;
+	overflow-x: scroll;
+	white-space: nowrap;
+	scrollbar-width: none;
+}
+
+div#main div#pinnedMedia ul li {
+	display: inline-block;
+	width: 128px;
+	height: 128px;
+	margin: 0px 12px;
+}
+
+div#main div#pinnedMedia ul li img {
+	width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: 4px;
+    opacity: 0.75;
+}
 
 
 section#USERPROFILE div#menuBar {

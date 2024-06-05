@@ -4,14 +4,22 @@
 -----------------------------------------------------------------------------------------
 
 
-### 05. 29. 2024
+### 06. 05. 2024
+@1150 pinnedMedia CSS done
 
+TBD...
+	- function to get post data, then navigate() to post
+	- get postData for pinned posts (could add postData to userData on backEnd. navigate func
+		could be written inline, use postData within mapped element)
+
+
+### 05. 29. 2024
 @1525 CSS and HTML more or less set up for <UserProfile>
 
 ****To Do Next:
 		- add to pinnedMedia and pinnedPosts, add function to <UserProfile> page for getting
 			postInfo for pinnedPosts, add elements and style
-		- add large quotation marks to bio using before:: and after::
+		- add large quotation marks to bio using before:: and after:: ✅
 
 @1440 <UserSettings> should be it's own page...
 			Forms for the profile functions should have their own modals
