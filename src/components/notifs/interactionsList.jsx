@@ -103,7 +103,8 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 		let delay = setTimeout(()=> {
 			navigate(`/user/${username}`, {
 				state: {
-					data: data
+					user: data.user,
+					pinnedPosts: data.pinnedPosts
 				}
 			})
 		}, 150)

@@ -908,7 +908,7 @@ section#USERPROFILE {
     transition: all 0.2s ease-in-out;
     animation: 0.5s ease-in-out forwards _enter;
     font-family: 'Raleway';
-    overflow-x: hidden;
+    overflow: hidden;
 }
 
 div#main {
@@ -1065,6 +1065,19 @@ div#main div#pinnedMedia ul li img {
     border-radius: 4px;
     opacity: 0.75;
 }
+
+
+
+
+div#main div#pinnedPosts ul {}
+
+div#main div#pinnedPosts ul li {}
+
+div#main div#pinnedPosts ul li h3 {}
+
+div#main div#pinnedPosts ul li span#date {}
+
+div#main div#pinnedPosts ul li span#details {}
 
 
 section#USERPROFILE div#menuBar {

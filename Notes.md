@@ -5,12 +5,30 @@
 
 
 ### 06. 05. 2024
+@2355 
+TBD...
+	- style pinnedPosts, add goToPost functionality within element
+	- plan rest of additions:
+		- <fullList> for removing pinnedMedia and pinnedPosts
+		- options for account owner 
+				- remove from pinnedMedia
+				- remove from pinnedPosts
+				- user settings
+		- options for other users
+
+!!! ought to plan functionality for blocking users...
+
+@2240 Clicking on photo in pinnedMedia goes to <Post> 
+
+!!! <InteractionsList> and <UserProfile> need fadeOut toggles for when leaving
+		Im sure there are more...
+
 @1150 pinnedMedia CSS done
 
 TBD...
-	- function to get post data, then navigate() to post
+	- function to get post data, then navigate() to post ✅
 	- get postData for pinned posts (could add postData to userData on backEnd. navigate func
-		could be written inline, use postData within mapped element)
+		could be written inline, use postData within mapped element) ✅
 
 
 ### 05. 29. 2024

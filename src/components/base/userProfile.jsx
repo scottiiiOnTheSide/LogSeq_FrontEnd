@@ -35,13 +35,21 @@ export default function UserProfile({
 	const navigate = useNavigate();
 	const cal = Calendar();
 	const isOwner = location.state.userID == userID ? true : false;
-	const [userInfo, setUserInfo] = React.useState(location.state.data);
+	const [userInfo, setUserInfo] = React.useState(location.state.data.user);
+	const [pinnedPosts, setPinnedPosts] = React.useState(location.state.data.pinnedPosts)
 
 	const goToPost = async(postID) => {
 
 		//use apiaccess to get post data, 
 		//then use navigate to go to post page,
 		//put post data within navigate state
+		let post = await accessAPI.getBlogPost(postID);
+
+		setTimeout(()=> {
+			navigate(`/post/${post._id}`, {
+				state: {post: post}
+			});
+		}, 600)
 	}
 	
 	/* UI Element Related */
@@ -107,16 +115,16 @@ export default function UserProfile({
 
 					<h2>Pinned Media</h2>
 					{userInfo.pinnedMedia.length < 1 &&
-						<h2 class="none">No Pinned Media</h2>
+						<h2 className="none">No Pinned Media</h2>
 					}
 
 					<ul>
 						{userInfo.pinnedMedia.map(data => (
 							<li key={data.postID}>
 								<img src={data.url} onClick={()=> {
-
+									goToPost(data.postID)
 								}}/>
-							</li>
+							</li>	
 						))}
 						
 					</ul>
@@ -125,9 +133,43 @@ export default function UserProfile({
 				<div id="pinnedPosts">
 					
 					<h2>Pinned Posts</h2>
-					{userInfo.pinnedPosts.length < 1 &&
-						<h2 class="none">No Pinned Posts</h2>
+
+					{pinnedPosts.length < 1 &&
+						<h2 className="none">No Pinned Posts</h2>
 					}
+
+					<ul>
+						{pinnedPosts.map(post => {
+
+							let commentCount;
+							let cmntcount = 0;
+							let countComments = (comments) => {
+								
+								for(let cmnt of comments) {
+									cmntcount++;
+									countComments(cmnt.replies)
+								}
+
+								commentCount = cmntcount;
+							}
+							countComments(post.comments)
+
+							return (
+								<li>
+									<span className="date">{post.postedOn_month} . {post.postedOn_day} . {post.postedOn_year}</span>
+									<h3>{post.title}</h3>
+									{cmntcount > 0 &&
+										<span className="details">{cmntcount} comments</span>
+									}
+									{post.tags.length > 0 &&
+										<span className="details">{post.tags.length} tags</span>
+									}
+								</li>
+							)
+						})
+						}
+					</ul>
+					
 				</div>
 			</div>
 
