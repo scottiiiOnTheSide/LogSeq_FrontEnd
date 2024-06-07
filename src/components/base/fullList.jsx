@@ -7,19 +7,6 @@ import './home.css';
 let accessAPI = APIaccess();
 
 
-/*
-	05. 15. 2024
-	Displays entire list of data for viewing or editing
-
-	modes:
-		view,
-		remove,
-		pinMedia
-
-	source: name of whatever data is from (a user's posts, a collection)
-*/
-
-
 export default function FullList({ data, mode, source, setSocketMessage, socketMessage, setFullList, groupID }) {
 
 	const [dataList, setDataList] = React.useState([]);
@@ -27,7 +14,17 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 
 	const handleSubmit = (event) => {
 
-		if(event.target.name == 'remove') {
+		if(mode == 'remove_pinnedMedia') {
+			
+			if(event.target.name == 'remove') {}
+			else if(event.target.name == 'removeAll') {}
+		}
+		else if(mode == 'remove_pinnedPosts') {
+
+			if(event.target.name == 'remove') {}
+			else if(event.target.name == 'removeAll') {}
+		}
+		else if(event.target.name == 'remove') {
 			if(selection.length == 0) {
 				setSocketMessage({
 					type: 'error',
@@ -142,6 +139,34 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 			setDataList(newData);
 			console.log(dataList)
 		}
+		else if(mode == 'remove_pinnedMedia') {
+
+			let random = 0;
+
+			let newData = data.map(item => {
+				random++;
+				return {
+					url: item.url,
+					place: `${item.url.slice(-5)} + ${random}`,
+					selected: false,
+				}
+			})
+
+			setDataList(newData);
+		}
+		else if(mode == 'remove_pinnedPosts') {
+
+			let newData = data.map(post => {
+
+				return {
+					title: post.title,
+					id: post._id,
+					selected: false
+				}
+			})
+
+			setDataList(newData)
+		}
 	}, [])
 
 	/* Adds selected content to state array */
@@ -168,6 +193,8 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 			<h2 id="title">
 				{`${mode == 'view' ? "Viewing" : '' }`}
 				{`${mode == 'remove' ? "Removing From" : '' }`}
+				{`${mode == 'remove_pinnedMedia' ? "Removing From" : '' }`}
+				{`${mode == 'remove_pinnedPosts' ? "Removing From" : '' }`}
 				{`${mode == 'pinMedia' ? "Pinning From" : '' }`}
 				
 				<span>{source}</span>
@@ -175,7 +202,7 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 
 
 			<ul id="dataList">
-				{(mode == 'pinMedia' || mode == 'remove') &&
+				{(mode == 'pinMedia' || mode.includes('remove')) &&
 
 					dataList.map((entry) => (
 						<li className={`${entry.selected == true ? 'selected' : ''}`} key={entry.place}>
@@ -184,8 +211,7 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 								let copy;
 								if(mode == 'remove') {
 									copy = dataList.map(ele => {
-										// console.log(ele.place);
-										// console.log(entry.place);
+
 										if(ele.title == entry.title && ele.selected != true ) {
 											ele.selected = true;
 											return ele;
@@ -200,7 +226,7 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 									})
 								}
 								
-								else if(mode == 'pinMedia') {
+								else if(mode == 'pinMedia' || mode == 'remove_pinnedMedia') {
 									copy = dataList.map(ele => {
 										if(entry.place == ele.place && ele.selected != true ) {
 											ele.selected = true;
@@ -218,15 +244,14 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 
 								setDataList(copy)
 							}}>
-								<span className={`bullet ${entry.selected == true ? 'selected' : ''} ${mode == 'pinMedia' ? 'media' : ''}`}>
+								<span className={`bullet ${entry.selected == true ? 'selected' : ''} ${mode.includes('edia') ? 'media' : ''}`}>
 								</span>
 
-								{mode == 'remove' &&
+								{(mode == 'remove' || mode == 'remove_pinnedPosts') &&
 									<p>{entry.title}</p>
 								}
-								{mode == 'pinMedia' &&
+								{(mode == 'pinMedia' || mode == 'remove_pinnedMedia' ) &&
 									<img src={entry.url}/>
-									// <p>{entry.selected}</p>
 								}
 							</button>	
 						</li>
@@ -258,7 +283,7 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 				<button>Exit</button>
 			}
 
-			{mode == 'remove' &&
+			{mode.includes('remove') &&
 				<ul className="optionsMenu" id="deleteMenu">
 				
 					<li>

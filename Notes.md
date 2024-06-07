@@ -4,17 +4,68 @@
 -----------------------------------------------------------------------------------------
 
 
+### 06. 07. 2024
+@1205 user's pinnedMedia and pinnedPosts can now be seen / selected within <FullList>
+
+TBD...
+	- functions for removing entries from user's pinned
+		- functionality routed through <instants>
+
+After...
+	- having 'connect' option work when viewing another person's profile
+	- instances of another user's username being link to their profile
+	- attaching user's profilePhoto to post doc on backEnd
+	- userSettings to be it's own page
+		- profile settings to be modal instead
+	- log currently not working in bookmarks. Need to revert back to parent component
+		feeding log data
+	!!! Manage connections CSS
+		- apiaccess function for getting user connections not working. I'd made changes
+			to the user subroutes.
+
+****Side Quests:
+		- for topics, need to address issue preventing page from opening... ✅
+		- Upon deleting a post, clear 'scrollToView' from access global state var
+		- replace full page components opening and closing animations
+				1.) full page components have 'enter' animation by default
+				2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
+				3.) animation speed of 0.2s - close component with setTimeout after 300ms
+				4.) this animation should be toggleable by buttons for leaving page
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+		- set user.isPrivate setting to 'off' on initial create user
+		- add admin account to user connections list on initial create user
+		- tags need to appear within <Post> and go to their macro page upon being clicked
+
+***!!!***
+Begin reading up on memoization...
+
+### 06. 06. 2024
+@1445 added functionality for options / settings in <UserProfile>
+
+TBD...
+	- have <fullList> functional for removing posts and media from user's pins
+		- include functions specifically for removing from user's own pinnedMedia
+		  and pinnedPosts
+		- make sure data sent to <fullList> is compatiable ✅
+		- source can be 'user's username pinned .. whatever' ✅
+
+@1345 
+!!! Every instance of a username needs to be link to said user's profile
+		- backEnd api should remove some of the unncessary fields when sending the user's data
+
+
 ### 06. 05. 2024
 @2355 
 TBD...
-	- style pinnedPosts, add goToPost functionality within element
+	- style pinnedPosts, add goToPost functionality within element ✅
 	- plan rest of additions:
-		- <fullList> for removing pinnedMedia and pinnedPosts
+		- <fullList> for removing pinnedMedia, pinnedPosts and see all posts
 		- options for account owner 
 				- remove from pinnedMedia
 				- remove from pinnedPosts
 				- user settings
 		- options for other users
+			- connect 
 
 !!! ought to plan functionality for blocking users...
 

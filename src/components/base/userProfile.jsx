@@ -7,6 +7,7 @@ import {useNavigate, useLocation} from 'react-router-dom';
 import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
 import InteractionsList from '../../components/notifs/interactionsList';
+import FullList from '../../components/base/fullList';
 import './home.css';
 
 let accessAPI = APIaccess();
@@ -14,7 +15,7 @@ let accessAPI = APIaccess();
 export default function UserProfile({
 	socketURL,
 	socketMessage,
-    setSocketMessage,     
+    setSocketMessage,
     sendMessage,
     isActive,
     setActive,
@@ -34,9 +35,9 @@ export default function UserProfile({
 	const location = useLocation();
 	const navigate = useNavigate();
 	const cal = Calendar();
-	const isOwner = location.state.userID == userID ? true : false;
-	const [userInfo, setUserInfo] = React.useState(location.state.data.user);
-	const [pinnedPosts, setPinnedPosts] = React.useState(location.state.data.pinnedPosts)
+	const isOwner = location.state.user._id == userID ? true : false;
+	const [userInfo, setUserInfo] = React.useState(location.state.user);
+	const [pinnedPosts, setPinnedPosts] = React.useState(location.state.pinnedPosts)
 
 	const goToPost = async(postID) => {
 
@@ -55,8 +56,13 @@ export default function UserProfile({
 	/* UI Element Related */
 	const [exit, setExit] = React.useReducer(state => !state, false);
 	const [notifList, setNotifList] = React.useReducer(state => !state, false);
+	const [fullList, setFullList] = React.useReducer(state => !state, false);
 	const [settings, setSettings] = React.useReducer(state => !state, false);
 	const [options, setOptions] = React.useReducer(state => !state, false);
+	const [fullListData, setFullListData] = React.useState({
+		data: '',
+		source: ''
+	})
 
 	return (
 		<section id="USERPROFILE" className={`${exit == true ? '_exit' : ''}`}>
@@ -155,7 +161,13 @@ export default function UserProfile({
 							countComments(post.comments)
 
 							return (
-								<li>
+								<li onClick={()=> {
+									setTimeout(()=> {
+										navigate(`/post/${post._id}`, {
+											state: {post: post}
+										});
+									}, 300)
+								}}>
 									<span className="date">{post.postedOn_month} . {post.postedOn_day} . {post.postedOn_year}</span>
 									<h3>{post.title}</h3>
 									{cmntcount > 0 &&
@@ -168,8 +180,7 @@ export default function UserProfile({
 							)
 						})
 						}
-					</ul>
-					
+					</ul>	
 				</div>
 			</div>
 
@@ -177,18 +188,77 @@ export default function UserProfile({
 			<div id="menuBar">
 				
 				{isOwner &&
-					<button className={`buttonDefault`}>Settings</button>
+					<button className={`buttonDefault`} onClick={setOptions}>Settings</button>
 				}
 				{!isOwner &&
-					<button className={`buttonDefault`}>Options</button>
+					<button className={`buttonDefault`} onClick={setOptions}>Options</button>
 				}
 			</div>
 
-			{
+			{(options && isOwner) &&
+				<ul id="options">
+					<li>
+						<button className={`buttonDefault`} onClick={()=> {
 
-			}		
+							setFullListData({
+								data: userInfo.pinnedMedia,
+								mode: 'remove_pinnedMedia',
+								source: `${userInfo.userName}'s Pinned Media` 
+							});
 
+							setFullList();
 
+							setTimeout(()=> {
+								setOptions()
+							}, 100)
+						}}>Edit Pinned Media</button>
+					</li>
+					<li>
+						<button className={`buttonDefault`} onClick={()=> {
+
+							setFullListData({
+								data: pinnedPosts,
+								mode: 'remove_pinnedPosts',
+								source: `${userInfo.userName}'s Pinned Posts` 
+							});
+
+							setFullList();
+
+							setTimeout(()=> {
+								setOptions()
+							}, 100)
+						}}>Edit Pinned Posts</button>
+					</li>
+					<li>
+						<button className="buttonDefault" onClick={()=> {
+								let optionsMenu = document.getElementById('options');
+								optionsMenu.classList.add('leave')
+
+								let delay = setTimeout(()=> {
+									setOptions()
+								}, 150);
+							}}>x</button>
+					</li>
+				</ul>
+			}
+			{(options && !isOwner) &&
+				<ul id="options">
+					<li>
+						<button className={`buttonDefault`}>Connect</button>
+					</li>
+				</ul>
+			}
+
+			{fullList &&
+				<FullList 
+					data={fullListData.data}
+					mode={fullListData.mode}
+					source={fullListData.source}
+					socketMessage={socketMessage}
+					setSocketMessage={setSocketMessage}
+					setFullList={setFullList}
+					groupID={''}/>
+			}
 			{notifList &&
 	          <InteractionsList 
 	            setNotifList={setNotifList} 
