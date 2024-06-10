@@ -1119,7 +1119,7 @@ section#USERPROFILE div#menuBar button {
     padding: 24px 0;
 }
 
-section#USERPROFILE ul#options {
+section#USERPROFILE ul#profileOptions {
 	width: 100%;
 	background-color: white;
 	position: absolute;
@@ -1131,20 +1131,20 @@ section#USERPROFILE ul#options {
 	animation: _enter ease-in-out forwards 0.1s;
 }
 
-	section#USERPROFILE ul#options.leave {
+	section#USERPROFILE ul#profileOptions.leave {
 		animation: _leave ease-in-out forwards 0.1s;
 	}
 
-section#USERPROFILE ul#options li {
+section#USERPROFILE ul#profileOptions li {
 	width: 100%;
 }
 
-section#USERPROFILE ul#options li:last-child button {
+section#USERPROFILE ul#profileOptions li#close button {
 	font-family: 'Open Sans';
 	font-size: 2em;
 }
 
-section#USERPROFILE ul#options li button {
+section#USERPROFILE ul#profileOptions li button {
 	position: relative;
 	display: block;
 	margin: 24px auto;

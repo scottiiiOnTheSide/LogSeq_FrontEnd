@@ -15,15 +15,59 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 	const handleSubmit = (event) => {
 
 		if(mode == 'remove_pinnedMedia') {
-			
-			if(event.target.name == 'remove') {}
-			else if(event.target.name == 'removeAll') {}
+
+			if(event.target.name == 'remove') {
+				if(selection.length == 0) {
+					setSocketMessage({
+						type: 'error',
+						message: 'No items selected'
+					})
+				}
+				else {
+					setSocketMessage({
+						action: 'removeFromPinnedMedia',
+						groupID: groupID,
+						content: selection.map(ele => ele.url)
+					})
+				}
+			}
+			else if(event.target.name == 'removeAll') {
+
+				setSocketMessage({
+					action: 'removeAllFromPinnedMedia',
+					groupID: groupID,
+					content: dataList.map(ele => ele.url)
+				})
+			}
 		}
 		else if(mode == 'remove_pinnedPosts') {
 
-			if(event.target.name == 'remove') {}
-			else if(event.target.name == 'removeAll') {}
+			if(event.target.name == 'remove') {
+
+				if(selection.length == 0) {
+					setSocketMessage({
+						type: 'error',
+						message: 'No items selected'
+					})
+				}
+				else {
+					setSocketMessage({
+						action: 'removeFromPinnedPosts',
+						groupID: groupID,
+						content: selection.map(ele => ele.id)
+					})
+				}
+			}
+			else if(event.target.name == 'removeAll') {
+				setSocketMessage({
+					action: 'removeAllFromPinnnedPosts',
+					groupID: groupID,
+					content: dataList.map(ele => ele.id)
+				})
+			}
 		}
+
+
 		else if(event.target.name == 'remove') {
 			if(selection.length == 0) {
 				setSocketMessage({
@@ -42,10 +86,10 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 
 		else if(event.target.name == 'removeAll') {
 			setSocketMessage({
-					action: 'removeAllFromCollection',
-					groupID: groupID,
-					postID: dataList.map(ele => ele.id)
-				})
+				action: 'removeAllFromCollection',
+				groupID: groupID,
+				postID: dataList.map(ele => ele.id)
+			})
 		}
 
 		else if(event.target.name == 'pinMedia') {
@@ -82,20 +126,6 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 				})
 		}
 	}
-
-	/* Empties Selection and Removes Selected Items after socketMessage confirmation*/
-	React.useEffect(()=> {
-		if(socketMessage.type == 'confirmation') {
-			if (socketMessage.message == 'removedFromCollection') {
-				let newData = dataList.filter(data => !data.selected);
-				setDataList(newData);
-				setSelection([]);
-			}
-			else if(socketMessage.message == 'removedAllFromCollection') {
-				setDataList([]);
-			}
-		}
-	}, [socketMessage])
 
 	/* For adjusting data before putting in dataList variable */
 	React.useEffect(()=> {	
@@ -147,7 +177,7 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 				random++;
 				return {
 					url: item.url,
-					place: `${item.url.slice(-5)} + ${random}`,
+					place: `${item.url.slice(-5)}${random}`,
 					selected: false,
 				}
 			})
@@ -185,6 +215,20 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 		setSelection(newData);
 	}, [dataList])
 
+	/* Empties Selection and Removes Selected Items after socketMessage confirmation*/
+	React.useEffect(()=> {
+		if(socketMessage.type == 'confirmation') {
+			if (socketMessage.message.includes('remove')) {
+				let newData = dataList.filter(data => !data.selected);
+				setDataList(newData);
+				setSelection([]);
+			}
+			else if(socketMessage.message.includes('all')) {
+				setDataList([]);
+			}
+		}
+	}, [socketMessage])
+
 	// console.log(dataList)
 
 	return (
@@ -209,7 +253,25 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 							<button onClick={()=> {	
 
 								let copy;
-								if(mode == 'remove') {
+
+								//else if(mode == 'pinMedia' || mode == 'remove_pinnedMedia') {
+								if(mode.includes('edia')) {
+									copy = dataList.map(ele => {
+										if(entry.place == ele.place && ele.selected != true ) {
+											ele.selected = true;
+											return ele;
+										}
+										else if(entry.place == ele.place && ele.selected == true ) {
+											ele.selected = false;
+											return ele;
+										}
+										else {
+											return ele;
+										}
+									});
+								}
+
+								else if(mode.includes('remove')) {
 									copy = dataList.map(ele => {
 
 										if(ele.title == entry.title && ele.selected != true ) {
@@ -224,22 +286,6 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 											return ele;
 										}
 									})
-								}
-								
-								else if(mode == 'pinMedia' || mode == 'remove_pinnedMedia') {
-									copy = dataList.map(ele => {
-										if(entry.place == ele.place && ele.selected != true ) {
-											ele.selected = true;
-											return ele;
-										}
-										else if(entry.place == ele.place && ele.selected == true ) {
-											ele.selected = false;
-											return ele;
-										}
-										else {
-											return ele;
-										}
-									});
 								}
 
 								setDataList(copy)

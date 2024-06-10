@@ -4,16 +4,20 @@
 -----------------------------------------------------------------------------------------
 
 
+### 06. 09. 2024
+@2350 removing from user's pinned (both) now works!
+			need to verify removeAll works for both posts and media
+
+
 ### 06. 07. 2024
 @1205 user's pinnedMedia and pinnedPosts can now be seen / selected within <FullList>
 
 TBD...
-	- functions for removing entries from user's pinned
-		- functionality routed through <instants>
+	- functions for removing entries from user's pinned ✅
 
 After...
-	- having 'connect' option work when viewing another person's profile
-	- instances of another user's username being link to their profile
+	- having 'connect' option work when viewing another person's profile 
+	- all instances of another user's username being link to their profile
 	- attaching user's profilePhoto to post doc on backEnd
 	- userSettings to be it's own page
 		- profile settings to be modal instead
@@ -38,6 +42,7 @@ After...
 
 ***!!!***
 Begin reading up on memoization...
+Code splitting ?
 
 ### 06. 06. 2024
 @1445 added functionality for options / settings in <UserProfile>

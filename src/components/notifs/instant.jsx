@@ -559,8 +559,70 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		if(request.confirmation == true) {
 			setSocketMessage({
 				type: 'confirmation',
-				label: 'pinnedMedia',
+				label: 'usersPinned',
 				message: `Content added to Pinned Media`
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_removeFromPinnedPosts = async(data) => {
+		
+		let request = await accessAPI.userSettings({
+			option: 'pinnedPosts',
+			type: 'remove',
+			content: data.content
+		});
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'usersPinned',
+				message: `Content removed from Pinned Media`
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
+	}
+
+	let action_removeFromPinnedMedia = async(data) => {
+
+		let request = await accessAPI.userSettings({
+			option: 'pinnedMedia',
+			type: 'remove',
+			content: data.content
+		});
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				label: 'usersPinned',
+				message: `Content removed from Pinned Media`
 			})
 			setActive({
 				state: true,
@@ -742,6 +804,12 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if(socketMessage.action == 'addToPinnedMedia') {
 			action_addToPinnedMedia(socketMessage)
 		}
+		else if(socketMessage.action == 'removeFromPinnedMedia' || socketMessage.action == 'removeAllFromPinnedMedia') {
+			action_removeFromPinnedMedia(socketMessage)
+		}
+		else if(socketMessage.action == 'removeFromPinnedPosts' || socketMessage.action == 'removeAllFromPinnedPosts') {
+			action_removeFromPinnedPosts(socketMessage)
+		}
 
 
 		/* P O S T  O P T I O N S */
@@ -820,6 +888,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 			}
 		}
 		else if(socketMessage.type == 'tagging') {
+
 			if(socketMessage.message == 'sent') {
 				makeNotif_taggedPost(socketMessage);
 			}
@@ -983,7 +1052,7 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 					<p>{message.message}</p>
 				}
 
-				{(message.type == 'confirmation' && message.label == 'pinnedMedia') &&
+				{(message.type == 'confirmation' && message.label == 'usersPinned') &&
 					<p>{message.message}</p>
 				}
 

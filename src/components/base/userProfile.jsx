@@ -39,6 +39,12 @@ export default function UserProfile({
 	const [userInfo, setUserInfo] = React.useState(location.state.user);
 	const [pinnedPosts, setPinnedPosts] = React.useState(location.state.pinnedPosts)
 
+	const updateProfilePage = async() => {
+		let data = await accessAPI.getSingleUser(userID);
+		setUserInfo(data.user);
+		setPinnedPosts(data.pinnedPosts);
+	}
+
 	const goToPost = async(postID) => {
 
 		//use apiaccess to get post data, 
@@ -63,6 +69,10 @@ export default function UserProfile({
 		data: '',
 		source: ''
 	})
+
+	React.useEffect(()=> {
+		updateProfilePage()
+	}, [fullList])
 
 	return (
 		<section id="USERPROFILE" className={`${exit == true ? '_exit' : ''}`}>
@@ -196,7 +206,7 @@ export default function UserProfile({
 			</div>
 
 			{(options && isOwner) &&
-				<ul id="options">
+				<ul id="profileOptions">
 					<li>
 						<button className={`buttonDefault`} onClick={()=> {
 
@@ -229,7 +239,7 @@ export default function UserProfile({
 							}, 100)
 						}}>Edit Pinned Posts</button>
 					</li>
-					<li>
+					<li id="close">
 						<button className="buttonDefault" onClick={()=> {
 								let optionsMenu = document.getElementById('options');
 								optionsMenu.classList.add('leave')
@@ -242,7 +252,7 @@ export default function UserProfile({
 				</ul>
 			}
 			{(options && !isOwner) &&
-				<ul id="options">
+				<ul id="profileOptions">
 					<li>
 						<button className={`buttonDefault`}>Connect</button>
 					</li>
