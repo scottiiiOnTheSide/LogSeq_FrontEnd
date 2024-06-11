@@ -60,7 +60,7 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 			}
 			else if(event.target.name == 'removeAll') {
 				setSocketMessage({
-					action: 'removeAllFromPinnnedPosts',
+					action: 'removeAllFromPinnedPosts',
 					groupID: groupID,
 					content: dataList.map(ele => ele.id)
 				})
@@ -218,13 +218,13 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 	/* Empties Selection and Removes Selected Items after socketMessage confirmation*/
 	React.useEffect(()=> {
 		if(socketMessage.type == 'confirmation') {
-			if (socketMessage.message.includes('remove')) {
+			if (selection.length < 1) {
+				setDataList([]);
+			}
+			else if (socketMessage.message.includes('remove')) {
 				let newData = dataList.filter(data => !data.selected);
 				setDataList(newData);
 				setSelection([]);
-			}
-			else if(socketMessage.message.includes('all')) {
-				setDataList([]);
 			}
 		}
 	}, [socketMessage])

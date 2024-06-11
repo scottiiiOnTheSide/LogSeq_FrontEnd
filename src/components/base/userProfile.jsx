@@ -74,6 +74,10 @@ export default function UserProfile({
 		updateProfilePage()
 	}, [fullList])
 
+	React.useEffect(()=> {
+		updateProfilePage()
+	}, [])
+
 	return (
 		<section id="USERPROFILE" className={`${exit == true ? '_exit' : ''}`}>
 
@@ -134,16 +138,17 @@ export default function UserProfile({
 						<h2 className="none">No Pinned Media</h2>
 					}
 
-					<ul>
-						{userInfo.pinnedMedia.map(data => (
-							<li key={data.postID}>
-								<img src={data.url} onClick={()=> {
-									goToPost(data.postID)
-								}}/>
-							</li>	
-						))}
-						
-					</ul>
+					{userInfo.pinnedMedia.length > 0 && 
+						<ul>
+							{userInfo.pinnedMedia.map(data => (
+								<li key={data.postID}>
+									<img src={data.url} onClick={()=> {
+										goToPost(data.postID)
+									}}/>
+								</li>	
+							))}
+						</ul>
+					}
 				</div>
 
 				<div id="pinnedPosts">
@@ -154,43 +159,46 @@ export default function UserProfile({
 						<h2 className="none">No Pinned Posts</h2>
 					}
 
-					<ul>
-						{pinnedPosts.map(post => {
+					{pinnedPosts.length > 0 &&
+						<ul>
+							{pinnedPosts.map(post => {
 
-							let commentCount;
-							let cmntcount = 0;
-							let countComments = (comments) => {
-								
-								for(let cmnt of comments) {
-									cmntcount++;
-									countComments(cmnt.replies)
+								let commentCount;
+								let cmntcount = 0;
+								let countComments = (comments) => {
+									
+									for(let cmnt of comments) {
+										cmntcount++;
+										countComments(cmnt.replies)
+									}
+
+									commentCount = cmntcount;
 								}
+								countComments(post.comments)
 
-								commentCount = cmntcount;
+								return (
+									<li onClick={()=> {
+										setTimeout(()=> {
+											navigate(`/post/${post._id}`, {
+												state: {post: post}
+											});
+										}, 300)
+									}}>
+										<span className="date">{post.postedOn_month} . {post.postedOn_day} . {post.postedOn_year}</span>
+										<h3>{post.title}</h3>
+										{cmntcount > 0 &&
+											<span className="details">{cmntcount} comments</span>
+										}
+										{post.tags.length > 0 &&
+											<span className="details">{post.tags.length} tags</span>
+										}
+									</li>
+								)
+							})
 							}
-							countComments(post.comments)
-
-							return (
-								<li onClick={()=> {
-									setTimeout(()=> {
-										navigate(`/post/${post._id}`, {
-											state: {post: post}
-										});
-									}, 300)
-								}}>
-									<span className="date">{post.postedOn_month} . {post.postedOn_day} . {post.postedOn_year}</span>
-									<h3>{post.title}</h3>
-									{cmntcount > 0 &&
-										<span className="details">{cmntcount} comments</span>
-									}
-									{post.tags.length > 0 &&
-										<span className="details">{post.tags.length} tags</span>
-									}
-								</li>
-							)
-						})
-						}
-					</ul>	
+						</ul>
+					}
+						
 				</div>
 			</div>
 

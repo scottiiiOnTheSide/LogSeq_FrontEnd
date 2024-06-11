@@ -1086,6 +1086,7 @@ div#main div#pinnedPosts ul {
 div#main div#pinnedPosts ul li {
 	text-align: left;
 	margin-left: 24px;
+	margin-bottom: 36px;
 }
 
 div#main div#pinnedPosts ul li h3 {
