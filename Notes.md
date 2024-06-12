@@ -5,6 +5,28 @@
 
 
 ### 06. 12. 2024
+
+@1735 Need to test 'connect' button on <UserProfile>
+
+Next . . .
+- For profilePictures on posts & comments - add profile pic to each doc / new field
+		for userProfile pic. 
+	???? when making post, how does post get user's profile picture added?
+
+- userSettings to be it's own page
+		- profile settings to be modal instead
+
+Then . . .
+!!! Manage connections CSS
+		- apiaccess function for getting user connections not working. I'd made changes
+			to the user subroutes.
+
+Then, Side Quests.
+
+Optimization and code clean up
+
+
+
 @1245 instances of other user's username goes to their profile (in log)
 			- also need to do <Post> as well
 ???? when making post, how does post get user's profile picture added?
@@ -14,10 +36,9 @@
 			removeAll now works for both pinnedMedia and pinnedPosts
 
 Next...
-- all instances of another user's username being link to their profile
-	- make sure other user's view of profile works
-	- add menu close button lol
-- request connection button functionality
+- all instances of another user's username being link to their profile ✅
+- add menu close button to user's view of another's profile ✅
+- request connection button functionality ✅
 
 !!! For profilePictures on posts & comments - add profile pic to each doc / new field
 		for userProfile pic. 
@@ -34,13 +55,13 @@ TBD...
 	- functions for removing entries from user's pinned ✅
 
 After...
-	- having 'connect' option work when viewing another person's profile 
-	- all instances of another user's username being link to their profile
+	- having 'connect' option work when viewing another person's profile ✅
+	- all instances of another user's username being link to their profile ✅
 	- attaching user's profilePhoto to post doc on backEnd
 	- userSettings to be it's own page
 		- profile settings to be modal instead
 	- log currently not working in bookmarks. Need to revert back to parent component
-		feeding log data
+		feeding log data ✅
 	!!! Manage connections CSS
 		- apiaccess function for getting user connections not working. I'd made changes
 			to the user subroutes.

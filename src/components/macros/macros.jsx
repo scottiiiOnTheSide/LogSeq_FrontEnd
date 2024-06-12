@@ -176,11 +176,11 @@ export default function Macrospage({
 				</div>
 
 				<Log data={postData} 
-				 userID={userID} 
-				 noHeading={true} 
-				 current={current} 
-				 setCurrent={setCurrent}
-				 isUnified={true}/>
+				 	userID={userID} 
+				 	noHeading={true} 
+				 	current={current} 
+				 	setCurrent={setCurrent}
+				 	isUnified={true}/>
 			</div>
 
 			<div id="menuBar">

@@ -11,11 +11,11 @@ const accessAPI = APIaccess();
  * be distinguished
  */
 
-export default function Log({section, noHeading, current, setCurrent, isUnified, updateLog, setUpdateLog}) {
+export default function Log({data, section, noHeading, current, setCurrent, isUnified, updateLog}) {
 
 	const navigate = useNavigate();
 	const _id = sessionStorage.getItem('userID');
-	const [data, setData] = React.useState([]);
+	// const [data, setData] = React.useState([]);
 
 	// function ifAnyPostsFromToday (posts) {
 	// 	let fromToday,
@@ -34,18 +34,18 @@ export default function Log({section, noHeading, current, setCurrent, isUnified,
 	// 	return fromToday;
 	// }
 
-	let getPosts = async() => {
-		if(section == 'social') {
+	// let getPosts = async() => {
+	// 	if(section == 'social') {
 
-			let data = await accessAPI.pullSocialLog();
-			setData(data);
-		}
-		else if(section == 'user') {
+	// 		let data = await accessAPI.pullSocialLog();
+	// 		setData(data);
+	// 	}
+	// 	else if(section == 'user') {
 
-			let data = await accessAPI.pullUserLog();
-			setData(data)
-		}
-	}
+	// 		let data = await accessAPI.pullUserLog();
+	// 		setData(data)
+	// 	}
+	// }
 
 	let goToProfile = async(userid) => {
 		
@@ -241,13 +241,13 @@ export default function Log({section, noHeading, current, setCurrent, isUnified,
 		// }
 	}, [data])
 
-	React.useEffect(()=> {
-		getPosts();
-	}, [])
+	// React.useEffect(()=> {
+	// 	getPosts();
+	// }, [])
 
-	React.useEffect(()=> {
-		getPosts();
-	}, [updateLog])
+	// React.useEffect(()=> {
+	// 	getPosts();
+	// }, [updateLog])
 
 	return (
 		<div className={"log"} ref={logRef}>

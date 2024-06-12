@@ -340,6 +340,21 @@ export default function Post({
 		}
 	}
 
+	let goToProfile = async(userid) => {
+		
+		let data = await accessAPI.getSingleUser(userid);
+		console.log(data.user._id)
+
+		let delay = setTimeout(()=> {
+			navigate(`/user/${data.user.userName}`, {
+				state: {
+					user: data.user,
+					pinnedPosts: data.pinnedPosts
+				}
+			})
+		}, 150)
+	}
+
 	/*
 		If user visits page via notif concerning comment
 	*/
@@ -429,7 +444,10 @@ export default function Post({
 				<div id="mainContent">
 
 					{!isOwner &&
-						<h4>{postData.author}</h4>
+						<button className={`toProfile`} onClick={()=> {goToProfile(postData.owner)}}>
+							<img src={''}/>
+							<span>&#64;{postData.author}</span>
+						</button>
 					}	
 					<h2>{postData.title}</h2>
 

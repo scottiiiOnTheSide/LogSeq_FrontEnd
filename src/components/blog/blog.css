@@ -263,6 +263,16 @@ section#POST article div#mainContent {
 	margin-top: 44px;
 }
 
+section#POST article div#mainContent button.toProfile {
+	font-size: 1em;
+	letter-spacing: 1px;
+	background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
 section#POST article div#mainContent h2 {
 	font-size: 1.75em;
 	font-weight: 400;

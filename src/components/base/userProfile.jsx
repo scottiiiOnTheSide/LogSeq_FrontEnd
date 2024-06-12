@@ -32,6 +32,7 @@ export default function UserProfile({
 }) {
 	/* Component Function Related*/
 	const userID = sessionStorage.getItem('userID');
+	const username = sessionStorage.getItem('userName');
 	const location = useLocation();
 	const navigate = useNavigate();
 	const cal = Calendar();
@@ -57,6 +58,17 @@ export default function UserProfile({
 				state: {post: post}
 			});
 		}, 600)
+	}
+
+	const requestConnection = async(recipientID) => {
+		let notif = {
+			type: 'request',
+			senderID: userID,
+			senderUsername: username,
+			recipients: [recipientID],
+			message: 'sent'
+		}
+		setSocketMessage(notif);
 	}
 	
 	/* UI Element Related */
@@ -249,7 +261,7 @@ export default function UserProfile({
 					</li>
 					<li id="close">
 						<button className="buttonDefault" onClick={()=> {
-								let optionsMenu = document.getElementById('options');
+								let optionsMenu = document.getElementById('profileOptions');
 								optionsMenu.classList.add('leave')
 
 								let delay = setTimeout(()=> {
@@ -262,7 +274,17 @@ export default function UserProfile({
 			{(options && !isOwner) &&
 				<ul id="profileOptions">
 					<li>
-						<button className={`buttonDefault`}>Connect</button>
+						<button className={`buttonDefault`} onClick={requestConnection(userInfo._id)}>Connect</button>
+					</li>
+					<li id="close">
+						<button className="buttonDefault" onClick={()=> {
+								let optionsMenu = document.getElementById('profileOptions');
+								optionsMenu.classList.add('leave')
+
+								let delay = setTimeout(()=> {
+									setOptions()
+								}, 150);
+							}}>x</button>
 					</li>
 				</ul>
 			}

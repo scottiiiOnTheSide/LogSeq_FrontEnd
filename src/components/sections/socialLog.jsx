@@ -134,15 +134,15 @@ export default function SocialLog({active, current, setCurrent}) {
 	let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
 	let isActive = active;
-	let [updateLog, setUpdateLog] = React.useReducer(state => !state, false);
+	// let [updateLog, setUpdateLog] = React.useReducer(state => !state, false);
 
-	// let updateLog = async() => {
-	// 	let data = await accessAPI.pullSocialLog();
-	// 	setLog(data);
-	// } 
+	let updateLog = async() => {
+		let data = await accessAPI.pullSocialLog();
+		setLog(data);
+	} 
 
 	React.useEffect(()=> {
-		setUpdateLog();
+		updateLog();
 		setCurrent({
 			...current,
 			social: true
@@ -150,7 +150,7 @@ export default function SocialLog({active, current, setCurrent}) {
 	}, [])
 
 	React.useEffect(()=> {
-		setUpdateLog();
+		updateLog();
 	}, [current.modal])
 
 	let noHeading = false;
@@ -158,12 +158,12 @@ export default function SocialLog({active, current, setCurrent}) {
 	return (
 		<div id="socialLog" className={isActive == 1 ? 'active' : 'not'}>
 
-			<Log section={"social"} 
+			<Log data={log}
+				 section={"social"} 
 				 noHeading={noHeading} 
 				 current={current} 
 				 setCurrent={setCurrent}
-				 updateLog={updateLog}
-				 setUpdateLog={setUpdateLog}/>
+				 updateLog={updateLog}/>
 			
 		</div>
 	)

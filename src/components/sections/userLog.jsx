@@ -649,20 +649,21 @@ export default function UserLog({active, setCurrent, current}) {
 	let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
 	let [isModal, openModal] = React.useReducer(state => !state, false);
-	let [updateLog, setUpdateLog] = React.useReducer(state => !state, false);
+	// let [updateLog, setUpdateLog] = React.useReducer(state => !state, false);
 
 	/**
 	 * For now, get userLog on mount
 	 * log.jsx exports component and necessary functions
 	 * function to open independant post within log.jsx
 	 */
-	// let updateLog = async() => {
-	// 	let data = await accessAPI.pullUserLog();
-	// 	setLog(data);
-	// } 
+	let updateLog = async() => {
+		let data = await accessAPI.pullUserLog();
+		setLog(data);
+	} 
 
 	React.useEffect(()=> {
-		setUpdateLog();
+		// setUpdateLog();
+		updateLog()
 		setCurrent({
 			...current,
 			social: false
@@ -670,7 +671,7 @@ export default function UserLog({active, setCurrent, current}) {
 	}, [])
 
 	React.useEffect(()=> {
-		setUpdateLog();
+		updateLog()
 	}, [current.modal])
 
 
@@ -692,12 +693,12 @@ export default function UserLog({active, setCurrent, current}) {
 	return (
 		<div id="userLog" className={place}>
 
-			<Log section={"user"} 
+			<Log data={log} 
+				 section={"user"} 
 				 noHeading={noHeading} 
 				 current={current} 
 				 setCurrent={setCurrent}
-				 updateLog={updateLog}
-				 setUpdateLog={setUpdateLog}/>
+				 updateLog={updateLog}/>
 		</div>
 	)
 }
