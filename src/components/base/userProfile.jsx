@@ -40,7 +40,7 @@ export default function UserProfile({
 	const [pinnedPosts, setPinnedPosts] = React.useState(location.state.pinnedPosts)
 
 	const updateProfilePage = async() => {
-		let data = await accessAPI.getSingleUser(userID);
+		let data = await accessAPI.getSingleUser(userInfo._id);
 		setUserInfo(data.user);
 		setPinnedPosts(data.pinnedPosts);
 	}

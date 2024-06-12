@@ -25,6 +25,7 @@ div.log span.postDate {
 
 
 div.log div.entry {
+	font-family: "Raleway";
 	position: relative;
 	margin: 16px 0px 36px;
 	padding: 20px 8px;
@@ -58,6 +59,20 @@ div.log div.entry:first-child {
 div.log div.entry:last-child {
 	padding-bottom: 40px;
 }
+
+
+
+div.log div.entry button.toProfile {
+	font-size: 1em;
+	letter-spacing: 1px;
+	background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 16px 0;
+}
+
+
 
 div.log div.entry h2 {
 	font-family: "Raleway";

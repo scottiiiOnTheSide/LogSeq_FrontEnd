@@ -47,7 +47,20 @@ export default function Log({section, noHeading, current, setCurrent, isUnified,
 		}
 	}
 
+	let goToProfile = async(userid) => {
+		
+		let data = await accessAPI.getSingleUser(userid);
+		console.log(data.user._id)
 
+		let delay = setTimeout(()=> {
+			navigate(`/user/${data.user.userName}`, {
+				state: {
+					user: data.user,
+					pinnedPosts: data.pinnedPosts
+				}
+			})
+		}, 150)
+	}
 
 	let dateObserved, monthObserved;
 	function returnPostItem (post, index, userID) {
@@ -107,48 +120,53 @@ export default function Log({section, noHeading, current, setCurrent, isUnified,
 				{dateMatch == false  &&
 					<span className="postDate">{month + 1} . {day} . {year}</span>
 				}
-				<div className={`entry ${rightAlign == true ? 'right' : ''}`} id={id} key={post._id} onClick={()=> {
-				
-					console.log(post)
-
-					setCurrent({
-						...current,
-						scrollTo: id
-					})
-
-					setTimeout(()=> {
-						navigate(`/post/${post._id}`, {
-							state: {post: post}
-						});
-					}, 600)
-				}}>
-					{(userID !== post.owner) &&  
-						<span id="username">&#64;{post.author}</span>
+				<div className={`entry ${rightAlign == true ? 'right' : ''}`} id={id} key={post._id}>
+					{(userID != post.owner) &&  
+						// <span id="username">&#64;{post.author}</span>
+						<button className={`toProfile`} onClick={()=> {goToProfile(post.owner)}}>
+							<img src={''}/>
+							<span>&#64;{post.author}</span>
+						</button>
 					}	
-					<h2>{title}</h2>
-					<p>{content}</p>
 
-					{post.content.some((data) => data.type == 'media') &&
-						<ul id="thumbnailsWrapper">
-							{post.content.filter(data => data.type == 'media').map(data => (
-								<li key={data._id}>
-									<img loading="lazy" src={data.content} />
-								</li>
-							))
+					<div className="textWrapper" onClick={()=> {
+						console.log(post)
 
+						setCurrent({
+							...current,
+							scrollTo: id
+						})
+
+						setTimeout(()=> {
+							navigate(`/post/${post._id}`, {
+								state: {post: post}
+							});
+						}, 600)
+					}}>
+						<h2>{title}</h2>
+						<p>{content}</p>
+
+						{post.content.some((data) => data.type == 'media') &&
+							<ul id="thumbnailsWrapper">
+								{post.content.filter(data => data.type == 'media').map(data => (
+									<li key={data._id}>
+										<img loading="lazy" src={data.content} />
+									</li>
+								))}
+							</ul>
+						}
+						
+
+						<ul id="details">
+							{tags > 0 &&
+								<li>{tags} tags</li>
+							}
+							{commentCount > 0 &&
+								<li>{commentCount} comments</li>
 							}
 						</ul>
-					}
+					</div>
 					
-
-					<ul id="details">
-						{tags > 0 &&
-							<li>{tags} tags</li>
-						}
-						{commentCount > 0 &&
-							<li>{commentCount} comments</li>
-						}
-					</ul>
 				</div>
 			</>
 		)
