@@ -398,24 +398,21 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		// console.log(data.content)
 		console.log(body)
 
-		// let body = {
-		// 	option: 'profile',
-		// 	type: 'profilePhoto',
-		// 	photo: data.content
-		// }
-
 		let request = await accessAPI.userSettings_profilePhoto(body);
 
 		if(request.confirmation == true) {
 			setSocketMessage({
 				type: 'confirmation',
 				label: 'profilePhoto',
-				message: request.message	
+				message: request.message,
+				updatedPhoto: request.updatedPhoto	
 			})
 			setActive({
 				state: true,
 				type: 1
 			})
+
+			sessionStorage.setItem('profilePhoto', )
 		}
 		else if(request.message) {
 			setSocketMessage({

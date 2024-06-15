@@ -60,6 +60,7 @@ export default function Post({
 		
 		return cmntcount;
 	}
+
 	let getPost = async() => {
 		let post = await accessAPI.getBlogPost(postID);
 		setPostData(post);
@@ -155,6 +156,7 @@ export default function Post({
 			postedOn_day: date.getDate(),
 			postedOn_year: date.getFullYear(),
 			commentNumber: access.commentNumber,
+			profilePhoto: sessionStorage.getItem('profilePhoto')
 		}
 
 		let notif = {
@@ -223,7 +225,10 @@ export default function Post({
 
 		return <li className="comment" key={comment._id} id={comment._id}>
 
-					<h3>{comment.ownerUsername}</h3>
+					<button className={`toProfile`} onClick={()=> {goToProfile(comment.ownerID)}}>
+						<img src={comment.profilePhoto}/>
+						<span>&#64;{comment.ownerUsername}</span>
+					</button>
 					<h4>{date} @ {timeStamp}</h4>
 					<p>{comment.content}</p>
 
@@ -445,7 +450,7 @@ export default function Post({
 
 					{!isOwner &&
 						<button className={`toProfile`} onClick={()=> {goToProfile(postData.owner)}}>
-							<img src={''}/>
+							<img src={postData.profilePhoto}/>
 							<span>&#64;{postData.author}</span>
 						</button>
 					}	

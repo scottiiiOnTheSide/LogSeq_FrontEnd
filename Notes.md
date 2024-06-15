@@ -4,14 +4,30 @@
 -----------------------------------------------------------------------------------------
 
 
-### 06. 12. 2024
+### 06. 15. 2024
 
+@1420 comment docs within posts not updating with profilePhoto change
+			may have to change the way they're stored in there.
+
+			might have to cease saving them within posts,
+			have frontEnd get comments upon loading
+			can make backEnd route for counting all comments with said post as parent
+
+@1320 goToProfile button on <Log> also needs a place reminder 
+
+!!! need to add css for seeing profilePhoto in a comment
+		- also needs place reminder
+
+???Considering having posts within social log have a left aligned title
+
+### 06. 12. 2024
 @1735 Need to test 'connect' button on <UserProfile>
 
 Next . . .
 - For profilePictures on posts & comments - add profile pic to each doc / new field
 		for userProfile pic. 
 	???? when making post, how does post get user's profile picture added?
+	- store user profile pic within session storage :D
 
 - userSettings to be it's own page
 		- profile settings to be modal instead

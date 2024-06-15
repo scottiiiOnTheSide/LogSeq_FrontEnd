@@ -69,9 +69,24 @@ div.log div.entry button.toProfile {
     border: none;
     outline: none;
     padding: 0;
-    margin: 16px 0;
+    margin: 16px 0 32px;
+    position: relative;
 }
 
+div.log div.entry button.toProfile img {
+	width: 48px;
+	height: 48px;
+	border-radius: 8px;
+	position: absolute;
+	left: 0;
+	opacity: 0.5;
+}	
+
+div.log div.entry button.toProfile span {
+	display: block;
+	margin-top: 14px;
+	margin-left: 28px;
+}
 
 
 div.log div.entry h2 {
@@ -360,17 +375,38 @@ div#commentsWrapper ul#replies li:last-child {
 }
 
 
-
-div#commentsWrapper ul#commentBox li h3 {
-	color: var(--greyscale-text);
-	font-family: 'Raleway';
+div#commentsWrapper ul li button.toProfile {
+	font-size: 1em;
+	letter-spacing: 1px;
+	background-color: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    margin: 16px 0 32px -4px;
+    position: relative;
 }
+
+div#commentsWrapper ul li button.toProfile img {
+	width: 48px;
+	height: 48px;
+	border-radius: 8px;
+	position: absolute;
+	left: 0;
+	opacity: 0.5;
+}	
+
+div#commentsWrapper ul li button.toProfile span {
+	display: block;
+	margin-top: 14px;
+	margin-left: 28px;
+}
+
 
 div#commentsWrapper ul#commentBox li h4 {
 	font-family: 'Raleway';
 	font-size: 0.9em;
 	font-weight: 300;
-	margin: -16px auto 20px;
+	margin: 0px auto 20px;
 
 }
 
@@ -379,10 +415,6 @@ div#commentsWrapper ul#commentBox li p {
 	font-weight: 300;
 	line-height: 28px;
 	margin: 20px 0 28px;
-}
-
-div#commentsWrapper ul li button {
-	margin-left: -8px;
 }
 
 

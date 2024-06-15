@@ -124,7 +124,7 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 					{(userID != post.owner) &&  
 						// <span id="username">&#64;{post.author}</span>
 						<button className={`toProfile`} onClick={()=> {goToProfile(post.owner)}}>
-							<img src={''}/>
+							<img src={post.profilePhoto}/>
 							<span>&#64;{post.author}</span>
 						</button>
 					}	

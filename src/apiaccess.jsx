@@ -75,12 +75,11 @@ export default function APIaccess(key) {
 				let userToken = request.payload;
 
 				let userInfo = parseJwt(request.payload);
-				let userID = userInfo._id;
-				let userName = userInfo._username;
-
+				
 				sessionStorage.setItem('userKey', userToken);
-				sessionStorage.setItem('userID', userID);
-				sessionStorage.setItem('userName', userName);
+				sessionStorage.setItem('userID', userInfo._id);
+				sessionStorage.setItem('userName', userInfo._username);
+				sessionStorage.setItem('profilePhoto', userInfo._profilePhoto)
 
 				return true;
 

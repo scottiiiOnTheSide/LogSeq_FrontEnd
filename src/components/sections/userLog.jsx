@@ -252,6 +252,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const [images, setImages] = React.useState([]);
 	let count = 0;
 	console.log(postContent);
+
 	const handleChange = (event) => {
 
 		if(event.target.name == 'tags') {
@@ -346,6 +347,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 			submission.append('title', formData.title);
 			submission.append('isPrivate', isPrivate);
+			submission.append('profilePhoto', sessionStorage.getItem('profilePhoto'));
 
 			for(let i=0; i < postContent.length; i++){
 				if(postContent[i].type == 'text') {
