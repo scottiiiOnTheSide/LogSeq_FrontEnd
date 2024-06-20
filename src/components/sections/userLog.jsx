@@ -464,7 +464,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 
 	const getConnections = async() => {
-		let request = await accessAPI.getConnections();
+		let request = await accessAPI.getConnections(userID);
 		request.forEach(user => {
 			user.selected = false;
 		})

@@ -75,7 +75,7 @@ export default function APIaccess(key) {
 				let userToken = request.payload;
 
 				let userInfo = parseJwt(request.payload);
-				
+
 				sessionStorage.setItem('userKey', userToken);
 				sessionStorage.setItem('userID', userInfo._id);
 				sessionStorage.setItem('userName', userInfo._username);
@@ -242,6 +242,24 @@ export default function APIaccess(key) {
 			/* simply confirms whether post is deleted or not */
 		},
 
+		async getComments(postID) {
+
+			let userKey = sessionStorage.getItem('userKey');
+
+			let response = await fetch(`${apiAddr}/posts/comment/getComments?postID=${postID}`, {
+				method: "GET",
+				headers: {
+					'Content-Type': 'application/json',
+	        		'Content-length': 0,
+	        		'Accept': 'application/json',
+	        		'Host': apiAddr,
+	        		'auth-token': userKey,
+				}
+			}).then(data => data.json())
+
+			return response;
+		},
+
 		async postComment(type, parentID, body) {
 
 			let userKey = sessionStorage.getItem('userKey');
@@ -365,10 +383,10 @@ export default function APIaccess(key) {
 			return request;
 		},
 
-		async getConnections() {
+		async getConnections(userID) {
 			
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/users/user?query=getAllConnects`, {
+			let request = await fetch(`${apiAddr}/users/${userID}?query=getAllConnects`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

@@ -78,17 +78,17 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 				tags = post.tags.length
 			}
 
-		let cmntcount = 0;
-		let countComments = (comments) => {
+		// let cmntcount = 0;
+		// let countComments = (comments) => {
 			
-			for(let cmnt of comments) {
-				cmntcount++;
-				countComments(cmnt.replies)
-			}
+		// 	for(let cmnt of comments) {
+		// 		cmntcount++;
+		// 		countComments(cmnt.replies)
+		// 	}
 
-			commentCount = cmntcount;
-		}
-		countComments(post.comments)
+		// 	commentCount = cmntcount;
+		// }
+		// countComments(post.comments)
 
 		let month, day, year, dateMatch;
 
@@ -162,7 +162,7 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 								<li>{tags} tags</li>
 							}
 							{commentCount > 0 &&
-								<li>{commentCount} comments</li>
+								<li>{post.commentNumber} comments</li>
 							}
 						</ul>
 					</div>

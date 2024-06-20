@@ -64,8 +64,13 @@ export default function Post({
 	let getPost = async() => {
 		let post = await accessAPI.getBlogPost(postID);
 		setPostData(post);
-		setComments(post.comments)
-		let count = countComments(post.comments);
+	};
+
+	let getComments = async() => {
+		let comments = await accessAPI.getComments(postID);
+		
+		setComments(comments)
+		let count = countComments(comments);
 		count = count - (count / 2); //may be able to remove this line in production...
 
 		if(count < 10) {
@@ -73,15 +78,34 @@ export default function Post({
 		} else if (count > 100) {
 			count = `0${count}`;
 		}
-
 		setCommentCount(count)
-	};
+	}
+
+	let refreshPost = async() => {
+
+		let post = await accessAPI.getBlogPost(postID);
+		setPostData(post);
+
+		let comments = await accessAPI.getComments(postID);
+		
+		setComments(comments)
+		let count = countComments(comments);
+		count = count - (count / 2); //may be able to remove this line in production...
+
+		if(count < 10) {
+			count = `00${count}`;
+		} else if (count > 100) {
+			count = `0${count}`;
+		}
+		setCommentCount(count)
+	}
 
 	/*** 
 	 	updates post & comments on initial load and page refresh 
 	***/
 	React.useEffect(()=> {
 		getPost();
+		getComments();
 		pinPost('check')
 	}, [])
 
@@ -176,7 +200,7 @@ export default function Post({
 
 		} else if (access.type == 'response') {
 
-			body.parentID = access.commentID;
+			body.parentComment = access.commentID;
 			if(access.commentOwner == userID) {
 				//removes post owner from notifList if user responds to their own comment
 				notif.recipients.shift(); 
@@ -195,7 +219,7 @@ export default function Post({
 			});
 			setSocketMessage(notif);
 			console.log(notif)
-			getPost()
+			refreshPost();
 		});
 
 		/***
