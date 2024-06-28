@@ -386,7 +386,7 @@ export default function APIaccess(key) {
 		async getConnections(userID) {
 			
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/users/${userID}?query=getAllConnects`, {
+			let request = await fetch(`${apiAddr}/users/user/${userID}?query=getAllConnects`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

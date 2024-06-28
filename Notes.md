@@ -3,19 +3,97 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 06. 27. 2024
+
+@2230 CSS more or less complete for connections. 
+ - Need to add same styling and functionality to searchResults
+ - have 'Clear' button be black only once searchBar has value
+ - add functions to buttons (profile, remove)
+
+@1130 copy code from <ManageMacros> for connections and search results within 
+	s<ManageConnections>
+
+### 06. 26. 2024
+@1945 for <ManageConnections>, have headerText and main list change upon searchBar being active. Also add 'clear' button within searchBar ✅
+
+### 06. 25. 2024
+@2030 fixed issue with getting user's connections within <ManageSocial>
+Will start working on CSS for this section now.
+can test whether request connect button works within <UserProfile> now too
+
+@2015 for sections (UserLog, SocialLog) will give each independant stylesheet...
+
+### 06. 23. 2024
+@1815 Working on ...
+- Change header for comments to say 'replying to' or something else ✅
+- For some reason, the options menu doesnt close after a successfully submitted comment
+		in <Post>
+- Need to confirm sending requests via profilePages works and
+- profile options in <UserSettings> to be seperate modals
+- scrollTo for:
+	- clicking on username within <Log>
+	- clicking on username within <Comments>
+
+Then . . .
+!!! Manage connections CSS
+		- apiaccess function for getting user connections not working. I'd made changes
+			to the user subroutes.
+
+Then, Side Quests.
+
+Optimization and code clean up
+
+### 06. 22. 2024
+@1405 commentCount updating works acceptably now
+
+@1340 Change header for comments to say 'replying to' or something else
+
+@1315 have to update all post author fields upon username update as well... ✅
+
+@0950 updates to a post's comment count are made everytime a comment is added. ✅
+			Testing this now...
+
+@0945 Upon deleting a post, clear 'scrollToView' from access global state var ✅
+see 06. 07. 2024 for Side Quest tasks...
+
+### 06. 21. 2024
+@1230 Have to find different method for saving post comment amount
+			all comments need to have joint indentifier, differentiate between a 
+			top level comment and children
+
+@0900 profile image within comments updates when user updates photo 
+
+### 06. 20. 2024
+@1535 Changed how comments are saved and sent on the backEnd
+
+Things to Look into
+	- For some reason, the options menu doesnt close after a successfully submitted comment
+		in <Post> Will investigate that...
+		A confirmation notif should pop up after as well
+	- Need to confirm that changing profile pics spans across comments as well ✅
+	- comment count is weird still...
+	- need to work on commentCount route on backEnd...
+
+!!! Still need to confirm sending requests via profilePages works and
+
+!!! profile options in <UserSettings> to be seperate modals
+
+### 06. 18. 2024
+@1450 Working on getComments function...
+
 
 ### 06. 15. 2024
-
 @1420 comment docs within posts not updating with profilePhoto change
 			may have to change the way they're stored in there.
 
-			might have to cease saving them within posts,
+might have to cease saving them within posts,
 			have frontEnd get comments upon loading
+			will also have to create some way for nesting them properly on frontEnd...
 			can make backEnd route for counting all comments with said post as parent
 
 @1320 goToProfile button on <Log> also needs a place reminder 
 
-!!! need to add css for seeing profilePhoto in a comment
+!!! need to add css for seeing profilePhoto in a comment ✅
 		- also needs place reminder
 
 ???Considering having posts within social log have a left aligned title
@@ -25,8 +103,8 @@
 
 Next . . .
 - For profilePictures on posts & comments - add profile pic to each doc / new field
-		for userProfile pic. 
-	???? when making post, how does post get user's profile picture added?
+		for userProfile pic. ✅
+	???? when making post, how does post get user's profile picture added? ✅
 	- store user profile pic within session storage :D
 
 - userSettings to be it's own page
@@ -73,7 +151,7 @@ TBD...
 After...
 	- having 'connect' option work when viewing another person's profile ✅
 	- all instances of another user's username being link to their profile ✅
-	- attaching user's profilePhoto to post doc on backEnd
+	- attaching user's profilePhoto to post doc on backEnd ✅
 	- userSettings to be it's own page
 		- profile settings to be modal instead
 	- log currently not working in bookmarks. Need to revert back to parent component
@@ -83,8 +161,9 @@ After...
 			to the user subroutes.
 
 ****Side Quests:
+		- for sections (UserLog, SocialLog) will give each independant stylesheet...
 		- for topics, need to address issue preventing page from opening... ✅
-		- Upon deleting a post, clear 'scrollToView' from access global state var
+		- Upon deleting a post, clear 'scrollToView' from access global state var ✅
 		- replace full page components opening and closing animations
 				1.) full page components have 'enter' animation by default
 				2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
@@ -94,6 +173,7 @@ After...
 		- set user.isPrivate setting to 'off' on initial create user
 		- add admin account to user connections list on initial create user
 		- tags need to appear within <Post> and go to their macro page upon being clicked
+
 
 ***!!!***
 Begin reading up on memoization...

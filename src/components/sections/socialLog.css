@@ -1,0 +1,142 @@
+/* * *
+	M a n a g e  C o n n e c t i o n s
+* * */
+section#HOME div#manageConnections {
+	position: absolute;
+	width: 100%;
+	height: 100vh;
+
+	z-index: 15;
+	background-color: white;
+}
+
+	div#manageConnections::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 0.25s;
+		z-index: -1;
+	}
+
+	div#manageConnections._enter::before {
+		transition: all ease-in-out 0.1s;
+		z-index: 20;
+		opacity: 1;
+	}
+
+
+div#manageConnections button#exit {
+	position: absolute;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+
+section#HOME div#manageConnections h2 {
+	font-family: "Raleway";
+    font-size: 2.5em;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--greyscale-accent);
+    margin-top: 24px;
+    margin-left: 16px;
+}
+
+
+section#HOME div#manageConnections form#searchWrapper {
+	width: 92%;
+	margin: 24px auto;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 2px var(--greyscale-elements) solid;
+	padding-bottom: 12px;
+}
+
+section#HOME div#manageConnections form:focus-within {
+	border-bottom-color: var(--greyscale-accent);
+}
+
+section#HOME div#manageConnections form#searchWrapper input {
+	font-size: 1.25em;
+	flex-grow: 2;
+	border: none;
+}	
+
+section#HOME div#manageConnections form#searchWrapper input:focus {
+	outline: none;
+}
+
+section#HOME div#manageConnections form#searchWrapper button {}
+
+section#HOME div#manageConnections p#aboutClearButton {
+	font-family: "Raleway";
+	font-size: 0.9em;
+	letter-spacing: 3px;
+	color: var(--greyscale-accent);
+	width: fit-content;
+	margin: 8px auto;
+}
+
+
+
+div#manageConnections div#currentConnections ul {
+	list-style-type: none;
+	margin: 24px auto;
+	padding: 0;
+	width: 92%;
+}
+
+div#manageConnections div#currentConnections ul li {
+	position: relative;
+	display: flex;
+	width: 100%;
+}
+
+div#manageConnections div#currentConnections ul li div#optionsWrapper {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: 0 auto;
+	padding: 24px 0;
+	background-color: var(--greyscale-background);
+	transition: all ease-in-out 0.2s;
+	opacity: 0;
+	z-index: -10;
+}
+
+	div#manageConnections div#currentConnections ul li.selected div#optionsWrapper {
+		opacity: 0.85;
+		z-index: 21;
+	}
+
+div#manageConnections div#currentConnections ul li.selected div#optionsWrapper button {
+
+}
+
+div#manageConnections div#currentConnections ul li p {
+	font-family: "Raleway";
+	font-size: 1.5em;
+	margin: 16px 0;
+}
+
+div#manageConnections div#currentConnections ul li p span {
+	display: block;
+	color: var(--site-gray-mid);
+	font-size: 0.7em;
+	margin-top: 4px;
+}

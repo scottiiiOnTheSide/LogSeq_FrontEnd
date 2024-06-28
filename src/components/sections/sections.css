@@ -477,67 +477,7 @@ section#HOME div#createPost div#createNewTag div#buttonWrapper button.nonActive 
 
 
 
-/* * *
-	M a n a g e  C o n n e c t i o n s
-* * */
-section#HOME div#manageConnections {
-	position: absolute;
-	width: 100%;
-	height: 100vh;
 
-	z-index: 15;
-	background-color: white;
-}
-
-	div#manageConnections::before {
-		content: '';
-		display: block;
-		width: 100%;
-		height: 100%;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
-		background-color: white;
-		opacity: 0;
-		transition: all ease-in-out 0.25s;
-		z-index: 0;
-	}
-
-	div#manageConnections._enter::before {
-		transition: all ease-in-out 0.1s;
-		z-index: 20;
-		opacity: 1;
-	}
-
-section#HOME div#manageConnections ul {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-section#HOME div#manageConnections ul li {
-	display: flex;
-}
-
-section#HOME div#manageConnections ul li p {
-	margin: 10px;
-}
-
-section#HOME div#manageConnections ul li p span {
-	color: var(--site-gray-mid);
-}
-
-section#HOME div#manageConnections button#exit {
-	position: absolute;
-	left: 50%;
-	bottom: 30px;
-	transform: translateX(-50%);
-
-	background-color: transparent;
-	border: none;
-	outline: none;
-}
 
 
 

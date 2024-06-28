@@ -3,6 +3,7 @@ import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import './sections.css';
+import './socialLog.css';
 
 let accessAPI = APIaccess();
 
@@ -17,7 +18,8 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 	const [connections, setConnections] = React.useState([]),
 		  [searchResults, setSearchResults] = React.useState([]),
 		  [searchFocus, setSearchFocus] = React.useReducer(state => !state, false),
-		  [results, toggleResults] = React.useReducer(state => !state, false);
+		  [results, toggleResults] = React.useReducer(state => !state, false),
+		  [headerText, setHeaderText] = React.useState("Connections");
 
 	//searches for users
 	const handleSubmit = async(event) => {
@@ -55,9 +57,46 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 
 	const updateConnections = async()=> {
 		let connections = await accessAPI.getConnections(userID);
+
+		connections = connections.map(user => {
+			return {
+				...user,
+				selected: false
+			}
+		})
+
 		setConnections(connections);
-		// console.log(connections)
 	}
+
+	let selectConnection = (id) => {
+
+		let newList = connections.map(user => {
+			if(user.id == id) {
+
+				return {
+					...user,
+					selected: true
+				}
+			}
+			else {
+
+				return {
+					...user,
+					selected: false
+				}
+			}
+		})
+		setConnections(newList)
+	}
+
+	React.useEffect(()=> {
+		if(searchFocus == true) {
+			setHeaderText('Search')
+		}
+		else {
+			setHeaderText('Connections')	
+		}
+	}, [searchFocus])
 
 	let [enter, setEnter] = React.useReducer(state => !state, true)
 	let el = React.useRef();
@@ -72,23 +111,50 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 	
 	return (
 		<div id="manageConnections" ref={el} className={`${enter == true ? '_enter' : ''}`}>
-			
-			<input type="text" 
+
+			<h2>{headerText}</h2>
+
+			<form id="searchWrapper">
+				<input type="text" 
 				   id="search" 
 				   placeholder="Search Users" 
 				   onKeyDown={handleSubmit}
 				   onFocus={()=> {setSearchFocus(); toggleResults()}}
-			/>
-
+				/>
+				<button className={`buttonDefault`}
+						onClick={(e)=> {
+							e.preventDefault();
+							toggleResults(); 
+							setSearchFocus()}}>
+					Clears
+				</button>
+			</form>
+			{results &&
+				<p id="aboutClearButton">Press Clear to Exit Search Results</p>
+			}
+			
+			{/* C O N N E C T I O N S */}
 			{!searchFocus &&
 				<div id="currentConnections">
-					<h2>My Connections</h2>
-						
 					<ul>
 						{connections.map((user, i) => (
-							<li key={i} data-id={user.id}>
+							<li key={i} 
+								data-id={user.id} 
+								className={`${user.selected == true ? 'selected' : ''}`}
+								onClick={(e)=> {
+									e.preventDefault()
+									selectConnection(user.id)
+								}}>
+
 								<p>{user.userName} <span>{user.fullName}</span></p>
-								<button onClick={()=> {removeConnection(user.id, user.userName)}}>&#x2716;</button>
+								
+								<div id="optionsWrapper">
+									<button className={`buttonDefault`}>Profile</button>
+									<button className={`buttonDefault`}
+											onClick={()=> {removeConnection(user.id, user.userName)}}>
+										Remove
+									</button>
+								</div>
 							</li>
 							/*use dataset.id to get and use it*/
 						))}
@@ -96,10 +162,9 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 				</div>
 			}
 
+			{/* S E A R C H   R E S U LTS*/}
 			{results &&
 				<div id="results">
-					<h2>Results</h2>
-					
 					<ul>
 						{searchResults.map((user, i) => (
 							<li key={i} data-id={user.id}>
@@ -109,11 +174,12 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 							/*use dataset.id to get and use it*/
 						))}
 					</ul>
-
-					/* have menu closing button clear search bar */
-					<button onClick={()=> {toggleResults(); setSearchFocus()}}>Close Search</button>
 				</div>
 			}
+
+
+
+
 			<button id="exit" className={"buttonDefault"} onClick={(e)=> {
 				e.preventDefault();
 				setEnter()

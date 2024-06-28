@@ -161,8 +161,8 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 							{tags > 0 &&
 								<li>{tags} tags</li>
 							}
-							{commentCount > 0 &&
-								<li>{post.commentNumber} comments</li>
+							{post.commentCount > 0 &&
+								<li>{post.commentCount} comments</li>
 							}
 						</ul>
 					</div>

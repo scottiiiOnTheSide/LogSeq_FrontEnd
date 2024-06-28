@@ -39,7 +39,9 @@ export default function Post({
 	setAccessID,
 	unreadCount,
 	setUnreadCount,
-	getUnreadCount
+	getUnreadCount,
+	setCurrent,
+	current
 }) {
 	const userID = sessionStorage.getItem('userID');
 	const { postID } = useParams();
@@ -48,126 +50,33 @@ export default function Post({
 	const [postData, setPostData] = React.useState(location.state.post);
 	const [comments, setComments] = React.useState([]);
 	const [commentCount, setCommentCount] = React.useState('');
-	// let commentCount;
-
-	let cmntcount = 0;
-	let countComments = (comments) => {
-
-		for(let cmnt of comments) {
-			cmntcount++;
-			countComments(cmnt.replies)
-		}
-		
-		return cmntcount;
-	}
-
-	let getPost = async() => {
-		let post = await accessAPI.getBlogPost(postID);
-		setPostData(post);
-	};
-
-	let getComments = async() => {
-		let comments = await accessAPI.getComments(postID);
-		
-		setComments(comments)
-		let count = countComments(comments);
-		count = count - (count / 2); //may be able to remove this line in production...
-
-		if(count < 10) {
-			count = `00${count}`;
-		} else if (count > 100) {
-			count = `0${count}`;
-		}
-		setCommentCount(count)
-	}
 
 	let refreshPost = async() => {
 
+		let updateComments = await accessAPI.updateCommentCount(postID);
+
 		let post = await accessAPI.getBlogPost(postID);
 		setPostData(post);
 
 		let comments = await accessAPI.getComments(postID);
-		
 		setComments(comments)
-		let count = countComments(comments);
-		count = count - (count / 2); //may be able to remove this line in production...
 
-		if(count < 10) {
-			count = `00${count}`;
-		} else if (count > 100) {
-			count = `0${count}`;
+		if(postData.commentCount < 10) {
+			// setCommentCount(`00${postData.commentCount}`)
+			setPostData({
+				...postData,
+				commentCount: `00${postData.commentCount}`
+			})
+		} else if (postData.commentCount < 100) {
+			// setCommentCount(`0${postData.commentCount}`)
+			setPostData({
+				...postData,
+				commentCount: `0${postData.commentCount}`
+			})
 		}
-		setCommentCount(count)
 	}
 
-	/*** 
-	 	updates post & comments on initial load and page refresh 
-	***/
-	React.useEffect(()=> {
-		getPost();
-		getComments();
-		pinPost('check')
-	}, [])
-
-
-	/***
-	 	P o s t D e t a i l s
-	***/
-	let cal = Calendar();
-		let dateInfo = new Date(postData.createdAt.slice(0, -1));
-		let date = dateInfo.toString().slice(4, 15);
-		let hour = dateInfo.toString().slice(16, 18);
-		let minute = dateInfo.toString().slice(19, 21);
-		let AoP;
-		if(hour > 12) {
-			AoP = 'pm';
-			hour = hour - 12;
-		} else {
-			AoP = 'am';
-		}
-		let timeStamp = hour+ ":" +minute+ " " +AoP;
-		let userName = sessionStorage.getItem('userName');
-		let isOwner = postData.owner == userID ? true : false;
-
-		//to be removed once old posts gone
-		let content, split;
-		let text = [];
-		if( Object.keys(postData.content[0]).length > 10 ) {
-			for (let char in postData.content[0]) {
-				text.push(postData.content[0][char]);
-			}
-			text = text.join("");
-			split = true;
-			// console.log(text)
-		} else if ( Object.keys(postData.content[0].length < 10)) {
-			content = postData.content;
-			split = false;
-		}
-
-
-	/*** 
-	  	C o m p o n e n t  F u n c t i o n a l i t y
-	***/
-	const [notifList, setNotifList] = React.useReducer(state => !state, false);
-	const [toggleDetails, openDetails] = React.useReducer(state => !state, false);
-	const [isOptionsOpen, toggleOptions] = React.useReducer(state => !state, false);
-	const [isComment, toggleComment] = React.useReducer(state => !state, false);
-	const [isCollections, toggleCollections] = React.useReducer(state => !state, false);
-	const [messageContent, setMessage] = React.useState('');
-	const [collections, setCollections] = React.useState([]);
-	const [pinnedPost, setPinnedPost] = React.useState('');
-	const [pinnedMedia, setPinnedMedia] = React.useReducer(state => !state, false);
-	const [access, setAccess] = React.useState({
-		type: null, //"initial" or "response"
-		commentID: null, 
-		commentNumber: null,
-		commentOwner: null //owner id
-	})
-	let optionsButton = React.useRef();
-
-	let handleMessage = (e) => {
-		setMessage(e.target.value);
-	}
+	//for submitting comments
 	let handleSubmit = async(e) => {
 		e.preventDefault();
 		let date = new Date();
@@ -182,7 +91,6 @@ export default function Post({
 			commentNumber: access.commentNumber,
 			profilePhoto: sessionStorage.getItem('profilePhoto')
 		}
-
 		let notif = {
 				type: 'comment',
 				isRead: false,
@@ -217,6 +125,7 @@ export default function Post({
 				postTitle: postData.title,
 				commentID: res
 			});
+
 			setSocketMessage(notif);
 			console.log(notif)
 			refreshPost();
@@ -228,56 +137,6 @@ export default function Post({
 		 */
 		toggleComment();
 		toggleOptions();
-	}
-	
-	let createComment = (comment) => {
-
-		let date = `${comment.postedOn_month}. ${comment.postedOn_day}. ${comment.postedOn_year}`;
-
-		let dateInfo = new Date(comment.createdAt.slice(0, -1));
-		let datee = dateInfo.toString().slice(4, 15);
-		let hour = dateInfo.toString().slice(16, 18);
-		let minute = dateInfo.toString().slice(19, 21);
-		if(hour > 12) {
-			AoP = 'pm';
-			hour = hour - 12;
-		} else {
-			AoP = 'am';
-		}
-		let timeStamp = hour+ ":" +minute+ " " +AoP;
-
-
-		return <li className="comment" key={comment._id} id={comment._id}>
-
-					<button className={`toProfile`} onClick={()=> {goToProfile(comment.ownerID)}}>
-						<img src={comment.profilePhoto}/>
-						<span>&#64;{comment.ownerUsername}</span>
-					</button>
-					<h4>{date} @ {timeStamp}</h4>
-					<p>{comment.content}</p>
-
-					<button className="buttonDefault"
-							onClick={()=> {
-
-								setAccess({
-									type: 'response',
-									commentID: comment._id,
-									commentNumber: `${comment.commentNumber} - ${comment.replies.length + 1}`,
-									commentOwner: comment.ownerID
-								});
-
-								toggleComment()
-					}}>Reply</button>
-
-					{comment.replies &&
-						<ul id="replies">
-							{comment.replies.map(comment => (
-								createComment(comment)
-							))}
-						</ul>
-					}
-
-			</li>
 	}
 
 	let getCollections = async()=> {
@@ -383,6 +242,137 @@ export default function Post({
 			})
 		}, 150)
 	}
+
+	/*** 
+	 	updates post & comments on initial load and page refresh 
+	***/
+	React.useEffect(()=> {
+		refreshPost()
+		pinPost('check')
+	}, [])
+
+
+	/***
+	 	P o s t D e t a i l s
+	***/
+	let cal = Calendar();
+		let dateInfo = new Date(postData.createdAt.slice(0, -1));
+		let date = dateInfo.toString().slice(4, 15);
+		let hour = dateInfo.toString().slice(16, 18);
+		let minute = dateInfo.toString().slice(19, 21);
+		let AoP;
+		if(hour > 12) {
+			AoP = 'pm';
+			hour = hour - 12;
+		} else {
+			AoP = 'am';
+		}
+		let timeStamp = hour+ ":" +minute+ " " +AoP;
+		let userName = sessionStorage.getItem('userName');
+		let isOwner = postData.owner == userID ? true : false;
+
+		//to be removed once old posts gone
+		let content, split;
+		let text = [];
+		if( Object.keys(postData.content[0]).length > 10 ) {
+			for (let char in postData.content[0]) {
+				text.push(postData.content[0][char]);
+			}
+			text = text.join("");
+			split = true;
+			// console.log(text)
+		} else if ( Object.keys(postData.content[0].length < 10)) {
+			content = postData.content;
+			split = false;
+		}
+
+
+	/*** 
+	  	C o m p o n e n t  F u n c t i o n a l i t y
+	***/
+	const [notifList, setNotifList] = React.useReducer(state => !state, false);
+	const [toggleDetails, openDetails] = React.useReducer(state => !state, false);
+	const [isOptionsOpen, toggleOptions] = React.useReducer(state => !state, false);
+	const [isComment, toggleComment] = React.useReducer(state => !state, false);
+	const [isCollections, toggleCollections] = React.useReducer(state => !state, false);
+	const [messageContent, setMessage] = React.useState('');
+	const [collections, setCollections] = React.useState([]);
+	const [pinnedPost, setPinnedPost] = React.useState('');
+	const [pinnedMedia, setPinnedMedia] = React.useReducer(state => !state, false);
+	const [access, setAccess] = React.useState({
+		type: null, //"initial" or "response"
+		commentID: null, 
+		commentNumber: null,
+		commentOwner: null, //owner id
+		commentUsername: null,
+	})
+	const [commentHeader, setCommentHeader] = React.useState('');
+
+	let optionsButton = React.useRef();
+
+	let handleMessage = (e) => {
+		setMessage(e.target.value);
+	}
+
+	let createComment = (comment) => {
+
+		let date = `${comment.postedOn_month}. ${comment.postedOn_day}. ${comment.postedOn_year}`;
+
+		let dateInfo = new Date(comment.createdAt.slice(0, -1));
+		let datee = dateInfo.toString().slice(4, 15);
+		let hour = dateInfo.toString().slice(16, 18);
+		let minute = dateInfo.toString().slice(19, 21);
+		if(hour > 12) {
+			AoP = 'pm';
+			hour = hour - 12;
+		} else {
+			AoP = 'am';
+		}
+		let timeStamp = hour+ ":" +minute+ " " +AoP;
+
+
+		return <li className="comment" key={comment._id} id={comment._id}>
+
+					<button className={`toProfile`} onClick={()=> {goToProfile(comment.ownerID)}}>
+						<img src={comment.profilePhoto}/>
+						<span>&#64;{comment.ownerUsername}</span>
+					</button>
+					<h4>{date} @ {timeStamp}</h4>
+					<p>{comment.content}</p>
+
+					<button className="buttonDefault"
+							onClick={()=> {
+
+								setAccess({
+									type: 'response',
+									commentID: comment._id,
+									commentNumber: `${comment.commentNumber} - ${comment.replies.length + 1}`,
+									commentOwner: comment.ownerID,
+									commentUsername: comment.ownerUsername
+								});
+
+								toggleComment()
+					}}>Reply</button>
+
+					{comment.replies &&
+						<ul id="replies">
+							{comment.replies.map(comment => (
+								createComment(comment)
+							))}
+						</ul>
+					}
+
+			</li>
+	}
+
+	React.useEffect(()=> {
+		if(access.type == 'response') {
+			setCommentHeader(`Replying to ${access.commentUsername}`)
+		}
+		else {
+			setCommentHeader('Your Comment');	
+		} 
+	}, [access])
 
 	/*
 		If user visits page via notif concerning comment
@@ -508,7 +498,7 @@ export default function Post({
 					C O M M E N T S 
 				* * */}
 				<div id="commentsWrapper">
-					<h2><span id="commentCount">{commentCount}</span>Comments</h2>
+					<h2><span id="commentCount">{postData.commentCount}</span>Comments</h2>
 
 					<ul id="commentBox" ref={commentsRef}>
 						{comments.map(comment => (
@@ -625,7 +615,7 @@ export default function Post({
 
 				{isComment &&
 					<form onSubmit={handleSubmit}>
-						<h3>Comment #{access.commentNumber}</h3>
+						<h3>{commentHeader}</h3>
 						<textarea name="content" rows="10" onChange={handleMessage}></textarea>
 
 						<div id="buttonBox">
@@ -699,6 +689,8 @@ export default function Post({
                 accessID={accessID}
                 setAccessID={setAccessID}
                 getUnreadCount={getUnreadCount}
+                current={current}
+                setCurrent={setCurrent}
 			/>
 		</section>
 	)

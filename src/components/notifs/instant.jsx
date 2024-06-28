@@ -7,7 +7,18 @@ import './notifs.css';
 
 const accessAPI = APIaccess();
 
-export default function Instants({sendMessage, socketMessage, setSocketMessage, setActive, isActive, accessID, setAccessID, getUnreadCount}) {
+export default function Instants({
+	sendMessage, 
+	socketMessage, 
+	setSocketMessage, 
+	setActive, 
+	isActive, 
+	accessID, 
+	setAccessID, 
+	getUnreadCount,
+	current,
+	setCurrent
+}) {
 
 	const navigate = useNavigate();
 	let userID = sessionStorage.getItem('userID');
@@ -710,6 +721,11 @@ export default function Instants({sendMessage, socketMessage, setSocketMessage, 
 		else if (arg == 'remove') {
 
 			if(socketMessage.message == 'confirm_deletePost') {
+
+				setCurrent({
+					...current,
+					scrollTo: null
+				})
 
 				navigate(`/home`);
 

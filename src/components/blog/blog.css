@@ -147,7 +147,9 @@ div.log div.entry ul#details {
 div.log div.entry ul#details li {
 	font-size: 0.9em;
 	letter-spacing: 1px;
-	margin: 0 8px;
+	margin: 12px 0;
+	margin-left: 4px;
+	margin-right: 12px;
 }
 
 
