@@ -90,20 +90,23 @@ section#HOME div#manageConnections p#aboutClearButton {
 
 
 
-div#manageConnections div#currentConnections ul {
+div#manageConnections div#currentConnections ul,
+div#manageConnections div#searchResults ul {
 	list-style-type: none;
 	margin: 24px auto;
 	padding: 0;
 	width: 92%;
 }
 
-div#manageConnections div#currentConnections ul li {
+div#manageConnections div#currentConnections ul li,
+div#manageConnections div#searchResults ul li  {
 	position: relative;
 	display: flex;
 	width: 100%;
 }
 
-div#manageConnections div#currentConnections ul li div#optionsWrapper {
+div#manageConnections div#currentConnections ul li div#optionsWrapper,
+div#manageConnections div#searchResults ul li div#optionsWrapper {
 	width: 100%;
 	display: flex;
 	flex-direction: row;
@@ -119,7 +122,8 @@ div#manageConnections div#currentConnections ul li div#optionsWrapper {
 	z-index: -10;
 }
 
-	div#manageConnections div#currentConnections ul li.selected div#optionsWrapper {
+	div#manageConnections div#currentConnections ul li.selected div#optionsWrapper,
+	div#manageConnections div#searchResults ul li.selected div#optionsWrapper{
 		opacity: 0.85;
 		z-index: 21;
 	}
@@ -128,13 +132,15 @@ div#manageConnections div#currentConnections ul li.selected div#optionsWrapper b
 
 }
 
-div#manageConnections div#currentConnections ul li p {
+div#manageConnections div#currentConnections ul li p,
+div#manageConnections div#searchResults ul li p {
 	font-family: "Raleway";
 	font-size: 1.5em;
 	margin: 16px 0;
 }
 
-div#manageConnections div#currentConnections ul li p span {
+div#manageConnections div#currentConnections ul li p span,
+div#manageConnections div#searchResults ul li p span {
 	display: block;
 	color: var(--site-gray-mid);
 	font-size: 0.7em;

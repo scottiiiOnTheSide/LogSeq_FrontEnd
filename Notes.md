@@ -3,15 +3,24 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
-### 06. 27. 2024
+### 06. 28. 2024
 
+@1210 Gotta face the connectionRequest system 😭
+
+@1205 Pretty much finished with <ManageConnections> css for now
+			ought to reVerify that requestionConnection and removeConnection funcs still work...
+
+@1000 gotta add state var for search input so it can be cleared when pressing 
+clear button ✅
+
+### 06. 27. 2024
 @2230 CSS more or less complete for connections. 
- - Need to add same styling and functionality to searchResults
+ - Need to add same styling and functionality to searchResults ✅
  - have 'Clear' button be black only once searchBar has value
- - add functions to buttons (profile, remove)
+ - add functions to buttons (profile, remove) ✅
 
 @1130 copy code from <ManageMacros> for connections and search results within 
-	s<ManageConnections>
+	<ManageConnections>
 
 ### 06. 26. 2024
 @1945 for <ManageConnections>, have headerText and main list change upon searchBar being active. Also add 'clear' button within searchBar ✅
@@ -35,13 +44,28 @@ can test whether request connect button works within <UserProfile> now too
 	- clicking on username within <Comments>
 
 Then . . .
-!!! Manage connections CSS
-		- apiaccess function for getting user connections not working. I'd made changes
-			to the user subroutes.
+!!! Manage connections CSS ✅
 
-Then, Side Quests.
+****Side Quests:
+		- for sections (UserLog, SocialLog) will give each independant stylesheet...
+		- for topics, need to address issue preventing page from opening... ✅
+		- Upon deleting a post, clear 'scrollToView' from access global state var ✅
+		- replace full page components opening and closing animations
+				1.) full page components have 'enter' animation by default
+				2.) use useReducer toggle to add 'exit' class, adding 'leave' animation
+				3.) animation speed of 0.2s - close component with setTimeout after 300ms
+				4.) this animation should be toggleable by buttons for leaving page
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made - not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+		- set user.isPrivate setting to 'off' on initial create user
+		- add admin account to user connections list on initial create user
+		- tags need to appear within <Post> and go to their macro page upon being clicked
 
 Optimization and code clean up
+- Memoization, code splitting(?), reducing image uploads at backEnd
+
+Would like to update the section Navigation so that any options can be chosen at a time,
+not just the next
+
 
 ### 06. 22. 2024
 @1405 commentCount updating works acceptably now

@@ -1,6 +1,8 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
+import {useNavigate} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
+
 import Log from '../blog/log';
 import './sections.css';
 import './socialLog.css';
@@ -13,22 +15,38 @@ let accessAPI = APIaccess();
  */
 export function ManageConnections({setCurrent, current, setSocketMessage}) {
 
-	const userID = sessionStorage.getItem('userID'),
-		  userName = sessionStorage.getItem('userName');
-	const [connections, setConnections] = React.useState([]),
+	const navigate = useNavigate(),
+		  userID = sessionStorage.getItem('userID'),
+		  userName = sessionStorage.getItem('userName'),
+		  [connections, setConnections] = React.useState([]),
+		  [searchQuery, setSearchQuery] = React.useState(''),	
 		  [searchResults, setSearchResults] = React.useState([]),
-		  [searchFocus, setSearchFocus] = React.useReducer(state => !state, false),
+		  // [searchFocus, setSearchFocus] = React.useReducer(state => !state, false),
+		  [searchFocus, setSearchFocus] = React.useState(false),
 		  [results, toggleResults] = React.useReducer(state => !state, false),
 		  [headerText, setHeaderText] = React.useState("Connections");
+
+	const onChange = (e) => {
+		setSearchQuery(e.target.value)
+	}
 
 	//searches for users
 	const handleSubmit = async(event) => {
 		
 		if(event.key === 'Enter') {
+			event.preventDefault();
 			let query = event.target.value;
-			let search = await accessAPI.searchUsers(query);
-			console.log(search)
-			setSearchResults(search);
+			let searchResults = await accessAPI.searchUsers(query);
+
+			searchResults = searchResults.map(user => {
+				return {
+					...user,
+					selected: false
+				}
+			});
+
+			setSearchResults(searchResults);
+			toggleResults();
 		}
 	}
 
@@ -89,6 +107,42 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 		setConnections(newList)
 	}
 
+	let selectResult = (id) => {
+
+		let newList = searchResults.map(user => {
+			if(user.id == id) {
+
+				return {
+					...user,
+					selected: true
+				}
+			}
+			else {
+
+				return {
+					...user,
+					selected: false
+				}
+			}
+		})
+		setSearchResults(newList)
+	}
+
+	let goToProfile = async(userid) => {
+		
+		let data = await accessAPI.getSingleUser(userid);
+
+		let delay = setTimeout(()=> {
+			navigate(`/user/${data.user.userName}`, {
+				state: {
+					user: data.user,
+					pinnedPosts: data.pinnedPosts
+				}
+			})
+		}, 150)
+	}
+
+	// Changes Section Header
 	React.useEffect(()=> {
 		if(searchFocus == true) {
 			setHeaderText('Search')
@@ -98,6 +152,7 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 		}
 	}, [searchFocus])
 
+	//Enter and Leave Fade Effect
 	let [enter, setEnter] = React.useReducer(state => !state, true)
 	let el = React.useRef();
 	let element = el.current;
@@ -116,25 +171,41 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 
 			<form id="searchWrapper">
 				<input type="text" 
-				   id="search" 
+				   id="search"
+				   value={searchQuery}
+				   onChange={onChange} 
 				   placeholder="Search Users" 
 				   onKeyDown={handleSubmit}
-				   onFocus={()=> {setSearchFocus(); toggleResults()}}
+				   onFocus={()=> {setSearchFocus(true)}}
+				   onBlur={()=> {
+				   	if(results.length < 1) {
+				   		setSearchFocus(false);
+				   		toggleResults();
+				   	}
+				   }}
 				/>
 				<button className={`buttonDefault`}
 						onClick={(e)=> {
 							e.preventDefault();
-							toggleResults(); 
-							setSearchFocus()}}>
-					Clears
+							setSearchResults([]); //empties results
+							setSearchFocus(false);
+							setSearchQuery('');
+
+							if(searchResults < 1) {
+								setSearchFocus(false);
+							}
+						}}>
+					Clear
 				</button>
 			</form>
-			{results &&
+			{searchFocus &&
 				<p id="aboutClearButton">Press Clear to Exit Search Results</p>
 			}
 			
-			{/* C O N N E C T I O N S */}
-			{!searchFocus &&
+			{/* C O N N E C T I O N S 
+				{(!searchFocus && !results) &&
+			*/}
+				{(searchResults.length < 1 && !searchFocus) &&
 				<div id="currentConnections">
 					<ul>
 						{connections.map((user, i) => (
@@ -149,7 +220,10 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 								<p>{user.userName} <span>{user.fullName}</span></p>
 								
 								<div id="optionsWrapper">
-									<button className={`buttonDefault`}>Profile</button>
+									<button className={`buttonDefault`}
+											onClick={()=> {goToProfile(user.id)}}>
+										Profile
+									</button>
 									<button className={`buttonDefault`}
 											onClick={()=> {removeConnection(user.id, user.userName)}}>
 										Remove
@@ -163,15 +237,30 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 			}
 
 			{/* S E A R C H   R E S U LTS*/}
-			{results &&
-				<div id="results">
+			{searchResults.length > 1 &&
+				<div id="searchResults">
 					<ul>
 						{searchResults.map((user, i) => (
-							<li key={i} data-id={user.id}>
-								<p>{user.username} <i>{user.fullname}</i></p>
-								<button onClick={()=> {requestConnection(user.id)}}>Connect</button>
+							<li key={i} 
+								data-id={user.id}
+								className={`${user.selected == true ? 'selected' : ''}`}
+								onClick={(e)=> {
+									e.preventDefault()
+									selectResult(user.id)
+								}}>
+								<p>{user.username} <span>{user.fullname}</span></p>
+								
+								<div id="optionsWrapper">
+									<button className={`buttonDefault`}
+											onClick={()=> {goToProfile(user.id)}}>
+										Profile
+									</button>
+									<button className={`buttonDefault`}
+											onClick={()=> {requestConnection(user.id)}}>
+										Request
+									</button>
+								</div>
 							</li>
-							/*use dataset.id to get and use it*/
 						))}
 					</ul>
 				</div>
