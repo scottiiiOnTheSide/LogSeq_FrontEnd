@@ -98,18 +98,6 @@ function Home({
     }
   }, [element]);
 
-  // let initialLogin = React.useRef(true);
-  // // React.useEffect(()=> {
-  //   if(initialLogin == true) {
-  //     setCurrent({
-  //       ...current,
-  //       section: 2
-  //     })
-  //     initialLogin(false);
-  //   }
-  // }, [])
-
-
 
   return (
     <section id="HOME" ref={el} className={`${enter == true ? '_enter' : ''}`}>  
@@ -133,14 +121,7 @@ function Home({
             setUserSettings={setUserSettings}/>
         }
 
-        {userSettings &&
-          <UserSettings 
-            setUserSettings={setUserSettings}
-            userSettings={userSettings}
-            setLogout={setLogout}
-            setSocketMessage={setSocketMessage}/>
-        }
-        {isLogout &&
+        {/*{isLogout &&
           <div id="logoutModal" className={``}>
             
             <div id="wrapper">
@@ -157,7 +138,7 @@ function Home({
               </div>
               </div>
           </div>
-        }
+        }*/}
 
         <SectionsWrapper current={current} setCurrent={setCurrent} />
 
@@ -534,6 +515,15 @@ export default function Main() {
                   set_selectedDate={set_selectedDate}
               />
             </HomeOrEntry>
+            }
+          />
+
+          <Route path="/settings" element={
+              <HomeOrEntry>
+                <UserSettings
+                  setSocketMessage={setSocketMessage}
+                />
+              </HomeOrEntry>
             }
           />
         </Routes>

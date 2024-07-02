@@ -1,34 +1,14 @@
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import {useNavigate} from 'react-router-dom';
+import './macrosSection.css';
 
 let accessAPI = APIaccess();
 
 export function ManageMacros({current, setCurrent, setSocketMessage, socketMessage}) {
 
 	const userID = sessionStorage.getItem('userID');
-	const [userTags, setUserTags] = React.useState([
-		// {
-		// 	name: 'thisIs',
-		// 	selected: false,
-		// 	id: 1234
-		// },
-		// {
-		// 	name: 'aListOf',
-		// 	selected: false,
-		// 	id: 5678
-		// }, 
-		// {
-		// 	name: 'tagsToBe',
-		// 	selected: false,
-		// 	id: 9101
-		// },
-		// {
-		// 	name: 'deleted',
-		// 	selected: false,
-		// 	id: 1123
-		// }
-	]) 
+	const [userTags, setUserTags] = React.useState([]) 
 	const [userCollections, setUserCollections] = React.useState([
 		// {
 		// 	name: 'This is a Collection',
@@ -39,24 +19,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		// 	isPrivate: false,
 		// 	makePrivate: null
 		// },
-		// {
-		// 	name: 'They can have spaces',
-		// 	selected: false,
-		// 	_id: 5678,
-		// 	delete: null,
-		// 	rename: null,
-		// 	isPrivate: false,
-		// 	makePrivate: null
-		// }, 
-		// {
-		// 	name: 'In their names. Unlike Tags',
-		// 	selected: false,
-		// 	_id: 9101,
-		// 	delete: null,
-		// 	rename: null,
-		// 	isPrivate: false,
-		// 	makePrivate: null
-		// }
 	])
 	let updateMacros = async() => {
 
@@ -92,10 +54,8 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		setUserTags(tags);
 		setUserCollections(collections); 
 	}
-
-	console.log(userTags);
 	
-	//state for <ManageMacros > Options
+	//For Main Options
 	const [section, setSection] = React.useState([
 		{
 			newTag: false
@@ -640,6 +600,22 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		</div>
 	)
 }
+
+// element has _enter class initially. 
+// On component load, it's removed after 200ms
+// On element close, _enter class is added again,
+// then element is removed / closed.
+
+// let modal = React.useRef();
+// React.useEffect(()=> {
+// 	let modalCurrent = modal.current;
+// 	let delay = setTimeout(()=> {
+// 		modalCurrent.classList.remove('_enter');	
+// 	}, 200)
+// }, [])
+
+// let modalCurrent = modal.current;
+// modalCurrent.classList.add('_enter');
 
 
 

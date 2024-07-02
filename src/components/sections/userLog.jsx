@@ -3,6 +3,7 @@ import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import './sections.css';
+import './userLog.css';
 
 let accessAPI = APIaccess();
 
@@ -426,7 +427,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			count++
 		])
 	}
-	// console.log(postContent)
+
 	const textareaImageAdd = (index) => {
 
 		let element = <fieldset key={index} className="textareaImageAdd">
@@ -461,7 +462,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 		return element;
 	}
-
 
 	const getConnections = async() => {
 		let request = await accessAPI.getConnections(userID);
@@ -500,7 +500,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	}
 	
 	const [tagged, setTagged] = React.useState([]);
-	
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	const [modal, setModal] = React.useReducer(state => !state, false);
 	const [isPrivate_2, setIsPrivate_2] = React.useReducer(state => !state, false);
@@ -508,6 +507,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const el = React.useRef();
 	const tagModal = React.useRef();
 	const element = el.current;
+
+	let writtenDate;
+	if(selectedDate.day) {
+		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
+	}
 
 	let newTag_onChange = (e) => {
 
@@ -534,36 +538,34 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		*/
 	}
 
-	/* On Mount, fade away pseudo element for transition effect */
+	//update main data on every reload
 	React.useEffect(()=> {
 		getConnections();
 		getSuggestions();
+	}, []);
 
-		if(element) {
-			setEnter();
-		}
-	}, [element]);
-
+	//update tags on new tag creation
 	React.useEffect(()=> {
 
 		if(socketMessage.type == 'confirmation' && socketMessage.message == 'tagAdd') {
 			getSuggestions();
 			setModal();
 		}
-		console.log(socketMessage)
 	}, [socketMessage]);
 
-	let writtenDate;
-	if(selectedDate.day) {
-		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
-	}
-
-	// console.log(socketMessage);
+	//Enter / Exit animation
+	React.useEffect(()=> {
+		let elCurrent = el.current;
+		let delay = setTimeout(()=> {
+			elCurrent.classList.remove('_enter');	
+		}, 200)
+	}, [])
+	
 
 	return (
-		<div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''} 
-												  ${modal == true ? '_modalActive' : ''}`}>
-			
+		// <div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''} 
+		// 										  ${modal == true ? '_modalActive' : ''}`}>
+		<div id="createPost" ref={el} className={`_enter`}>
 			<div id="titleWrapper">
 				<h3>Creating Entry for</h3>
 				{current.monthChart &&
@@ -602,7 +604,10 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				<button className={"buttonDefault"} onClick={handleSubmit}>Submit</button>
 				<button className={"buttonDefault"} onClick={(e)=> {
 					e.preventDefault();
-					setEnter();
+					
+					let elCurrent = el.current;
+					elCurrent.classList.add('_enter');
+
 					let delay = setTimeout(()=> {
 						setCurrent({
 							...current,

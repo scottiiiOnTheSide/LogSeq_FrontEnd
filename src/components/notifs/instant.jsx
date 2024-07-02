@@ -744,7 +744,7 @@ export default function Instants({
 
 			} else if(socketMessage.message == 'confirm_deleteComment') {
 
-			}
+			} //remove post
 		}
 
 		else if(arg == 'joinGroup') {

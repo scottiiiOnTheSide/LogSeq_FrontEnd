@@ -3,7 +3,79 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 07. 02. 2024
+
+@1310 Still need to move some more CSS over for individiual sections, but will do so when
+			completing style overhaul
+
+Currently Working on...
+- design for <MonthChart> date selection and 
+- last side quests
+- redesign how tags are added to post page..?
+
+@1250 enter / exit animation update 
+			- interactionsList ✅
+			- createPost ✅
+			- manageSocials ✅
+
+@0835 working through the Side Quests now . . .
+
+### 07. 01. 2024
+@2200 Made <UserSettings> it's own page
+			need to add logout modal ✅
+			for profile options, only one open at once ✅
+
+### 06. 30. 2024
+@0915 Currently working on design addition for invitation sign ups...
+
+General Level To Do, as of Now...
+
+****Side Quests:
+		- tags need to appear within <Post> and go to their macro page upon being clicked
+		- UserSettings to be it's own page ✅
+			- maybe make profile options their own modals later...
+		- for sections (UserLog, SocialLog) will give each independant stylesheet... ✅
+		- for topics, need to address issue preventing page from opening... ✅
+		- Upon deleting a post, clear 'scrollToView' from access global state var ✅
+		- replace full page components opening and closing animations ✅
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made 
+			not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+		- when clicked, section menuButton should close <MonthChart> if it's open
+
+****Needed Additions
+		- Specific Month + Year Selection in <MonthChart>
+		- For mainNav bar, can choose any option at a time. Not sequential
+		- in <userProfile> clicking on connection count shows list of all user's connections
+				should be same for posts and subscriptions
+
+****To be implemented with Invite Update
+		- provide choice of privacy setting during sign up
+			- let user know option can be changed
+		- add admin account to user connections list on initial create user & their inviter
+
+Optimization and code clean up
+- Memoization, code splitting(?), reducing image uploads at backEnd
+
+
+### 06. 29. 2024
+@0945 Will work on some side quest points, will then reAssess what else needs to be done
+			Can also begin designing out + planning referral codes for sign up + new sign up
+			process...
+
+@0940 markingRead func for notifications working within <InteractionsList>
+			- need to clean up the code and css for this...
+			- button options should be removed from a notif once it's marked read...
+
+@0920 Add confirmation for removing connections in <ManageConnections>...
+			could be future addition
+
 ### 06. 28. 2024
+@0045 need to add 'remove' & 'request' to buttons in <manageConnections>
+
+@1635 connectionRequest from profile works as expected :D !
+			- all notifications need a button for marking read ...
+			- also, some confusion with the usernames on the backEnd:
+				sender recieved connection alert with their username instead of new connection
 
 @1210 Gotta face the connectionRequest system 😭
 
@@ -37,7 +109,7 @@ can test whether request connect button works within <UserProfile> now too
 - Change header for comments to say 'replying to' or something else ✅
 - For some reason, the options menu doesnt close after a successfully submitted comment
 		in <Post>
-- Need to confirm sending requests via profilePages works and
+- Need to confirm sending requests via profilePages works ✅
 - profile options in <UserSettings> to be seperate modals
 - scrollTo for:
 	- clicking on username within <Log>
@@ -59,6 +131,13 @@ Then . . .
 		- set user.isPrivate setting to 'off' on initial create user
 		- add admin account to user connections list on initial create user
 		- tags need to appear within <Post> and go to their macro page upon being clicked
+		- when clicked, section menuButton should close <MonthChart> if it's open
+
+****Needed Additions
+		- Specific Month + Year Selection in <MonthChart>
+		- For mainNav bar, can choose any option at a time. Not sequential
+		- in <userProfile> clicking on connection count shows list of all user's connections
+				should be same for posts and subscriptions
 
 Optimization and code clean up
 - Memoization, code splitting(?), reducing image uploads at backEnd

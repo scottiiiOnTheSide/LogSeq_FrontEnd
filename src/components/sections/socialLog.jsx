@@ -142,6 +142,11 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 		}, 150)
 	}
 
+	//update main data on every reload
+	React.useEffect(()=> {
+		updateConnections();
+	}, [])
+
 	// Changes Section Header
 	React.useEffect(()=> {
 		if(searchFocus == true) {
@@ -152,20 +157,24 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 		}
 	}, [searchFocus])
 
-	//Enter and Leave Fade Effect
-	let [enter, setEnter] = React.useReducer(state => !state, true)
-	let el = React.useRef();
-	let element = el.current;
 
+	// Enter / Exit Animation
+	let modal = React.useRef();
 	React.useEffect(()=> {
-		updateConnections();
-		if(element) {
-			setEnter();
-		}
-	}, [element, ])
+		let modalCurrent = modal.current;
+		let delay = setTimeout(()=> {
+			modalCurrent.classList.remove('_enter');	
+		}, 200)
+	}, [])
+
+	//Enter and Leave Fade Effect
+	// let [enter, setEnter] = React.useReducer(state => !state, true)
+	// let el = React.useRef();
+	// let element = el.current;
 	
 	return (
-		<div id="manageConnections" ref={el} className={`${enter == true ? '_enter' : ''}`}>
+		// <div id="manageConnections" ref={el} className={`${enter == true ? '_enter' : ''}`}>
+		<div id="manageConnections" ref={modal} className={`_enter`}>
 
 			<h2>{headerText}</h2>
 
@@ -267,11 +276,12 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 			}
 
 
-
-
 			<button id="exit" className={"buttonDefault"} onClick={(e)=> {
 				e.preventDefault();
-				setEnter()
+
+				let modalCurrent = modal.current;
+				modalCurrent.classList.add('_enter');
+
 				let delay = setTimeout(()=> {
 					setCurrent({
 						...current,

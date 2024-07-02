@@ -1,0 +1,624 @@
+/* * *
+	M A C R O S   S E C T I O N 
+* * */
+
+section#HOME div#macros {
+	width: 100%;
+/*	overflow-y: scroll;*/
+	padding-bottom: 80px;
+}
+
+section#HOME div#macros div#userTags, 
+section#HOME div#macros div#privatePosts,
+section#HOME div#macros div#collections {
+	width: 96%;
+	max-height: 400px;
+	margin: 24px auto 24px auto;
+	transition: height ease-in-out 0.2s;
+}
+
+section#HOME div#macros div#userTags {
+	margin-top: 0px;
+}
+
+section#HOME div#macros div#userTags.open, 
+section#HOME div#macros div#privatePosts.open,
+section#HOME div#macros div#collections.open {
+	overflow-y: auto;
+	max-height: fit-content;
+}
+
+section#HOME div#macros div#userTags.close, 
+section#HOME div#macros div#privatePosts.close,
+section#HOME div#macros div#collections.close {
+	overflow-y: hidden;
+	max-height: 400px;
+}
+
+section#HOME div#macros div div.headerWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+/*	border-bottom: 1px solid var(--greyscale-accent);*/
+}
+
+
+section#HOME div#macros div div.headerWrapper h2 {
+	font-family: "Raleway";
+	font-weight: 600;
+	font-size: 2.5em;
+	letter-spacing: 4px;
+	color: var(--greyscale-accent);
+	margin-bottom: 8px;
+}
+
+	section#HOME div#macros div div.headerWrapper h2:first-child {
+		margin-top: 16px;
+	}
+
+
+section#HOME div#macros div div.headerWrapper button {
+	font-size: 0.8em;
+	margin-bottom: -16px;
+	padding: 0;
+}
+
+section#HOME div#macros div div.headerWrapper button:hover {
+	color: black;
+}
+
+
+
+
+
+section#HOME div#macros div#userTags ul.tagsWrapper {
+	display: flex;
+	flex-wrap: wrap;
+	list-style-type: none;
+	padding-left: 0px;
+	width: 96%;
+	margin-left: auto;
+}
+
+section#HOME div#macros div#userTags ul.tagsWrapper li {
+	display: block;
+    position: relative;
+    /* top: 7px; */
+    margin: 4px;
+    margin-top: 6px;
+}
+
+section#HOME div#macros div#userTags ul.tagsWrapper li button {
+	border: 2.5px solid var(--greyscale-text);
+    border-radius: 12px;
+    padding: 8px 10px;
+
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 1em;
+    letter-spacing: 2px;
+    color: var(--greyscale-text);
+    background-color: transparent;
+}
+
+section#HOME div#macros div#userTags ul.tagsWrapper li button.topic {
+	border: none;
+	background-color: transparent;
+}
+
+section#HOME div#macros div#userTags ul.tagsWrapper li button.private {
+	/*slightly faded appearance	*/
+}
+
+
+
+
+
+section#HOME div#macros div#privatePosts ul.postsWrapper {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li {
+	margin: 20px 0 32px 16px;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li h4 {
+	margin: 0;
+	font-family: 'Raleway';
+	font-weight: 300;
+	font-size: 1em;
+	letter-spacing: 1px;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li h3 {
+	margin-top: 4px;
+	margin-bottom: 4px;
+	font-family: 'Raleway';
+	font-weight: 400;
+	font-size: 1.5em;
+	letter-spacing: 1px;
+	color: var(--greyscale-text);
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets {
+	display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 8px 0 0 -8px;
+    padding: 0;
+}
+
+section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets li {
+	font-size: 0.9em;
+    letter-spacing: 1px;
+    margin: 0 8px;
+}
+
+
+
+
+section#HOME div#macros div#collections ul.collectionsWrapper {
+	list-style-type: none;
+	margin: 20px 0px 20px 16px;
+	padding: 0;
+}
+
+section#HOME div#macros div#collections ul.collectionsWrapper li {
+	font-family: 'Raleway';
+	font-weight: 400;
+	font-size: 1.25em;
+	letter-spacing: 1px;
+	color: var(--greyscale-text);
+
+	margin: 28px 0;
+}
+
+
+
+
+
+/* * *
+	M A N A G E 
+	M A C R O S   S E C T I O N 
+* * */
+
+section#HOME div#ManageMacros {
+	position: absolute;
+	top: 0;
+	width: 100%;
+	height: 100vh;
+
+	z-index: 20;
+/*	background-color: var(--greyscale-background);*/
+	background-color: white;
+}
+
+section#HOME div#ManageMacros::after {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 0.2s;
+		z-index: -1;
+	}
+
+	section#HOME div#ManageMacros._enter::after {
+		transition: all ease-in-out 0.2s;
+		z-index: 20;
+		opacity: 1;
+	}
+
+
+section#HOME div#ManageMacros h2 {
+	font-family: "Raleway";
+	font-size: 2.5em;
+    font-weight: 600;
+    letter-spacing: 4px;
+    color: var(--greyscale-accent);
+
+    margin-left: 16px;
+}
+
+section#HOME div#ManageMacros button#exit {
+	position: absolute;
+	left: 50%;
+	bottom: 30px;
+	transform: translateX(-50%);
+
+	background-color: transparent;
+	border: none;
+	outline: none;
+}
+
+section#HOME div#ManageMacros ul#mainMenu {
+	width: calc(100% - 32px);
+	list-style-type: none;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: 0;
+	margin-left: 16px;
+	padding: 0;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li {
+	width: 100%;
+	margin: 24px 0;
+	transition: all ease-in-out 0.2s;
+	overflow-y: hidden;
+}
+
+	section#HOME div#ManageMacros ul#mainMenu li.open {
+/*		height: fit-content;*/
+		height: auto;
+	}
+
+	section#HOME div#ManageMacros ul#mainMenu li.close {
+		height: 30px;
+	}
+
+
+section#HOME div#ManageMacros ul#mainMenu li button {
+	font-size: 1.5em;
+	text-transform: capitalize;
+	letter-spacing: 2px;
+}
+
+
+/* 
+	Create New Tag 
+*/
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper {
+	width: 96%;
+	margin: 32px auto 16px;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper input {
+	width: 100%;
+    display: block;
+    margin: 16px 0;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px;
+    background-color: transparent;
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 0.9em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper input:focus {
+	outline: none;
+	border-bottom-color: var(--greyscale-text);
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper div.buttonWrapper {
+	display: flex;
+	flex-direction: row;
+	margin: 16px 0;
+}
+
+section#HOME div#ManageMacros ul#mainMenu li.option div.newTagWrapper div.buttonWrapper button {
+	font-size: 1.25em;
+	text-transform: uppercase;
+	width: 50%;
+}
+
+
+
+/* 
+	Delete Tags 
+*/
+section#HOME div#ManageMacros ul#deleteTags {
+/*	width: calc(100% - 32px);*/
+	width: 96%;
+	list-style-type: none;
+/*	position: absolute;*/
+/*	top: 50%;
+	transform: translateY(-50%);*/
+	margin: 0;
+	margin-top: 12px;
+	margin-left: 8px;
+	padding: 0;
+	max-height: 250px;
+	overflow-y: scroll;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li {
+	width: 100%;
+	position: relative;
+	margin: 8px 0;
+	padding: 16px 0;
+	transition: all ease-in-out 0.2s;
+	overflow-y: hidden;
+	margin: 0;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li button {
+	border: none;
+	cursor: pointer;
+	background-color: transparent;
+	font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 1em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    margin: 0;
+    margin-left: 4px;
+    position: relative;
+    z-index: 20;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	position: absolute;
+	top: 0;
+	margin: 0 auto;
+	padding: 12px 0;
+	background-color: var(--greyscale-background);
+	transition: all ease-in-out 0.2s;
+	opacity: 0;
+	z-index: 0;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li.selected div.confirmation {
+	opacity: 1;
+	z-index: 21;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation p {
+	margin: 0;
+	margin-left: 8px;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation div.buttonWrapper {
+	z-index: 21;
+	margin-right: 8px;
+}
+
+section#HOME div#ManageMacros ul#deleteTags li div.confirmation button {
+	position: relative;
+	font-size: 1em;
+}
+
+
+
+
+/*
+	Create Collection 
+*/
+section#HOME div#ManageMacros form#newCollection {
+
+}
+
+section#HOME div#ManageMacros form#newCollection input,
+section#HOME div#ManageMacros form#newCollection textarea {
+	width: 98%;
+    display: block;
+    margin: 24px 0;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px;
+    background-color: transparent;
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 0.9em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+section#HOME div#ManageMacros form#newCollection input::placeholder,
+section#HOME div#ManageMacros form#newCollection textarea::placeholder {
+	color: var(--greyscale-accent);
+}
+
+section#HOME div#ManageMacros form#newCollection input:focus,
+section#HOME div#ManageMacros form#newCollection textarea:focus {
+	outline: none;
+	border-bottom-color: var(--greyscale-text);
+}
+
+section#HOME div#ManageMacros form#newCollection textarea {
+
+}
+
+section#HOME div#ManageMacros form#newCollection div#buttonWrapper {
+	display: flex;
+	flex-direction: row;
+	margin: 16px 0;
+}
+
+section#HOME div#ManageMacros form#newCollection div#buttonWrapper button {
+	font-size: 1.25em;
+	text-transform: uppercase;
+	width: 50%;
+}
+
+
+
+
+/*
+	Manage Collections
+*/
+section#HOME div#ManageMacros ul#collections {
+	width: 96%;
+	list-style-type: none;
+	margin: 0;
+	margin-top: 12px;
+	margin-left: 8px;
+	padding: 0;
+	max-height: 250px;
+	overflow-y: scroll;
+}
+
+section#HOME div#ManageMacros ul#collections li {
+	width: 100%;
+	position: relative;
+	margin: 8px 0;
+	padding: 16px 0;
+	transition: all ease-in-out 0.2s;
+	overflow-y: hidden;
+	margin: 0;
+}
+
+section#HOME div#ManageMacros ul#collections li > p {
+	font-family: 'Raleway';
+    font-weight: 400;
+	font-size: 1.25em;
+	color: var(--greyscale-text);
+	margin: 16px 0;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options {
+	height: 0;
+}
+
+
+section#HOME div#ManageMacros ul#collections li div.options div.initialChoiceWrapper {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: 0 auto;
+	padding: 24px 0;
+	background-color: var(--greyscale-background);
+	transition: all ease-in-out 0.2s;
+	opacity: 0;
+	z-index: -10;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options div.initialChoiceWrapper > button {
+	font-size: 1.25em;
+	margin: 0 12px;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options div.confirm {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: 0 auto;
+	padding: 24px 0;
+	background-color: var(--greyscale-background);
+	transition: all ease-in-out 0.2s;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	opacity: 0;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options div.confirm p {
+	margin: 0;
+	margin-left: 16px;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options div.confirm div.choiceWrapper {
+	margin-right: 8px;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options div.confirm div.choiceWrapper button {
+	position: relative;
+	margin: 0 8px;
+	font-size: 1em;
+}
+
+
+
+section#HOME div#ManageMacros ul#collections li div.options form {
+	width: 100%;
+	position: absolute;
+	top: 50%;
+	transform: translateY(-50%);
+	margin: 0 auto;
+	padding: 4px 0;
+	background-color: rgba(255, 255, 255, .8);
+	opacity: 0;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options form input {
+	width: 98%;
+    display: block;
+    margin: 16px 0;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px;
+    background-color: transparent;
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 0.9em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options form input:focus {
+	outline: none;
+	border-bottom-color: var(--greyscale-text);
+}
+
+section#HOME div#ManageMacros ul#collections li div.options form div.buttonWrapper {
+	display: flex;
+	flex-direction: row;
+	margin: 16px 0;
+}
+
+section#HOME div#ManageMacros ul#collections li div.options form div.wrapper button {
+	font-size: 1.25em;
+	text-transform: uppercase;
+	width: 50%;
+}
+
+/*
+section#HOME div#ManageMacros ul#collections li.selected {
+	z-index: 0;
+}*/
+
+section#HOME div#ManageMacros ul#collections li.selected._rename div.options div.initialChoiceWrapper,
+section#HOME div#ManageMacros ul#collections li.selected._confirm div.options div.initialChoiceWrapper{
+	opacity: 0;
+	z-index: 0;
+}
+
+section#HOME div#ManageMacros ul#collections li.selected div.options div.initialChoiceWrapper {
+	opacity: 1;
+	z-index: 21;
+}
+
+section#HOME div#ManageMacros ul#collections li._confirm {
+
+}
+
+section#HOME div#ManageMacros ul#collections li._confirm div.options div.confirm {
+	opacity: 1;
+	z-index: 22;
+}
+
+section#HOME div#ManageMacros ul#collections li._confirm div.options div.confirm div.choiceWrapper button{
+	z-index: 23;
+}
+
+section#HOME div#ManageMacros ul#collections li._rename div.options form {
+	opacity: 1;
+	z-index: 23;
+}
+
+section#HOME div#ManageMacros ul#collections li._rename div.options form input {
+	z-index: 24;
+}

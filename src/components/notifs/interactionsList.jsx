@@ -35,7 +35,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 	    setUnreadCount(count);
 		setNotifs(data);
 	}
-	let interact = (arg, ID, username, postID, notif) => {
+	let interact = async(arg, ID, username, postID, notif) => {
 
 		/* 
 			set middle two arguments as 'undefined' when using
@@ -72,7 +72,8 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 					userID: userID,
 					senderUsername: username
 				};
-				setSocketMessage(notif);
+				// setSocketMessage(notif);
+				let request = await accessAPI.newInteraction(notif);
 
 				let delay = setTimeout(()=> {
 					updateList()
@@ -109,10 +110,23 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 			})
 		}, 150)
 	}
+	let goToUserSettings = async() => {
+
+		let settings = await accessAPI.userSettings({option: 'getUserSettings'});
+
+		let delay = setTimeout(()=> {
+			navigate(`/settings`, {
+				state: {
+					data: settings
+				}
+			})
+		}, 150)
+	}
 
 	React.useEffect(()=> {
 		updateList();
 	}, [])
+
 	React.useEffect(()=> {
 		updateList();
 	}, [socketMessage])
@@ -156,47 +170,89 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 						<div className="options">
 							<button className="buttonDefault">See Comment</button>
 							<button className="buttonDefault"
-									onClick={()=> {interact('markRead', notif._id, username )}}>Mark Read</button>
+									onClick={()=> {interact('markRead', notif._id, username )}}>
+								Mark Read
+							</button>
 						</div>
 					}
 					{notif.type == 'tagging' &&
 						<div className="options">
 							<button className="buttonDefault">See Post</button>
 							<button className="buttonDefault"
-									onClick={()=> {interact('markRead', notif._id )}}>Mark Read</button>
+									onClick={()=> {interact('markRead', notif._id )}}>
+								Mark Read
+							</button>
 						</div>
 					}
 					{(notif.type == 'request' && notif.message == 'recieved') &&
 						<div className="options">
 							<button className="buttonDefault" 
-									onClick={()=> {interact('accept', notif.sender, notif.senderUsername)}}>Accept</button>
+									onClick={()=> {interact('accept', notif.sender, notif.senderUsername)}}>
+								Accept
+							</button>
 							<button className="buttonDefault" 
-									onClick={()=> {interact('ignore', notif.sender, notif.senderUsername)}}>Ignore</button>
+									onClick={()=> {interact('ignore', notif.sender, notif.senderUsername)}}>
+								Ignore
+							</button>
+							<button className="buttonDefault"
+									onClick={()=> {interact('markRead', notif._id )}}>
+								Mark Read
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'accept') &&
+						<div className="options">
+							<button className="buttonDefault" 
+									onClick={()=> {interact('accept', notif.sender, notif.senderUsername)}}>
+								Accept
+							</button>
+							<button className="buttonDefault" 
+									onClick={()=> {interact('ignore', notif.sender, notif.senderUsername)}}>
+								Ignore
+							</button>
+							<button className="buttonDefault"
+									onClick={()=> {interact('markRead', notif._id )}}>
+								Mark Read
+							</button>
 						</div>
 					}
 				</div>
 			   </li>
 	}
-	let [enter, setEnter] = React.useReducer(state => !state, true)
-	let el = React.useRef();
-	let element = el.current;
 
+	let modal = React.useRef();
 	React.useEffect(()=> {
-		if(element) {
-			setEnter();
-		}
-	}, [element]);
+		let modalCurrent = modal.current;
+		let delay = setTimeout(()=> {
+			modalCurrent.classList.remove('_enter');	
+		}, 200)
+	}, [])
+
+	// let [enter, setEnter] = React.useReducer(state => !state, true)
+	// let el = React.useRef();
+	// let element = el.current;
+
+	// React.useEffect(()=> {
+	// 	if(element) {
+	// 		setEnter();
+	// 	}
+	// }, [element]);
 
 	return (
-		<div id="interactionsList" ref={el} className={`${enter == true ? '_enter' : ''}`}> 
+		// <div id="interactionsList" ref={el} className={`${enter == true ? '_enter' : ''}`}>
+		<div id="interactionsList" ref={modal} className={`_enter`}> 
 
 			<div id="header">
 				<h2>Interactions
 					<span id='username'>{username}'s</span>
 				</h2>
 				
-				<button onClick={()=> {
-							setEnter();
+				<button onClick={(e)=> {
+							e.preventDefault();
+
+							let modalCurrent = modal.current;
+							modalCurrent.classList.add('_enter');
+							
 							let delay = setTimeout(()=> {
 								setNotifList();
 							}, 300)
@@ -218,31 +274,8 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 				<button className="buttonDefault"
 						onClick={goToUserProfile}>PROFILE</button>
 				<button className="buttonDefault" 
-						onClick={setUserSettings}>SETTINGS</button>
+						onClick={goToUserSettings}>SETTINGS</button>
 			</div>
-
-			{/*{confirm &&
-				<div id="logoutConfirm">
-					<h2>Confirm</h2>
-					<p>Are you sure you wish to Log Out?</p>
-
-					<div id="buttonWrapper">
-						<button onClick={()=> {
-							setConfirm()
-						}}>Cancel</button>
-
-						<button onClick={async()=> {
-
-							await logout().then(()=> {
-								navigate('/entry');
-							})
-
-						}}>Logout</button>
-					</div>
-				</div>
-			}*/}
-			
-
 		</div>
 	)
 

@@ -403,7 +403,7 @@ export default function APIaccess(key) {
 		async removeConnection(userID) {
 
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/users/user?query=removeConnect&remove=${userID}`, {
+			let request = await fetch(`${apiAddr}/users/user/${userID}/?query=removeConnect&remove=${userID}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

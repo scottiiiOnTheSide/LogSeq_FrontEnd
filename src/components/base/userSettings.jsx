@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, useLocation} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
 import useAuth from '../../useAuth';
 
@@ -9,12 +9,14 @@ let accessAPI = APIaccess();
 
 
 
-export default function UserSettings({setUserSettings, userSettings, setLogout, setSocketMessage}) {
+export default function UserSettings({setSocketMessage}) {
 
 	let navigate = useNavigate();
+	const location = useLocation();
 	const { logout } = useAuth();
 	const username = sessionStorage.getItem('userName');
-	const [currentSettings, setCurrentSettings] = React.useState({});
+	const [currentSettings, setCurrentSettings] = React.useState(location.state.data);
+	const [privacyOption, setPrivacyOption] = React.useState(location.state.data.privacy);
 
 	const [exit, setExit] = React.useReducer(state => !state, false)
 	const [section, setSection] = React.useState([
@@ -48,7 +50,7 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 		url: null,
 		content: ''
 	});
-	const [privacyOption, setPrivacyOption] = React.useState(''); 
+	const [isLogout, setLogout] = React.useReducer(state => !state, false); 
 
 	const getUserSettings = async() => {
 		let settings = await accessAPI.userSettings({option: 'getUserSettings'});
@@ -68,10 +70,105 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 					...section,
 					profile: true,
 					privacy: false,
-					invitation: false
+					invitation: false,
+					changePassword: false,
+					biography: false,
+					username: false,
+					photo: false,
 				})
 			}
 		}
+
+		else if(selection == 'photo') {
+
+			if (section.photo) {
+				setSection({
+					...section,
+					photo: false,
+					username: false,
+					biography: false,
+					changePassword: false
+				})
+			}
+			else {
+				setSection({
+					...section,
+					photo: true,
+					username: false,
+					biography: false,
+					changePassword: false
+				}) 
+			} 
+		}
+
+		else if(selection == 'username') {
+
+			if(section.username) {
+				setSection({
+					...section,
+					username: false,
+					photo: false,
+					biography: false,
+					changePassword: false
+				})
+			}
+			else {
+				setSection({
+					...section,
+					username: true,
+					photo: false,
+					biography: false,
+					changePassword: false
+				}) 
+			} 
+		}
+		
+		else if(selection == 'biography') {
+			
+			if(section.biography) {
+				setSection({
+					...section,
+					biography: false,
+					username: false,
+					photo: false,
+					changePassword: false
+				})
+			}
+			else {
+				setSection({
+					...section,
+					biography: true,
+					username: false,
+					photo: false,
+					changePassword: false
+				})
+			}
+		}
+
+		else if(selection == 'changePassword') {
+
+			if(section.changePassword) {
+				setSection({
+					...section,
+					changePassword: false,
+					biography: false,
+					username: false,
+					photo: false,
+				})
+			}
+			else {
+				setSection({
+					...section,
+					changePassword: true,
+					biography: false,
+					username: false,
+					photo: false,
+				}) 
+			}
+		}	
+
+
+
 		else if(selection == 'privacy') {
 			if(section.privacy) {
 				setSection({
@@ -236,17 +333,18 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 						<li id="profilePhoto" className={`${section.photo == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
-								if(section.photo) {
-									setSection({
-										...section,
-										photo: false
-									}) 
-								} else {
-									setSection({
-										...section,
-										photo: true
-									})
-								}
+								openSection('photo');
+								// if(section.photo) {
+								// 	setSection({
+								// 		...section,
+								// 		photo: false
+								// 	}) 
+								// } else {
+								// 	setSection({
+								// 		...section,
+								// 		photo: true
+								// 	})
+								// }
 							}}>Photo</button>
 
 							<fieldset id="photoAdd">
@@ -279,18 +377,19 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 						{/*U S E R N A M E*/}
 						<li id="username" className={`${section.username == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
-								e.preventDefault()
-								if(section.username) {
-									setSection({
-										...section,
-										username: false
-									}) 
-								} else {
-									setSection({
-										...section,
-										username: true
-									})
-								}
+								e.preventDefault();
+								openSection('username');
+								// if(section.username) {
+								// 	setSection({
+								// 		...section,
+								// 		username: false
+								// 	}) 
+								// } else {
+								// 	setSection({
+								// 		...section,
+								// 		username: true
+								// 	})
+								// }
 							}}>Username</button>
 
 							<fieldset>
@@ -310,18 +409,19 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 						{/*B I O G R A P H Y*/}
 						<li id="biography" className={`${section.biography == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
-								e.preventDefault()
-								if(section.biography) {
-									setSection({
-										...section,
-										biography: false
-									}) 
-								} else {
-									setSection({
-										...section,
-										biography: true
-									})
-								}
+								e.preventDefault();
+								openSection('biography');
+								// if(section.biography) {
+								// 	setSection({
+								// 		...section,
+								// 		biography: false
+								// 	}) 
+								// } else {
+								// 	setSection({
+								// 		...section,
+								// 		biography: true
+								// 	})
+								// }
 							}}>Biography</button>
 
 							<fieldset>
@@ -344,17 +444,18 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 						<li id="changePassword" className={`${section.changePassword == true ? 'open' : 'close'}`}>
 							<button className={`buttonDefault`} onClick={(e)=> {
 								e.preventDefault()
-								if(section.changePassword) {
-									setSection({
-										...section,
-										changePassword: false
-									}) 
-								} else {
-									setSection({
-										...section,
-										changePassword: true
-									})
-								}
+								openSection('changePassword');
+								// if(section.changePassword) {
+								// 	setSection({
+								// 		...section,
+								// 		changePassword: false
+								// 	}) 
+								// } else {
+								// 	setSection({
+								// 		...section,
+								// 		changePassword: true
+								// 	})
+								// }
 							}}>Change Password</button>
 
 							<fieldset>
@@ -495,9 +596,28 @@ export default function UserSettings({setUserSettings, userSettings, setLogout, 
 			<button id="closeSettings" className={`buttonDefault`} onClick={()=> {
 				setExit()
 				let delay = setTimeout(()=> {
-					setUserSettings()
+					navigate(-1)
 				}, 300)
 			}}>CLOSE</button>
+
+			{isLogout &&
+	          <div id="logoutModal" className={``}>
+	            
+	            <div id="wrapper">
+	              <span id="exclaimation">!</span>
+	              <h2>Are you sure you wish to log out?</h2>
+
+	              <div id="options">
+	                <button className={`buttonDefault`} onClick={setLogout}>Cancel</button>
+	                <button className={`buttonDefault`} onClick={async()=> {
+	                  await logout().then(()=> {
+	                    navigate('/entry');
+	                  })
+	                }}>Log Out</button>
+	              </div>
+	              </div>
+	          </div>
+	        }
 		</div>
 	)
 }
