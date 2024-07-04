@@ -24,6 +24,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 		set_postsPerDate(request);
 	}
 
+	//loads necessary data on initial and reload
 	React.useEffect(()=> {
 		//Initial Posts Per Date
 		getTallyPerDate(selectedDate.month, selectedDate.year);
@@ -185,8 +186,20 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 		[currentMonth, set_currentMonth] = React.useState(cal.monthsAbrv[selectedDate.month]),
 		[currentYear, set_currentYear] = React.useState(selectedDate.year),
 		[yearClass, set_yearClass] = React.useState(''),
-		noHeading = true;
+		noHeading = true,
+		[dateSelect, setDateSelect] = React.useState({
+			open: false,
+			month: null,
+			year: kotoshi
+		})
 
+	const onChange = (e) => {
+
+		setDateSelect({
+			...dateSelect,
+			year: e.target.value
+		})
+	}
 
 	let forwardMonth = () => {
 
@@ -349,8 +362,18 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 			}
 	}, [])
 
+	// let dateSelectModal = React.useRef()
+	// React.useEffect(()=> {
 
-	let [leave, setLeave] = React.useReducer(state => !state, true);
+	// 	// let dateSelectModalCurrent = dateSelectModal.current;
+		
+	// 	let delay = setTimeout(()=> {
+	// 		// dateSelectModalCurrent.classList.remove('_enter');	
+	// 	}, 200)
+	// }, [dateSelect.open])
+
+	const [leave, setLeave] = React.useReducer(state => !state, true);
+	// const [dateSelection, setDateSelection] = React.useReducer(state => !state, true);
 
 	return (
 
@@ -372,9 +395,18 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 					backwardMonth();
 				}}>{prevMonth}</span>
 
-				<span id="current" className={currentClass} onClick={()=> {}}>{currentMonth}</span>
-
-				<span id="year" className={yearClass} onClick={()=> {}}>{selectedDate.year}</span>
+				<div id="current" className={currentClass} onClick={(e)=> {
+					setDateSelect({
+						...dateSelect,
+						open: true
+					})
+					let delay = setTimeout(()=> {
+						document.getElementById('dateSelection').classList.remove('_enter');				
+					}, 200)
+				}}>
+					{currentMonth}
+					<span id="year" className={yearClass}>{selectedDate.year}</span>
+				</div>
 
 				<span id="next" className={nextClass} onClick={	async()=> {
 					if(selectedDate.month + 1 > 11) {
@@ -396,14 +428,92 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 
 			{calendar}
 
+			{dateSelect.open &&
+				<div id="dateSelection" className={`_enter`}>
+
+					<p id="firstNotice">Select the month, type in a year and then close this modal to set a new month</p>
+
+					<ul id="monthSelection">
+
+						<li>
+							<button className={`buttonDefault`}>JAN</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>FEB</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>MAR</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>APR</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>MAY</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>JUN</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>JUL</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>AUG</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>SEPT</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>OCT</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>NOV</button>
+						</li>
+
+						<li>
+							<button className={`buttonDefault`}>DEC</button>
+						</li>
+
+						<input 
+							name="yearSelect"
+							value={dateSelect.year}
+							onChange={onChange}
+						/>
+						<p id="secondNotice">Input between 1900 - 2100</p>
+					</ul>
+
+					<button className={`buttonDefault`}
+							onClick={(e)=> {
+								e.preventDefault();
+								document.getElementById('dateSelection').classList.add('_enter');
+								
+								let delay = setTimeout(()=> {
+									setDateSelect({
+										...dateSelect,
+										open: false
+									})
+								}, 200)
+							}}>
+						CLOSE
+					</button>
+				</div>
+			}
+
 			{postsPerDate.length == 0 &&
 				<h2 id="noPosts">No Posts</h2>
 			}
 			{postsPerDate.length > 0 &&
 				<Log data={postsPerDate} noHeading={noHeading} current={current} setCurrent={setCurrent}/>
 			}
-			
-			
 		</div>
 
 	)

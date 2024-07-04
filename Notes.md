@@ -3,8 +3,11 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
-### 07. 02. 2024
+### 07. 04. 2024
+@1330 Working on implementing dateSelection within <MonthChart>....which needs to be 
+			renamed lol
 
+### 07. 02. 2024
 @1310 Still need to move some more CSS over for individiual sections, but will do so when
 			completing style overhaul
 
@@ -12,6 +15,8 @@ Currently Working on...
 - design for <MonthChart> date selection and 
 - last side quests
 - redesign how tags are added to post page..?
+- figure out refferal code stuff
+	- could store user's invite code as first object within invites array?
 
 @1250 enter / exit animation update 
 			- interactionsList ✅
