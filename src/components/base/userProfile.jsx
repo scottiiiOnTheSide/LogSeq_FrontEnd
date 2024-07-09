@@ -158,6 +158,10 @@ export default function UserProfile({
 						{userInfo.connections.length}
 						<span>Connections</span>
 					</p>
+					<p>
+						1420
+						<span>Actions</span>
+					</p>
 				</div>
 
 				<div id="pinnedMedia">

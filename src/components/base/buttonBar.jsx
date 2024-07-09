@@ -1,7 +1,17 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
 
-export default function ButtonBar({current, setCurrent, dateInView, set_dateInView, cal, selectedDate, set_selectedDate}) {
+export default function ButtonBar({
+	current, 
+	setCurrent, 
+	dateInView, 
+	set_dateInView, 
+	cal, 
+	selectedDate, 
+	set_selectedDate,
+	mapData,
+	setMapData
+}) {
 
 	let [functionName, setFuncName] = React.useState('Create Post');
 
@@ -17,8 +27,40 @@ export default function ButtonBar({current, setCurrent, dateInView, set_dateInVi
 
 	return (
 		<div id="buttonBar">
+
+			{/*M A P  T O G G L E*/}
+			<button id="mapToggle" 
+					className={`buttonDefault`}
+					onClick={()=> {
+						if(current.map) {
+
+							setCurrent({
+								...current,
+								transition: true
+							})
+							let delay = setTimeout(()=> {
+								setCurrent({
+									...current,
+									map: false,
+								})
+							}, 300)
+						}
+						else {
+							setCurrent({
+								...current,
+								map: true
+							})
+						}
+					}}>
+				<p>{mapData.currentState}</p>
+				<p>{mapData.currentCity}</p>
+
+			</button>
+
+			{/* C E N T E R  F U N C T I O N */}
 			<button id="main" onClick={()=> {setCurrent({...current, modal: true})}}>{functionName}</button>
 
+			{/*C A L E N D A R*/}
 			<button id="monthChartToggle" onClick={()=> {
 				if(current.monthChart) {
 					setCurrent({
@@ -29,7 +71,6 @@ export default function ButtonBar({current, setCurrent, dateInView, set_dateInVi
 						setCurrent({
 							...current,
 							monthChart: false,
-							transition: false
 						})
 
 						const hajime = new Date();
@@ -55,8 +96,7 @@ export default function ButtonBar({current, setCurrent, dateInView, set_dateInVi
 						year: null
 					})
 				}
-			}}>
-				
+			}}>				
 				{!current.monthChart &&
 					<div id="day">
 						<p>Day</p>

@@ -346,6 +346,25 @@ div#buttonBar button#monthChartToggle span {
 
 
 
+div#buttonBar button#mapToggle {
+	position: absolute;
+    left: 2%;
+    bottom: 15%;
+}
+
+div#buttonBar button#mapToggle p {
+	font-size: 0.85em;
+	margin: 0 auto;
+}
+
+div#buttonBar button#mapToggle p:first-child {
+	border-bottom: 1px solid black;
+	padding-bottom: 6px;
+	margin-bottom: 6px;
+}
+
+
+
 
 
 

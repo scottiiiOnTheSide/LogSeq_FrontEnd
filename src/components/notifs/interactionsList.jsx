@@ -228,16 +228,6 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 		}, 200)
 	}, [])
 
-	// let [enter, setEnter] = React.useReducer(state => !state, true)
-	// let el = React.useRef();
-	// let element = el.current;
-
-	// React.useEffect(()=> {
-	// 	if(element) {
-	// 		setEnter();
-	// 	}
-	// }, [element]);
-
 	return (
 		// <div id="interactionsList" ref={el} className={`${enter == true ? '_enter' : ''}`}>
 		<div id="interactionsList" ref={modal} className={`_enter`}> 

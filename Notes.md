@@ -1,7 +1,32 @@
 
 ## S y n c S e q . x y z
 #### Project Notes & Planning
------------------------------------------------------------------------------------------
+----------------------------------------------------------------------------------------
+
+### 07. 09. 2024
+@1535 added necessities for <Map> modal in <Home>. Empty div set up for adding the map
+
+### 07. 07. 2024
+@1520 Will be working on these few changes, then we embark on <Map> !!!
+****To Do Next:
+	- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
+		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+	- when clicked, section menuButton should close <MonthChart> if it's open
+	- For mainNav bar, can choose any option at a time. Not sequential
+	- in <userProfile> clicking on connection count shows list of all user's connections
+		should be same for posts and subscriptions
+	- reducing image uploads at backEnd
+	- memoization
+
+
+@1515 dateSelection added for <MonthChart> 
+	  - small issue, kinda: it shows current month and year rather than whats currently
+	  	being viewed on the calendar...
+
+### 07. 06. 2024
+@1530 CSS pretty much complete for date selection within <MonthChart> 
+	  Now to work on functionality for it...
+	  selecting a month and a year should automatically update the calendar underneath
 
 ### 07. 04. 2024
 @1330 Working on implementing dateSelection within <MonthChart>....which needs to be 
@@ -12,7 +37,7 @@
 			completing style overhaul
 
 Currently Working on...
-- design for <MonthChart> date selection and 
+- design for <MonthChart> date selection and ✅
 - last side quests
 - redesign how tags are added to post page..?
 - figure out refferal code stuff
@@ -43,12 +68,12 @@ General Level To Do, as of Now...
 		- for topics, need to address issue preventing page from opening... ✅
 		- Upon deleting a post, clear 'scrollToView' from access global state var ✅
 		- replace full page components opening and closing animations ✅
-		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made 
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
 			not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
 		- when clicked, section menuButton should close <MonthChart> if it's open
 
 ****Needed Additions
-		- Specific Month + Year Selection in <MonthChart>
+		- Specific Month + Year Selection in <MonthChart> ✅
 		- For mainNav bar, can choose any option at a time. Not sequential
 		- in <userProfile> clicking on connection count shows list of all user's connections
 				should be same for posts and subscriptions

@@ -189,8 +189,8 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 		noHeading = true,
 		[dateSelect, setDateSelect] = React.useState({
 			open: false,
-			month: null,
-			year: kotoshi
+			month: selectedDate.month,
+			year: selectedDate.year
 		})
 
 	const onChange = (e) => {
@@ -199,6 +199,12 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 			...dateSelect,
 			year: e.target.value
 		})
+		if(e.target.value.length == 4) {
+			set_selectedDate({
+				...selectedDate,
+				year: e.target.value
+			})
+		}
 	}
 
 	let forwardMonth = () => {
@@ -360,20 +366,26 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 			} else {
 				set_nextMonth(cal.monthsAbrv[selectedDate.month + 1])
 			}
-	}, [])
+	}, [selectedDate, ])
 
-	// let dateSelectModal = React.useRef()
-	// React.useEffect(()=> {
+	/*
+		Changes Text for Currently viewed Month when new one is selected in 
+		dateSelect modal
+	*/
+	React.useEffect(()=> {
 
-	// 	// let dateSelectModalCurrent = dateSelectModal.current;
-		
-	// 	let delay = setTimeout(()=> {
-	// 		// dateSelectModalCurrent.classList.remove('_enter');	
-	// 	}, 200)
-	// }, [dateSelect.open])
+		if(dateSelect.month != kongetsu) {
+			set_currentMonth(cal.monthsAbrv[dateSelect.month]);
+			set_selectedDate({
+				...selectedDate,
+				month: dateSelect.month
+			})
+		}
+		getTallyPerDate(selectedDate.month, selectedDate.year);
+	}, [dateSelect])
+
 
 	const [leave, setLeave] = React.useReducer(state => !state, true);
-	// const [dateSelection, setDateSelection] = React.useReducer(state => !state, true);
 
 	return (
 
@@ -435,63 +447,35 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 
 					<ul id="monthSelection">
 
-						<li>
-							<button className={`buttonDefault`}>JAN</button>
-						</li>
+						{cal.monthsAbrv.map((month, index)=> {
 
-						<li>
-							<button className={`buttonDefault`}>FEB</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>MAR</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>APR</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>MAY</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>JUN</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>JUL</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>AUG</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>SEPT</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>OCT</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>NOV</button>
-						</li>
-
-						<li>
-							<button className={`buttonDefault`}>DEC</button>
-						</li>
-
-						<input 
-							name="yearSelect"
-							value={dateSelect.year}
-							onChange={onChange}
-						/>
-						<p id="secondNotice">Input between 1900 - 2100</p>
+							return (
+								<li key={month}>
+									<button className={`buttonDefault ${dateSelect.month == index ? 'selected' : ''}`}
+											onClick={(e)=> {
+												e.preventDefault();
+												setDateSelect({
+													...dateSelect,
+													month: index
+												})
+											}}>
+									{month}</button>
+								</li>
+							)
+						})}
 					</ul>
 
-					<button className={`buttonDefault`}
+					<input 
+						name="yearSelect"
+						type="number"
+						maxLength="4"
+						value={dateSelect.year}
+						onChange={onChange}
+						/>
+					<p id="secondNotice">Input between 1900 - 2100</p>
+
+					<button id="exit"
+							className={`buttonDefault`}
 							onClick={(e)=> {
 								e.preventDefault();
 								document.getElementById('dateSelection').classList.add('_enter');

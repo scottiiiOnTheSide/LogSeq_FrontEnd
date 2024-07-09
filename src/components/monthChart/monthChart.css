@@ -441,3 +441,85 @@ div#monthChart div#dateSelection {
 		z-index: 21;
 		opacity: 1;
 	}
+
+
+div#monthChart div#dateSelection p#firstNotice {
+	font-family: 'Raleway';
+	font-weight: 400;
+	color: var(--greyscale-accent);
+	text-align: center;
+	letter-spacing: 2px;
+	line-height: 24px;
+
+	width: 90%;
+	margin: 88px auto 36px;
+}
+
+div#monthChart div#dateSelection p#secondNotice {
+	font-family: 'Raleway';
+	font-weight: 400;
+	color: var(--greyscale-accent);
+	text-align: center;
+	letter-spacing: 2px;
+
+}
+
+
+div#monthChart div#dateSelection ul#monthSelection {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+
+div#monthChart div#dateSelection ul#monthSelection li {
+	width: 25%;
+	margin: 8px 0;
+}
+
+div#monthChart div#dateSelection ul#monthSelection li button {
+	display: block;
+	margin: 0 auto;
+	padding: 16px;
+	color: var(--greyscale-accent);
+}
+
+div#monthChart div#dateSelection ul#monthSelection li button.selected {
+	color: black;
+}
+
+div#monthChart div#dateSelection input {
+	width: 64px;
+    display: block;
+    margin: 64px auto 16px;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px;
+    background-color: transparent;
+
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 1.5em;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+    text-align: center;
+}
+
+div#monthChart div#dateSelection input:focus {
+	outline: none;
+    border-bottom-color: var(--greyscale-text);
+}
+
+div#monthChart div#dateSelection button#exit {
+
+	display: block;
+	position: absolute;
+	bottom: 15%;
+	left: 50%;
+	transform: translateX(-50%);
+}

@@ -38,6 +38,7 @@ import { CreatePost } from './components/sections/userLog';
 import { ManageConnections } from './components/sections/socialLog';
 import { ManageMacros } from './components/sections/macros';
 import MonthChart from './components/monthChart/monthChart';
+import Map from './components/map/map';
 import './components/sections/sections.css';
 
 
@@ -73,7 +74,9 @@ function Home({
   setCurrent,
   cal,
   selectedDate,
-  set_selectedDate
+  set_selectedDate,
+  mapData,
+  setMapData
 }) {
 
   const navigate = useNavigate();
@@ -170,7 +173,9 @@ function Home({
                    current={current}
                    setCurrent={setCurrent}
                    selectedDate={selectedDate}
-                   set_selectedDate={set_selectedDate}/>
+                   set_selectedDate={set_selectedDate}
+                   mapData={mapData}
+                   setMapData={setMapData}/>
 
         {current.monthChart &&
           <MonthChart 
@@ -180,6 +185,10 @@ function Home({
             set_dateInView={set_dateInView}
             selectedDate={selectedDate}
             set_selectedDate={set_selectedDate}/>
+        }
+        {current.map && 
+          <Map 
+            current={current}/>
         }
 
           <Instant 
@@ -246,7 +255,7 @@ export default function Main() {
    */
   React.useEffect(()=> {
     if(authed == true) {
-      setSocketURL(`ws://172.19.185.143:3333/?${userID}`);
+      setSocketURL(`ws://172.21.169.112:3333/?${userID}`);
       getUnreadCount();
     }
   }, [authed])
@@ -354,6 +363,7 @@ export default function Main() {
     section: null, //0, 1, 2, 3, 4
     social: false, //true, false or social
     monthChart: false, //true or false
+    map: false,
     scrollTo: null,
     transition: false //for components mounted dependant on this stateVar, indicates before unmount
   });
@@ -365,6 +375,13 @@ export default function Main() {
     day: kyou,
     month: kongetsu,
     year: kotoshi
+  })
+
+
+
+  const [mapData, setMapData] = React.useState({
+    currentCity: 'NY',
+    currentState: 'NYC'
   })
 
 
@@ -404,6 +421,9 @@ export default function Main() {
                   setCurrent={setCurrent}
                   selectedDate={selectedDate}
                   set_selectedDate={set_selectedDate}
+
+                  mapData={mapData}
+                  setMapData={setMapData}
                 />
               </HomeOrEntry>
             }>
@@ -435,6 +455,8 @@ export default function Main() {
                   setCurrent={setCurrent}
                   selectedDate={selectedDate}
                   set_selectedDate={set_selectedDate}
+                  mapData={mapData}
+                  setMapData={setMapData}
                 />
               </HomeOrEntry>
             }>
