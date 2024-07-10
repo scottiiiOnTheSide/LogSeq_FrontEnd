@@ -61,7 +61,8 @@ export default function ButtonBar({
 			<button id="main" onClick={()=> {setCurrent({...current, modal: true})}}>{functionName}</button>
 
 			{/*C A L E N D A R*/}
-			<button id="monthChartToggle" onClick={()=> {
+			<button id="monthChartToggle" 
+					className={`buttonDefault`} onClick={()=> {
 				if(current.monthChart) {
 					setCurrent({
 						...current,

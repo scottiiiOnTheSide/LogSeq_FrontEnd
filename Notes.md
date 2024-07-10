@@ -4,6 +4,16 @@
 ----------------------------------------------------------------------------------------
 
 ### 07. 09. 2024
+
+@2250 installed openLayers npm package for map functionality 
+****To Do Next
+	- discern list of functions I'd like to have with the map
+	  - e.i zoom in / out, multiple pins present, centering on given location,
+	  centering on user's location initially
+	- design Elements within XD
+	- find functions within ol API directory or list of functions
+	- implementation 
+
 @1535 added necessities for <Map> modal in <Home>. Empty div set up for adding the map
 
 ### 07. 07. 2024

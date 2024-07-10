@@ -306,7 +306,7 @@ div#buttonBar {
 	div#buttonBar button#main {
 		height: 100%;
 		position: relative;
-		left: 50%;
+		left: 48%;
 		transform: translateX(-50%);
 
 		font-family: "Raleway";
@@ -326,22 +326,24 @@ div#buttonBar {
 
 div#buttonBar button#monthChartToggle {
     position: absolute;
-    right: 2%;
+    right: 1%;
     bottom: 8%;
     box-sizing: content-box;
     padding: 10px 5px;
     background-color: transparent;
     border: none;
+
+    font-size: 1em;
+    letter-spacing: 2px;
 }
 
 div#buttonBar button#monthChartToggle p {
     margin: 0 0 5px 0;
-    font-size: 1.2em;
+    
 }
 
 div#buttonBar button#monthChartToggle span {
     margin: 0;
-    font-size: 1.2em;
 }
 
 

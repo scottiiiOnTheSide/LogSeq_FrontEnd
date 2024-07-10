@@ -38,7 +38,7 @@ import { CreatePost } from './components/sections/userLog';
 import { ManageConnections } from './components/sections/socialLog';
 import { ManageMacros } from './components/sections/macros';
 import MonthChart from './components/monthChart/monthChart';
-import Map from './components/map/map';
+import MapComponent from './components/map/map';
 import './components/sections/sections.css';
 
 
@@ -187,7 +187,7 @@ function Home({
             set_selectedDate={set_selectedDate}/>
         }
         {current.map && 
-          <Map 
+          <MapComponent 
             current={current}/>
         }
 

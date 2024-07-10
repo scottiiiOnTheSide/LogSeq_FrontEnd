@@ -14,3 +14,10 @@ div#MAP {
 	div#MAP.leave {
 		animation: 0.25s ease-in-out forwards scaleFadeOut;
 	}
+
+
+div#MAP div#ol_map {
+	width: 96%;
+	height: 50%;
+	margin: 24px auto;
+}
