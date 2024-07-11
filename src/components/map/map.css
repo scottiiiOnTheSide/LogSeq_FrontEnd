@@ -21,3 +21,7 @@ div#MAP div#ol_map {
 	height: 50%;
 	margin: 24px auto;
 }
+
+div#MAP div#ol_map div.ol-attribution.ol-uncollapsible {
+	display: none;
+}

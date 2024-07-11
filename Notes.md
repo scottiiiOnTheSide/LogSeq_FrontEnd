@@ -3,8 +3,48 @@
 #### Project Notes & Planning
 ----------------------------------------------------------------------------------------
 
-### 07. 09. 2024
+### 07. 11. 2024
 
+@1510 Implemented a quick solution for having external buttons center on spots
+	  on the map.
+	  Next additions:
+	  	- button to return to user's original center / city location
+	  	- would like to move the zoom buttons to the bottom corners and change
+	  		their styling
+	  	- change the colors of the paths on the map (like highways and roads)
+
+Will need to figure out how to get location data from user when creating a post,
+update Post model to include location data ( long, lat)
+would also like it to include city and country name, but that could get confusing...
+
+Current implementation of the <Map> will be simple: shows location data for posts
+in regards to the currently active section (User, Social or Home)
+for groups and macros, the specific macro pages will have a dedicated button outside
+of the button bar...
+
+Both Calendar and Map toggles should be invisible on the Macro and Group sections...
+
+@1325 have implemented function for points on the map, clicking on them zooms closer
+	  into their location.
+	  Should be able to have a state object external of the useEffect for managing the 
+	  points 
+
+@0930 With the help of ChatGPT, I've been able to set the center of the map to NYC.
+	  the state var housing the coordinates is outside of the useEffect there all the
+	  map stuff is declared. Changing the state var causes the whole component to
+	  refresh. Could ask ChatGPT, 
+	  - need to be able to change the center / location of the map WITHOUT refreshing
+	  	entire component
+
+
+### 07. 10. 2024
+@1820 Current focus is to discern how to implement these functions in the map:
+	  - centering on user's city by default
+	  - selecting a post from <Log> below the map zooms in on post's pin,
+	  	selecting a pin scrolls the <Log> to the corressponding post
+	  - recenter on user's location
+
+### 07. 09. 2024
 @2250 installed openLayers npm package for map functionality 
 ****To Do Next
 	- discern list of functions I'd like to have with the map
@@ -12,6 +52,8 @@
 	  centering on user's location initially
 	- design Elements within XD
 	- find functions within ol API directory or list of functions
+		- discern what location info and permissions I need to implement them
+		(might not even need location permission if providing location details)
 	- implementation 
 
 @1535 added necessities for <Map> modal in <Home>. Empty div set up for adding the map
