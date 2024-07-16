@@ -3,7 +3,9 @@
 L o G  &  P o s t 
 * * */
 
-div.log {}
+div.log {
+	scrollbar-width: none;
+}
 
 div.log h2.noPostsToday {
 	margin: 48px 0;

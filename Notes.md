@@ -3,7 +3,37 @@
 #### Project Notes & Planning
 ----------------------------------------------------------------------------------------
 
+### 07. 16. 2024
+
+@1425 attempt with <Map> shows that some elements are *still fuzzy*
+	  reverting the changes and returning to original development plans
+
+@1230 Ive decided to test and alternative method for opening the 'widgets'
+	  by having them on their own seperate page
+
+### 07. 14. 2024
+@0920 Took a while to get it up and running, but blurry elements in <Map> and <Cal> 
+		*do not* appear blurry on mobile. 
+
+So for now, production continues as originally planned...
+
+
+### 07. 13. 2024
+@1615 added styles to the map.css for the controls. ChatGPT has provided a solution	
+		for adding a custom button, and guessed correctly that I wished for it to recenter on the original coordinates.
+Need to investigate how the elements appear blurry...
+Find a fix
+Things are even fuzzier within monthChart...
+
+Will first view project on phone to discern whether this continues on mobile...
+
+
+### 07. 12. 2024
+@1600 Need to fix backend subroute for getSuggestions within groups... Suggestions
+	  not loading within <CreatePost>
+
 ### 07. 11. 2024
+@1525 Have header text change for map and calendar as well...
 
 @1510 Implemented a quick solution for having external buttons center on spots
 	  on the map.

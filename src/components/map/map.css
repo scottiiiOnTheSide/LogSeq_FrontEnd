@@ -7,7 +7,7 @@ div#MAP {
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%, -50%);
-	overflow-y: scroll;
+	overflow-y: hidden;
 	animation: 0.25s ease-in-out forwards scaleFadeIn;
 }
 
@@ -17,11 +17,44 @@ div#MAP {
 
 
 div#MAP div#ol_map {
-	width: 96%;
-	height: 50%;
+	width: 98%;
+	height: 75%;
 	margin: 24px auto;
+}
+
+div#MAP div#ol_map div.ol-viewport {
+	border-radius: 8px;
 }
 
 div#MAP div#ol_map div.ol-attribution.ol-uncollapsible {
 	display: none;
+}
+
+/* Controls Wrapper */
+div#ol_map div.ol-zoom.ol-unselectable.ol-control {
+
+}
+
+div#ol_map div.ol-zoom.ol-unselectable.ol-control button {
+
+}
+
+
+
+div#MAP div#popUpPost {
+	width: 98.5%;
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+
+	margin: 0 auto;
+	padding: 12px 0;
+	bottom: 10%;
+	background-color: white;
+	border-radius: 8px;
+}
+
+div#MAP div#popUpPost div#text {
+	width: 96%;
+	margin-left: 12px;
 }

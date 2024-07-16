@@ -10,6 +10,8 @@ import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 
+import Header from '../../components/base/header';
+
 import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import 'ol/ol.css';
@@ -70,7 +72,7 @@ export default function MapComponent ({current }) {
 			layers: [osmLayer, vectorLayer],
 			view: new View({
 				center: centerCoordinates, //lat n lng
-				zoom: 10,
+				zoom: 11,
 				maxZoom: 15
 			})
 		})
@@ -108,12 +110,12 @@ export default function MapComponent ({current }) {
 	return (
 		<div id="MAP" className={`${current.transition == true ? 'leave' : ''}`}>
 			
-			<h2>This is the Map</h2>	
+			{/*<h2>This is the Map</h2>	*/}
 
 			{/* T H I S  I S  T H E  O L  M A P */}
 			<div id="ol_map" ref={mapRef}></div>
 
-			<ul id="list">
+			{/*<ul id="list">
 				{markers.map(marker => (
 					<li key={marker.id}>
 						<button className={`buttonDefault`}
@@ -122,7 +124,18 @@ export default function MapComponent ({current }) {
 						</button>
 					</li>
 				))}
-			</ul>
+			</ul>*/}
+
+			<div id="popUpPost">
+				
+				<div id="text">
+					<h2>This is a title</h2>
+					<p>	
+						The purpose of these posts is to fill the macros section for private posts, 
+						that we may add the feature to expand the section
+					</p>
+				</div>
+			</div>
 
 		</div>
 	)

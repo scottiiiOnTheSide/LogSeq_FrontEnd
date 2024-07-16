@@ -37,6 +37,15 @@ section#HOME {
 	}
 
 
+section#HOME.recede {
+	animation: recede 0.5s ease-in-out forwards;
+}
+
+section#HOME.return {
+	animation: return 0.5s ease-in-out forwards;
+}
+
+
 
 /* * * H e a d e r * * */
 	header {
@@ -352,6 +361,7 @@ div#buttonBar button#mapToggle {
 	position: absolute;
     left: 2%;
     bottom: 15%;
+    letter-spacing: 1px;
 }
 
 div#buttonBar button#mapToggle p {

@@ -1,5 +1,6 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
+import {useParams, useLocation, useNavigate} from 'react-router-dom';
 
 export default function ButtonBar({
 	current, 
@@ -12,7 +13,8 @@ export default function ButtonBar({
 	mapData,
 	setMapData
 }) {
-
+	const location = useLocation();
+	const navigate = useNavigate();
 	let [functionName, setFuncName] = React.useState('Create Post');
 
 	React.useEffect(()=> {

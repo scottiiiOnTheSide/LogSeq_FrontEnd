@@ -6,12 +6,13 @@
 body {
 	margin: 0;
 	padding: 0;
-	overflow-y: scroll;
-	overflow-x: hidden;
+	/*overflow-y: scroll;
+	overflow-x: hidden;*/
+	overflow: hidden;
 	width: 100%;
 	height: 100lvh;
 	position: relative;
-	background-color: var(--greyscale-background);
+	background-color: white;
 }
 
 section#BASE {
@@ -123,3 +124,26 @@ div.log {
 		opacity: 0;
 	}
 }
+
+
+@keyframes recede {
+		0% {
+			opacity: 1;
+			transform: scale(1);
+		}
+		100% {
+			opacity: 0;
+			transform: scale(0.6);
+		}
+	}
+
+@keyframes return {
+		0% {
+			opacity: 0;
+			transform: scale(0.6);
+		}
+		100% {
+			opacity: 1;
+			transform: scale(1);
+		}
+	}

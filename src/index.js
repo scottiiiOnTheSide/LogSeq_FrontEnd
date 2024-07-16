@@ -8,8 +8,8 @@ import { BrowserRouter as Router } from "react-router-dom";
 import Main from "./Main";
 import './Main.css';
 
-
-const root = ReactDOM.createRoot(document.getElementById('BASE'));
+const body = document.getElementsByTagName('body')[0]
+const root = ReactDOM.createRoot(body);
 root.render(
   <React.StrictMode>
 

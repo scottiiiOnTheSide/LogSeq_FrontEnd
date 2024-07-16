@@ -39,6 +39,7 @@ import { ManageConnections } from './components/sections/socialLog';
 import { ManageMacros } from './components/sections/macros';
 import MonthChart from './components/monthChart/monthChart';
 import MapComponent from './components/map/map';
+import {MapPage} from './components/map/map';
 import './components/sections/sections.css';
 
 
@@ -92,6 +93,7 @@ function Home({
   })
 
   const [enter, setEnter] = React.useReducer(state => !state, true);
+  
   let el = React.useRef();
   let element = el.current
 
@@ -100,6 +102,18 @@ function Home({
       setEnter();
     }
   }, [element]);
+
+
+  /* for MAIN section transition */
+  // const [animState, setAnimState] = React.useState('');
+  // React.useEffect(()=> {
+  //   if(!current.home && current.transition) {
+  //     setAnimState('recede');
+  //   }
+  //   else if(current.home && current.transition) {
+  //     setAnimState('return')
+  //   }
+  // }, [current])
 
 
   return (
@@ -255,7 +269,7 @@ export default function Main() {
    */
   React.useEffect(()=> {
     if(authed == true) {
-      setSocketURL(`ws://172.21.169.112:3333/?${userID}`);
+      setSocketURL(`ws://172.17.41.64:3333/?${userID}`);
       getUnreadCount();
     }
   }, [authed])
@@ -360,6 +374,7 @@ export default function Main() {
   
   const cal = Calendar();
   const [current, setCurrent] = React.useState({
+    home: true,
     section: null, //0, 1, 2, 3, 4
     social: false, //true, false or social
     monthChart: false, //true or false
