@@ -9,7 +9,7 @@ import GroupsList from './groupsList';
 import Macros from './macros';
 import HomeLog from './homeLog';
 
-export default function SectionsWrapper({current, setCurrent}) {
+export default function SectionsWrapper({ current, setCurrent, log, setLog }) {
 
 	/*** Set Wrapper Height ***/
 	let wrapper = React.useRef()
@@ -51,13 +51,10 @@ export default function SectionsWrapper({current, setCurrent}) {
 	 * change active state var to number of currentSection;
 	 */
 
-	console.log(currentSection);
-	console.log(panes)
-	console.log(active)
-
 	React.useEffect(()=> {
 
 		setActive(currentSection);
+		setLog([]);
 
 		if(currentSection == 2 && active == undefined) {
 
@@ -65,7 +62,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				Object.keys(prePanes).forEach(value => {
 					prePanes[value] = false;
 				})
-				console.log(prePanes);
 				setPanes(prePanes);
 			}, 550)
 
@@ -73,7 +69,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				setActive(currentSection);
 				prePanes.userLog = true;
 				setPanes(prePanes);
-				console.log(panes);
 			}, 1100)
 
 		} else if(currentSection == 2) {
@@ -84,7 +79,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				Object.keys(prePanes).forEach(value => {
 					prePanes[value] = false;
 				})
-				console.log(prePanes);
 				setPanes(prePanes);
 			}, 550)
 
@@ -92,7 +86,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				setActive(currentSection);
 				prePanes.userLog = true;
 				setPanes(prePanes);
-				console.log(panes);
 			}, 1100)
 
 		} else if (currentSection == 1){
@@ -103,7 +96,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				Object.keys(prePanes).forEach(value => {
 					prePanes[value] = false;
 				})
-				console.log(prePanes);
 				setPanes(prePanes);
 			}, 550)
 
@@ -111,7 +103,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				setActive(currentSection);
 				prePanes.socialLog = true;
 				setPanes(prePanes);
-				console.log(panes);
 			}, 1100)	
 
 		} else if(currentSection == 3) {
@@ -122,7 +113,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				Object.keys(prePanes).forEach(value => {
 					prePanes[value] = false;
 				})
-				console.log(prePanes);
 				setPanes(prePanes);
 			}, 550)
 
@@ -130,7 +120,6 @@ export default function SectionsWrapper({current, setCurrent}) {
 				setActive(currentSection);
 				prePanes.macros = true;
 				setPanes(prePanes);
-				console.log(panes);
 			}, 1100)
 		}
 	}, [currentSection])
@@ -141,12 +130,16 @@ export default function SectionsWrapper({current, setCurrent}) {
 			{panes.socialLog &&
 				<SocialLog active={active} 
 						   current={current}
-						   setCurrent={setCurrent} />
+						   setCurrent={setCurrent} 
+						   log={log}
+						   setLog={setLog}/>
 			}
 			{panes.userLog &&
 				<UserLog active={active} 
 						 current={current} 
-						 setCurrent={setCurrent} />
+						 setCurrent={setCurrent} 
+						 log={log}
+						 setLog={setLog}/>
 			}
 			{panes.macros &&
 				<Macros active={active} 

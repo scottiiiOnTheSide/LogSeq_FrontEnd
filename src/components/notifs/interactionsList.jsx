@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useNavigate} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
-import useAuth from '../../useAuth';
+import useUIC from '../../UIcontext';
 
 import '../../components/base/home.css';
 import './notifs.css';
@@ -15,7 +15,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 	let username = sessionStorage.getItem('userName');
 	let userID = sessionStorage.getItem('userID');
 	let navigate = useNavigate();
-	const { logout } = useAuth();
+	const { logout } = useUIC();
 	// const [confirm, setConfirm] = React.useReducer(state => !state, false);
 
 	let updateList = async() => {

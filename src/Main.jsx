@@ -13,7 +13,7 @@ import {
 } from "react-router-dom";
 import useWebSocket, {ReadyState} from 'react-use-websocket';
 import APIaccess from './apiaccess';
-import useAuth from "./useAuth";
+import useUIC from "./UIcontext";
 import Calendar from './components/calendar'
 // import {UIContextProvider, UIContext} from './UIcontext';
 
@@ -52,7 +52,7 @@ const accessAPI = APIaccess();
 /* * * Supporting Functions * * */
 function HomeOrEntry({ children }) {
 
-  const { authed } = useAuth();
+  const { authed } = useUIC();
   const location = useLocation();
 
   return authed === true ? ( children ) : <Navigate to="/entry" replace state={{ path: location.pathname }} />
@@ -77,11 +77,13 @@ function Home({
   selectedDate,
   set_selectedDate,
   mapData,
-  setMapData
+  setMapData,
+  log,
+  setLog
 }) {
 
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout } = useUIC();
   const [notifList, setNotifList] = React.useReducer(state => !state, false);
   const [userSettings, setUserSettings] = React.useReducer(state => !state, false);
   const [isLogout, setLogout] = React.useReducer(state => !state, false);
@@ -157,7 +159,10 @@ function Home({
           </div>
         }*/}
 
-        <SectionsWrapper current={current} setCurrent={setCurrent} />
+        <SectionsWrapper current={current} 
+                         setCurrent={setCurrent} 
+                         log={log} 
+                         setLog={setLog} />
 
         {(current.modal && current.section == 2) &&
           <CreatePost setCurrent={setCurrent}
@@ -202,7 +207,8 @@ function Home({
         }
         {current.map && 
           <MapComponent 
-            current={current}/>
+            current={current}
+            log={log}/>
         }
 
           <Instant 
@@ -235,8 +241,14 @@ export default function Main() {
    * A n d
    * N o t i f i c a t i o n s
    */
-  const { authed } = useAuth();
+  const { authed } = useUIC();
   let userID = sessionStorage.getItem('userID');
+
+
+
+  /***
+   * S O C K E T  S T U F F
+  ***/
   const [socketURL, setSocketURL] = React.useState(``);
   const {sendMessage, lastMessage, readyState} = useWebSocket(socketURL);
   const [socketMessage, setSocketMessage] = React.useState({
@@ -248,37 +260,22 @@ export default function Main() {
     type: null,   //type of popUp notif to appear
     state: null,  //set class for it to popUp 
   })
-  const [unreadCount, setUnreadCount] = React.useState('');  
-
-  /**
-   * Fetches unread count of interactions on initial load
-   * and when new interactions occur
-   */
-  let getUnreadCount = async() => {
-    let count = await accessAPI.getInteractions('count');
-    if(count < 10) {
-      count = '0' + count;
-    } else if (count > 99) {
-      count = '99';
-    }
-    setUnreadCount(count);
-  }
   /**
    * Connects to webSocket server upon verifying user log in
    * & gets unreadNotif count
    */
   React.useEffect(()=> {
     if(authed == true) {
-      setSocketURL(`ws://172.17.41.64:3333/?${userID}`);
+      setSocketURL(`ws://172.19.185.143:3333/?${userID}`);
       getUnreadCount();
     }
   }, [authed])
+
   React.useEffect(()=> {
     getUnreadCount();
   }, [socketMessage])
 
 
-  
   // need to implement reconnect redundancy here
   React.useEffect(() => { 
     if(readyState === ReadyState.OPEN) {
@@ -392,8 +389,6 @@ export default function Main() {
     year: kotoshi
   })
 
-
-
   const [mapData, setMapData] = React.useState({
     currentCity: 'NY',
     currentState: 'NYC'
@@ -409,6 +404,33 @@ export default function Main() {
     })
     setInitialLogin(false);
   }
+
+  
+
+  const [unreadCount, setUnreadCount] = React.useState('');
+  /**
+   * Fetches unread count of interactions on initial load
+   * and when new interactions occur
+   */
+  let getUnreadCount = async() => {
+    let count = await accessAPI.getInteractions('count');
+    if(count < 10) {
+      count = '0' + count;
+    } else if (count > 99) {
+      count = '99';
+    }
+    setUnreadCount(count);
+  }
+
+
+  /***
+   * Top level state array to house log of posts
+   * Changes whenever a new section becomes active
+  ***/
+  const [log, setLog] = React.useState([]);
+
+
+
 
   
   return(
@@ -439,10 +461,12 @@ export default function Main() {
 
                   mapData={mapData}
                   setMapData={setMapData}
+
+                  log={log}
+                  setLog={setLog}
                 />
               </HomeOrEntry>
             }>
-            {/*<Route path=":macros" element={}/>*/}
           </Route>
 
           <Route path="/entry" element={<Entry />} 
@@ -472,10 +496,12 @@ export default function Main() {
                   set_selectedDate={set_selectedDate}
                   mapData={mapData}
                   setMapData={setMapData}
+
+                  log={log}
+                  setLog={setLog}
                 />
               </HomeOrEntry>
             }>
-            {/*<Route path=":macros" element={}/>*/}
           </Route>
 
           <Route path="/post/:postID" element={

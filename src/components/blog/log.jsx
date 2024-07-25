@@ -182,7 +182,7 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 	*/
 	React.useEffect(()=> {
 
-		if(data.length) {
+		if(data.length && logRefC) {
 			console.log(data.length)
 			if(current.scrollTo) {
 

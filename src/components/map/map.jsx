@@ -20,16 +20,31 @@ import './map.css';
 let accessAPI = APIaccess();
 
 
-export default function MapComponent ({current }) {
+export default function MapComponent ({ current, log, setLog }) {
 
 	const [mapState, setMapState] = React.useState(null);
 	const [currentCenter, setCurrentCenter] = React.useState([-73.9249,  40.6943]);
 	const [markers, setMarkers] = React.useState([
-		{ id: 1, coords: [-73.9249, 40.6943], name: 'First Spot' },
-		{ id: 2, coords: [-73.935242, 40.730610], name: 'Second Spot'}
+		{ 
+			id: 1, 
+			coords: [-73.9249, 40.6943], 
+			title: 'First Spot',
+			text: 'This is just some filler text to place within this pop up element that we have here. No important information relevant to anything.' 
+		},
+		{ 	
+			id: 2, 
+			coords: [-73.935242, 40.730610], 
+			title: 'Second Spot',
+			text: 'These are some words that the dev would like to place here as filler content. It is of no importance or effect to anything'
+		}
 	]);
 	const mapRef = React.useRef();
-
+	const postBoardRef = React.useRef();
+	const [postBoardInfo, setPostBoardInfo] = React.useState({
+		title: null,
+		text: null
+	}); 
+	const [postBoardClass, setPostBoardClass] = React.useState('down');//up or down
 
 	/* Renders Open Layers Map on Component Mount */
 	React.useEffect(()=> {
@@ -43,7 +58,8 @@ export default function MapComponent ({current }) {
 		markers.forEach(marker => {
 
 			let spot = new Feature({
-				geometry: new Point(fromLonLat(marker.coords))
+				geometry: new Point(fromLonLat(marker.coords)),
+				data: marker
 			})
 
 			spot.setStyle(new Style({
@@ -62,6 +78,7 @@ export default function MapComponent ({current }) {
 			source: vectorSource
 		})
 
+		//create OSM / Tile layer
 		const osmLayer = new TileLayer({
 			preload: Infinity,
 			source: new OSM(),
@@ -81,6 +98,36 @@ export default function MapComponent ({current }) {
 			initialMap.forEachFeatureAtPixel(event.pixel, (feature) => {
 				const clickedCoords = feature.getGeometry().getCoordinates();
 
+				let data = feature.get('data');
+				console.log(data)
+
+				if(postBoardClass == 'up') {
+
+					setPostBoardClass('down')
+
+					let secondStep = setTimeout(()=> {
+						setPostBoardInfo({
+							title: data.title,
+							text: data.text
+						})
+					}, 600)
+					
+					let thirdStep = setTimeout(()=> {
+						setPostBoardClass('up')
+					}, 1000)
+				}
+				else {
+
+					setPostBoardInfo({
+						title: data.title,
+						text: data.text
+					})
+
+					let secondStep = setTimeout(()=> {
+						setPostBoardClass('up')
+					}, 500)
+				}
+
 				initialMap.getView().animate({
 					center: clickedCoords,
 					zoom: 14,
@@ -95,46 +142,41 @@ export default function MapComponent ({current }) {
 		return ()=> initialMap.setTarget(null);
 	}, [currentCenter, markers]) 
 
-
-	const handleClick = (coords) => {
-
-		const view = mapState.getView();
-		view.animate({
-			center: fromLonLat(coords),
-			zoom: 14,
-			duration: 750
-		})
-	}
-
+	console.log(postBoardInfo)
+	console.log(postBoardClass)
 
 	return (
 		<div id="MAP" className={`${current.transition == true ? 'leave' : ''}`}>
 			
-			{/*<h2>This is the Map</h2>	*/}
+			<h2 id="header">All Posts</h2>	
 
 			{/* T H I S  I S  T H E  O L  M A P */}
 			<div id="ol_map" ref={mapRef}></div>
 
-			{/*<ul id="list">
-				{markers.map(marker => (
-					<li key={marker.id}>
-						<button className={`buttonDefault`}
-								onClick={()=> {handleClick(marker.coords)}}>
-							{marker.name}				
-						</button>
-					</li>
-				))}
-			</ul>*/}
-
-			<div id="popUpPost">
+			<div id="popUpPost" ref={postBoardRef} className={`${postBoardClass}`}>
 				
 				<div id="text">
-					<h2>This is a title</h2>
-					<p>	
-						The purpose of these posts is to fill the macros section for private posts, 
-						that we may add the feature to expand the section
-					</p>
+					<h2>{postBoardInfo.title}</h2>
+					<p>{postBoardInfo.text}</p>
 				</div>
+			</div>
+
+			<div id="filters"> 
+				<p>Filter Posts By</p>
+
+				<ul>
+					<li>
+						<button className={`buttonDefault`}>All Posts</button>
+					</li>
+
+					<li>
+						<button className={`buttonDefault`}>Date</button>
+					</li>
+
+					<li>
+						<button className={`buttonDefault`}>Macros</button>
+					</li>
+				</ul>
 			</div>
 
 		</div>

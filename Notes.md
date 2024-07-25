@@ -1,114 +1,7 @@
 
 ## S y n c S e q . x y z
 #### Project Notes & Planning
-----------------------------------------------------------------------------------------
-
-### 07. 16. 2024
-
-@1425 attempt with <Map> shows that some elements are *still fuzzy*
-	  reverting the changes and returning to original development plans
-
-@1230 Ive decided to test and alternative method for opening the 'widgets'
-	  by having them on their own seperate page
-
-### 07. 14. 2024
-@0920 Took a while to get it up and running, but blurry elements in <Map> and <Cal> 
-		*do not* appear blurry on mobile. 
-
-So for now, production continues as originally planned...
-
-
-### 07. 13. 2024
-@1615 added styles to the map.css for the controls. ChatGPT has provided a solution	
-		for adding a custom button, and guessed correctly that I wished for it to recenter on the original coordinates.
-Need to investigate how the elements appear blurry...
-Find a fix
-Things are even fuzzier within monthChart...
-
-Will first view project on phone to discern whether this continues on mobile...
-
-
-### 07. 12. 2024
-@1600 Need to fix backend subroute for getSuggestions within groups... Suggestions
-	  not loading within <CreatePost>
-
-### 07. 11. 2024
-@1525 Have header text change for map and calendar as well...
-
-@1510 Implemented a quick solution for having external buttons center on spots
-	  on the map.
-	  Next additions:
-	  	- button to return to user's original center / city location
-	  	- would like to move the zoom buttons to the bottom corners and change
-	  		their styling
-	  	- change the colors of the paths on the map (like highways and roads)
-
-Will need to figure out how to get location data from user when creating a post,
-update Post model to include location data ( long, lat)
-would also like it to include city and country name, but that could get confusing...
-
-Current implementation of the <Map> will be simple: shows location data for posts
-in regards to the currently active section (User, Social or Home)
-for groups and macros, the specific macro pages will have a dedicated button outside
-of the button bar...
-
-Both Calendar and Map toggles should be invisible on the Macro and Group sections...
-
-@1325 have implemented function for points on the map, clicking on them zooms closer
-	  into their location.
-	  Should be able to have a state object external of the useEffect for managing the 
-	  points 
-
-@0930 With the help of ChatGPT, I've been able to set the center of the map to NYC.
-	  the state var housing the coordinates is outside of the useEffect there all the
-	  map stuff is declared. Changing the state var causes the whole component to
-	  refresh. Could ask ChatGPT, 
-	  - need to be able to change the center / location of the map WITHOUT refreshing
-	  	entire component
-
-
-### 07. 10. 2024
-@1820 Current focus is to discern how to implement these functions in the map:
-	  - centering on user's city by default
-	  - selecting a post from <Log> below the map zooms in on post's pin,
-	  	selecting a pin scrolls the <Log> to the corressponding post
-	  - recenter on user's location
-
-### 07. 09. 2024
-@2250 installed openLayers npm package for map functionality 
-****To Do Next
-	- discern list of functions I'd like to have with the map
-	  - e.i zoom in / out, multiple pins present, centering on given location,
-	  centering on user's location initially
-	- design Elements within XD
-	- find functions within ol API directory or list of functions
-		- discern what location info and permissions I need to implement them
-		(might not even need location permission if providing location details)
-	- implementation 
-
-@1535 added necessities for <Map> modal in <Home>. Empty div set up for adding the map
-
-### 07. 07. 2024
-@1520 Will be working on these few changes, then we embark on <Map> !!!
-****To Do Next:
-	- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
-		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
-	- when clicked, section menuButton should close <MonthChart> if it's open
-	- For mainNav bar, can choose any option at a time. Not sequential
-	- in <userProfile> clicking on connection count shows list of all user's connections
-		should be same for posts and subscriptions
-	- reducing image uploads at backEnd
-	- memoization
-
-
-@1515 dateSelection added for <MonthChart> 
-	  - small issue, kinda: it shows current month and year rather than whats currently
-	  	being viewed on the calendar...
-
-### 07. 06. 2024
-@1530 CSS pretty much complete for date selection within <MonthChart> 
-	  Now to work on functionality for it...
-	  selecting a month and a year should automatically update the calendar underneath
+-----------------------------------------------------------------------------------------
 
 ### 07. 04. 2024
 @1330 Working on implementing dateSelection within <MonthChart>....which needs to be 
@@ -119,7 +12,7 @@ Both Calendar and Map toggles should be invisible on the Macro and Group section
 			completing style overhaul
 
 Currently Working on...
-- design for <MonthChart> date selection and ✅
+- design for <MonthChart> date selection and 
 - last side quests
 - redesign how tags are added to post page..?
 - figure out refferal code stuff
@@ -150,12 +43,12 @@ General Level To Do, as of Now...
 		- for topics, need to address issue preventing page from opening... ✅
 		- Upon deleting a post, clear 'scrollToView' from access global state var ✅
 		- replace full page components opening and closing animations ✅
-		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
+		- in <CreatePost> make sure info for current date is taken AT THE TIME the post is made 
 			not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
 		- when clicked, section menuButton should close <MonthChart> if it's open
 
 ****Needed Additions
-		- Specific Month + Year Selection in <MonthChart> ✅
+		- Specific Month + Year Selection in <MonthChart>
 		- For mainNav bar, can choose any option at a time. Not sequential
 		- in <userProfile> clicking on connection count shows list of all user's connections
 				should be same for posts and subscriptions

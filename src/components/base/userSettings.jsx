@@ -1,7 +1,7 @@
 import * as React from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
-import useAuth from '../../useAuth';
+import useUIC from '../../UIcontext';
 
 import '../../components/base/home.css';
 
@@ -13,7 +13,7 @@ export default function UserSettings({setSocketMessage}) {
 
 	let navigate = useNavigate();
 	const location = useLocation();
-	const { logout } = useAuth();
+	const { logout } = useUIC();
 	const username = sessionStorage.getItem('userName');
 	const [currentSettings, setCurrentSettings] = React.useState(location.state.data);
 	const [privacyOption, setPrivacyOption] = React.useState(location.state.data.privacy);

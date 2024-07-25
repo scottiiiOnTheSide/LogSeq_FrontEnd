@@ -650,10 +650,10 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 
 
-export default function UserLog({active, setCurrent, current}) {
+export default function UserLog({active, setCurrent, current, log, setLog}) {
 
 	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
-	let [log, setLog] = React.useState([]);
+	// let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
 	let [isModal, openModal] = React.useReducer(state => !state, false);
 	// let [updateLog, setUpdateLog] = React.useReducer(state => !state, false);
@@ -669,7 +669,6 @@ export default function UserLog({active, setCurrent, current}) {
 	} 
 
 	React.useEffect(()=> {
-		// setUpdateLog();
 		updateLog()
 		setCurrent({
 			...current,

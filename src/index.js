@@ -2,7 +2,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 
-import { AuthProvider } from './useAuth';
+import { UIContextProvider } from './UIcontext';
 import { BrowserRouter as Router } from "react-router-dom";
 
 import Main from "./Main";
@@ -13,11 +13,17 @@ const root = ReactDOM.createRoot(body);
 root.render(
   <React.StrictMode>
 
-  <Router> 
+{/*  <Router> 
     <AuthProvider>
       <Main />
     </AuthProvider> 
-  </Router>
+  </Router>*/}
+
+    <Router> 
+      <UIContextProvider>
+        <Main />
+      </UIContextProvider> 
+    </Router>
 
   </React.StrictMode>
 );

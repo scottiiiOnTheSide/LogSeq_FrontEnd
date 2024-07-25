@@ -1,5 +1,5 @@
 div#MAP {
-	position: absolute;
+	position: relative;
 	width: 96%;
 	height: calc(100% - 150px);
 	z-index: 15;
@@ -19,7 +19,7 @@ div#MAP {
 div#MAP div#ol_map {
 	width: 98%;
 	height: 75%;
-	margin: 24px auto;
+	margin: 24px auto 36px;
 }
 
 div#MAP div#ol_map div.ol-viewport {
@@ -41,6 +41,20 @@ div#ol_map div.ol-zoom.ol-unselectable.ol-control button {
 
 
 
+div#MAP h2#header {
+	font-family: 'Raleway';
+	font-weight: 600;
+	font-size: 1.5em;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+
+	width: fit-content;
+	margin: 12px auto 24px;
+
+}
+
+
+
 div#MAP div#popUpPost {
 	width: 98.5%;
 	position: absolute;
@@ -49,12 +63,67 @@ div#MAP div#popUpPost {
 
 	margin: 0 auto;
 	padding: 12px 0;
-	bottom: 10%;
+	bottom: 0%;
 	background-color: white;
 	border-radius: 8px;
 }
 
+	div#MAP div#popUpPost.up {
+		animation: 0.25s ease-in-out forwards up;
+	}
+
+	@keyframes up {
+		0% {
+			bottom: -100%;
+		}
+		100% {
+			bottom: 0%;
+		}
+	}
+
+	div#MAP div#popUpPost.down {
+		animation: 0.25s ease-in-out forwards down;
+	}
+
+	@keyframes down {
+		0% {
+			bottom: 0%;
+		}
+		100% {
+			bottom: -100%;
+		}
+	}
+
 div#MAP div#popUpPost div#text {
 	width: 96%;
 	margin-left: 12px;
+}
+
+
+
+
+
+
+div#MAP div#filters {}
+
+div#MAP div#filters p {
+	font-family: 'Raleway';
+	font-weight: 400;
+	font-size: 0.8em;
+	text-transform: uppercase;
+	letter-spacing: 2px;
+
+	margin: 8px auto;
+	width: fit-content;
+}
+
+div#MAP div#filters ul {
+	display: flex;
+	justify-content: space-around;
+	list-style-type: none;
+	margin: 16px auto;
+	padding: 0;
+}
+
+div#MAP div#filters ul li {
 }

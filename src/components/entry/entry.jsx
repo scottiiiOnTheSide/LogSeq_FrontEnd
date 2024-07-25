@@ -2,7 +2,7 @@
 import * as React from "react";
 import { useNavigate } from "react-router-dom";
 import APIaccess from '../../apiaccess';
-import useAuth from '../../useAuth';
+import useUIC from '../../UIcontext';
 
 import '../../index.css';
 import './entry.css';
@@ -171,7 +171,7 @@ function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setP
 
 	const [formData, setFormData] = React.useReducer(formReducer, {});
 	const [isReady, setIsReady] = React.useReducer(state => !state, false);
-	const { login }  = useAuth();
+	const { login }  = useUIC();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (event) => {

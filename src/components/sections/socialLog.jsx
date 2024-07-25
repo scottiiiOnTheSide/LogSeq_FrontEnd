@@ -294,9 +294,9 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 	)
 }
 
-export default function SocialLog({active, current, setCurrent}) {
+export default function SocialLog({active, current, setCurrent, log, setLog }) {
 
-	let [log, setLog] = React.useState([]);
+	// let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
 	let isActive = active;
 	// let [updateLog, setUpdateLog] = React.useReducer(state => !state, false);
