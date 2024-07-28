@@ -6,7 +6,7 @@ import './monthChart.css';
 
 let accessAPI = APIaccess();
 
-export default function MonthChart ({current, setCurrent, cal, set_dateInView, selectedDate, set_selectedDate}) {
+export default function MonthChart ({current, setCurrent, cal, set_dateInView, selectedDate, setSelectedDate}) {
 
 	const [tallyPerDate, set_tallyPerDate] = React.useState({});
 	const [postsPerDate, set_postsPerDate] = React.useState([]);
@@ -138,7 +138,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 						       					className={`cell` + `${kyou == daysInWeek[e][index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
 						       					onClick={()=> {
 
-						       							set_selectedDate({
+						       							setSelectedDate({
 							       							month: selectedDate.month,
 							       							day: daysInWeek[e][index],
 							       							year: selectedDate.year,
@@ -200,7 +200,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 			year: e.target.value
 		})
 		if(e.target.value.length == 4) {
-			set_selectedDate({
+			setSelectedDate({
 				...selectedDate,
 				year: e.target.value
 			})
@@ -228,7 +228,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 
 		setTimeout(() => {
 			if(selectedDate.month + 1 > 11) {
-				set_selectedDate({
+				setSelectedDate({
 					day: null,
 					month: 0,
 					year: selectedDate.year + 1
@@ -242,7 +242,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 				}, 300)
 
 			} else if (selectedDate.month + 1 == 11) {
-					set_selectedDate({
+					setSelectedDate({
 						day: null,
 						month: 11,
 						year: selectedDate.year
@@ -255,7 +255,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 				}, 300)
 			} 
 			else {
-				set_selectedDate({
+				setSelectedDate({
 					day: null,
 					month: selectedDate.month + 1,
 					year: selectedDate.year
@@ -298,7 +298,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 
 		setTimeout(() => {
 			if(selectedDate.month - 1 < 0) {
-				set_selectedDate({
+				setSelectedDate({
 					day: null,
 					month: 11,
 					year: selectedDate.year - 1
@@ -313,7 +313,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 
 			} else if (selectedDate.month - 1 == 0) {
 
-				set_selectedDate({
+				setSelectedDate({
 					day: null,
 					month: 0,
 					year: selectedDate.year
@@ -325,7 +325,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 					set_prevMonth(cal.monthsAbrv[11])
 				}, 300)
 			} else {
-				set_selectedDate({
+				setSelectedDate({
 					day: null,
 					month: selectedDate.month - 1,
 					year: selectedDate.year
@@ -376,7 +376,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 
 		if(dateSelect.month != kongetsu) {
 			set_currentMonth(cal.monthsAbrv[dateSelect.month]);
-			set_selectedDate({
+			setSelectedDate({
 				...selectedDate,
 				month: dateSelect.month
 			})

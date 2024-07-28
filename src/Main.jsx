@@ -75,7 +75,7 @@ function Home({
   setCurrent,
   cal,
   selectedDate,
-  set_selectedDate,
+  setSelectedDate,
   mapData,
   setMapData,
   log,
@@ -192,7 +192,7 @@ function Home({
                    current={current}
                    setCurrent={setCurrent}
                    selectedDate={selectedDate}
-                   set_selectedDate={set_selectedDate}
+                   setSelectedDate={setSelectedDate}
                    mapData={mapData}
                    setMapData={setMapData}/>
 
@@ -203,12 +203,15 @@ function Home({
             cal={cal} 
             set_dateInView={set_dateInView}
             selectedDate={selectedDate}
-            set_selectedDate={set_selectedDate}/>
+            setSelectedDate={setSelectedDate}/>
         }
         {current.map && 
           <MapComponent 
             current={current}
-            log={log}/>
+            log={log}
+            selectedDate={selectedDate}
+            setSelectedDate={setSelectedDate}
+            cal={cal}/>
         }
 
           <Instant 
@@ -383,7 +386,7 @@ export default function Main() {
       kyou = hajime.getDate(),
       kongetsu = hajime.getMonth(),
       kotoshi = hajime.getFullYear();
-  const [selectedDate, set_selectedDate] = React.useState({
+  const [selectedDate, setSelectedDate] = React.useState({
     day: kyou,
     month: kongetsu,
     year: kotoshi
@@ -457,7 +460,7 @@ export default function Main() {
                   current={current}
                   setCurrent={setCurrent}
                   selectedDate={selectedDate}
-                  set_selectedDate={set_selectedDate}
+                  setSelectedDate={setSelectedDate}
 
                   mapData={mapData}
                   setMapData={setMapData}
@@ -493,7 +496,7 @@ export default function Main() {
                   current={current}
                   setCurrent={setCurrent}
                   selectedDate={selectedDate}
-                  set_selectedDate={set_selectedDate}
+                  setSelectedDate={setSelectedDate}
                   mapData={mapData}
                   setMapData={setMapData}
 
@@ -524,7 +527,7 @@ export default function Main() {
                   setCurrent={setCurrent}
                  
                   selectedDate={selectedDate}
-                  set_selectedDate={set_selectedDate}
+                  setSelectedDate={setSelectedDate}
                 />
               </HomeOrEntry>
             } 
@@ -550,7 +553,7 @@ export default function Main() {
                   setCurrent={setCurrent}
                   // socket stuff
                   selectedDate={selectedDate}
-                  set_selectedDate={set_selectedDate}
+                  setSelectedDate={setSelectedDate}
                 />
               </HomeOrEntry>
             } 
@@ -575,7 +578,7 @@ export default function Main() {
                   setCurrent={setCurrent}
                   // socket stuff
                   selectedDate={selectedDate}
-                  set_selectedDate={set_selectedDate}
+                  setSelectedDate={setSelectedDate}
               />
             </HomeOrEntry>
             }

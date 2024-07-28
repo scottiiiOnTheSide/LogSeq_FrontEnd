@@ -41,16 +41,23 @@ div#ol_map div.ol-zoom.ol-unselectable.ol-control button {
 
 
 
-div#MAP h2#header {
+div#MAP div#header {
+	width: fit-content;
+	margin: 12px auto 24px;
+}
+
+div#MAP div#header h2 {
 	font-family: 'Raleway';
 	font-weight: 600;
 	font-size: 1.5em;
 	text-transform: uppercase;
 	letter-spacing: 2px;
+	color: var(--greyscale-accent);
+	margin: 0;
+}
 
-	width: fit-content;
-	margin: 12px auto 24px;
-
+div#MAP div#header button {
+	font-size: 1.5em;
 }
 
 
@@ -69,7 +76,7 @@ div#MAP div#popUpPost {
 }
 
 	div#MAP div#popUpPost.up {
-		animation: 0.25s ease-in-out forwards up;
+		animation: 0.5s ease-in-out forwards up;
 	}
 
 	@keyframes up {
@@ -82,7 +89,7 @@ div#MAP div#popUpPost {
 	}
 
 	div#MAP div#popUpPost.down {
-		animation: 0.25s ease-in-out forwards down;
+		animation: 0.5s ease-in-out forwards down;
 	}
 
 	@keyframes down {
@@ -126,4 +133,133 @@ div#MAP div#filters ul {
 }
 
 div#MAP div#filters ul li {
+}
+
+div#MAP div#filters ul li button {}
+
+div#MAP div#filters ul li button.active {
+	color: black;
+}
+
+div#MAP div#filters ul li button.inactive {
+	color: var(--greyscale-accent);
+}
+
+
+
+
+
+div#MAP div#dateSelection {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 20;
+	background-color: white;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+	div#MAP div#dateSelection::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 0.25s;
+		z-index: -1;
+	}
+
+	div#MAP div#dateSelection._enter::before {
+		transition: all ease-in-out 0.1s;
+		z-index: 21;
+		opacity: 1;
+	}
+
+
+div#MAP div#dateSelection p#firstNotice {
+	font-family: 'Raleway';
+	font-weight: 400;
+	color: var(--greyscale-accent);
+	text-align: center;
+	letter-spacing: 2px;
+	line-height: 24px;
+
+	width: 90%;
+	margin: 48px auto 36px;
+}
+
+div#MAP div#dateSelection p#secondNotice {
+	font-family: 'Raleway';
+	font-weight: 400;
+	color: var(--greyscale-accent);
+	text-align: center;
+	letter-spacing: 2px;
+
+}
+
+
+div#MAP div#dateSelection ul#monthSelection {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+
+
+div#MAP div#dateSelection ul#monthSelection li {
+	width: 25%;
+	margin: 8px 0;
+}
+
+div#MAP div#dateSelection ul#monthSelection li button {
+	display: block;
+	margin: 0 auto;
+	padding: 16px;
+	color: var(--greyscale-accent);
+}
+
+div#MAP div#dateSelection ul#monthSelection li button.selected {
+	color: black;
+}
+
+div#MAP div#dateSelection input {
+	width: 64px;
+    display: block;
+    margin: 36px auto 16px;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px;
+    background-color: transparent;
+
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 1.5em;
+/*    color: var(--greyscale-text);*/
+	color: black;
+    letter-spacing: 2px;
+    line-height: 22px;
+    text-align: center;
+}
+
+div#MAP div#dateSelection input:focus {
+	outline: none;
+    border-bottom-color: var(--greyscale-text);
+}
+
+div#MAP div#dateSelection button#exit {
+
+	display: block;
+	position: absolute;
+	bottom: 5%;
+	left: 50%;
+	transform: translateX(-50%);
 }
