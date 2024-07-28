@@ -648,7 +648,7 @@ export default function Macros({active, current, setCurrent}) {
 
 	let goToMacrosPage = async(tag) => {
 
-		let posts = await accessAPI.groupPosts({action: 'getPosts', type: 'collection', groupID: tag._id});
+		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: tag._id});
 		let postsCount = posts.length;
 
 		let doesHaveAccess;

@@ -541,16 +541,17 @@ export default function APIaccess(key) {
 		async getSuggestions() {
 
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/groups/posts/?action=getSuggestions`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-		        	'Content-length': 0,
-		        	'Accept': 'application/json',
-		        	'Host': apiAddr,
-		        	'auth-token': userKey
-				}
-			}).then(data => data.json());
+			let request = await fetch(`${apiAddr}/groups/posts`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+			        	'Content-length': 0,
+			        	'Accept': 'application/json',
+			        	'Host': apiAddr,
+			        	'auth-token': userKey
+					},
+					body: JSON.stringify({action: 'getSuggestions'})
+			}).then(data => data.json())
 
 			return request;
 		},
@@ -558,16 +559,17 @@ export default function APIaccess(key) {
 		async getUserTags() {
 
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/groups/posts/?action=getUserTags`, {
-				method: 'GET',
-				headers: {
-					'Content-Type': 'application/json',
-		        	'Content-length': 0,
-		        	'Accept': 'application/json',
-		        	'Host': apiAddr,
-		        	'auth-token': userKey
-				}
-			}).then(data => data.json());
+			let request = await fetch(`${apiAddr}/groups/posts`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+			        	'Content-length': 0,
+			        	'Accept': 'application/json',
+			        	'Host': apiAddr,
+			        	'auth-token': userKey
+					},
+					body: JSON.stringify({action: 'getUserTags'})
+			}).then(data => data.json())
 
 			return request;
 		},

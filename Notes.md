@@ -4,6 +4,9 @@
 -----------------------------------------------------------------------------------------
 
 ### 07. 28. 2024
+@1540 Checked on tagging within posts - seems to be working fine. 
+		upload, backEnd filtering, getting posts with said tag...
+
 @1455 Added DatePicker to <Map>, however I need to add some checks for the date
 ****To Do:
 	- just limit on input number based on days within month
@@ -31,6 +34,7 @@ After,
 All this added should denote completion for 1.0A
 
 Additional Tasks:
+	- issue fixed with getting topics and createdTags for <CreatePost> ✅
 	- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
 		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
 	- when clicked, section menuButton should close <MonthChart> if it's open
