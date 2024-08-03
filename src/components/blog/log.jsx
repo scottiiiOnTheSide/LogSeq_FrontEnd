@@ -164,6 +164,9 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 							{post.commentCount > 0 &&
 								<li>{post.commentCount} comments</li>
 							}
+							{post.taggedUsers.length > 0 &&
+								<li>{post.taggedUsers.length} users tagged</li>
+							}
 						</ul>
 					</div>
 					

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="41" viewBox="0 0 35 41">
+  <g id="Group_357" data-name="Group 357" transform="translate(-1245 -2162)">
+    <text id="N" transform="translate(1260.5 2170.5)" stroke="rgba(0,0,0,0.05)" stroke-width="0.5" font-size="8" font-family="Raleway-Medium, Raleway" font-weight="500"><tspan x="0" y="0">N</tspan></text>
+    <text id="W" transform="translate(1245.5 2185.5)" stroke="rgba(0,0,0,0.05)" stroke-width="0.5" font-size="8" font-family="Raleway-Medium, Raleway" font-weight="500"><tspan x="0" y="0">W</tspan></text>
+    <text id="E" transform="translate(1274.5 2185.5)" stroke="rgba(0,0,0,0.05)" stroke-width="0.5" font-size="8" font-family="Raleway-Medium, Raleway" font-weight="500"><tspan x="0" y="0">E</tspan></text>
+    <text id="S" transform="translate(1260.5 2200.5)" stroke="rgba(0,0,0,0.05)" stroke-width="0.5" font-size="8" font-family="Raleway-Medium, Raleway" font-weight="500"><tspan x="0" y="0">S</tspan></text>
+    <g id="Group_356" data-name="Group 356">
+      <line id="Line_215" data-name="Line 215" x2="16" transform="translate(1255.5 2182.5)" fill="none" stroke="#000" stroke-width="1"/>
+      <line id="Line_216" data-name="Line 216" x2="16" transform="translate(1263.5 2174.5) rotate(90)" fill="none" stroke="#000" stroke-width="1"/>
+      <line id="Line_217" data-name="Line 217" x2="20" y2="20" transform="translate(1253.5 2172.5)" fill="none" stroke="#000" stroke-width="1"/>
+      <line id="Line_218" data-name="Line 218" x2="20" y2="20" transform="translate(1273.5 2172.5) rotate(90)" fill="none" stroke="#000" stroke-width="1"/>
+    </g>
+  </g>
+</svg>

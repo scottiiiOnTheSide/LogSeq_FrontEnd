@@ -152,7 +152,7 @@ div#createPost fieldset.textareaImageAdd input.addImage {
 
 
 div#createPost fieldset button#newCombo {
-	margin: 48px 0;
+	margin: 32px 0;
 	width: 100%;
 }
 
@@ -315,13 +315,21 @@ section#HOME div#createPost div#tagsSelection div#resultsWrapper button#makeNewT
 
 
 section#HOME div#createPost form button#setPrivate {
-	margin: 36px 0;
+	margin: 36px 0 16px;
 }
 
 section#HOME div#createPost form button#setPrivate.nonActive {
 	color: var(--greyscale-accent);
 }
 
+section#HOME div#createPost form button#pinLocation {
+	margin: 8px 0;
+	display: block;
+}
+
+section#HOME div#createPost form button#pinLocation.nonActive {
+	color: var(--greyscale-accent);
+}
 
 
 
@@ -371,4 +379,68 @@ section#HOME div#createPost div#createNewTag div#buttonWrapper button {
 
 section#HOME div#createPost div#createNewTag div#buttonWrapper button.nonActive {
 	color: var(--greyscale-accent);
+}
+
+
+
+
+
+
+
+
+
+div#createPost form div#coordinatesWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	width: 98%;
+	margin: 16px auto;
+}
+
+	div#createPost form div#coordinatesWrapper.enter {
+		animation: 0.25s ease-in-out forwards _enter;
+	}
+
+	div#createPost form div#coordinatesWrapper.leave {
+		animation: 0.25s ease-in-out forwards _leave;
+	}
+
+div#createPost form div#coordinatesWrapper div#lonWrap,
+div#createPost form div#coordinatesWrapper div#latWrap {
+	width: 48%;
+	display: flex;
+	flex-direction: row;
+	border-bottom: 2px solid var(--greyscale-accent);
+}
+
+div#createPost form div#coordinatesWrapper div#lonWrap.active,
+div#createPost form div#coordinatesWrapper div#latWrap.active {
+	border-color: black;
+}
+
+
+div#createPost form div#coordinatesWrapper div#lonWrap p,
+div#createPost form div#coordinatesWrapper div#latWrap p {
+	margin: 8px 0;
+	display: block;
+
+	font-family: 'Raleway';
+    font-weight: 400;
+/*    font-size: 1.75em;*/
+    color: var(--greyscale-accent);
+    letter-spacing: 2px;
+/*    line-height: 22px;*/
+}
+
+div#createPost form div#coordinatesWrapper div#lonWrap p.active,
+div#createPost form div#coordinatesWrapper div#latWrap p.active {
+	color: black;
+}
+
+
+div#createPost form div#coordinatesWrapper div#lonWrap input,
+div#createPost form div#coordinatesWrapper div#latWrap input {
+	margin: 0;
+	border-bottom: none;
+	padding: 0 16px;
 }

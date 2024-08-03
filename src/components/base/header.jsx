@@ -53,13 +53,6 @@ export default function Header ({cal, isReturnable, setNotifList, unreadCount, s
 			{returnable &&
 				<ReturnElement />
 			}
-			
-			{/*<div id="thePresent">
-				<h1>Today</h1>
-				<span>{cal.currentMonth}</span>
-				<span>{cal.currentDate},</span>
-				<span>{cal.currentYear}</span>
-			</div>*/}
 			<div id="location">
 				<h1>{siteLocation}</h1>
 			</div>

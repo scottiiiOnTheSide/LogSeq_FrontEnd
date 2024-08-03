@@ -63,7 +63,7 @@ div#MAP div#header button {
 
 
 div#MAP div#popUpPost {
-	width: 98.5%;
+	width: 92%;
 	position: absolute;
 	left: 50%;
 	transform: translateX(-50%);
@@ -73,6 +73,7 @@ div#MAP div#popUpPost {
 	bottom: 0%;
 	background-color: white;
 	border-radius: 8px;
+	overflow-x: hidden;
 }
 
 	div#MAP div#popUpPost.up {
@@ -102,12 +103,57 @@ div#MAP div#popUpPost {
 	}
 
 div#MAP div#popUpPost div#text {
-	width: 96%;
-	margin-left: 12px;
+	width: 90%;
+	margin: 16px auto;
+
+	font-family: 'Open Sans';
+	font-weight: 400;
 }
 
+div#MAP div#popUpPost div#exitButtonWrapper {
+	display: flex;
+	justify-content: flex-end;
+}
 
+div#MAP div#popUpPost div#exitButtonWrapper button {
+	font-size: 1.5em;
+	font-weight: 300;
+	transform: scale(2);
+	line-height: 15px;
+	padding: 1px 1px 4px 4px;
+	border-radius: 25px;
+	border: 1.5px solid var(--greyscale-accent);
+	margin: 8px 20px 8px 0px;
+	color: var(--greyscale-accent);;
 
+/*	float: right;*/
+/*	margin-left: 0;*/
+}
+
+div#MAP div#popUpPost div#text h2 {
+	margin: 8px 0;
+}
+
+div#MAP div#popUpPost div#text p {
+	margin-top: 12px;
+	margin-bottom: 8px;
+}
+
+div#MAP div#popUpPost div#text ul {
+	display: flex;
+    flex-direction: row;
+    list-style-type: none;
+    margin: 8px 0 0 -4px;
+    padding: 0;
+}
+
+div#MAP div#popUpPost div#text ul li {
+	font-size: 0.9em;
+    letter-spacing: 1px;
+    margin: 12px 0;
+    margin-left: 4px;
+    margin-right: 12px;
+}
 
 
 
@@ -144,6 +190,9 @@ div#MAP div#filters ul li button.active {
 div#MAP div#filters ul li button.inactive {
 	color: var(--greyscale-accent);
 }
+
+
+
 
 
 

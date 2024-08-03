@@ -3,7 +3,75 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 08. 03. 2024
+
+@0100 
+****To Do Next:
+	- Need to make date filter within map functional.
+	- add list of tags + link to macros page within <Post>
+
+@1240 Tagging users currently doesnt work (T-T )
+
+### 08. 01. 2024
+@1530 <Map> now reads and creates markers from Log
+Need to do....
+	- add X button to top right corner + make functional ✅
+	- clicking on text takes user to specified post ✅
+	- add post details to text wrapper ✅
+
+Need to think about what to do if there are many posts within a singular point ...
+
+
+@1220 HTML, CSS and JS functionality all present for pinning location within a post
+
+****To Do Next:
+	- Update <Map> so that it takes data from the log state array for the markers and 
+	  popUp panel ✅
+	  	- popUp panel should have a close button ✅
+
+****After
+	- issue fixed with getting topics and createdTags for <CreatePost> ✅
+	- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
+		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+	- when clicked, section menuButton should close <MonthChart> if it's open
+	- For mainNav bar, can choose any option at a time. Not sequential
+	- in <userProfile> clicking on connection count shows list of all user's connections
+		should be same for posts and subscriptions
+	- in concerns to date picker in <map>
+		- just limit on input number based on days within month
+		- save that number to a state, add var within notice text
+		- R e s e t selectedDate whenever modal is closed (reset to current info)
+	- reducing image uploads at backEnd
+	- memoization
+
+
+### 07. 31. 2024
+@0005 HTML + CSS done for pinLocation lon and lat inputs
+	  need to add ternary to wrapper and p element,
+	  - if pinLocation lon or lat IS NOT equal to locationData (which is user's current
+	  location) class is inactive.
+
+Proper functionality:
+upon first pressing pinLocation button, navigation.geolocation prompt should appear
+asking user for location permissions.
+lon and lat data is then saved into locationData and pinLocation. they should be equal
+
+changes to Post schema, locationData, mixed type: lon, lat, state, city.
+
+### 07. 29. 2024
+@1900 Need to add html + css for lon lat input
+	  inputs inside div,
+	  selecting input shoooould turn label and underline black, from grey...
+
+@1840 Made a compass svg icon in Adobe XD, and replaced the <Map> button text with it.
+	  Will keep the map functionality as simple as possible for now
+
 ### 07. 28. 2024
+@2355 Need to come up with some new design for the map button . . . May also need to remove
+	  emphasis on country / state names . . .
+	  there currently doesnt seem to be any list of worldwide city names abbreviated with
+	  3 letters.
+
 @1540 Checked on tagging within posts - seems to be working fine. 
 		upload, backEnd filtering, getting posts with said tag...
 
@@ -26,7 +94,7 @@ fix current issue:
 		- add placeholder for when MACROS selected ✅
 
 After,
-- add 'pin location' to <CreatePost>
+- add 'pin location' to <CreatePost> ✅
 	- reveals inputs for lon and lat that can be editted
 - add tags and topics to <Post>
 
@@ -41,6 +109,10 @@ Additional Tasks:
 	- For mainNav bar, can choose any option at a time. Not sequential
 	- in <userProfile> clicking on connection count shows list of all user's connections
 		should be same for posts and subscriptions
+	- in concerns to date picker in <map>
+		- just limit on input number based on days within month
+		- save that number to a state, add var within notice text
+		- R e s e t selectedDate whenever modal is closed (reset to current info)
 	- reducing image uploads at backEnd
 	- memoization
 

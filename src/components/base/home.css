@@ -72,7 +72,7 @@ section#HOME.return {
 
 	header div#location {
 		position: relative;
-		top: 4px;
+		top: 8px;
 	}
 
 	/*header div#thePresent h1 {
@@ -87,13 +87,15 @@ section#HOME.return {
 
 	header div#location h1 {
 		font-weight: 600;
-		font-size: 2.25em;
+		font-size: 1.5em;
 		letter-spacing: 6px;
-		color: var(--greyscale-elements);
+/*		color: var(--greyscale-elements);*/
+		color: black;
 
 		margin: 0;
 		position: absolute;
-		top: 6px;
+		top: 8px;
+		left: 4px;
 		text-transform: uppercase;
 	}
 
@@ -112,13 +114,13 @@ section#HOME.return {
 	header button#interactionsToggle {
 		border: none;
 		background: transparent;
-		margin-top: -4px;
+		margin-top: -8px;
 	/*	position: absolute;*/
 	}
 
 	header button#interactionsToggle p {
 		font-weight: 600;
-		font-size: 4em;
+		font-size: 4.75em;
 		color: var(--greyscale-elements);
 
 		margin: 4px 0;
@@ -129,14 +131,14 @@ section#HOME.return {
 	header button#interactionsToggle span {
 		display: block;
 		margin: 8px 0;
-		border: 1.5px solid var(--greyscale-details);
-
+/*		border: 1.5px solid var(--greyscale-details);*/
+		border: 2px solid black;
 	}
 
 		header button#interactionsToggle span:nth-child(2) {
 			width: 16px;
 			margin-left: 32px;
-			margin-top: 22px;
+			margin-top: 24px;
 		}
 		header button#interactionsToggle span:nth-child(3) {
 			width: 32px;

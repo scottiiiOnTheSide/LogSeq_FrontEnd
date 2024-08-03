@@ -252,7 +252,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const [postContent, setPostContent] = React.useState([]);
 	const [images, setImages] = React.useState([]);
 	let count = 0;
-	console.log(postContent);
+	// console.log(postContent);
+	const [locationData, setLocationData] = React.useState({ //values are null until user initially selects pinLocation 
+		lon: 40.6569, 
+		lat: -73.9605
+	}); //this is set to user's current coordinates when they first toggle 'Pin Location'
 
 	const handleChange = (event) => {
 
@@ -375,6 +379,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				submission.append('postedOn_year', selectedDate.year);
 			} else {
 				submission.append('usePostedByDate', true);
+			}
+
+			if(pinLocation.open) {
+				submission.append('geoLon', pinLocation.lon);
+				submission.append('geoLat', pinLocation.lat);
 			}	
 			console.log(submission);
 			console.log(tags);
@@ -436,7 +445,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				placeholder="Content" 
 				onBlur={handleChange}
 				data-index={index}
-				rows="10"
+				rows="8"
 				cols="30"
 				/>
 				{/*
@@ -508,6 +517,14 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const tagModal = React.useRef();
 	const element = el.current;
 
+	//should be locationData values by default
+	//these values are added to post submission
+	const [pinLocation, setPinLocation] = React.useState({
+		open: false,
+		lon: 40.6569, 
+		lat: -73.9605
+	});
+
 	let writtenDate;
 	if(selectedDate.day) {
 		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
@@ -538,6 +555,71 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		*/
 	}
 
+	const onChange = (e) => {
+		if(e.target.name == 'lon') {
+			setPinLocation({
+				...pinLocation,
+				lon: e.target.value
+			})
+		}
+		else if(e.target.name == 'lat') {
+			setPinLocation({
+				...pinLocation,
+				lat: e.target.value
+			})
+		}
+	}
+
+	const getGeoInfo_options = {
+		enableHighAccuracy: true,
+		timeout: 5000,
+		maximumAge: 0
+	};
+
+	const getGeoInfo_success = (pos) => {
+		setLocationData({
+			lon: pos.longitude,
+			lat: pos.latitude
+		})
+		setPinLocation({
+			...pinLocation,
+			lon: pos.longitude,
+			lat: pos.latitude
+		})
+		console.log('Location data saved within state')
+	}
+
+	const getGeoInfo_error = (err) => {
+		console.log(`Error (${err.code}): ${err.message}`)
+	}
+
+	React.useEffect(()=> {
+
+		if(navigator.geolocation) {
+			navigator.permissions.query({name: "geolocation"}).then((result)=> {
+				console.log(result);
+
+				if(result.state == "granted") {
+					navigator.geolocation.getCurrentPosition(getGeoInfo_success, getGeoInfo_error, getGeoInfo_options)
+				}
+				else if(result.state == "prompt") {
+					navigator.geolocation.getCurrentPosition(getGeoInfo_success, getGeoInfo_error, getGeoInfo_options)
+				}
+				else if(result.state == "denied") {
+					//can utilize the popUpNotif to instruct user on how to activate location permissions
+					setLocationData({
+						lon: null,
+						lat: null
+					})
+				}
+			})
+		}
+		else {
+			console.log("geolocation permissions not active")
+		}
+
+	}, [pinLocation.open])
+
 	//update main data on every reload
 	React.useEffect(()=> {
 		getConnections();
@@ -563,8 +645,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	
 
 	return (
-		// <div id="createPost" ref={el} className={`${enter == true ? '_enter' : ''} 
-		// 										  ${modal == true ? '_modalActive' : ''}`}>
 		<div id="createPost" ref={el} className={`_enter`}>
 			<div id="titleWrapper">
 				<h3>Creating Entry for</h3>
@@ -596,12 +676,54 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 					<button id="setPrivate" 
 							className={`buttonDefault ${isPrivate == true ? 'active' : 'nonActive'}`}
-							onClick={(e)=> {e.preventDefault(); setPrivate()}}>PRIVATE</button>
+							onClick={(e)=> {e.preventDefault(); setPrivate()}}>
+						PRIVATE
+					</button>
+
+					<button id="pinLocation"
+							className={`buttonDefault ${pinLocation.open == true ? 'active' : 'nonActive'}`}
+							onClick={(e)=> {
+								e.preventDefault(); 
+								if(pinLocation.open == false) {
+									setPinLocation({
+										...pinLocation,
+										open: true
+									})
+								} else {
+									setPinLocation({
+										...pinLocation,
+										open: false
+									})
+								}
+							}}>
+						Pin Location
+					</button>
+
+					{pinLocation.open &&
+						<div id="coordinatesWrapper">
+						
+							<div id="lonWrap" className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>
+								<p className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>LON</p>
+								<input type="number"
+										name="lon"
+										onChange={onChange}
+										placeholder={locationData.lon}/>
+							</div>
+							<div id="latWrap" className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>
+								<p className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>LAT</p>
+								<input type="number"
+										name="lat"
+										onChange={onChange}
+										placeholder={locationData.lat}/>
+							</div>
+						</div>
+					}
+					
+
 				</fieldset>
 			</form>
 			
 			<div id="options">
-				<button className={"buttonDefault"} onClick={handleSubmit}>Submit</button>
 				<button className={"buttonDefault"} onClick={(e)=> {
 					e.preventDefault();
 					
@@ -615,6 +737,8 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 						})
 					}, 300)
 				}}>Close</button>
+
+				<button className={"buttonDefault"} onClick={handleSubmit}>Submit</button>
 			</div>
 
 			{modal &&

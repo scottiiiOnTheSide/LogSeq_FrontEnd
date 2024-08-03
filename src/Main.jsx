@@ -125,7 +125,7 @@ function Home({
           isPost={isPost} 
           setNotifList={setNotifList} 
           unreadCount={unreadCount}
-          siteLocation={"home"}/>
+          siteLocation={"ss.xyz"}/>
         <CarouselNav current={current} setCurrent={setCurrent}/>
 
         {notifList &&

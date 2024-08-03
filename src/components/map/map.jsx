@@ -12,6 +12,7 @@ import { Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
 
 import Header from '../../components/base/header';
 
+import {useNavigate} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import 'ol/ol.css';
@@ -22,21 +23,22 @@ let accessAPI = APIaccess();
 
 export default function MapComponent ({ current, log, setLog, selectedDate, setSelectedDate, cal }) {
 
+	const navigate = useNavigate();
 	const [mapState, setMapState] = React.useState(null);
 	const [currentCenter, setCurrentCenter] = React.useState([-73.9249,  40.6943]);
 	const [markers, setMarkers] = React.useState([
-		{ 
-			id: 1, 
-			coords: [-73.9249, 40.6943], 
-			title: 'First Spot',
-			text: 'This is just some filler text to place within this pop up element that we have here. No important information relevant to anything.' 
-		},
-		{ 	
-			id: 2, 
-			coords: [-73.935242, 40.730610], 
-			title: 'Second Spot',
-			text: 'These are some words that the dev would like to place here as filler content. It is of no importance or effect to anything'
-		}
+		// { 
+		// 	id: 1, 
+		// 	coords: [-73.9249, 40.6943], 
+		// 	title: 'First Spot',
+		// 	text: 'This is just some filler text to place within this pop up element that we have here. No important information relevant to anything.' 
+		// },
+		// { 	
+		// 	id: 2, 
+		// 	coords: [-73.935242, 40.730610], 
+		// 	title: 'Second Spot',
+		// 	text: 'These are some words that the dev would like to place here as filler content. It is of no importance or effect to anything'
+		// }
 	]);
 	const mapRef = React.useRef();
 	const [isMapMounted, setMapMounted] = React.useState(false);
@@ -79,6 +81,38 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 		}
 		
 	}
+
+	/* Extracts data from log for markers and popUpPanel */
+	React.useEffect(()=> {
+		let markers = [];
+		let num = 0;
+		// let locations = log.find(entry => entry.hasOwnProperty('location'));
+		let locations = log.filter(entry => entry.hasOwnProperty('location')).map(entry => {
+			return {
+				id: num,
+				// coords: points,
+				coords: [parseFloat(entry.location.lat), parseFloat(entry.location.lon)],
+				title: entry.title,
+				text: entry.content[0].content,
+				tags: entry.tags ? entry.tags.length : null,
+				taggedUsers: entry.taggedUsers ? entry.taggedUsers.length : null,
+				comments: entry.commentCount,
+				postData: entry
+			}
+			num++
+		});
+		setMarkers(locations);
+	}, [])
+
+	// console.log(parseFloat(log[0].location.lon))
+	console.log(markers)
+	console.log(log)
+
+	// setTimeout(()=> {
+	// 	navigate(`/post/${post._id}`, {
+	// 		state: {post: post}
+	// 	});
+	// }, 600)
 
 	/* Renders Open Layers Map on Component Mount */
 	React.useEffect(()=> {
@@ -137,10 +171,11 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 				setPostBoardClass('down')
 
 				let secondStep = setTimeout(()=> {
-					setPostBoardInfo({
-						title: data.title,
-						text: data.text
-					})
+					// setPostBoardInfo({
+					// 	title: data.title,
+					// 	text: data.text
+					// })
+					setPostBoardInfo(data)
 				}, 600);
 					
 				let thirdStep = setTimeout(()=> {
@@ -159,12 +194,7 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 
 		//Removes map on unmount
 		return ()=> initialMap.setTarget(null);
-
 	}, [currentCenter, markers, isMapMounted]) 
-
-	// console.log(postBoardInfo)
-	console.log(postBoardClass)
-
 
 
 	return (
@@ -198,12 +228,38 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 			{/* T H I S  I S  T H E  O L  M A P */}
 			<div id="ol_map" ref={mapRef}></div>
 
-			{/*P O S T  I N F O  W R A P P E R*/}
+
+			{/*P O S T  P A N E L  W R A P P E R*/}
 			<div id="popUpPost" className={`${postBoardClass}`}>
 				
-				<div id="text">
+				<div id="exitButtonWrapper">
+					<button className={`buttonDefault`}
+							onClick={()=> {
+								setPostBoardClass('down');
+							}}>×</button>
+				</div>
+
+				<div id="text" onClick={()=> {
+					setTimeout(()=> {
+						navigate(`/post/${postBoardInfo.postData._id}`, {
+							state: {post: postBoardInfo.postData}
+						});
+					}, 600)
+				}}>
 					<h2>{postBoardInfo.title}</h2>
 					<p>{postBoardInfo.text}</p>
+
+					<ul>
+						{postBoardInfo.tags > 0 &&
+							<li>{postBoardInfo.tags} tags</li>
+						}
+						{postBoardInfo.comments > 0 &&
+							<li>{postBoardInfo.comments} comments</li>
+						}
+						{postBoardInfo.taggedUsers > 0 &&
+							<li>{postBoardInfo.taggedUsers} users tagged</li>
+						}
+					</ul>
 				</div>
 			</div>
 
