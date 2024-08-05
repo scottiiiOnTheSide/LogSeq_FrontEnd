@@ -328,13 +328,56 @@ section#POST article div#mainContent img {
 
 
 /* * * 
+	T A G S L I S T
+* * */
+
+section#POST article ul#tagsList {
+	list-style-type: none;
+	padding: 12px 0;
+
+	display: flex;
+/*	justify-content: flex-start;*/
+	justify-content: center;
+	width: 98%;
+/*	margin: 16px auto;*/
+	margin: 64px auto;
+/*	border-top: 1px solid var(--greyscale-accent);*/
+}
+
+section#POST article ul#tagsList li {
+	margin: 0px 4px;
+}
+
+section#POST article ul#tagsList li button {
+	font-size: 0.85em;
+	text-transform: capitalize;
+	padding: 8px;
+}
+
+section#POST article ul#tagsList li button.tag {
+	border: 2px solid black;
+	border-radius: 4px;
+}
+
+section#POST article ul#tagsList li button.private {
+	border: 2px solid var(--greyscale-elements);
+	background-color: var(--greyscale-elements);
+	color: var(--greyscale-accent);
+}
+
+
+
+
+
+
+/* * * 
 	C O M M E N T S 
 * * */
 
 div#commentsWrapper {
 	width: 98%;
 	position: relative;
-	margin: 120px auto 40px;
+	margin: 64px auto 40px;
 }
 
 

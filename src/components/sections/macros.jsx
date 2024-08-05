@@ -601,23 +601,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 	)
 }
 
-// element has _enter class initially. 
-// On component load, it's removed after 200ms
-// On element close, _enter class is added again,
-// then element is removed / closed.
-
-// let modal = React.useRef();
-// React.useEffect(()=> {
-// 	let modalCurrent = modal.current;
-// 	let delay = setTimeout(()=> {
-// 		modalCurrent.classList.remove('_enter');	
-// 	}, 200)
-// }, [])
-
-// let modalCurrent = modal.current;
-// modalCurrent.classList.add('_enter');
-
-
 
 export default function Macros({active, current, setCurrent}) {
 

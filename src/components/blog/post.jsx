@@ -25,7 +25,6 @@ export function EditPost({ postData }) {
 	 * on save,
 	 * array of objects 
 	 */
-
 }
 
 export default function Post({
@@ -45,7 +44,7 @@ export default function Post({
 }) {
 	const userID = sessionStorage.getItem('userID');
 	const { postID } = useParams();
-	const	location = useLocation();
+	const location = useLocation();
 	const navigate = useNavigate();
 	const [postData, setPostData] = React.useState(location.state.post);
 	const [comments, setComments] = React.useState([]);
@@ -56,24 +55,18 @@ export default function Post({
 		let updateComments = await accessAPI.updateCommentCount(postID);
 
 		let post = await accessAPI.getBlogPost(postID);
-		setPostData(post);
+		// let commentCount;
 
+		// if(post.commentCount < 10) {
+		// 	commentCount = `00${postData.commentCount}`
+		// } 
+		// else if (post.commentCount > 10 && post.commentCount < 100) {
+		// 	commentCount = `0${postData.commentCount}`
+		// }
+		// post.commentCount = commentCount;
 		let comments = await accessAPI.getComments(postID);
-		setComments(comments)
-
-		if(postData.commentCount < 10) {
-			// setCommentCount(`00${postData.commentCount}`)
-			setPostData({
-				...postData,
-				commentCount: `00${postData.commentCount}`
-			})
-		} else if (postData.commentCount < 100) {
-			// setCommentCount(`0${postData.commentCount}`)
-			setPostData({
-				...postData,
-				commentCount: `0${postData.commentCount}`
-			})
-		}
+		setComments(comments);
+		setPostData(post);
 	}
 
 	//for submitting comments
@@ -246,11 +239,25 @@ export default function Post({
 	/*** 
 	 	updates post & comments on initial load and page refresh 
 	***/
+	// React.useState(()=> {
+	// 	if(postData.commentCount < 10) {
+	// 		setPostData({
+	// 			...postData,
+	// 			commentCount: `00${postData.commentCount}`
+	// 		})
+	// 	} 
+	// 	else if (postData.commentCount > 10 && postData.commentCount < 100) {
+	// 		setPostData({
+	// 			...postData,
+	// 			commentCount: `0${postData.commentCount}`
+	// 		})
+	// 	}
+	// }, [])
+
 	React.useEffect(()=> {
 		refreshPost()
 		pinPost('check')
 	}, [])
-
 
 	/***
 	 	P o s t D e t a i l s
@@ -494,11 +501,35 @@ export default function Post({
 				</div>
 
 
+				<ul id="tagsList">
+
+					{postData.tags.map(tag => (
+						<li>
+							<button className={`buttonDefault ${tag._id ? 'tag' : ''} ${tag.isPrivate == true ? 'private' : ''}`}
+									onClick={()=> {
+										
+									}}>
+								{tag.name}
+							</button>
+						</li>
+					))}
+
+				</ul>
+
+
 				{/* * * 
 					C O M M E N T S 
 				* * */}
 				<div id="commentsWrapper">
-					<h2><span id="commentCount">{postData.commentCount}</span>Comments</h2>
+					<h2>
+						{postData.commentCount < 10 &&
+							<span id="commentCount">00{postData.commentCount}</span>
+						}
+						{(postData.commentCount > 10 && postData.commentCount > 100) &&
+							<span id="commentCount">0{postData.commentCount}</span>
+						}
+						Comments
+					</h2>
 
 					<ul id="commentBox" ref={commentsRef}>
 						{comments.map(comment => (

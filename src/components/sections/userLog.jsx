@@ -372,6 +372,9 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			let tags = suggestions.filter(el => el.selected == true).map(el => el.name);
 			submission.append('tags', tags);
 
+			let taggedUsers = tagged.filter(user => user.selected == true).map(user => {return user.id});
+			submission.append('taggedUsers', taggedUsers)
+
 			if(selectedDate.day != null) {
 				submission.append('usePostedByDate', false);
 				submission.append('postedOn_month', selectedDate.month);
@@ -617,7 +620,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		else {
 			console.log("geolocation permissions not active")
 		}
-
 	}, [pinLocation.open])
 
 	//update main data on every reload

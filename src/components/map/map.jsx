@@ -82,37 +82,59 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 		
 	}
 
-	/* Extracts data from log for markers and popUpPanel */
+	/* 
+		Extracts data from log for markers and popUpPanel
+	   	and Filters posts based on headerState 
+	*/
 	React.useEffect(()=> {
-		let markers = [];
-		let num = 0;
-		// let locations = log.find(entry => entry.hasOwnProperty('location'));
-		let locations = log.filter(entry => entry.hasOwnProperty('location')).map(entry => {
-			return {
-				id: num,
-				// coords: points,
-				coords: [parseFloat(entry.location.lat), parseFloat(entry.location.lon)],
-				title: entry.title,
-				text: entry.content[0].content,
-				tags: entry.tags ? entry.tags.length : null,
-				taggedUsers: entry.taggedUsers ? entry.taggedUsers.length : null,
-				comments: entry.commentCount,
-				postData: entry
-			}
-			num++
-		});
+
+		if(headerState == 'allPosts') {
+			let num = 0;
+			let locations = log.filter(entry => entry.hasOwnProperty('location')).map(entry => {
+				return {
+					id: num,
+					// coords: points,
+					coords: [parseFloat(entry.location.lat), parseFloat(entry.location.lon)],
+					title: entry.title,
+					text: entry.content[0].content,
+					tags: entry.tags ? entry.tags.length : null,
+					taggedUsers: entry.taggedUsers ? entry.taggedUsers.length : null,
+					comments: entry.commentCount,
+					postData: entry
+				}
+				num++
+			});
+			setMarkers(locations);
+		}
+		if(headerState == 'date') {
+
+			let num = 0;
+			let locations = log.filter((entry) => {
+				if(entry.hasOwnProperty('location')) {
+
+					if((entry.postedOn_month == dateSelect.month && entry.postedOn_day == dateSelect.date) 
+						&& entry.postedOn_year == dateSelect.year) {
+						return entry;
+					}
+				}
+			}).map(entry => {
+				return {
+					id: num,
+					// coords: points,
+					coords: [parseFloat(entry.location.lat), parseFloat(entry.location.lon)],
+					title: entry.title,
+					text: entry.content[0].content,
+					tags: entry.tags ? entry.tags.length : null,
+					taggedUsers: entry.taggedUsers ? entry.taggedUsers.length : null,
+					comments: entry.commentCount,
+					postData: entry
+				}
+				num++
+			});
 		setMarkers(locations);
-	}, [])
+		}
+	}, [headerState, dateSelect, ])
 
-	// console.log(parseFloat(log[0].location.lon))
-	console.log(markers)
-	console.log(log)
-
-	// setTimeout(()=> {
-	// 	navigate(`/post/${post._id}`, {
-	// 		state: {post: post}
-	// 	});
-	// }, 600)
 
 	/* Renders Open Layers Map on Component Mount */
 	React.useEffect(()=> {
@@ -356,7 +378,6 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 					</button>
 				</div>
 			}
-
 		</div>
 	)
 }

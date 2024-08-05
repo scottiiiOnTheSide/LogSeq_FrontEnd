@@ -3,14 +3,50 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
-### 08. 03. 2024
 
+### 08. 05. 2024
+@0340 Styling done for Tags in <Post>
+
+In order to go to individual macros page, alot more info is needed than what's saved within
+the post doc.
+Will need to
+	- create backEnd route to supply frontEnd with tag
+	- then run getPosts for that tag (getPosts subroute filters the posts, which is why
+		this operation is split)
+	- copy goToMacrosPage function from macros.jsx
+
+@0255 updated upload post subroute so that tags are saved with their respective ids,
+	  topics are not
+
+@0115 In order to view individual macros page for tags, it's id is necessary. Currently,
+	  tags are only saved within post under it's name - just a string.
+
+Im thinking that we still send the post request with tags as strings,
+find the tags on the backEnd. if theyre tags, not topics - add ids to the
+post tags object. if not, only save the names.
+
+
+### 08. 04. 2024
+@1155 more things popping up that I havent considered or need to be added / fixed.
+	  I shall add tags to the <Post> page, finish the most vital additions,
+	  add the referral code sequence to the entry page, and then we upload at 1.0A
+	  CSS overhaul before upload
+
+<Post> page needs redesign, centered around 'post details', tags and map inclusion
+
+****Issue:
+	- location permissions can only be requested once on a website, otherwise users
+	  must set permissions manually.
+	  Where can I leave a notice informing users how to set the locations permission?
+
+
+### 08. 03. 2024
 @0100 
 ****To Do Next:
-	- Need to make date filter within map functional.
+	- Need to make date filter within map functional ✅
 	- add list of tags + link to macros page within <Post>
 
-@1240 Tagging users currently doesnt work (T-T )
+@1240 Tagging users currently doesnt work (T-T ). pls fix ✅
 
 ### 08. 01. 2024
 @1530 <Map> now reads and creates markers from Log
@@ -29,20 +65,23 @@ Need to think about what to do if there are many posts within a singular point .
 	  popUp panel ✅
 	  	- popUp panel should have a close button ✅
 
-****After
+****After, Most Vital
 	- issue fixed with getting topics and createdTags for <CreatePost> ✅
 	- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
 		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays
+	- 'See Post' button in <interactionList> not working
 	- when clicked, section menuButton should close <MonthChart> if it's open
+		closing modal should also reset selectedDates to current day
 	- For mainNav bar, can choose any option at a time. Not sequential
+	- reducing image uploads at backEnd
+	- memoization
+****After, Least Vital
 	- in <userProfile> clicking on connection count shows list of all user's connections
 		should be same for posts and subscriptions
 	- in concerns to date picker in <map>
 		- just limit on input number based on days within month
 		- save that number to a state, add var within notice text
 		- R e s e t selectedDate whenever modal is closed (reset to current info)
-	- reducing image uploads at backEnd
-	- memoization
 
 
 ### 07. 31. 2024
