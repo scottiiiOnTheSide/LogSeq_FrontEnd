@@ -8,7 +8,8 @@ let accessAPI = APIaccess();
 export function ManageMacros({current, setCurrent, setSocketMessage, socketMessage}) {
 
 	const userID = sessionStorage.getItem('userID');
-	const [userTags, setUserTags] = React.useState([]) 
+	const username = sessionStorage.getItem('userName');
+	const [userTags, setUserTags] = React.useState([]);
 	const [userCollections, setUserCollections] = React.useState([
 		// {
 		// 	name: 'This is a Collection',
@@ -77,7 +78,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 	const [newCollection, setNewCollection] = React.useState({
 		name: '',
 		isPrivate: false,
-		description: null
+		description: ''
 	});
 
 	let newTag_onChange = (e) => {
@@ -165,6 +166,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 			type: 'collection',
             name: newCollection.name,
             owner: userID,
+            ownerUsername: username,
             isPrivate: newCollection.isPrivate == true ? true : false,
             details: newCollection.description,
             action: 'newCollection'
@@ -631,7 +633,7 @@ export default function Macros({active, current, setCurrent}) {
 
 	let goToMacrosPage = async(tag) => {
 
-		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: tag._id});
+		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: tag._id, groupName: tag.name});
 		let postsCount = posts.length;
 
 		let doesHaveAccess;
@@ -706,7 +708,7 @@ export default function Macros({active, current, setCurrent}) {
 
 			<div id="privatePosts" className={`${privatePostsSection == true ? 'open' : 'close'}`}>
 				<div className={`headerWrapper`}>
-					<h2>PrivatePosts</h2>
+					<h2>Private Posts</h2>
 					<button className={`buttonDefault`} onClick={(e)=> {
 						e.preventDefault()
 						togglePrivatePosts()

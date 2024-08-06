@@ -628,6 +628,24 @@ export default function APIaccess(key) {
 			}
 		},
 
+		async getTagData(groupID) {
+
+			let userKey = sessionStorage.getItem('userKey');
+			let request = await fetch(`${apiAddr}/groups/posts`, {
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json',
+			        	'Content-length': 0,
+			        	'Accept': 'application/json',
+			        	'Host': apiAddr,
+			        	'auth-token': userKey
+					},
+					body: JSON.stringify({action: 'getTagInfo', groupID: groupID })
+				}).then(data => data.json());
+
+				return request;
+		},
+
 		async userSettings(body) {
 
 			/**

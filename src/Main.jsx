@@ -387,9 +387,9 @@ export default function Main() {
       kongetsu = hajime.getMonth(),
       kotoshi = hajime.getFullYear();
   const [selectedDate, setSelectedDate] = React.useState({
-    day: kyou,
-    month: kongetsu,
-    year: kotoshi
+    day: null,
+    month: null,
+    year: null
   })
 
   const [mapData, setMapData] = React.useState({

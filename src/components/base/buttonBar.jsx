@@ -34,7 +34,7 @@ export default function ButtonBar({
 	set_dateInView, 
 	cal, 
 	selectedDate, 
-	set_selectedDate,
+	setSelectedDate,
 	mapData,
 	setMapData
 }) {
@@ -103,7 +103,7 @@ export default function ButtonBar({
 
 						const hajime = new Date();
 						
-						set_selectedDate({
+						setSelectedDate({
 							day: hajime.getDate(),
 							month: hajime.getMonth(),
 							year: hajime.getFullYear()

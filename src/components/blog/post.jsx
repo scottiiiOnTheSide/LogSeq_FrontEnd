@@ -236,23 +236,35 @@ export default function Post({
 		}, 150)
 	}
 
-	/*** 
-	 	updates post & comments on initial load and page refresh 
-	***/
-	// React.useState(()=> {
-	// 	if(postData.commentCount < 10) {
-	// 		setPostData({
-	// 			...postData,
-	// 			commentCount: `00${postData.commentCount}`
-	// 		})
-	// 	} 
-	// 	else if (postData.commentCount > 10 && postData.commentCount < 100) {
-	// 		setPostData({
-	// 			...postData,
-	// 			commentCount: `0${postData.commentCount}`
-	// 		})
-	// 	}
-	// }, [])
+	let goToMacrosPage = async(groupName, groupID) => {
+
+		let tagData = await accessAPI.getTagData(groupID);
+		let tagPosts = await accessAPI.groupPosts({action: 'getPosts', groupID: groupID, groupName: groupName});
+		let postsCount = tagPosts.length;
+
+		let doesHaveAccess;
+		if(tagData.hasAccess) {
+			doesHaveAccess = tagData.hasAccess.filter(el => el == userID);
+			doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
+		}
+		
+									
+		setTimeout(()=> {
+			navigate(`/macros/${tagData.name}`, {
+					state: {
+						name: tagData.name,
+						posts: tagPosts,
+						macroID: tagData._id,
+						isPrivate: tagData.isPrivate,
+						hasAccess: doesHaveAccess,
+						ownerUsername: tagData.ownerUsername,
+						type: tagData.type,
+						userCount: tagData.hasAccess ? tagData.hasAccess.length : null,
+						postCount: postsCount ? postsCount : 0
+					}
+				})
+		}, 300)
+	}
 
 	React.useEffect(()=> {
 		refreshPost()
@@ -372,6 +384,8 @@ export default function Post({
 			</li>
 	}
 
+	/* Changes header of Comment Box based on whether initial comment
+		or response */
 	React.useEffect(()=> {
 		if(access.type == 'response') {
 			setCommentHeader(`Replying to ${access.commentUsername}`)
@@ -506,8 +520,9 @@ export default function Post({
 					{postData.tags.map(tag => (
 						<li>
 							<button className={`buttonDefault ${tag._id ? 'tag' : ''} ${tag.isPrivate == true ? 'private' : ''}`}
-									onClick={()=> {
-										
+									onClick={(e)=> {
+										e.preventDefault()
+										goToMacrosPage(tag.name, tag._id);
 									}}>
 								{tag.name}
 							</button>

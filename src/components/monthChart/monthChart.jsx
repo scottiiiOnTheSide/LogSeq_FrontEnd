@@ -41,24 +41,24 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 	let [calClass, set_calClass] = React.useState('');
 	let drawCalendar = () => {
 
-		let daysInMonth = new Date(selectedDate.year, selectedDate.month+1, 0).getDate(), //number of days in current/selected month
-			startDay = new Date(selectedDate.year, selectedDate.month, 1).getDay(), //first day of the month,
-			endDay = new Date(selectedDate.year, selectedDate.month, daysInMonth).getDay(), //last day of the month
+		let daysInMonth = new Date(kotoshi, kongetsu+1, 0).getDate(), //number of days in current/selected month
+			startDay = new Date(kotoshi, kongetsu, 1).getDay(), //first day of the month,
+			endDay = new Date(kotoshi, kongetsu, daysInMonth).getDay(), //last day of the month
 			now = new Date(),
 			currentMonth = now.getMonth(),
 			currentYear = now.getFullYear(),
-			currentDay = selectedDate.month == currentMonth && selectedDate.Year == currentYear ? now.getDate() : null,
+			currentDay = kongetsu == currentMonth && kotoshi == currentYear ? now.getDate() : null,
 			months = cal.monthsAbrv,
 			dayInitials = cal.dayInitials,
 			squares = [];
 
-		if(selectedDate.month && startDay !=1 )	{
+		if(kongetsu && startDay !=1 )	{
   			let blanks = startDay == 0 ? 7 : startDay ;
   			for(let i = 0; i < blanks; i++) {
   				squares.push("b");
   			}
   		}
-  		if(!selectedDate.month && startDay != 0) {
+  		if(!kongetsu && startDay != 0) {
   			for(let i = 0; i < startDay; i++) {
   				squares.push("b");
   			}
@@ -110,12 +110,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 				daysInWeek.shift()
 			}
 		}
-		// if(daysInWeek.length == 6) {
-		// 	if(daysInWeek[daysInWeek.length - 1].length == 0) {
-		// 		daysInWeek.pop()
-		// 	}
-		// }
-
+		
 		let calendar = 
 		<div id="calendar" className={calClass}>
 			

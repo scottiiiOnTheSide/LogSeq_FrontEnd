@@ -254,8 +254,8 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	let count = 0;
 	// console.log(postContent);
 	const [locationData, setLocationData] = React.useState({ //values are null until user initially selects pinLocation 
-		lon: 40.6569, 
-		lat: -73.9605
+		lon: null, //40.6569 
+		lat: null //-73.9605
 	}); //this is set to user's current coordinates when they first toggle 'Pin Location'
 
 	const handleChange = (event) => {
@@ -370,8 +370,10 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			}
 
 			let tags = suggestions.filter(el => el.selected == true).map(el => el.name);
-			submission.append('tags', tags);
-
+			if(tags.length > 0) {
+				submission.append('tags', tags);	
+			} 
+			
 			let taggedUsers = tagged.filter(user => user.selected == true).map(user => {return user.id});
 			submission.append('taggedUsers', taggedUsers)
 
@@ -524,8 +526,8 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	//these values are added to post submission
 	const [pinLocation, setPinLocation] = React.useState({
 		open: false,
-		lon: 40.6569, 
-		lat: -73.9605
+		lon: locationData.lon, 
+		lat: locationData.lat
 	});
 
 	let writtenDate;
@@ -596,6 +598,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		console.log(`Error (${err.code}): ${err.message}`)
 	}
 
+	//for getting user location details upon toggling 'pinLocation'
 	React.useEffect(()=> {
 
 		if(navigator.geolocation) {

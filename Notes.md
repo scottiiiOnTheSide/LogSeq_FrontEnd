@@ -4,7 +4,47 @@
 -----------------------------------------------------------------------------------------
 
 
+### 08. 06. 2024
+@1345 After ToDoAfters are complete, add new signUp sequence including referral codes
+then CSS overhaul (again)
+
+- x buttons need to be replaced with svg
+- options in post can be more neat
+- text sizing overall
+- color scheme ubiquity
+	- all buttons are black
+	- text a middle gray
+	- try to remove any visible lines
+- macros page to be updated
+- interactionsList to be renamed to notifsList, styles updated
+- monthChart to be renamed to calendar, styles updated
+
+
 ### 08. 05. 2024
+@1640 tag buttons in <Post> now goes to it's macros page
+
+****Next....
+	- post count in <Macros> page reverting to 0? pls fix ✅
+	- 'theFirstCollection' is stating 'undefined' where user info should go
+		and thirdCollection is saying public ✅
+
+****To Do After:
+	- issue fixed with getting topics and createdTags for <CreatePost> ✅
+	- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
+		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays ✅
+	- 'See Post' button in <interactionList> not working
+	- when clicked, section menuButton should close <MonthChart> if it's open
+		closing modal should also reset selectedDates to current day ✅
+	- For mainNav bar, can choose any option at a time. Not sequential
+	- reducing image uploads at backEnd
+	- memoization
+	   ?! moving the log state array to the Main component may have removed the need for
+	   	  implementing useMemo on it...
+	   	  might still do so in regards to updating it with more posts, however
+	- response for when sockets disconnect
+	- usernames are incorrectly switched in confirmation message for connectionRequest
+
+
 @0340 Styling done for Tags in <Post>
 
 In order to go to individual macros page, alot more info is needed than what's saved within
@@ -44,7 +84,7 @@ post tags object. if not, only save the names.
 @0100 
 ****To Do Next:
 	- Need to make date filter within map functional ✅
-	- add list of tags + link to macros page within <Post>
+	- add list of tags + link to macros page within <Post> ✅
 
 @1240 Tagging users currently doesnt work (T-T ). pls fix ✅
 
