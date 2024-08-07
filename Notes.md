@@ -4,10 +4,38 @@
 -----------------------------------------------------------------------------------------
 
 
+### 08. 07. 2024
+@0150 Finishing up here . . .
+
+****Remaining Most Vital Tasks
+	- For mainNav bar, can choose any option at a time. Not sequential
+	- reducing image uploads at backEnd, implement sharp module
+	- response for when sockets disconnect
+	- usernames are incorrectly switched in confirmation message for connectionRequest
+	?! memoization: is it still needed?
+	   ?! moving the log state array to the Main component may have removed the need for
+	   	  implementing useMemo on it...
+	   	  might still do so in regards to updating it with more posts, however
+
+_somewhere inbetween: CSS UPDATE_
+
+****After
+	- Implement referral codes + signing up with referral code
+		- see sequence in XD file
+	- Additions to signUp subroute
+		- adding bookmarks to their collections
+		- adding admin0 to their connections and their referer
+
+****About Project Page
+	- Info / rhetoric on project inspiration, design aims, future goals
+	- count for Users & Posts (eventually, interaction count, cities, groups)
+	- link to changelog
+
 ### 08. 06. 2024
 @1345 After ToDoAfters are complete, add new signUp sequence including referral codes
 then CSS overhaul (again)
 
+****Some of the Fixes
 - x buttons need to be replaced with svg
 - options in post can be more neat
 - text sizing overall
@@ -29,12 +57,12 @@ then CSS overhaul (again)
 		and thirdCollection is saying public ✅
 
 ****To Do After:
-	- issue fixed with getting topics and createdTags for <CreatePost> ✅
-	- in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
-		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays ✅
-	- 'See Post' button in <interactionList> not working
-	- when clicked, section menuButton should close <MonthChart> if it's open
-		closing modal should also reset selectedDates to current day ✅
+	✅ issue fixed with getting topics and createdTags for <CreatePost> 
+	✅ in <CreatePost> make sure info for current date is taken AT THE TIME the post is 
+		not the date in the header. date info remains stagnant if page left up unrefreshed, thus yesterday's date is showing up rather than todays 
+	✅ 'See Post' button in <interactionList> not working
+	✅ when clicked, section menuButton should close <MonthChart> if it's open
+		closing modal should also reset selectedDates to current day 
 	- For mainNav bar, can choose any option at a time. Not sequential
 	- reducing image uploads at backEnd
 	- memoization

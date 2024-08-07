@@ -6,7 +6,7 @@ import {useNavigate, useLocation} from 'react-router-dom';
 
 import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
-import InteractionsList from '../../components/notifs/interactionsList';
+import NotificationList from '../../components/notifs/notifsList';
 import FullList from '../../components/base/fullList';
 import './home.css';
 
@@ -329,7 +329,7 @@ export default function UserProfile({
 					groupID={''}/>
 			}
 			{notifList &&
-	          <InteractionsList 
+	          <NotificationList 
 	            setNotifList={setNotifList} 
 	            unreadCount={unreadCount}
 	            setUnreadCount={setUnreadCount}

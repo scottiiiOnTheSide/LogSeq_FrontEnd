@@ -23,7 +23,7 @@ import './components/base/home.css';
 /* * * C o m p o n e n t s * * */
 import Entry from './components/entry/entry';
 import Header from './components/base/header';
-import InteractionsList from './components/notifs/interactionsList';
+import NotificationList from './components/notifs/notifsList';
 import CarouselNav from './components/base/carouselNav';
 import ButtonBar from './components/base/buttonBar';
 import SectionsWrapper from './components/sections/sectionsWrapper';
@@ -129,7 +129,7 @@ function Home({
         <CarouselNav current={current} setCurrent={setCurrent}/>
 
         {notifList &&
-          <InteractionsList 
+          <NotificationList 
             setNotifList={setNotifList} 
             unreadCount={unreadCount}
             setUnreadCount={setUnreadCount}

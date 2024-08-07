@@ -34,19 +34,6 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 	// 	return fromToday;
 	// }
 
-	// let getPosts = async() => {
-	// 	if(section == 'social') {
-
-	// 		let data = await accessAPI.pullSocialLog();
-	// 		setData(data);
-	// 	}
-	// 	else if(section == 'user') {
-
-	// 		let data = await accessAPI.pullUserLog();
-	// 		setData(data)
-	// 	}
-	// }
-
 	let goToProfile = async(userid) => {
 		
 		let data = await accessAPI.getSingleUser(userid);
@@ -77,18 +64,6 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 			if(post.tags) {
 				tags = post.tags.length
 			}
-
-		// let cmntcount = 0;
-		// let countComments = (comments) => {
-			
-		// 	for(let cmnt of comments) {
-		// 		cmntcount++;
-		// 		countComments(cmnt.replies)
-		// 	}
-
-		// 	commentCount = cmntcount;
-		// }
-		// countComments(post.comments)
 
 		let month, day, year, dateMatch;
 

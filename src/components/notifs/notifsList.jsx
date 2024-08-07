@@ -9,14 +9,13 @@ import './notifs.css';
 let accessAPI = APIaccess();
 
 
-export default function InteractionsList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage, accessID, setAccessID, setUserSettings}) {
+export default function NotificationList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage, accessID, setAccessID, setUserSettings}) {
 
 	let [notifs, setNotifs] = React.useState([]);
 	let username = sessionStorage.getItem('userName');
 	let userID = sessionStorage.getItem('userID');
 	let navigate = useNavigate();
 	const { logout } = useUIC();
-	// const [confirm, setConfirm] = React.useReducer(state => !state, false);
 
 	let updateList = async() => {
 		let data = await accessAPI.getInteractions(); 
@@ -52,7 +51,6 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 				message: 'accept'
 			};
 			setSocketMessage(notif);
-
 		} else if(arg == 'ignore') {
 
 			let notif = {
@@ -63,7 +61,6 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 				message: 'ignore'
 			};
 			setSocketMessage(notif);
-
 		} else if(arg == 'markRead') {
 
 				let notif = {
@@ -72,29 +69,11 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 					userID: userID,
 					senderUsername: username
 				};
-				// setSocketMessage(notif);
 				let request = await accessAPI.newInteraction(notif);
 
 				let delay = setTimeout(()=> {
 					updateList()
 				}, 200)
-		} else if(arg == 'viewPost') {
-
-			(async ()=> {
-				let post = await accessAPI.getBlogPost(notif.url);
-				let details = JSON.parse(notif.details);
-
-				if(notif.commentID)
-				setAccessID({
-					commentID: details.commentID
-				})
-				setTimeout(()=> {
-					navigate(`/post/${accessID.postURL}`, {
-							state: {post: post}
-						})
-				}, 300)
-			})();
-		
 		}
 	}
 	let goToUserProfile = async() => {
@@ -122,6 +101,21 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 			})
 		}, 150)
 	}
+	let goToPost = async(postID) => {
+
+		let post = await accessAPI.getBlogPost(postID);
+		// let details = JSON.parse(notif.details);
+		// if(notif.commentID) {
+		// 	setAccessID({
+		// 		commentID: details.commentID
+		// 	})
+		// }
+		setTimeout(()=> {
+			navigate(`/post/${postID}`, {
+					state: {post: post}
+				})
+		}, 300)
+	}
 
 	React.useEffect(()=> {
 		updateList();
@@ -141,7 +135,7 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 		}
 		
 		// save notif._id as key
-		return <li className="notif" key={notif._id} onClick={()=> {console.log(notif)}}>
+		return <li className="notif" key={notif._id}>
 				{notif.isRead == false &&
 					<span className="unread">!</span>
 				}
@@ -175,15 +169,22 @@ export default function InteractionsList({setNotifList, unreadCount, setUnreadCo
 							</button>
 						</div>
 					}
+
 					{notif.type == 'tagging' &&
 						<div className="options">
-							<button className="buttonDefault">See Post</button>
+							<button className="buttonDefault" onClick={()=> {
+								goToPost(notif.url)
+								if(notif.isRead == false) {
+									interact('markRead', notif._id, username )
+								}
+							}}>See Post</button> 
 							<button className="buttonDefault"
 									onClick={()=> {interact('markRead', notif._id )}}>
 								Mark Read
 							</button>
 						</div>
 					}
+
 					{(notif.type == 'request' && notif.message == 'recieved') &&
 						<div className="options">
 							<button className="buttonDefault" 

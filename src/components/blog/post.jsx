@@ -9,7 +9,7 @@ import './blog.css';
 /* * * C O M P O N E N T S * * */
 import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
-import InteractionsList from '../../components/notifs/interactionsList';
+import NotificationsList from '../../components/notifs/notifsList';
 import FullList from '../../components/base/fullList';
 
 const accessAPI = APIaccess(); 
@@ -719,7 +719,7 @@ export default function Post({
 					groupID={postID}/>
 			}
 			{notifList &&
-	          <InteractionsList 
+	          <NotificationsList 
 	            setNotifList={setNotifList} 
 	            unreadCount={unreadCount}
 	            setUnreadCount={setUnreadCount}

@@ -289,7 +289,23 @@ section#POST article div#mainContent button.toProfile {
     border: none;
     outline: none;
     padding: 0;
-    margin: 16px 0;
+    margin: 16px 0 8px;
+    position: relative;
+}
+
+section#POST article div#mainContent button.toProfile img {
+	width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    position: absolute;
+    left: 24px;
+    opacity: 0.5;
+}
+
+section#POST article div#mainContent button.toProfile span {
+	display: block;
+    margin-top: 24px;
+    margin-left: 24px;
 }
 
 section#POST article div#mainContent h2 {

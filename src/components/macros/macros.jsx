@@ -10,7 +10,7 @@ import './macros.css';
 /* * * C O M P O N E N T S * * */
 import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
-import InteractionsList from '../../components/notifs/interactionsList';
+import NotificationsList from '../../components/notifs/notifsList';
 import Log from '../../components/blog/log';
 import FullList from '../../components/base/fullList';
 
@@ -239,7 +239,7 @@ export default function Macrospage({
 			}
 
 			{notifList &&
-	          <InteractionsList 
+	          <NotificationsList 
 	            setNotifList={setNotifList} 
 	            unreadCount={unreadCount}
 	            setUnreadCount={setUnreadCount}
