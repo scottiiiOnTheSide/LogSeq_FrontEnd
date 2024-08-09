@@ -781,7 +781,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 export default function UserLog({active, setCurrent, current, log, setLog}) {
 
-	let [place, setPlace] = React.useState(active == 2 || active == null ? '' : 'not');
+	let [place, setPlace] = React.useState(active == 1 || active == null ? '' : 'not');
 	// let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
 	let [isModal, openModal] = React.useReducer(state => !state, false);
@@ -812,12 +812,12 @@ export default function UserLog({active, setCurrent, current, log, setLog}) {
 
 	/* change userLog class based on state from Home component in Main.jsx */
 	React.useEffect(()=> {
-		console.log(active);
+
 		if (active == undefined) {
 			console.log(active);
 			return;
 		}
-		if(active !== 2 || active == 'x') {
+		if(active !== 1 || active == 'x') {
 			setPlace('not');
 			console.log(active);
 		}

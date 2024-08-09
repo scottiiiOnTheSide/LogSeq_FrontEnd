@@ -4,11 +4,24 @@
 -----------------------------------------------------------------------------------------
 
 
+### 08. 09. 2024
+@0145 Can nows select any of the 3 nav options at anytime.
+
 ### 08. 07. 2024
+@2000 Design combination of Social + Group sections into new Social Section
+	  Style similarly to Macros section (which needs adjustment) Groups on top, then 
+	  Connections(?) and Subscribed(?)
+	  replace 'see all' with plus buttons
+
+Also, why are there 2 'computer' topics in the 'recent tags' <Macros> section?
+
+@1440 Working on changing <CarouselNav> so that any of the three options can be chosen
+		in any state. Algo prepared.
+
 @0150 Finishing up here . . .
 
 ****Remaining Most Vital Tasks
-	- For mainNav bar, can choose any option at a time. Not sequential
+	- For mainNav bar, can choose any option at a time. Not sequential ✅
 	- reducing image uploads at backEnd, implement sharp module
 	- response for when sockets disconnect
 	- usernames are incorrectly switched in confirmation message for connectionRequest

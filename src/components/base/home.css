@@ -201,7 +201,7 @@ section#HOME.return {
 		overflow: hidden;
 	} 
 
-		nav::before {
+		/*nav::before {
 			content: "";
 			display: block;
 			width: 80px;
@@ -222,7 +222,7 @@ section#HOME.return {
 			position: absolute;
 			right: -7%;
 			z-index: 7;
-		}
+		}*/
 
 	nav ul {
 		position: relative;
@@ -232,7 +232,7 @@ section#HOME.return {
 		display: flex;
 		align-items: center;
 		z-index: 4;
-		transition: all 0.5s ease;
+		transition: all 0.25s ease;
 /*		overflow: hidden;*/
 	}
 
@@ -245,19 +245,19 @@ section#HOME.return {
 		letter-spacing: 2px;
 
 		padding: 0 10px;
-		transition: all 0.5s ease;
+		transition: all 0.25s ease;
 		text-transform: uppercase;
 	}
 
 	/* for GROUPS */
-	nav ul li:first-child {
+	/*nav ul li:first-child {
 		display: none;
-	}
+	}*/
 
 	/* for HOME */
-	nav ul li:last-child {
+	/*nav ul li:last-child {
 		display: none;
-	}
+	}*/
 
 		nav ul li.active {
 			font-size: 1.9em;
@@ -296,7 +296,18 @@ section#HOME.return {
 	/*	border-bottom: 1px solid blue;*/
 	}
 
+nav ul li button {
+	padding: 0;
+}
 
+nav ul li.active button {
+	font-size: 1em;
+	color: var(--greyscale-accent);
+}
+
+nav ul li.not button {
+
+}
 
 /* * * 
 	B u t t o n  B a r 

@@ -164,20 +164,20 @@ function Home({
                          log={log} 
                          setLog={setLog} />
 
-        {(current.modal && current.section == 2) &&
+        {(current.modal && current.section == 1) &&
           <CreatePost setCurrent={setCurrent}
                       current={current} 
                       socketMessage={socketMessage}
                       setSocketMessage={setSocketMessage} 
                       selectedDate={selectedDate}/>
         }
-        {(current.modal && current.section == 1) &&
+        {(current.modal && current.section == 0) &&
           <ManageConnections current={current} 
                              setCurrent={setCurrent} 
                              setSocketMessage={setSocketMessage}/>
         }
 
-        {(current.modal && current.section == 3) &&
+        {(current.modal && current.section == 2) &&
           <ManageMacros current={current} 
                         setCurrent={setCurrent} 
                         socketMessage={socketMessage}
@@ -403,7 +403,7 @@ export default function Main() {
 
     setCurrent({
         ...current,
-        section: 2
+        section: 1
     })
     setInitialLogin(false);
   }

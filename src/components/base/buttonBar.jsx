@@ -43,11 +43,11 @@ export default function ButtonBar({
 	let [functionName, setFuncName] = React.useState('Create Post');
 
 	React.useEffect(()=> {
-		if(current.section == 2) {
+		if(current.section == 1) {
 			setFuncName('Create Post');
-		} else if (current.section == 1) {
+		} else if (current.section == 0) {
 			setFuncName('Connections');
-		} else if (current.section == 3) {
+		} else if (current.section == 2) {
 			setFuncName('Manage');
 		}
 	}, [current])

@@ -20,19 +20,19 @@ export default function SectionsWrapper({ current, setCurrent, log, setLog }) {
 	}, [])
 
 	let prePanes = {
-		groups: false, //0
+		// groups: false, //0
 		socialLog: false, //1
 		userLog: false, //2
 		macros: false, //3
-		home: false //4
+		// home: false //4
 	}
 	// let prePanes = {};
 	let [panes, setPanes] = React.useState({
-		groups: current.section == 0 ? true : false, //0
-		socialLog: current.section == 1 ? true : false, //1
-		userLog: current.section == 2 ? true : false, //2
-		macros: current.section == 3 ? true : false, //3
-		home: current.section == 4 ? true : false
+		// groups: current.section == 0 ? true : false, //0
+		socialLog: current.section == 0 ? true : false, //1
+		userLog: current.section == 1 ? true : false, //2
+		macros: current.section == 2 ? true : false, //3
+		// home: current.section == 4 ? true : false
 	});
 	let [active, setActive] = React.useState(current.section); 
 	let currentSection = current.section;
@@ -56,7 +56,7 @@ export default function SectionsWrapper({ current, setCurrent, log, setLog }) {
 		setActive(currentSection);
 		setLog([]);
 
-		if(currentSection == 2 && active == undefined) {
+		if(currentSection == 1 && active == undefined) {
 
 			let nextStep = setTimeout(()=> {
 				Object.keys(prePanes).forEach(value => {
@@ -71,7 +71,7 @@ export default function SectionsWrapper({ current, setCurrent, log, setLog }) {
 				setPanes(prePanes);
 			}, 1100)
 
-		} else if(currentSection == 2) {
+		} else if(currentSection == 1) {
 
 			setActive('x');
 
@@ -88,7 +88,7 @@ export default function SectionsWrapper({ current, setCurrent, log, setLog }) {
 				setPanes(prePanes);
 			}, 1100)
 
-		} else if (currentSection == 1){
+		} else if (currentSection == 0){
 
 			setActive('x');
 
@@ -105,7 +105,7 @@ export default function SectionsWrapper({ current, setCurrent, log, setLog }) {
 				setPanes(prePanes);
 			}, 1100)	
 
-		} else if(currentSection == 3) {
+		} else if(currentSection == 2) {
 
 			setActive('x');
 

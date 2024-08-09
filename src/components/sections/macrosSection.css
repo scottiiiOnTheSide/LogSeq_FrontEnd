@@ -17,6 +17,11 @@ section#HOME div#macros div#collections {
 	transition: height ease-in-out 0.2s;
 }
 
+section#HOME div#macros div#collections {
+	padding-bottom: 24px;
+}
+
+
 section#HOME div#macros div#userTags {
 	margin-top: 0px;
 }
@@ -46,7 +51,7 @@ section#HOME div#macros div div.headerWrapper {
 section#HOME div#macros div div.headerWrapper h2 {
 	font-family: "Raleway";
 	font-weight: 600;
-	font-size: 2.5em;
+	font-size: 3em;
 	letter-spacing: 4px;
 	color: var(--greyscale-accent);
 	margin-bottom: 8px;
@@ -58,7 +63,8 @@ section#HOME div#macros div div.headerWrapper h2 {
 
 
 section#HOME div#macros div div.headerWrapper button {
-	font-size: 0.8em;
+	font-size: 3.5em;
+	font-weight: 100;
 	margin-bottom: -16px;
 	padding: 0;
 }

@@ -682,15 +682,15 @@ export default function Macros({active, current, setCurrent}) {
 	// 03. 15. 2024 @ 2225 - use individual useReducer toggles for section toggles
 
 	return (
-		<div id="macros" className={`${isActive == 3 ? 'active' : 'not'}`}>
+		<div id="macros" className={`${isActive == 2 ? 'active' : 'not'}`}>
 			
 			<div id="userTags" className={`${tagsSection == true ? 'open' : 'close'}`}>
 				<div className={`headerWrapper`}>
-					<h2>Your Tags</h2>
+					<h2>Recent Tags</h2>
 					<button className={`buttonDefault`} onClick={(e)=> {
 						e.preventDefault()
 						toggleTags();
-					}}>See All</button>
+					}}>+</button>
 				</div>
 
 				<ul className={`tagsWrapper`}>
@@ -712,7 +712,7 @@ export default function Macros({active, current, setCurrent}) {
 					<button className={`buttonDefault`} onClick={(e)=> {
 						e.preventDefault()
 						togglePrivatePosts()
-					}}>See All</button>
+					}}>+</button>
 				</div>
 
 				<ul className={`postsWrapper`}>
@@ -759,7 +759,7 @@ export default function Macros({active, current, setCurrent}) {
 					<button className={`buttonDefault`} onClick={(e)=> {
 						e.preventDefault();
 						toggleCollections()
-					}}>See All</button>				
+					}}>+</button>				
 				</div>
 
 				<ul className={`collectionsWrapper`}>

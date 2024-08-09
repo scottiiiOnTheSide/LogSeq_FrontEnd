@@ -321,7 +321,7 @@ export default function SocialLog({active, current, setCurrent, log, setLog }) {
 	let noHeading = false;
 
 	return (
-		<div id="socialLog" className={isActive == 1 ? 'active' : 'not'}>
+		<div id="socialLog" className={isActive == 0 ? 'active' : 'not'}>
 
 			<Log data={log}
 				 section={"social"} 
