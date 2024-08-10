@@ -196,18 +196,18 @@ export default function UserProfile({
 						<ul>
 							{pinnedPosts.map(post => {
 
-								let commentCount;
-								let cmntcount = 0;
-								let countComments = (comments) => {
+								// let commentCount;
+								// let cmntcount = 0;
+								// let countComments = (comments) => {
 									
-									for(let cmnt of comments) {
-										cmntcount++;
-										countComments(cmnt.replies)
-									}
+								// 	for(let cmnt of comments) {
+								// 		cmntcount++;
+								// 		countComments(cmnt.replies)
+								// 	}
 
-									commentCount = cmntcount;
-								}
-								countComments(post.comments)
+								// 	commentCount = cmntcount;
+								// }
+								// countComments(post.comments)
 
 								return (
 									<li onClick={()=> {
@@ -219,8 +219,8 @@ export default function UserProfile({
 									}}>
 										<span className="date">{post.postedOn_month} . {post.postedOn_day} . {post.postedOn_year}</span>
 										<h3>{post.title}</h3>
-										{cmntcount > 0 &&
-											<span className="details">{cmntcount} comments</span>
+										{post.commentCount > 0 &&
+											<span className="details">{post.commentCount} comments</span>
 										}
 										{post.tags.length > 0 &&
 											<span className="details">{post.tags.length} tags</span>

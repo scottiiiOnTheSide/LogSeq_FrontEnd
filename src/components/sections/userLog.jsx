@@ -375,7 +375,10 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			} 
 			
 			let taggedUsers = tagged.filter(user => user.selected == true).map(user => {return user.id});
-			submission.append('taggedUsers', taggedUsers)
+			if(taggedUsers.length > 0) {
+				submission.append('taggedUsers', taggedUsers);
+			}
+			
 
 			if(selectedDate.day != null) {
 				submission.append('usePostedByDate', false);
