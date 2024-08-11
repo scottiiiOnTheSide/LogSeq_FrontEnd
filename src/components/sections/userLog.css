@@ -16,6 +16,11 @@ section#HOME div#createPost {
 	background-color: white;
 }
 
+section#HOME div#createPost._fade {
+	opacity: 0;
+	transition: all ease-in-out 0.5s;
+}
+
 	div#createPost::before {
 		content: '';
 		display: block;
@@ -42,6 +47,12 @@ section#HOME div#createPost {
 		transition: all ease-in-out 0.1s;
 		z-index: 20;
 		opacity: 1;
+	}
+
+	div#createPost._loading::before {
+		transition: all ease-in-out 0.3s;
+		z-index: 20;
+		opacity: 0.5;
 	}
 
 

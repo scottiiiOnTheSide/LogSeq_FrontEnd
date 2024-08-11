@@ -24,19 +24,19 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 		set_postsPerDate(request);
 	}
 
-	//loads necessary data on initial and reload
-	React.useEffect(()=> {
-		//Initial Posts Per Date
-		getTallyPerDate(selectedDate.month, selectedDate.year);
-
-		//Initials Posts For Selected Date
-		getPostsPerDate(selectedDate.month, selectedDate.day, selectedDate.year);
-	}, [])
-
 	const hajime = new Date(),
       kyou = hajime.getDate(),
       kongetsu = hajime.getMonth(),
       kotoshi = hajime.getFullYear();
+
+	//loads necessary data on initial and reload
+	React.useEffect(()=> {
+		//Initial Posts Per Date
+		getTallyPerDate(kongetsu, kotoshi);
+
+		//Initials Posts For Selected Date
+		getPostsPerDate(kongetsu, kyou, kotoshi);
+	}, [])
 
 	let [calClass, set_calClass] = React.useState('');
 	let drawCalendar = () => {

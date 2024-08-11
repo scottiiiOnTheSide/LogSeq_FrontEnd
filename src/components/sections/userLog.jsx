@@ -257,6 +257,8 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		lon: null, //40.6569 
 		lat: null //-73.9605
 	}); //this is set to user's current coordinates when they first toggle 'Pin Location'
+	const el = React.useRef();
+	const element = el.current;
 
 	const handleChange = (event) => {
 
@@ -333,7 +335,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 	const handleSubmit = async(event) => {
 		event.preventDefault();
-		console.log(postContent)
+		console.log(postContent);
 
 		if(!formData.title) {
 				setSocketMessage({
@@ -348,6 +350,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		}  
 		else {
 			
+			element.classList.add('_loading');
 			let submission = new FormData();
 
 			submission.append('title', formData.title);
@@ -401,11 +404,20 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			if(submit.confirm == true) {
 				console.log("Post submission successful");
 				console.log(submit);
-				setCurrent({
-					...current,
-					modal: false
-			}) //closes the createPost component - should change name within component
+				element.classList.remove('_enter');
+				element.classList.add('_fade');
+				let delay = setTimeout(()=> {
+					setCurrent({
+						...current,
+						modal: false
+					})
+				}, 300)
+				 //closes the createPost component - should change name within component
 
+			} else if(submit.confirm == false) {
+				element.classList.remove('_loading');
+				console.log('Issue with post submission');
+			}
 			/**
 			 * 10. 27. 2023
 			 * setSocketMessage here with info for making notif for tagged users
@@ -429,10 +441,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				setSocketMessage({
 					confirm: 'postUpload'
 				})
-			}
-
-			} else if(submit.confirm == false) {
-				console.log('Issue with post submission');
 			}
 		}
 	}
@@ -521,9 +529,8 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const [modal, setModal] = React.useReducer(state => !state, false);
 	const [isPrivate_2, setIsPrivate_2] = React.useReducer(state => !state, false);
 	const [newTag_value, setNewTag_value] = React.useState('');
-	const el = React.useRef();
 	const tagModal = React.useRef();
-	const element = el.current;
+	
 
 	//should be locationData values by default
 	//these values are added to post submission

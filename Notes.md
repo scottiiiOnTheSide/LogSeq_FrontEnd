@@ -4,8 +4,12 @@
 -----------------------------------------------------------------------------------------
 
 
-### 08. 10. 2024
+### 08. 11. 2024
+@0255 add response for when websockets disconnect,
+Begin implementing referral code
 
+
+### 08. 10. 2024
 @1805 Image reduction with sharp works, and loading on the site is sooooo much better :D !
 
 @1700 16.14 was the version of Node that the backend was initially built with - updating it
@@ -36,20 +40,20 @@ Also, why are there 2 'computer' topics in the 'recent tags' <Macros> section?
 @0150 Finishing up here . . .
 
 ****Remaining Most Vital Tasks
-	- if calendar or map is open, the other cannot be. Make check in <ButtonBar>
-	- For mainNav bar, can choose any option at a time. Not sequential ✅
-	- reducing image uploads at backEnd, implement sharp module ✅
-	- response for when sockets disconnect
-	- usernames are incorrectly switched in confirmation message for connectionRequest
+	✅ If post is uploaded with only photos, the link text is used in <Log>. Must add a 
+	  check to keep that empty...
+	- response for when sockets disconnect (need)
+	✅ calendar or map is open, the other cannot be. Make check in <ButtonBar> 
+	✅ For mainNav bar, can choose any option at a time. Not sequential 
+	✅ reducing image uploads at backEnd, implement sharp module 
+	✅ usernames are incorrectly switched in confirmation message for connectionRequest 
+	   	  might still do so in regards to updating it with more posts, however
+	✅ Add dimmed opacity effect to <CreatePost> while post is uploading  
+		- if upload fails, cancel dimming and show popUp
+		- if upload succeeds, continue with what already happens
 	?! memoization: is it still needed?
 	   ?! moving the log state array to the Main component may have removed the need for
 	   	  implementing useMemo on it...
-	   	  might still do so in regards to updating it with more posts, however
-	- If post is uploaded with only photos, the link text is used in <Log>. Must add a 
-	  check to keep that empty...
-	- Add dimmed opacity effect to <CreatePost> while post is uploading
-		- if upload fails, cancel dimming and show popUp
-		- if upload succeeds, continue with what already happens
 
 _somewhere inbetween: CSS UPDATE_
 

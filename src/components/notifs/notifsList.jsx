@@ -34,6 +34,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 	    setUnreadCount(count);
 		setNotifs(data);
 	}
+
 	let interact = async(arg, ID, username, postID, notif) => {
 
 		/* 
@@ -76,6 +77,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 				}, 200)
 		}
 	}
+
 	let goToUserProfile = async() => {
 
 		let data = await accessAPI.getSingleUser(userID);
@@ -89,6 +91,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 			})
 		}, 150)
 	}
+
 	let goToUserSettings = async() => {
 
 		let settings = await accessAPI.userSettings({option: 'getUserSettings'});
@@ -101,6 +104,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 			})
 		}, 150)
 	}
+
 	let goToPost = async(postID) => {
 
 		let post = await accessAPI.getBlogPost(postID);
@@ -126,7 +130,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 	}, [socketMessage])
 
 
-	
+
 	let returnNotifType = (notif) => {
 
 		let details
@@ -148,7 +152,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 						<p>You recieved a request from {notif.senderUsername}</p>
 					}
 					{(notif.type == 'request' && notif.message == 'accept') &&
-						<p>You and {notif.senderUsername} are now connected!</p>
+						<p>You and {notif.recipientUsername} are now connected!</p>
 					}
 					{(notif.type == 'comment' && notif.message == 'initial') &&
 						<p>{notif.senderUsername} left a comment on your post "{details.postTitle}"</p>
@@ -249,7 +253,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 							}, 300)
 				}}>
 					<p>{unreadCount}</p>
-					<span>x</span>
+					<span>⨉</span>
 				</button>
 			</div>
 

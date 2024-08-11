@@ -72,7 +72,7 @@ export default function ButtonBar({
 								})
 							}, 300)
 						}
-						else {
+						else if(!current.map && !current.monthChart) {
 							setCurrent({
 								...current,
 								map: true
@@ -109,7 +109,7 @@ export default function ButtonBar({
 							year: hajime.getFullYear()
 						})
 					}, 300)
-				} else if(!current.monthChart) {
+				} else if(!current.monthChart && !current.map) {
 					setCurrent({
 						...current,
 						monthChart: true

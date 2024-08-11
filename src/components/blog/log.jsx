@@ -57,13 +57,18 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 			id = post._id,
 			owner = post.owner,
 			author = post.author,
-			content = post.content[0].content,
+			content,
 			text = [],
 			commentCount;
 
 			if(post.tags) {
 				tags = post.tags.length
 			}
+
+			if(post.content.find(piece => piece.type == 'text')) {
+				content = post.content.find(piece => piece.type == 'text').content
+				// content = content.content
+			} 
 
 		let month, day, year, dateMatch;
 
@@ -119,7 +124,10 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 						}, 600)
 					}}>
 						<h2>{title}</h2>
-						<p>{content}</p>
+						{content &&
+							<p>{content}</p>
+						}
+						
 
 						{post.content.some((data) => data.type == 'media') &&
 							<ul id="thumbnailsWrapper">
