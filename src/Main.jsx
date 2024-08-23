@@ -367,7 +367,9 @@ export default function Main() {
         })
         setAccessID({ postURL: data.url, notifID: data._id });
       }
-    }
+    },
+    shouldReconnect: (event) => true,
+    reconnectAttempts: 10,
   })
 
 

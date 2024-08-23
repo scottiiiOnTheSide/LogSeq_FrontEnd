@@ -3,10 +3,135 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 08. 23. 2024
+@0345 Added form validation. results in a popup which notifies which field has an error
+
+Just need to readd the form submission, backend additions, and add the automatic login 
+process afterwards
+
+### 08. 22. 2024
+@1310 Added a profile image addition option to signup sequence. Im still having the issue
+where adding images needs to be done twice...
+
+****Necessary Additions:
+	- need to add some form validation to Signup component, in order to set signUpReady
+	  to true
+
+### 08. 17. 2024
+@0740 Would like to include email verification... But perhaps should leave that aside for now
+****To Do Next
+	- submit sign up info
+		- adding bookmarks to their collections
+		- adding admin0 to their connections & their referer
+		- referral code creation and addition to their profile
+	- log user in after signup completion
+
+
+### 08. 15. 2024
+@0150 Have to move form submission function and sequence function for signup component
+	  to the main entry component.✅
+
+
+### 08. 14. 2024
+@0440 
+****Working On...
+	- move 'handleSubmit' function in SignUp to Entry
+		- create state array for form elements, make handleChange function for inputs
+	- add privacy setting choice
+	- successful signup should automatically log user in. Change function sequence for this
+
+Signup button when Login is active needs to toggle referral modal
+	- if login is active while 'continue' is selected in modal, first remove login
+
+****Issues
+	- Something wrong with monthChart again....
+	- privacy settings not showing up
+		- api request not working either
+
+### 08. 13. 2024
+@0220 
+after selecting 'continue': ✅
+  - both header and dualButton options to use recede animation,
+  	replaced by singular button and logoHeader, with return animation by default
+  - signup form should be in total center
+  - seperate div for privacy options
+  - singular button changes from 'continue' to 'signup', use fade for transition
+
+change signup button to trigger referral modal ✅
+
+@1230 Something wrong with monthChart again....
+
+### 08. 12. 2024
+@1640 
+****To Do Next
+	- backend functionality for referral ✅
+		- returning some referee user info if referal code is real 
+	- css for referralPanel divTwo ✅
+	- add privacy setting choice to signUp panel
+	- header changes to Logo & dualOptions switch to singular 'continue' ✅
+	  when referal code is confirmed
+	- correct sequence so:
+		- signup triggers referralPanel ✅
+		- confirming code closes referral panel, opens signup form, changes header and button ✅
+		- after inputting details, signup form shows privacy options
+		- selection of privacy choice, then signup.
+
+
+@1420 Gonna start by adding the all the html / base components that I need for referral
+	  sequence.
 
 ### 08. 11. 2024
-@0255 add response for when websockets disconnect,
-Begin implementing referral code
+@2315
+- Implement referral codes + signing up with referral code
+		- see sequence in XD file
+	- Additions to signUp subroute
+		- adding bookmarks to their collections
+		- adding admin0 to their connections and their referer
+
+CSS UPDATE
+****Some of the Fixes
+- x buttons need to be replaced with svg
+- options in post can be more neat
+- text sizing overall
+- color scheme ubiquity
+	- all buttons are black
+	- text a middle gray
+	- try to remove any visible lines
+- macros page to be updated
+- interactionsList to be renamed to notifsList, styles updated
+- monthChart to be renamed to calendar, styles updated
+	
+****About Project Page
+	- Info / rhetoric on project inspiration, design aims, future goals
+	- count for Users & Posts (eventually, interaction count, cities, groups)
+	- link to changelog
+
+
+@1530 algo for creating referral code (every 3 characters in user's ID)
+add as first entry in user's referral array
+
+function everyThirdChar(inputStr) {
+    let result = '';
+    // Loop through the string, incrementing by 3 each time
+    for (let i = 2; i < inputStr.length; i += 3) {
+        result += inputStr[i];
+    }
+    return result;
+}
+
+find function for MongoDB, finding user by their referral code
+Users.find({
+    "invites.0": xxxxxxx
+});
+
+@1325 
+****To Do Next:
+	- Implementing signUp with referral code
+	- designing & building "About Project" page
+	- Complete css overhaul
+
+@0255 ✅ add response for when websockets disconnect
+		  Begin implementing referral code
 
 
 ### 08. 10. 2024
@@ -42,7 +167,7 @@ Also, why are there 2 'computer' topics in the 'recent tags' <Macros> section?
 ****Remaining Most Vital Tasks
 	✅ If post is uploaded with only photos, the link text is used in <Log>. Must add a 
 	  check to keep that empty...
-	- response for when sockets disconnect (need)
+	✅ response for when sockets disconnect (need)
 	✅ calendar or map is open, the other cannot be. Make check in <ButtonBar> 
 	✅ For mainNav bar, can choose any option at a time. Not sequential 
 	✅ reducing image uploads at backEnd, implement sharp module 

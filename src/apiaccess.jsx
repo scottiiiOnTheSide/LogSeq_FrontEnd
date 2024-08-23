@@ -20,7 +20,7 @@ export default function APIaccess(key) {
 			 * - lastName:
 			 * - emailAddr:
 			 * - userName:
-			 * - password:s
+			 * - password:
 			 */
 
 			let request = await fetch(`${apiAddr}/users/newuser`, {
@@ -41,6 +41,23 @@ export default function APIaccess(key) {
 			} else {
 				return true;
 			}
+		},
+
+		async submitRefCode(refCode) {
+
+			let request = await fetch(`${apiAddr}/users/newuser`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: JSON.stringify({
+					action: 'getReferee',
+					refCode: refCode
+				})
+			}).then(data => data.json());
+
+			return request;
 		},
 
 		async logInUser(loginCredentials) {

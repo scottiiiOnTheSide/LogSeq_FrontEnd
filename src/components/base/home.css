@@ -1135,6 +1135,7 @@ div#main div#pinnedPosts ul li {
 
 div#main div#pinnedPosts ul li h3 {
 	font-size: 1.5em;
+	font-weight: 400;
 	margin: 8px 0;
 }
 

@@ -26,10 +26,20 @@ section#entry {
 		opacity: 1;
 	}
 
+	section#entry.panelOpen::before {
+		z-index: 20;
+		opacity: 0.65;
+	}
+
 
 section#entry div#titleWrapper {
 	padding: 24px 0 0 16px;
 }
+
+	section#entry div#titleWrapper._leave {
+		animation: 1s ease-in-out forwards _leave;
+		/*duration, timing, fill, name	*/
+	}
 
 section#entry div#titleWrapper h1 {
 	font-family: 'Raleway';
@@ -46,7 +56,32 @@ section#entry div#titleWrapper h1 span {
 }
 
 section#entry div#titleWrapper h1#xyz {
+	animation: 1s ease-in-out forwards _enter;
 	margin-top: -4px;
+}
+
+	section#entry div#titleWrapper h1#xyz._enter {
+		animation: 0.5s ease-in-out forwards _enter;
+		/*duration, timing, fill, name	*/
+	}
+
+
+section#entry div#logoWrapper {
+	padding-top: 36px;
+}
+
+section#entry div#logoWrapper._leave {
+	animation: 0.5s ease-in-out forwards _leave;
+}
+
+section#entry div#logoWrapper h1 {
+	font-family: 'Raleway';
+	font-size: 2em;
+	color: black;
+	letter-spacing: 4px;
+	margin: 0;
+	text-transform: uppercase;
+	text-align: center;
 }
 
 
@@ -65,6 +100,11 @@ section#entry div#loginOrSignup {
 	transition: all 0.5s ease-out;
 }
 
+	section#entry div#loginOrSignup._leave {
+		animation: 1s ease-in-out forwards _leave;
+		/*duration, timing, fill, name	*/
+	}
+
 section#entry div#loginOrSignup button {
 	font-family: 'Raleway';
 	font-size: 1em;
@@ -77,6 +117,30 @@ section#entry div#loginOrSignup button {
 	border: none;
 	background-color: white;
 }
+
+section#entry button#forSignupProcess {
+	font-weight: 600;
+    position: absolute;
+    left: 50%;
+    bottom: 30px;
+    transform: translateX(-50%);
+    background-color: transparent;
+    border: none;
+    outline: none;
+    animation: 1s ease-in-out forwards _enter;
+}
+
+section#entry button#forSignupProcess._leave {
+	animation: 0.5s ease-in-out forwards _leave;
+}
+
+	section#entry button#forSignupProcess.canUse {
+		color: black;
+	}
+
+	section#entry button#forSignupProcess.cantUse {
+		color: var(--greyscale-accent);
+	}
 
 
 
@@ -122,12 +186,16 @@ section#entry div#transition div p {
 
 
 section#entry form {
-	position: relative;
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
 	width: 90%;
-	margin: 60px auto;
+/*	margin: 60px auto;*/
 	display: none;
 	opacity: 0;
 	z-index: 1;
+	animation: 0.3s ease-in-out forwards _scaleFadeIn;
 }
 
 section#entry form#signin._active,
@@ -165,10 +233,14 @@ section#entry form fieldset {
 	margin-left: -4px;
 }
 
+section#entry form fieldset._leave {
+	animation: 0.5s ease-in-out forwards _leave;
+}
+
 section#entry form fieldset input {
 	width: 100%;
 	display: block;
-	margin: 16px 0;
+	margin: 24px 0;
 	border: none;
 	border-bottom: 2px solid var(--greyscale-elements);
 	padding: 12px 2px;
@@ -235,6 +307,210 @@ section#entry form button#switch {
 
 
 
+section#entry form div#privacyOptions {
+	animation: 0.5s ease-in-out forwards _enter;
+}
+
+section#entry form div#privacyOptions._leave {
+	animation: 0.5s ease-in-out forwards _leave;
+}
+
+
+section#entry form div#privacyOptions h2 {
+	font-family: 'Raleway';
+	font-weight: 400;
+	color: var(--greyscale-accent);
+	text-align: center;
+	letter-spacing: 2px;
+}
+
+section#entry form div#privacyOptions ul#options {
+	list-style-type: none;
+	display: flex;
+	width: 90%;
+	flex-direction: row;
+	justify-content: space-around;
+	padding: 0;
+	margin: 64px auto;
+}
+
+section#entry form div#privacyOptions p {
+	font-family: 'Raleway';
+	text-align: center;
+	line-height: 28px;
+	white-space: pre-line;
+	color: var(--greyscale-text);
+	max-width: 90%;
+	margin: 24px auto;
+}
+
+section#entry form div#privacyOptions p span {
+	color: black;
+	font-weight: 600;
+}
+
+
+
+
+section#entry form div#profilePhoto {
+	animation: 0.5s ease-in-out forwards _enter;
+}
+
+section#entry form div#profilePhoto._leave {
+	animation: 0.5s ease-in-out forwards _leave;
+}
+
+section#entry form div#profilePhoto h2 {
+	width: 75%;
+	font-family: 'Raleway';
+	font-weight: 400;
+	color: var(--greyscale-accent);
+	text-align: center;
+	letter-spacing: 2px;
+	margin: 32px auto;
+}
+
+section#entry form div#profilePhoto label {
+	display: block;
+	width: 100%;
+	padding: 12px 0;
+	margin: 24px 0;
+
+	text-align: center;
+	font-family: 'Raleway';
+	font-weight: 600;
+	font-size: 1.5em;
+	color: black;
+	letter-spacing: 8px;
+	line-height: 22px;
+}
+
+section#entry form div#profilePhoto input {
+	border-bottom: none;
+	display: none;
+}
+
+section#entry form div#profilePhoto img {
+	border: none;
+	display: block;
+	width: 128px;
+	height: 128px;
+	margin: 16px auto;
+	border-radius: 8px;
+}
+
+
+
+
+
+section#entry div#referralPanel {
+	display: block;
+	width: 90%;
+	position: absolute;
+	z-index: 24;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	border: 2px solid var(--greyscale-elements);
+	border-radius: 8px;
+	opacity: 1;
+	transition: all ease-in-out 0.3s;
+	animation: 0.3s ease-in-out forwards _scaleFadeIn;
+}
+
+section#entry div#referralPanel._leave {
+	animation: 0.3s ease-in-out forwards _scaleFadeOut
+}
+
+section#entry div#referralPanel._return {
+	animation: 0.3s ease-in-out forwards _scaleFadeIn
+}
+
+
+section#entry div#referralPanel div#firstPanel {
+	text-align: center;
+	font-family: 'Raleway';
+	height: auto;
+}
+
+section#entry div#referralPanel div#firstPanel span {
+	font-size: 2em;
+    font-weight: 500;
+    color: var(--greyscale-accent);
+    width: -moz-fit-content;
+    width: fit-content;
+    display: block;
+    margin: 20px auto;
+    border: 3px solid var(--greyscale-accent);
+    border-radius: 100%;
+    padding: 4px 20px;
+}
+
+section#entry div#referralPanel div#firstPanel h2 {
+	font-size: 1.75em;
+	font-weight: 600;
+	color: var(--greyscale-accent);
+}
+
+section#entry div#referralPanel div#firstPanel p {
+	font-size: 1em;
+	width: 90%;
+	margin: 24px auto;
+	font-weight: 400;
+	line-height: 28px;
+	color: var(--greyscale-text);
+}
+
+section#entry div#referralPanel div#firstPanel input {
+	width: 90%;
+	margin: 36px auto;
+	text-align: center;
+}
+
+
+section#entry div#referralPanel button {
+	display: block;
+	margin: 36px auto 24px;
+}
+
+
+
+
+section#entry div#referralPanel div#secondPanel {
+	font-family: 'Raleway';
+	letter-spacing: 1px;
+	color: var(--greyscale-accent);
+}
+
+section#entry div#referralPanel div#secondPanel h2 {
+	font-size: 2em;
+	margin: 16px 0 48px 16px;
+}
+
+section#entry div#referralPanel div#secondPanel img {
+	width: 88px;
+	height: 88px;
+	border-radius: 8px;
+	margin-left: 16px;
+}
+
+section#entry div#referralPanel div#secondPanel h3 {
+	font-size: 1.5em;
+	margin: 8px 0 0 12px;
+}
+
+section#entry div#referralPanel div#secondPanel h4 {
+	font-size: 1em;
+	margin: 8px 0 48px 12px;
+}
+
+
+
+
+
+
+
+
 section#entry div#popUp {
 	display: flex;
 	justify-content: space-between;
@@ -247,6 +523,7 @@ section#entry div#popUp {
 	border-radius: 6px;
 	transition: all 1s ease-in-out;
 	animation: 0.5s ease-in-out forwards popUp;
+	z-index: 24;
 }
 
 /*section#entry div#popUp.on {
