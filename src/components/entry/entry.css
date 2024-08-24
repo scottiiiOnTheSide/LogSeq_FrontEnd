@@ -397,6 +397,7 @@ section#entry form div#profilePhoto img {
 	height: 128px;
 	margin: 16px auto;
 	border-radius: 8px;
+	object-fit: cover;
 }
 
 

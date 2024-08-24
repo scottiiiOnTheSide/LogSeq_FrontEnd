@@ -13,7 +13,7 @@ export default function APIaccess(key) {
 
 	return {
 
-		async signUpUser(signupCredentials) {
+		async signupUser(signupCredentials) {
 			/**
 			 * Form Requirements:
 			 * - firstName:
@@ -26,10 +26,10 @@ export default function APIaccess(key) {
 			let request = await fetch(`${apiAddr}/users/newuser`, {
 				method: 'POST',
 				headers: {
-					'Content-Type': 'application/json',
-					'Accept': 'application/json'
+					// 'Content-Type': 'application/json',
+					// 'Accept': 'application/json'
 				},
-				body: JSON.stringify(signupCredentials)
+				body: signupCredentials
 			}).then(data => data.json());
 
 			/* 09. 14. 2023
@@ -39,7 +39,7 @@ export default function APIaccess(key) {
 			if(request.error) {
 				return request.message 
 			} else {
-				return true;
+				return request.payload
 			}
 		},
 
@@ -52,7 +52,7 @@ export default function APIaccess(key) {
 					'Accept': 'application/json'
 				},
 				body: JSON.stringify({
-					action: 'getReferee',
+					action: 'getReferrer',
 					refCode: refCode
 				})
 			}).then(data => data.json());

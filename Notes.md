@@ -3,6 +3,13 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 08. 24. 2024
+@0410 creating a new user through the signup works :D ! ✅
+
+****To Do Next
+	- log user in after signup completion
+	- signup button in Login form needs to toggle the referralModal instead
+
 ### 08. 23. 2024
 @0345 Added form validation. results in a popup which notifies which field has an error
 
@@ -21,9 +28,9 @@ where adding images needs to be done twice...
 @0740 Would like to include email verification... But perhaps should leave that aside for now
 ****To Do Next
 	- submit sign up info
-		- adding bookmarks to their collections
-		- adding admin0 to their connections & their referer
-		- referral code creation and addition to their profile
+		- adding bookmarks to their collections ✅
+		- adding admin0 to their connections & their referer ✅
+		- referral code creation and addition to their profile ✅
 	- log user in after signup completion
 
 

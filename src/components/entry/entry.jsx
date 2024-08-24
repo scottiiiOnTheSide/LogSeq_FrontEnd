@@ -113,7 +113,7 @@ function UserSignUp({
 	}, [profilePhoto])
 	
 	return (
-		<form id="signup" onSubmit={signupSubmit} ref={form}>
+		<form id="signup" onSubmit={signupSubmit} ref={form} encType='multipart/form-data'>
 			{signupSequence == 1 &&
 				<fieldset id="signupForm">
 					<input name="firstName" placeholder="First Name" onChange={handleChange} />
@@ -216,7 +216,7 @@ function UserSignUp({
 }
 
 
-function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitSequence}) {
+function UserLogIn({setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitSequence}) {
 
 	/**
 	 * 09. 17. 2023
@@ -338,16 +338,10 @@ function UserLogIn({accessapi, setUserID, logingIn, setLogingIn, setSignup, setP
 }
 
 
-function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup}) {
+function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup, referee, setReferee}) {
 
 	const [buttonMode, setButtonMode] = React.useState('close');
 	const [referralCode, setReferralCode] = React.useState('');
-	const [referee, setReferee] = React.useState({
-		profilePic: '',
-		username: '',
-		firstName: '',
-		lastName: ''
-	})
 	const [panelStates, setPanelStates] = React.useState({
 		panel: '', //_leave or _enter
 		classOne: '',
@@ -404,7 +398,6 @@ function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup}) {
 		if(request.username) {
 			console.log(request)
 			setReferee(request);
-
 			setPanelStates({
 				...panelStates,
 				panel: '_leave'
@@ -490,7 +483,7 @@ function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup}) {
  * Main component / page: 
  * Houses both forms and confirmation element
  */
-export default function Entry({accessapi, useAuth, setUserID}) {
+export default function Entry({useAuth, setUserID}) {
 
 	/* For Sign Up */
 	const [signup, setSignup] = React.useReducer(state => !state, false);
@@ -501,6 +494,13 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 	const [formData, setFormData] = React.useReducer(formReducer, {});
 	const [privacyOption, setPrivacyOption] = React.useState('Off');
 	const [profilePhoto, setProfilePhoto] = React.useState();
+	const [referee, setReferee] = React.useState({
+		profilePic: '',
+		username: '',
+		firstName: '',
+		lastName: '',
+		_id: ''
+	})
 
 	const formValidation = (formData) => {
 		const {emailAddr, password, firstName, lastName, userName} = formData;
@@ -539,39 +539,46 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 			return;
 		} else {
 
-				logoWrapper.classList.add('_leave');
-				signupSuccessButton.classList.add('_leave');
-				let delay = setTimeout(()=> {
-					transition();
-				}, 500)
+				// logoWrapper.classList.add('_leave');
+				// signupSuccessButton.classList.add('_leave');
+				// let delay = setTimeout(()=> {
+				// 	transition();
+				// }, 500)
 
 
-				// let submission = new FormData();
-				// submission.append('firstName', formData.firstName);
-				// submission.append('lastName', formData.lastName);
-				// submission.append('emailAddr', formData.emailAddr);
-				// submission.append('userName', formData.userName);
-				// submission.append('password', formData.password);
-				// submission.append('privacyOption', privacyOption);
-				// submission.append('action', 'create');
-				// submission.append('profilePhoto', profilePhoto);
+				let submission = new FormData();
+				submission.append('firstName', formData.firstName);
+				submission.append('lastName', formData.lastName);
+				submission.append('emailAddr', formData.emailAddr);
+				submission.append('userName', formData.userName);
+				submission.append('password', formData.password);
+				submission.append('privacyOption', privacyOption);
+				submission.append('profilePhoto', profilePhoto);
+				submission.append('referrer', referee._id);
+				submission.append('action', 'create');
+				
+				console.log(submission);
 
-				// let request = await accessapi.signUpUser(submission).then(data => {
+				let request = await accessAPI.signupUser(submission);
 
-				// 	if(data == true) {
-				// 		setSignup();
-				// 		let delay = setTimeout(()=> {
-				// 			transition();
-				// 		}, 500)
+					if(request.confirm == true) {
+						// setSignup();
+						// let delay = setTimeout(()=> {
+						// 	transition();
+						// }, 500)
+						logoWrapper.classList.add('_leave');
+						signupSuccessButton.classList.add('_leave');
+						let delay = setTimeout(()=> {
+							transition();
+						}, 500)
 
-				// 	} else {
-				// 		setPopUp({
-				// 			active: true,
-				// 			message: data
-				// 		})
-				// 		console.log('login failed');
-				// 	}	
-				// })
+					} else {
+						// setPopUp({
+						// 	active: true,
+						// 	message: data
+						// })
+						console.log('login failed');
+					}	
 		}
 	}
 
@@ -671,11 +678,14 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 			}
 
 			{refPanel &&
-				<ReferralPanel accessapi={accessapi} 
+				<ReferralPanel 
 							setPopUp={setPopUp}
 							setRefPanel={setRefPanel}
 							setSwitchToSignup={setSwitchToSignup}
-							setSignup={setSignup}/>
+							setSignup={setSignup}
+							setFormData={setFormData}
+							referee={referee}
+							setReferee={setReferee}/>
 			}
 			
 			<UserSignUp signup={signup} 
@@ -706,7 +716,7 @@ export default function Entry({accessapi, useAuth, setUserID}) {
 				</div>
 			}
 			
-			<UserLogIn accessapi={accessapi} 
+			<UserLogIn 
 						setUserID={setUserID} 
 						logingIn={login} 
 						setLogingIn={setLogin} 
