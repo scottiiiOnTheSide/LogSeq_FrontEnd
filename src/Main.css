@@ -33,7 +33,7 @@ section#BASE {
   --site-gray-lightest: rgba(112, 112, 112, 0.1);
   --site-gray-lite: rgba(112, 112, 112, 0.25);
   --site-gray-mid: rgba(112, 112, 112, 0.6);
-  --site-gray-middle: rgba(112, 112, 112, 0.9);
+  --site-gray-middle: rgba(112, 112, 112, 0.5);
   --initial-color: royalblue;
 
   /** Greyscale Theme **/
@@ -42,8 +42,24 @@ section#BASE {
   --greyscale-text: rgba(0, 0, 0, 0.5);
   --greyscale-accent: rgba(0, 0, 0, 0.2);
   --greyscale-elements: rgba(31, 31, 31, 0.1);
-  --greyscale-details: rgba(0, 0, 0, 1);
+  
   --greyscale-error: rgba(226, 60, 93, 0.6);
+
+  /** UPDATED Greyscale Theme **/
+  --greyscale-backdrop: rgba(112, 112, 112, 0.05);
+  --greyscale-elements: rgba(31, 31, 31, 0.1);
+  --greyscale-accent: rgba(0, 0, 0, 0.2);
+  --greyscale-details: rgba(0, 0, 0, 1);
+}
+
+::-webkit-scrollbar {
+    width: 4px;
+    height: 8px;
+  }
+ 
+::-webkit-scrollbar-thumb {
+    border-radius: 8px;
+    background: #c2c9d2;
 }
 
 

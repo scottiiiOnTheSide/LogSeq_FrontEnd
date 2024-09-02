@@ -49,8 +49,8 @@ function UserSignUp({
 
 	const handleChange = (event) => {
 		if(event.target.name == 'image') {
-			console.log('yes')
-			setProfilePhoto(URL.createObjectURL(event.target.files[0]));
+			setProfilePhoto(event.target.files[0]);
+			console.log(event.target.files[0]);
 		}
 		else {
 			setFormData({
@@ -60,6 +60,7 @@ function UserSignUp({
 		}
 		
 	}
+	console.log(profilePhoto);
 
 	/* 
 		Animation sequence on mount 
@@ -190,12 +191,12 @@ function UserSignUp({
 			}
 
 			{signupSequence == 3 &&
-				<div id="profilePhoto">
+				<fieldset id="profilePhoto">
 					
 					<h2>Would you like to add a profile photo?</h2>
 
 					{profilePhoto &&
-						<img src={profilePhoto}/>
+						<img src={URL.createObjectURL(profilePhoto)}/>
 					}
 					<label className="imageAdd" onChange={handleChange} htmlFor="addImage" onClick={()=> {document.getElementById('addImage').click()}}>
 						<input hidden
@@ -207,7 +208,7 @@ function UserSignUp({
 						{imageButton}
 					</label>
 
-				</div>
+				</fieldset>
 			}
 			
 			<div id="transition"></div>
@@ -216,7 +217,16 @@ function UserSignUp({
 }
 
 
-function UserLogIn({setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitSequence}) {
+function UserLogIn({
+	setUserID, 
+	logingIn, 
+	setLogingIn, 
+	setSignup, 
+	setPopUp, 
+	exitSequence,
+	setRefPanel,
+	refPanel
+}) {
 
 	/**
 	 * 09. 17. 2023
@@ -225,7 +235,7 @@ function UserLogIn({setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitS
 
 	const [formData, setFormData] = React.useReducer(formReducer, {});
 	const [isReady, setIsReady] = React.useReducer(state => !state, false);
-	const { login }  = useUIC();
+	const { _login }  = useUIC();
 	const navigate = useNavigate();
 
 	const handleSubmit = async (event) => {
@@ -251,7 +261,7 @@ function UserLogIn({setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitS
 				})
 			} else {
 
-				let user = await login({
+				let user = await _login({
 					emailAddr: formData.emailAddr,
 					password: formData.password
 				});
@@ -279,22 +289,6 @@ function UserLogIn({setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitS
 
 	let form = React.useRef();
 	let thisForm = form.current;
-	React.useEffect(()=> {
-		if(thisForm) {
-			if(logingIn == false) {
-				thisForm.classList.remove('_active');
-				thisForm.classList.add('_nonActive');
-
-				let delay = setTimeout(()=> {
-					thisForm.style.display = 'none';
-				}, 550)
-			}
-			if(logingIn == true) {
-				thisForm.style.display = 'block';
-				thisForm.classList.add('_active');
-			}	
-		}
-	}, [logingIn, form])
 
 	/*
 		check whether all inputs have value before making submit button active
@@ -320,17 +314,24 @@ function UserLogIn({setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitS
 	}, [formData])
 
 	return (
-		<form id="login" onSubmit={handleSubmit} ref={form}>
+		<form id="login" onSubmit={handleSubmit} ref={form}
+				className={`_active`}>
 			<fieldset>
 				<input name="emailAddr" placeholder="Email Address" onChange={handleChange} />
 				<input name="password" placeholder="Password" onChange={handleChange} />
 			</fieldset>
 			<button id="login" type="submit" className={isReady == true ? 'canUse' : 'cantUse'}>Log In</button>
 			<button id="switch" onClick={(e)=> {
-				e.preventDefault()
-				setLogingIn();
-				let delay = setTimeout(()=> {
-					setSignup();
+				e.preventDefault();
+				let thisForm = form.current;
+				thisForm.classList.remove('_active');
+				thisForm.classList.add('_nonActive');
+
+				let secondStep = setTimeout(()=> {
+					setLogingIn();
+				}, 550)
+				let thirdStep = setTimeout(()=> {
+					setRefPanel();
 				}, 300);
 			}}>Sign Up</button>
 		</form>
@@ -338,7 +339,16 @@ function UserLogIn({setUserID, logingIn, setLogingIn, setSignup, setPopUp, exitS
 }
 
 
-function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup, referee, setReferee}) {
+function ReferralPanel({
+	setPopUp, 
+	setRefPanel, 
+	setSwitchToSignup, 
+	setSignup, 
+	referee, 
+	setReferee,
+	login,
+	setLogin 
+}) {
 
 	const [buttonMode, setButtonMode] = React.useState('close');
 	const [referralCode, setReferralCode] = React.useState('');
@@ -360,6 +370,7 @@ function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup, ref
 	const handleButton = () => {
 
 		if(buttonMode == 'close') {
+			
 
 			setPanelStates({
 				...panelStates,
@@ -368,6 +379,9 @@ function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup, ref
 
 			let delay = setTimeout(()=> {
 				setRefPanel()
+				if(login == false) {
+					setLogin();
+				}
 			}, 350)
 		}
 
@@ -377,6 +391,9 @@ function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup, ref
 
 		else if(buttonMode == 'continue') {
 
+			if(login) {
+				setLogin();
+			}
 			setSwitchToSignup();
 			setPanelStates({
 				...panelStates,
@@ -485,6 +502,8 @@ function ReferralPanel({setPopUp, setRefPanel, setSwitchToSignup, setSignup, ref
  */
 export default function Entry({useAuth, setUserID}) {
 
+	const { _login }  = useUIC();
+
 	/* For Sign Up */
 	const [signup, setSignup] = React.useReducer(state => !state, false);
 	const [signupIsReady, setSignupIsReady] = React.useReducer(state => !state, false);
@@ -539,13 +558,6 @@ export default function Entry({useAuth, setUserID}) {
 			return;
 		} else {
 
-				// logoWrapper.classList.add('_leave');
-				// signupSuccessButton.classList.add('_leave');
-				// let delay = setTimeout(()=> {
-				// 	transition();
-				// }, 500)
-
-
 				let submission = new FormData();
 				submission.append('firstName', formData.firstName);
 				submission.append('lastName', formData.lastName);
@@ -561,28 +573,40 @@ export default function Entry({useAuth, setUserID}) {
 
 				let request = await accessAPI.signupUser(submission);
 
-					if(request.confirm == true) {
-						// setSignup();
-						// let delay = setTimeout(()=> {
-						// 	transition();
-						// }, 500)
+					if (request.confirm == true) {
+
+						//login user, save necessary info
+						let user = await _login({
+							emailAddr: formData.emailAddr,
+							password: formData.password
+						});
+
+						//fade away logo and sequence button
 						logoWrapper.classList.add('_leave');
 						signupSuccessButton.classList.add('_leave');
 						let delay = setTimeout(()=> {
 							transition();
 						}, 500)
 
-					} else {
-						// setPopUp({
-						// 	active: true,
-						// 	message: data
-						// })
-						console.log('login failed');
+						//enter home page
+						let thirdStep = setTimeout(()=> {
+							exitSequence();
+						}, 3700)
+
+					}
+
+					else if(request.message) {
+						signupSuccessButton.classList.add('_leave');
+						setPopUp({
+							active: true,
+							message: "The sign up process failed. Please refresh the page and try again"
+						})
+						console.log('sign up failed');
 					}	
 		}
 	}
 
-	const signupSequencer = () => {
+	const signupSequencer = async() => {
 		let signupForm = document.getElementById('signupForm');
 		let privacyOptions = document.getElementById('privacyOptions');
 		let profilePhoto = document.getElementById('profilePhoto');
@@ -593,11 +617,27 @@ export default function Entry({useAuth, setUserID}) {
 			let validation = formValidation(formData);
 
 			if(validation == true) {
-				signupForm.classList.add('_leave');
 
-				let delay = setTimeout(()=> {
-					setSignupSequence(2)
-				}, 350);
+				let request = await accessAPI.userExistsCheck({
+					action: 'userExistsCheck',
+					userName: formData.userName,
+					emailAddr: formData.emailAddr
+				});
+
+				if(request.confirm == true) {
+
+					signupForm.classList.add('_leave');
+
+					let delay = setTimeout(()=> {
+						setSignupSequence(2)
+					}, 350);
+				}
+				else if(request.confirm == false) {
+					setPopUp({
+						active: true,
+						message: request.message
+					})
+				}
 			}
 			else {
 				setPopUp({
@@ -639,18 +679,16 @@ export default function Entry({useAuth, setUserID}) {
 	const el = React.useRef();
 	const navigate = useNavigate();
 
+	/* sequences elements to appear denoting successful signup */
 	let transition = () => {
 		setSignUpSuccess();
 
 		let first = setTimeout(()=> {
 			setSignUpSuccess();
 		}, 3100)
-
-		// let second = setTimeout(()=> {
-		// 	setLogin();
-		// }, 3100)
 	}
 
+	//fades entry page, goes to home page
 	let exitSequence = () => {
 		setEnter()
 		let delay = setTimeout(()=> {
@@ -658,10 +696,13 @@ export default function Entry({useAuth, setUserID}) {
 		}, 550)
 	}
 
+	console.log(profilePhoto)
+
 	return (
 		<section id="entry" ref={el} className={`${enter == true ? '_enter' : ''}
 												 ${refPanel == true ? 'panelOpen' : ''}`}>
-							
+			
+			{/* t i t l e  w r a p p e r */}
 			{!signup && 
 				<div id="titleWrapper" className={`${switchToSignup ? '_leave' : ''}`}>
 					<h1>Welcome to</h1>
@@ -671,12 +712,14 @@ export default function Entry({useAuth, setUserID}) {
 				</div>
 			}
 
+			{/*L O G O*/}
 			{signup &&
 				<div id="logoWrapper">
 					<h1>ss.xyz</h1>
 				</div>
 			}
 
+			{/* r e f e r r a l  p a n e l */}
 			{refPanel &&
 				<ReferralPanel 
 							setPopUp={setPopUp}
@@ -685,9 +728,12 @@ export default function Entry({useAuth, setUserID}) {
 							setSignup={setSignup}
 							setFormData={setFormData}
 							referee={referee}
-							setReferee={setReferee}/>
+							setReferee={setReferee}
+							login={login}
+							setLogin={setLogin}/>
 			}
-			
+
+			{/*s i g n u p */}
 			<UserSignUp signup={signup} 
 						setSignup={setSignup} 
 						setLogin={setLogin} 
@@ -704,6 +750,7 @@ export default function Entry({useAuth, setUserID}) {
 						profilePhoto={profilePhoto}
 						setProfilePhoto={setProfilePhoto}/>
 
+			{/*elements stating successful signup*/}
 			{signUpSuccess &&
 				<div id="transition">
 					<div id="first">
@@ -716,13 +763,19 @@ export default function Entry({useAuth, setUserID}) {
 				</div>
 			}
 			
-			<UserLogIn 
-						setUserID={setUserID} 
-						logingIn={login} 
-						setLogingIn={setLogin} 
-						setSignup={setSignup}
-						setPopUp={setPopUp}
-						exitSequence={exitSequence}/>
+			{/*l o g i n*/}
+			{login &&
+				<UserLogIn 
+					setUserID={setUserID} 
+					logingIn={login} 
+					setLogingIn={setLogin} 
+					setSignup={setSignup}
+					setPopUp={setPopUp}
+					exitSequence={exitSequence}
+					refPanel={refPanel}
+					setRefPanel={setRefPanel}
+				/>
+			}
 
 			{!signup &&
 				<div id="loginOrSignup" ref={initialChoice} 

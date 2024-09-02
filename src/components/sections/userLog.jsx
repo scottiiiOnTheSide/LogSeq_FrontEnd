@@ -17,7 +17,7 @@ function DropSelect({tagged, setTagged}) {
 		let listItem = 
 		<li className="option" onClick={()=> {
 			setTagged(tagged.map(user => {
-				if(user.id == option.id) {
+				if(user._id == option._id) {
 
 					if(user.selected == false) {
 						return {
@@ -36,7 +36,6 @@ function DropSelect({tagged, setTagged}) {
 				}
 			}))
 		}}>
-			<span>•</span>
 			<p>{option.userName}</p>
 		</li>
 
@@ -101,9 +100,6 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 
 	let onClick = (e) => {
 		setActive('');
-		// setFiltered([]);
-		// setIsShow(false);
-		// setInput(e.currentTarget.innerText);
 
 		let copy = suggestions.map(el => {
 			if(el.name == e.currentTarget.innerText) {
@@ -146,7 +142,7 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 
 			return (
 				<div id="resultsWrapper">
-					{filtered.length &&
+					{filtered.length > 0 ?
 						<ul id="autocomplete">
 				 			{filtered.map((suggestion, index)=> {
 								let className;
@@ -159,13 +155,13 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 									</li>
 								)
 							})}
-						</ul>
+						</ul> : null
 					}
-					{!filtered.length &&
+					{filtered.length < 1 ?
 						<div id="no-autocomplete">
 				         	<p>No Results Found</p>
-			         	</div>
-					}
+			         	</div> : null
+			        }
 					<button className={"buttonDefault"}
 							id="makeNewTag"
 							onClick={(e)=> {
@@ -216,6 +212,9 @@ function MultiSelect({suggestions, setSuggestions, setModal}) {
 												}
 											})
 											setSuggestions(copy);
+											setActive('')
+											let tagsInput = document.getElementById('tags');
+											tagsInput.value = '';
 										}}>
 										<p>{el.name}</p>
 										<svg xmlns="http://www.w3.org/2000/svg"  
@@ -245,10 +244,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
+	const privacySetting = sessionStorage.getItem('privacySetting');
 	const [formData, setFormData] = React.useState({});
 	const [suggestions, setSuggestions] = React.useState([]);
 	const [isPrivate, setPrivate] = React.useReducer(state => !state, false);
-	const [contentCount, setContentCount] = React.useState([0]);
+	const [contentCount, setContentCount] = React.useState(['text']);
 	const [postContent, setPostContent] = React.useState([]);
 	const [images, setImages] = React.useState([]);
 	let count = 0;
@@ -271,15 +271,21 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			})
 		} 
 		else if(event.target.name == 'image') {
+			newContent('media');
 			setPostContent([
 				...postContent,
 				{ 
 					content: event.target.files[0],
 					type: event.target.name, 
-					index: event.target.dataset.index 
+					index: contentCount.length + 0.5
 				}		
 			])
-			setImages([...images, URL.createObjectURL(event.target.files[0])]);
+			setImages([...images, 
+				{
+					url: URL.createObjectURL(event.target.files[0]),
+					index: contentCount.length + 0.5
+				}
+			]);
 		} 
 		else if(event.target.name == 'content') {
 
@@ -355,6 +361,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 			submission.append('title', formData.title);
 			submission.append('isPrivate', isPrivate);
+			submission.append('privacyTogglable', sessionStorage.getItem('privacySetting'));
 			submission.append('profilePhoto', sessionStorage.getItem('profilePhoto'));
 
 			for(let i=0; i < postContent.length; i++){
@@ -377,11 +384,16 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				submission.append('tags', tags);	
 			} 
 			
-			let taggedUsers = tagged.filter(user => user.selected == true).map(user => {return user.id});
+			let taggedUsers = tagged.filter(user => user.selected == true).map(user => {
+				return {
+					_id: user._id, 
+					username: user.userName
+				}
+			});
 			if(taggedUsers.length > 0) {
-				submission.append('taggedUsers', taggedUsers);
+				submission.append('taggedUsers', JSON.stringify(taggedUsers));
 			}
-			
+			console.log(taggedUsers);
 
 			if(selectedDate.day != null) {
 				submission.append('usePostedByDate', false);
@@ -424,7 +436,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			 */
 			if(tagged.some(user => user.selected == true)) {
 
-				let recips = tagged.filter(user => user.selected == true).map(user => {return user.id});
+				let recips = tagged.filter(user => user.selected == true).map(user => {return user._id});
 
 				setSocketMessage({
 					type: 'tagging',
@@ -445,47 +457,35 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		}
 	}
 
-	const newCombo = (e) => {
-		e.preventDefault();
+	const newContent = (type) => {
 		setContentCount([
 			...contentCount,
-			count++
+			`${type}`
 		])
 	}
 
-	const textareaImageAdd = (index) => {
+	const textareaImageAdd = (index, type) => {
 
-		let element = <fieldset key={index} className="textareaImageAdd">
-			<textarea 
-				name="content" 
-				placeholder="Content" 
-				onBlur={handleChange}
-				data-index={index}
-				rows="8"
-				cols="30"
-				/>
-				{/*
-					onBlur - if any object in postContent has same index as this.index,
-					remove it, add this one
-				*/}
-			<img src={images[index]}/>
-			<label className="imageAdd" onChange={handleChange} htmlFor="addImage" onClick={()=> {
-				document.getElementsByClassName('addImage')[index].click();
-			}}>
-				<input hidden
-					className={'addImage'} 
-					// onChange={handleChange} 
-					type="file" 
-					accept="image/"
-					name='image' 
-					data-index={index + 0.5}
-					hidden />
-				Add Image
-			</label>
-			
-		</fieldset>
-
-		return element;
+		if(type == 'text') {
+				return	(
+					<textarea 
+							key={index}
+							className={"textareaImageAdd"}
+							name="content" 
+							placeholder="Content" 
+							onBlur={handleChange}
+							data-index={index}
+							rows="8"
+							cols="30"
+						/>
+				)
+		}
+		else if(type == 'media') {
+			let link = images.find(element => element.index == index);
+			return (
+				<img key={index} src={link.url}/> 
+			)
+		}
 	}
 
 	const getConnections = async() => {
@@ -674,14 +674,37 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			<form onSubmit={handleSubmit} encType='multipart/form-data'>
 				<fieldset>
 					<input name="title" id="title" placeholder="Title" onChange={handleChange}/>
-					{contentCount.map((element, index) => (
-						textareaImageAdd(index)
-					))}
-					<button id="newCombo" 
-							className={'buttonDefault'} 
-							onClick={newCombo}>
-							More Content
-					</button>
+					{contentCount.map((element, index) => {
+						if(element == 'text') {
+							return textareaImageAdd(index, element)
+						}
+						else if(element == 'media') {
+							return textareaImageAdd(index + 0.5, element)
+						}	
+					})}
+
+					<div id="moreContent">
+						<button className={'buttonDefault'} 
+								onClick={(e)=> {
+									e.preventDefault()
+									newContent('text')
+								}}>
+								Add Text
+						</button>
+
+						<label className="imageAdd" onChange={handleChange} htmlFor="addImage" onClick={()=> {
+							document.getElementById('addImage').click();							
+						}}>
+							<input hidden
+								id='addImage' 
+								type="file" 
+								accept="image/"
+								name='image' 
+								hidden />
+							<p>Add Image</p>
+						</label>
+					</div>
+					
 
 					<DropSelect tagged={tagged} setTagged={setTagged} />
 

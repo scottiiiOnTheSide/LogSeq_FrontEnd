@@ -239,7 +239,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 
 			<div id="header">
 				<h2>Interactions
-					<span id='username'>{username}'s</span>
+					{/*<span id='username'>{username}'s</span>*/}
 				</h2>
 				
 				<button onClick={(e)=> {

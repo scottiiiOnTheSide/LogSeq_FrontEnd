@@ -3,6 +3,134 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 09. 02. 2024
+@0720 selecting topics in signup sequence SHOULD be last addition for 1.0A
+
+@0700 Continue working on CSS refinement
+
+For topics in macrospage, create backend subroute for adding topic strings to user's topics field in their settings
+
+can also create a modal for adding topics within the signup sequence
+
+!!! move all logs and macros data to <Main> for better loading
+
+### 08. 31. 2024
+@0900 To Do Next: Macros Page and Calendar styling
+
+### 08. 30. 2024
+@1700 Currently Working on CSS refinement
+
+****Some of the Fixes
+- adding additional text or image ✅
+- x buttons need to be replaced with correct symbol ✅
+	- post page ✅
+	- notifList ✅
+	- userProfile ✅
+- text sizing overall 
+- color scheme ubiquity
+	- all buttons are black 
+	- text a middle gray
+	- titles are black
+	- remove any visible lines
+	- styling or details, use --elements 
+- macros page to be updated ✅
+- interactionsList to be renamed to notifsList, styles updated ✅
+- monthChart to be renamed to calendar, styles updateds
+- <Post>
+	- move details into options ✅
+	- ? include tagged members ontop with username? listed number instead ✅
+	- if post has no media, hide 'Pin Media' option ✅
+	- options in post can be more neat ✅
+- <CreatePost>
+	- list of tagable users needs to be scrollable like list of tags ✅
+
+@1700 fixed spacing issue with Macros subsections
+
+@1610 content pieces for post can be a mixed field...
+
+@1515 list of tagable users needs to be scrollable like list of tags
+
+### 08. 28. 2024
+@0045
+****To Do Next:
+	- CSS Overhaul
+	  - test on mobile
+	  - implement contingency (modal which blocks site) if viewport larger than a phone's
+	- test ALL site functionality (make list, check twice)
+	- About page
+		- where to put link on entry page? top right corner?
+
+and then, UPLOAD !!!
+
+### 08. 27. 2024
+@2310 fixed some issues with <Calendar>...
+
+@1400 As part of CSS update, will like to change <CreatePost> so that it only says
+'add Image' or 'add Text' (done) ✅
+
+Map should also triangulate on user's location, and just the default if there's no location
+access
+
+@1355 changed privacySetting functionality
+
+### 08. 26. 2024
+@1610
+****Need To Do:
+	- introductory post ideas
+	- fix 'allTagsUsed' subroute so users most recently used topics show up too ✅
+
+CSS UPDATE
+****Some of the Fixes
+- adding additional text or image ✅
+- x buttons need to be replaced with correct symbol
+	- post page ✅
+- text sizing overall
+- color scheme ubiquity
+	- all buttons are black
+	- text a middle gray
+	- try to remove any visible lines
+- macros page to be updated
+- interactionsList to be renamed to notifsList, styles updated
+- monthChart to be renamed to calendar, styles updateds
+- <Post>
+	- move details into options ✅
+	- ? include tagged members ontop with username? 
+	- if post has no media, hide 'Pin Media' option ✅
+	- options in post can be more neat ✅
+
+****Then
+	- ALL FUNCTIONS CHECK
+
+@1550 can now access macros page for topics from <Post> ✅
+still need to fix 'getUserTags' subroute so users most recently used topics show up too
+
+@1225 Make notifList a top level state so that it's open once closing <Settings>
+
+@0150 run the signup process again once more for triple confirmation ✅
+
+### 08. 25. 2024
+@0925 all things correct, signup to login works as it should
+****Need to do
+	- signup button in login form now triggers refPanel instead ✅
+	- username check when submiting form part of signup ✅
+	- if still failure at end, change message to advice user to refresh the page and
+		try again ✅
+	- bookmarks didnt appear. fix pls ✅
+	- updating a user's profilePhoto should update ALL of their posts. 
+		verify this is working ✅
+	- move state array for carousel navigation classes to <Main > so that it's maintained when
+		leaving and returning to sections other than User ✅
+	- add file compression to newuser route for profile pic ✅
+	- post count in <MacrosPage> changes to 0 from correct count on pageload. plz fix ✅
+	- ideas for introductory post
+
+@0900 Will need to include a username check in the form submission (moving from form to 
+privacy settings) include within the sequencer. make it a subroute of newuser
+
+****would also like to add a previous button...
+
+****need to add file compression to newuser route for profile pic
+
 ### 08. 24. 2024
 @0410 creating a new user through the signup works :D ! ✅
 
@@ -97,7 +225,7 @@ change signup button to trigger referral modal ✅
 
 CSS UPDATE
 ****Some of the Fixes
-- x buttons need to be replaced with svg
+- x buttons need to be replaced with correct symbol
 - options in post can be more neat
 - text sizing overall
 - color scheme ubiquity

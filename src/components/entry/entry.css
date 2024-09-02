@@ -198,6 +198,10 @@ section#entry form {
 	animation: 0.3s ease-in-out forwards _scaleFadeIn;
 }
 
+section#entry form#login {
+	display: block;
+}
+
 section#entry form#signin._active,
 section#entry form#login._active {
 	animation: 0.3s ease-in-out forwards _active;
@@ -352,15 +356,15 @@ section#entry form div#privacyOptions p span {
 
 
 
-section#entry form div#profilePhoto {
+section#entry form fieldset#profilePhoto {
 	animation: 0.5s ease-in-out forwards _enter;
 }
 
-section#entry form div#profilePhoto._leave {
+section#entry form fieldset#profilePhoto._leave {
 	animation: 0.5s ease-in-out forwards _leave;
 }
 
-section#entry form div#profilePhoto h2 {
+section#entry form fieldset#profilePhoto h2 {
 	width: 75%;
 	font-family: 'Raleway';
 	font-weight: 400;
@@ -370,7 +374,7 @@ section#entry form div#profilePhoto h2 {
 	margin: 32px auto;
 }
 
-section#entry form div#profilePhoto label {
+section#entry form fieldset#profilePhoto label {
 	display: block;
 	width: 100%;
 	padding: 12px 0;
@@ -385,12 +389,12 @@ section#entry form div#profilePhoto label {
 	line-height: 22px;
 }
 
-section#entry form div#profilePhoto input {
+section#entry form fieldset#profilePhoto input {
 	border-bottom: none;
 	display: none;
 }
 
-section#entry form div#profilePhoto img {
+section#entry form fieldset#profilePhoto img {
 	border: none;
 	display: block;
 	width: 128px;

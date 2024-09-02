@@ -35,9 +35,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 				id: tag._id
 			}
 		})
-		
-			// let userPrivatePosts = await accessAPI.getMacros('private');
-		// let collections = await accessAPI.getMacros('collections');
 
 		let collections = await accessAPI.getMacros('collections');
 		collections = collections.map(el => {

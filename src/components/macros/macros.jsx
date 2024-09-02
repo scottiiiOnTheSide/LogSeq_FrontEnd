@@ -74,12 +74,6 @@ export default function Macrospage({
 				postCount: posts.length
 			})
 		}
-		else{
-			setMacroInfo({
-				...macroInfo,
-				postCount: 0
-			})
-		}
 	}
 
 	/* Element Related */
@@ -180,7 +174,7 @@ export default function Macrospage({
 				 	noHeading={true} 
 				 	current={current} 
 				 	setCurrent={setCurrent}
-				 	isUnified={true}/>
+				 	isUnified={false}/>
 			</div>
 
 			<div id="menuBar">

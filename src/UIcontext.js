@@ -27,7 +27,7 @@ function useUIC() {
 	return {
 		authed,
 
-		async login(loginCredentials) {
+		async _login(loginCredentials) {
 
 			let request = await APIaccess().logInUser(loginCredentials);
 

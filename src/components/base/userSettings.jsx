@@ -2,6 +2,7 @@ import * as React from 'react';
 import {useNavigate, useLocation} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
 import useUIC from '../../UIcontext';
+import Instant from '../../components/notifs/instant';
 
 import '../../components/base/home.css';
 
@@ -9,7 +10,19 @@ let accessAPI = APIaccess();
 
 
 
-export default function UserSettings({setSocketMessage}) {
+export default function UserSettings({
+	setSocketMessage,
+	socketURL,
+	socketMessage,
+	sendMessage,
+	isActive,
+	setActive,
+	setAccessID,
+	accessID,
+	getUnreadCount,
+	current,
+	setCurrent
+}) {
 
 	let navigate = useNavigate();
 	const location = useLocation();
@@ -497,6 +510,7 @@ export default function UserSettings({setSocketMessage}) {
 										e.preventDefault()
 										setPrivacyOption("On");
 										handleSubmit(e)
+										sessionStorage.setItem('privacySetting', "On")
 									}}>
 									ON</button>	
 							</li>
@@ -508,6 +522,7 @@ export default function UserSettings({setSocketMessage}) {
 										e.preventDefault()
 										setPrivacyOption("Half");
 										handleSubmit(e)
+										sessionStorage.setItem('privacySetting', "Half")
 									}}>
 									1 / 2</button>	
 							</li>
@@ -519,6 +534,7 @@ export default function UserSettings({setSocketMessage}) {
 										e.preventDefault()
 										setPrivacyOption("Off");
 										handleSubmit(e)
+										sessionStorage.setItem('privacySetting', "Off")
 									}}>
 									OFF</button>	
 							</li>
@@ -618,6 +634,20 @@ export default function UserSettings({setSocketMessage}) {
 	              </div>
 	          </div>
 	        }
+
+	        <Instant 
+				socketURL={socketURL}
+                socketMessage={socketMessage}
+                setSocketMessage={setSocketMessage}
+                sendMessage={sendMessage}
+                isActive={isActive}
+                setActive={setActive}
+                accessID={accessID}
+                setAccessID={setAccessID}
+                getUnreadCount={getUnreadCount}
+                current={current}
+                setCurrent={setCurrent}
+			/>
 		</div>
 	)
 }

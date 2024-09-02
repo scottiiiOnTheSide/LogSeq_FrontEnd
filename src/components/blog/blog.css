@@ -94,18 +94,19 @@ div.log div.entry button.toProfile span {
 div.log div.entry h2 {
 	font-family: "Raleway";
 	font-size: 1.5em;
+	letter-spacing: 2px;
 	font-weight: 400;
 	line-height: 32px;
-	color: var(--site-gray-middle);
+	color: var(--greyscale-details);
 	margin: 0px;
 }
 
 div.log div.entry p {
 	font-family: "Open Sans";
-	font-size: 0.9em;
+	font-size: 1em;
 	font-weight: 400;
 	line-height: 26px;
-	color: var(--site-gray-middle);
+	color: var(--greyscale-text);
 	margin: 10px 0 0;
 }
 
@@ -147,11 +148,13 @@ div.log div.entry ul#details {
 }
 
 div.log div.entry ul#details li {
-	font-size: 0.9em;
-	letter-spacing: 1px;
+	font-weight: 600;
+	font-size: 1em;
+	letter-spacing: 2px;
 	margin: 12px 0;
-	margin-left: 4px;
+	margin-left: 6px;
 	margin-right: 12px;
+	color: var(--greyscale-text);
 }
 
 
@@ -279,7 +282,7 @@ section#POST article {
 	}
 
 section#POST article div#mainContent {
-	margin-top: 44px;
+/*	margin-top: 44px;*/
 }
 
 section#POST article div#mainContent button.toProfile {
@@ -308,22 +311,28 @@ section#POST article div#mainContent button.toProfile span {
     margin-left: 24px;
 }
 
+section#POST article div#mainContent button.toProfile span span {
+	margin-top: 0px;
+	margin-left: 0px;
+	display: inline;
+}
+
 section#POST article div#mainContent h2 {
 	font-size: 1.75em;
 	font-weight: 400;
 	letter-spacing: 2px;
-	color: var(--greyscale-text);
+	color: var(--greyscale-details);
 
 	margin-bottom: 8px;
 }
 
 section#POST article div#mainContent p {
 	font-size: 1em;
-	font-weight: 300;
+	font-weight: 400;
 	line-height: 28px;
 	color: var(--greyscale-text);
 
-	margin-top: 8px;
+	margin-top: 16px;
 }
 
 section#POST article div#mainContent img {
@@ -352,12 +361,15 @@ section#POST article ul#tagsList {
 	padding: 12px 0;
 
 	display: flex;
-/*	justify-content: flex-start;*/
 	justify-content: center;
 	width: 98%;
-/*	margin: 16px auto;*/
-	margin: 64px auto;
-/*	border-top: 1px solid var(--greyscale-accent);*/
+	height: 36px;
+	margin: 36px auto;
+	overflow-x: scroll;
+}
+
+section#POST article ul#tagsList.alot {
+	justify-content: flex-start;
 }
 
 section#POST article ul#tagsList li {
@@ -409,7 +421,7 @@ div#commentsWrapper h2 span#commentCount {
 	font-size: 1.5em;
 	font-weight: 600;
     letter-spacing: 1px;
-    color: var(--greyscale-accent);
+    color: var(--greyscale-elements);
     margin: 0px 3px;
     position: absolute;
     top: -20px;
@@ -475,7 +487,7 @@ div#commentsWrapper ul#commentBox li h4 {
 
 div#commentsWrapper ul#commentBox li p {
 	color: var(--greyscale-text);
-	font-weight: 300;
+	font-weight: 400;
 	line-height: 28px;
 	margin: 20px 0 28px;
 }
@@ -506,14 +518,16 @@ div#optionsBar button#optionsToggle {
 
 div#optionsBar ul#optionsMenu {
 	width: 100%;
-	background-color: white;
+	background-color: rgba(255, 255, 255, 0.95);
 	position: absolute;
 	bottom: 0;
 
 	list-style-type: none;
 	margin: 0 0;
-	padding: 12px 0;
+	padding: 0px 0 12px;
 	animation: _enter ease-in-out forwards 0.1s;
+	border-radius: 8px;
+/*	border-top: 2px solid var(--greyscale-accent);*/
 }
 
 	div#optionsBar ul#optionsMenu.leave {
@@ -522,9 +536,10 @@ div#optionsBar ul#optionsMenu {
 
 div#optionsBar ul#optionsMenu li {
 	width: 100%;
+	margin: 24px auto;
 }
 
-div#optionsBar ul#optionsMenu li:last-child button {
+div#optionsBar ul#optionsMenu button#exit {
 	font-family: 'Open Sans';
 	font-size: 2em;
 }
@@ -532,8 +547,56 @@ div#optionsBar ul#optionsMenu li:last-child button {
 div#optionsBar ul#optionsMenu li button {
 	position: relative;
 	display: block;
-	margin: 12px auto;
+	margin: 0px auto;
 }
+
+
+
+
+
+div#optionsBar ul#optionsMenu li#info {
+	width: 96%;
+	margin: 16px auto 36px;
+	background-color: var(--greyscale-backdrop);
+	border-radius: 8px;
+	padding: 16px;
+	box-sizing: border-box;
+	font-family: 'Raleway';
+	font-weight: 400;
+	letter-spacing: 1px;
+	color: var(--greyscale-text);
+}
+
+div#optionsBar ul#optionsMenu li#info h4 {
+	font-weight: 400;
+	margin: 0 0 12px;
+}
+
+div#optionsBar ul#optionsMenu li#info p {
+	margin: 0;
+	font-weight: 300;
+}
+
+div#optionsBar ul#optionsMenu li#info ul {
+	margin: 16px auto 8px;
+	padding: 0;
+	list-style-type: none;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+div#optionsBar ul#optionsMenu li#info ul li {
+	width: fit-content;
+	margin: 6px 0;
+}
+
+div#optionsBar ul#optionsMenu li#info ul li button {
+	text-transform: capitalize;
+	font-size: 1em;
+	color: black;
+}
+
 
 
 div#optionsBar form {

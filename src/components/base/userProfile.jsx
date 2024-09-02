@@ -236,13 +236,7 @@ export default function UserProfile({
 
 
 			<div id="menuBar">
-				
-				{isOwner &&
-					<button className={`buttonDefault`} onClick={setOptions}>Settings</button>
-				}
-				{!isOwner &&
-					<button className={`buttonDefault`} onClick={setOptions}>Options</button>
-				}
+				<button className={`buttonDefault`} onClick={setOptions}>Options</button>
 			</div>
 
 			{(options && isOwner) &&
@@ -296,7 +290,7 @@ export default function UserProfile({
 								let delay = setTimeout(()=> {
 									setOptions()
 								}, 150);
-							}}>x</button>
+							}}>⨉</button>
 					</li>
 				</ul>
 			}

@@ -1,7 +1,7 @@
 /* * * V i t a l s * * */
 import * as React from 'react';
 
-export default function CarouselNav({current, setCurrent}) {
+export default function CarouselNav({current, setCurrent, navOptions, setNavOptions}) {
 
 	const opts = [
 		// {name: "Groups", active: false, key: 0},
@@ -10,78 +10,11 @@ export default function CarouselNav({current, setCurrent}) {
 		{name: "Macros", active: false, key: 3},
 		// {name: "Home", active: false, key: 4}
 	]
-	const [options, setOptions] = React.useState(opts); 
 	const list = React.useRef();
-
-	// function moveLeft() {
-	// 	let currentt = parseInt(getComputedStyle(list.current).left);
-
-	// 	if(currentt == "160") {
-	// 		return null;
-	// 	} else {
-	// 		setLeft(true);
-	// 		setCurrent({
-	// 			...current,
-	// 			section:current.section - 1,
-	// 			scrollTo: null
-	// 		});
-	// 		currentt = currentt + 80;
-	// 		list.current.style.left = `${currentt}px`;
-	// 	}
-	// }
-
-	// function moveRight() {
-	// 	let currentt = parseInt(getComputedStyle(list.current).left);
-
-	// 	if(currentt == "-160") {
-	// 		return null;
-	// 	} else {
-	// 		setRight(true);
-	// 		setCurrent({
-	// 			...current,
-	// 			section:current.section + 1,
-	// 			scrollTo: null
-	// 		});
-	// 		// console.log(current);
-	// 		currentt = currentt - 80;
-	// 		list.current.style.left = `${currentt}px`;	
-	// 	}
-	// }
-
-	// React.useEffect(()=> {
-	// 	let num;
-	// 	if(current.section == 0 || current.section == 1) {
-	// 		num = current.section + 1;
-	// 	}
-	// 	else {
-	// 		num = 2;
-	// 	}
-	// 	opts[num].active = false;
-	// 	opts[current.section].active = true;
-	// 	// setOptions(opts);
-
-	// 	setLeft(false);
-	// }, [left])
-
-	// React.useEffect(()=> {
-	// 	let num = current.section - 1;
-	// 	opts[num].active = false;
-	// 	opts[current.section].active = true;
-	// 	// setOptions(opts);
-
-	// 	setCurrent({
-	// 		...current,
-	// 		scrollTo: null,
-	// 	})
-	// 	setRight(false);
-	// }, [right])
 
 	React.useEffect(()=> {
 
-		// if(current.section == 0) {
-		// 	list.current.style.left = '160px'
-		// }
-
+		// setNavOptions(opts);
 		if(current.section == 0) {
 			list.current.style.left = '80px';
 		}
@@ -89,10 +22,6 @@ export default function CarouselNav({current, setCurrent}) {
 		else if(current.section == 2) {
 			list.current.style.left = '-80px';
 		}
-
-		// else if(current.section == 4) {
-		// 	list.current.style.left = '-160px';
-		// }
 
 	}, [])
 
@@ -146,7 +75,7 @@ export default function CarouselNav({current, setCurrent}) {
 		}
 		opts[option].active = true;
 		console.log(opts)
-		setOptions(opts);
+		setNavOptions(opts);
 
 		setCurrent({
 			...current,
@@ -174,7 +103,7 @@ export default function CarouselNav({current, setCurrent}) {
 		}
 	}
 
-	console.log(options)
+	// console.log(options)
 	console.log(current.section)
 
 	return (
@@ -191,19 +120,15 @@ export default function CarouselNav({current, setCurrent}) {
 						</button>
 					</li>
 				))}*/}
-				<li className={options[0].active ? "active" : "not"}>
+				<li className={navOptions[0].active ? "active" : "not"}>
 					<button className={`buttonDefault`} onClick={()=> {
-						
-						// if(opts[1].active || opts[2].active) {
-						// 	moveLeft();
-						// }
 						selectOption(0);
 					}}>
-						{options[0].name}
+						{opts[0].name}
 					</button>
 				</li>
 
-				<li className={options[1].active ? "active" : "not"}>
+				<li className={navOptions[1].active ? "active" : "not"}>
 					<button className={`buttonDefault`} onClick={()=> {
 						// if(opts[0].active) {
 						// 	moveRight()
@@ -213,11 +138,11 @@ export default function CarouselNav({current, setCurrent}) {
 						// }
 						selectOption(1);
 					}}>
-						{options[1].name}
+						{opts[1].name}
 					</button>
 				</li>
 
-				<li className={options[2].active ? "active" : "not"}>
+				<li className={navOptions[2].active ? "active" : "not"}>
 					<button className={`buttonDefault`} onClick={()=> {
 						// if(opts[1].active || opts[0].active) {
 						// 	moveRight();
@@ -225,7 +150,7 @@ export default function CarouselNav({current, setCurrent}) {
 
 						selectOption(2);
 					}}>
-						{options[2].name}
+						{opts[2].name}
 					</button>
 				</li>
 			</ul>

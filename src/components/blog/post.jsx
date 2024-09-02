@@ -55,15 +55,7 @@ export default function Post({
 		let updateComments = await accessAPI.updateCommentCount(postID);
 
 		let post = await accessAPI.getBlogPost(postID);
-		// let commentCount;
 
-		// if(post.commentCount < 10) {
-		// 	commentCount = `00${postData.commentCount}`
-		// } 
-		// else if (post.commentCount > 10 && post.commentCount < 100) {
-		// 	commentCount = `0${postData.commentCount}`
-		// }
-		// post.commentCount = commentCount;
 		let comments = await accessAPI.getComments(postID);
 		setComments(comments);
 		setPostData(post);
@@ -238,7 +230,11 @@ export default function Post({
 
 	let goToMacrosPage = async(groupName, groupID) => {
 
-		let tagData = await accessAPI.getTagData(groupID);
+		let isTopic = false;
+		let tagData = await accessAPI.getTagData(groupID, groupName);
+		if(tagData.response == 'topic') {
+			isTopic = true;
+		}
 		let tagPosts = await accessAPI.groupPosts({action: 'getPosts', groupID: groupID, groupName: groupName});
 		let postsCount = tagPosts.length;
 
@@ -252,13 +248,13 @@ export default function Post({
 		setTimeout(()=> {
 			navigate(`/macros/${tagData.name}`, {
 					state: {
-						name: tagData.name,
+						name: isTopic ? groupName : tagData.name,
 						posts: tagPosts,
-						macroID: tagData._id,
-						isPrivate: tagData.isPrivate,
+						macroID: isTopic ? null : tagData._id,
+						isPrivate: isTopic ? false : tagData.isPrivate,
 						hasAccess: doesHaveAccess,
-						ownerUsername: tagData.ownerUsername,
-						type: tagData.type,
+						ownerUsername: isTopic ? 'Public' : tagData.ownerUsername,
+						type: isTopic ? 'topic' : tagData.type,
 						userCount: tagData.hasAccess ? tagData.hasAccess.length : null,
 						postCount: postsCount ? postsCount : 0
 					}
@@ -291,19 +287,19 @@ export default function Post({
 		let isOwner = postData.owner == userID ? true : false;
 
 		//to be removed once old posts gone
-		let content, split;
-		let text = [];
-		if( Object.keys(postData.content[0]).length > 10 ) {
-			for (let char in postData.content[0]) {
-				text.push(postData.content[0][char]);
-			}
-			text = text.join("");
-			split = true;
-			// console.log(text)
-		} else if ( Object.keys(postData.content[0].length < 10)) {
-			content = postData.content;
-			split = false;
-		}
+		// let content, split;
+		// let text = [];
+		// if( Object.keys(postData.content[0]).length > 10 ) {
+		// 	for (let char in postData.content[0]) {
+		// 		text.push(postData.content[0][char]);
+		// 	}
+		// 	text = text.join("");
+		// 	split = true;
+		// 	// console.log(text)
+		// } else if ( Object.keys(postData.content[0].length < 10)) {
+		// 	content = postData.content;
+		// 	split = false;
+		// }
 
 
 	/*** 
@@ -435,6 +431,7 @@ export default function Post({
 	}, [element]);
 
 	console.log(postData)
+	// console.log(split);
 
 	return (
 		<section id="POST" ref={el} className={`${enter == true ? '_enter' : ''}`}>
@@ -445,55 +442,26 @@ export default function Post({
 					siteLocation={"POST"}/>
 
 			<article>
-
-				<button id="open" className={"buttonDefault"}onClick={openDetails}>Post Details</button>
-				<div id="details" className={toggleDetails ? "open" : ""}>
-
-					<h4>Entry Posted On</h4>
-					<p>{date} @ {timeStamp} UTC</p>
-
-					<ul id="options">
-						{isOwner &&
-							<li>
-								<button>EDIT</button>
-							</li>
-						}
-						{isOwner &&
-							<li>
-								<button onClick={()=> {
-									setSocketMessage({
-										action: 'deletePost',
-										postID: postData._id
-									})
-								}}>DELETE</button>
-							</li>
-						}
-						{!isOwner &&
-							<li>
-								<button>REPORT</button>
-							</li>
-						}
-					</ul>
-				</div>
-
-
 				{/* * * 
 					M A I N   C O N T E N T 
 				* * */}
-
 				<div id="mainContent">
 
 					{!isOwner &&
 						<button className={`toProfile`} onClick={()=> {goToProfile(postData.owner)}}>
 							<img src={postData.profilePhoto}/>
-							<span>&#64;{postData.author}</span>
+							<span>&#64;{postData.author} 
+							{postData.taggedUsers &&
+								<span>{` with ${postData.taggedUsers.length} other ${postData.length > 1 ? 's' : ''}`}</span>
+							}
+							</span>
 						</button>
 					}	
 					<h2>{postData.title}</h2>
 
 					{/*Would have ul with map of tagged users*/}
 
-					{split &&
+					{/*{split &&
 						<p>{text}</p>
 					}
 					{!split &&
@@ -510,14 +478,29 @@ export default function Post({
 							}
 						)
 					}
-
-					{/*Here would be a div wrapper for the tags*/}
+					*/}
+					
+					{postData.content.map((data) => {
+								if(data.type == 'text') {
+									if(data.content.match(/\((.*?)\)/g)) {
+										return (<p dangerouslySetInnerHTML={{ __html: bodyParse(data.content)}} key={data.place}></p>)
+									} else {
+										return (<p dangerouslySetInnerHTML={{ __html: data.content}} key={data.place}></p>)
+									}
+								} else if(data.type == 'media') {
+									return <img src={data.content}/>
+								}
+							}
+						)}
 				</div>
 
 
-				<ul id="tagsList">
+				{/* * * 
+					T A G S L I S T
+				* * */}
+				<ul id="tagsList" className={`${postData.tags.length > 3 ? 'alot' : ''}`}>
 
-					{postData.tags.map(tag => (
+					{postData.tags.map((tag, index) => (
 						<li>
 							<button className={`buttonDefault ${tag._id ? 'tag' : ''} ${tag.isPrivate == true ? 'private' : ''}`}
 									onClick={(e)=> {
@@ -528,7 +511,6 @@ export default function Post({
 							</button>
 						</li>
 					))}
-
 				</ul>
 
 
@@ -565,8 +547,31 @@ export default function Post({
 				{isOptionsOpen &&
 					<ul id="optionsMenu">
 
+						{/* * * 
+							I N F O 
+						* * */}
+						<li id="info">
+							<h4>Entry Posted On</h4>
+							<p>{date} @ {timeStamp} UTC</p>
+
+							{postData.taggedUsers.length > 0 &&
+								<ul>
+									<li>Tagged Users: </li>
+									{postData.taggedUsers.map(user => (
+										<li>
+											<button className={`buttonDefault`}
+													onClick={()=> {goToProfile(user._id)}}>
+												@{user.username}
+											</button>
+										</li>
+									))}
+								</ul>
+							}
+						</li>
+
 						<li> {/*Comment Button*/}
 							<button className="buttonDefault" onClick={()=> {
+								toggleOptions();
 								toggleComment(); 
 								console.log(comments.length)
 								setAccess({
@@ -622,7 +627,7 @@ export default function Post({
 								}}>Pin Post</button>
 							</li>
 						}
-						{isOwner &&
+						{(isOwner && postData.content.some(piece => piece.type == 'media')) &&
 							<li>{/*Pin Media Button*/}
 								<button className={`buttonDefault`} 
 										onClick={(e)=> {
@@ -633,6 +638,20 @@ export default function Post({
 											}, 200)
 										}}>
 								Pin Media</button>
+							</li>
+						}
+						{isOwner &&
+							<li>
+								<button className={`buttonDefault`} 
+										onClick={(e)=> {
+											e.preventDefault()
+											toggleOptions()
+											setSocketMessage({
+												action: 'deletePost',
+												postID: postData._id
+											})
+										}}>
+								Delete</button>
 							</li>
 						}
 
@@ -646,14 +665,14 @@ export default function Post({
 						</li> 
 
 						<li> {/* X Button*/}
-							<button className="buttonDefault" onClick={()=> {
+							<button className={`buttonDefault`} id="exit" onClick={()=> {
 								let optionsMenu = document.getElementById('optionsMenu');
 								optionsMenu.classList.add('leave')
 
 								let delay = setTimeout(()=> {
 									toggleOptions()
 								}, 150);
-							}}>x</button>
+							}}>⨉</button>
 						</li>
 					</ul>
 				}

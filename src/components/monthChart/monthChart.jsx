@@ -130,7 +130,7 @@ export default function MonthChart ({current, setCurrent, cal, set_dateInView, s
 
 						       		return <button key={index} 
 						       					id={`cell${daysInWeek[e][index]}`}
-						       					className={`cell` + `${kyou == daysInWeek[e][index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
+						       					className={`cell` + `${selectedDate.day == daysInWeek[e][index] ? ' today' : ''}` + `${date == 'b' ? ' blank' : ''}`}
 						       					onClick={()=> {
 
 						       							setSelectedDate({

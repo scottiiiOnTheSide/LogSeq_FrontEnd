@@ -40,6 +40,7 @@ export default function ButtonBar({
 }) {
 	const location = useLocation();
 	const navigate = useNavigate();
+	const hajime = new Date();
 	let [functionName, setFuncName] = React.useState('Create Post');
 
 	React.useEffect(()=> {
@@ -73,14 +74,19 @@ export default function ButtonBar({
 							}, 300)
 						}
 						else if(!current.map && !current.monthChart) {
+							const hajime = new Date();
+						
+							setSelectedDate({
+								day: hajime.getDate(),
+								month: hajime.getMonth(),
+								year: hajime.getFullYear()
+							})
 							setCurrent({
 								...current,
 								map: true
 							})
 						}
 					}}>
-				{/*<p>{mapData.currentState}</p>
-				<p>{mapData.currentCity}</p>*/}
 					<CompassButton/>
 			</button>
 
@@ -100,8 +106,6 @@ export default function ButtonBar({
 							...current,
 							monthChart: false,
 						})
-
-						const hajime = new Date();
 						
 						setSelectedDate({
 							day: hajime.getDate(),
@@ -110,6 +114,13 @@ export default function ButtonBar({
 						})
 					}, 300)
 				} else if(!current.monthChart && !current.map) {
+
+					setSelectedDate({
+						day: hajime.getDate(),
+						month: hajime.getMonth(),
+						year: hajime.getFullYear()
+					})
+
 					setCurrent({
 						...current,
 						monthChart: true

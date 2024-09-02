@@ -302,7 +302,7 @@ nav ul li button {
 
 nav ul li.active button {
 	font-size: 1em;
-	color: var(--greyscale-accent);
+	color: var(--greyscale-elements);
 }
 
 nav ul li.not button {

@@ -27,7 +27,7 @@ export default function APIaccess(key) {
 				method: 'POST',
 				headers: {
 					// 'Content-Type': 'application/json',
-					// 'Accept': 'application/json'
+					'Accept': 'application/json'
 				},
 				body: signupCredentials
 			}).then(data => data.json());
@@ -36,11 +36,7 @@ export default function APIaccess(key) {
 			   Returns a true statement if signup successful
 			   Checks by submitted emailAddr whether account was made with on prior
 			*/
-			if(request.error) {
-				return request.message 
-			} else {
-				return request.payload
-			}
+			return request
 		},
 
 		async submitRefCode(refCode) {
@@ -55,6 +51,20 @@ export default function APIaccess(key) {
 					action: 'getReferrer',
 					refCode: refCode
 				})
+			}).then(data => data.json());
+
+			return request;
+		},
+
+		async userExistsCheck(body) {
+
+			let request = await fetch(`${apiAddr}/users/newuser`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept': 'application/json'
+				},
+				body: JSON.stringify(body)
 			}).then(data => data.json());
 
 			return request;
@@ -96,7 +106,8 @@ export default function APIaccess(key) {
 				sessionStorage.setItem('userKey', userToken);
 				sessionStorage.setItem('userID', userInfo._id);
 				sessionStorage.setItem('userName', userInfo._username);
-				sessionStorage.setItem('profilePhoto', userInfo._profilePhoto)
+				sessionStorage.setItem('profilePhoto', userInfo._profilePhoto);
+				sessionStorage.setItem('privacySetting', userInfo.privacySetting);
 
 				return true;
 
@@ -191,7 +202,6 @@ export default function APIaccess(key) {
 
 				return request;
 			}
-
 		},
 
 		async getBlogPost(postID) {
@@ -220,11 +230,6 @@ export default function APIaccess(key) {
 				method: "POST",
 				headers: {
 					'auth-token': userKey,
-					// 'Content-Type': 'multipart/form-data; boundary=----logseqmedia',
-					// 'Accept': 'multipart/form-data',
-					// 'Content-Length': 0,
-					// 'accept': 'application/json',
-					// 'Host': apiAddr,
 				},
 				body: content,
 			}).then(data => data.json())
@@ -645,7 +650,7 @@ export default function APIaccess(key) {
 			}
 		},
 
-		async getTagData(groupID) {
+		async getTagData(groupID, groupName) {
 
 			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/groups/posts`, {
@@ -657,7 +662,7 @@ export default function APIaccess(key) {
 			        	'Host': apiAddr,
 			        	'auth-token': userKey
 					},
-					body: JSON.stringify({action: 'getTagInfo', groupID: groupID })
+					body: JSON.stringify({action: 'getTagInfo', groupID: groupID, groupName: groupName })
 				}).then(data => data.json());
 
 				return request;

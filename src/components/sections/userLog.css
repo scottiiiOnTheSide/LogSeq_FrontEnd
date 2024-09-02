@@ -1,8 +1,5 @@
 /* * *
 	C R E A T E  P O S T
-	Uur, this is the 3rd time that I'm rewriting this . . . 
-	Anyhow, this post shall be used to define the styling for posts with images - 
-	both within a log and on their respective pages
 * * */
 
 section#HOME div#createPost {
@@ -136,35 +133,40 @@ div#createPost fieldset.textareaImageAdd {
 	width: 100%;
 }
 
-div#createPost fieldset.textareaImageAdd img {
+div#createPost fieldset img {
 	width: 100%;
 	margin-bottom: 24px;
+	border-radius: 8px;
 }
 
-div#createPost fieldset.textareaImageAdd label.imageAdd {
-	display: block;
-	width: 100%;
-	padding: 12px 0;
-	margin: -24px 0 12px;
-
-	text-align: center;
-	font-family: 'Raleway';
-	font-weight: 600;
-	font-size: 1.5em;
-	color: var(--greyscale-accent);
-	letter-spacing: 8px;
-	line-height: 22px;
+div#createPost fieldset div#moreContent {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	margin-bottom: -8px;
 }
 
-div#createPost fieldset.textareaImageAdd input.addImage {
-	border-bottom: none;
-	display: none;
-}
-
-
-div#createPost fieldset button#newCombo {
+div#createPost fieldset button,
+div#createPost fieldset label {
 	margin: 32px 0;
 	width: 100%;
+}
+
+div#createPost fieldset div#moreContent label.imageAdd {
+	display: block;
+	width: 100%;
+	text-align: center;
+	font-family: 'Raleway';
+	font-weight: 400;
+	font-size: 1.25em;
+	color: black;
+	letter-spacing: 3px;
+	text-transform: uppercase;
+}
+
+div#createPost fieldset div#moreContent input#addImage {
+	border-bottom: none;
+	display: none;
 }
 
 
@@ -217,6 +219,8 @@ section#HOME div#createPost div#taggedUsers {
 	}
 
 	section#HOME div#createPost div#taggedUsers ul#options {
+		height: 100px;
+		overflow-x: scroll;
 		list-style-type: none;
 		padding: 0;
 		margin: 0;
@@ -323,9 +327,17 @@ section#HOME div#createPost div#tagsSelection div#resultsWrapper button#makeNewT
 	text-align: center;
 }
 
+section#HOME div#createPost div#tagsSelection div#resultsWrapper div#no-autocomplete {
+	width: 100%;
+	text-align: center;
+	margin: 36px 0 24px;
+	color: var(--greyscale-accent);
+}
+
 
 
 section#HOME div#createPost form button#setPrivate {
+	text-align: left;
 	margin: 36px 0 16px;
 }
 
@@ -334,6 +346,7 @@ section#HOME div#createPost form button#setPrivate.nonActive {
 }
 
 section#HOME div#createPost form button#pinLocation {
+	text-align: left;
 	margin: 8px 0;
 	display: block;
 }

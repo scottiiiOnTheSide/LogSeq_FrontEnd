@@ -13,17 +13,20 @@ section#HOME div#macros div#privatePosts,
 section#HOME div#macros div#collections {
 	width: 96%;
 	max-height: 400px;
-	margin: 24px auto 24px auto;
+	margin: 16px auto;
 	transition: height ease-in-out 0.2s;
 }
 
 section#HOME div#macros div#collections {
+/*	padding-bottom: 128px;*/
 	padding-bottom: 24px;
+/*	margin-top: -24px;*/
 }
 
 
 section#HOME div#macros div#userTags {
-	margin-top: 0px;
+	margin-top: 8px;
+/*	margin-bottom: -24px;*/
 }
 
 section#HOME div#macros div#userTags.open, 
@@ -37,7 +40,7 @@ section#HOME div#macros div#userTags.close,
 section#HOME div#macros div#privatePosts.close,
 section#HOME div#macros div#collections.close {
 	overflow-y: hidden;
-	max-height: 400px;
+	max-height: 370px;
 }
 
 section#HOME div#macros div div.headerWrapper {
@@ -53,12 +56,16 @@ section#HOME div#macros div div.headerWrapper h2 {
 	font-weight: 600;
 	font-size: 3em;
 	letter-spacing: 4px;
-	color: var(--greyscale-accent);
+	color: var(--greyscale-elements);
 	margin-bottom: 8px;
 }
 
 	section#HOME div#macros div div.headerWrapper h2:first-child {
 		margin-top: 16px;
+	}
+
+	section#HOME div#macros div#collections div.headerWrapper h2 {
+		margin-top: 20px;
 	}
 
 
@@ -84,6 +91,7 @@ section#HOME div#macros div#userTags ul.tagsWrapper {
 	padding-left: 0px;
 	width: 96%;
 	margin-left: auto;
+	margin-bottom: 0;
 }
 
 section#HOME div#macros div#userTags ul.tagsWrapper li {
@@ -91,11 +99,11 @@ section#HOME div#macros div#userTags ul.tagsWrapper li {
     position: relative;
     /* top: 7px; */
     margin: 4px;
-    margin-top: 6px;
+    margin-top: 10px;
 }
 
 section#HOME div#macros div#userTags ul.tagsWrapper li button {
-	border: 2.5px solid var(--greyscale-text);
+	border: 2.5px solid var(--greyscale-details);
     border-radius: 12px;
     padding: 8px 10px;
 
@@ -103,7 +111,7 @@ section#HOME div#macros div#userTags ul.tagsWrapper li button {
     font-weight: 400;
     font-size: 1em;
     letter-spacing: 2px;
-    color: var(--greyscale-text);
+    color: var(--greyscale-details);
     background-color: transparent;
 }
 
@@ -121,13 +129,15 @@ section#HOME div#macros div#userTags ul.tagsWrapper li button.private {
 
 
 section#HOME div#macros div#privatePosts ul.postsWrapper {
+	display: flex;
+	flex-direction: column;
 	list-style-type: none;
-	margin: 0;
+	margin: 8px 0 0;
 	padding: 0;
 }
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li {
-	margin: 20px 0 32px 16px;
+	margin: 16px 0 16px 16px;
 }
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li h4 {
@@ -145,7 +155,7 @@ section#HOME div#macros div#privatePosts ul.postsWrapper li h3 {
 	font-weight: 400;
 	font-size: 1.5em;
 	letter-spacing: 1px;
-	color: var(--greyscale-text);
+	color: var(--greyscale-details);
 }
 
 section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets {
@@ -167,7 +177,8 @@ section#HOME div#macros div#privatePosts ul.postsWrapper li ul.deets li {
 
 section#HOME div#macros div#collections ul.collectionsWrapper {
 	list-style-type: none;
-	margin: 20px 0px 20px 16px;
+/*	margin: 20px 0px 20px 16px;*/
+	margin-left: 16px;
 	padding: 0;
 }
 
@@ -176,7 +187,7 @@ section#HOME div#macros div#collections ul.collectionsWrapper li {
 	font-weight: 400;
 	font-size: 1.25em;
 	letter-spacing: 1px;
-	color: var(--greyscale-text);
+	color: var(--greyscale-details);
 
 	margin: 28px 0;
 }

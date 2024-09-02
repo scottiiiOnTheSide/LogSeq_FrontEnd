@@ -41,16 +41,17 @@ div#interactionsList div#header {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	border-bottom: 2px solid var(--site-gray-mid);
+/*	border-bottom: 2px solid var(--site-gray-mid);*/
 }
 
 	div#interactionsList div#header h2 {
 		position: relative;
-		top: 4px;
+/*		top: 4px;*/
 		left: 10px;
 		font-weight: 400;
 		letter-spacing: 5px;
-		color: var(--site-gray-dark);
+		color: var(--greyscale-elements);
+		text-transform: uppercase;
 	}
 
 	div#interactionsList div#header h2 span#username {
@@ -110,14 +111,15 @@ div#interactionsList ul#notifList {
 	overflow-y: scroll;
 	overflow-x: hidden;
 	z-index: 10;
-	background-color: var(--greyscale-background-2);
+	background-color: rgba(112, 112, 112, 0.05);
 }
 
 div#interactionsList ul#notifList li {
 	display: flex;
 	width: 96%;
 	position: relative;
-	margin: 0 auto 24px;
+/*	margin: 24px auto 24px;*/
+	margin: 1px auto;
 	padding: 16px;
 /*	border-bottom: 1px solid var(--site-gray-light);*/
 	background-color: white;

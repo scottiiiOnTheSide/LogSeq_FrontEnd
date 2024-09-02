@@ -79,7 +79,9 @@ function Home({
   mapData,
   setMapData,
   log,
-  setLog
+  setLog,
+  navOptions,
+  setNavOptions
 }) {
 
   const navigate = useNavigate();
@@ -126,7 +128,11 @@ function Home({
           setNotifList={setNotifList} 
           unreadCount={unreadCount}
           siteLocation={"ss.xyz"}/>
-        <CarouselNav current={current} setCurrent={setCurrent}/>
+
+        <CarouselNav current={current} 
+                     setCurrent={setCurrent}
+                     navOptions={navOptions}
+                     setNavOptions={setNavOptions}/>
 
         {notifList &&
           <NotificationList 
@@ -428,16 +434,23 @@ export default function Main() {
   }
 
 
-  /***
-   * Top level state array to house log of posts
-   * Changes whenever a new section becomes active
-  ***/
+  /*
+    Top level state array to house log of posts
+    Changes whenever a new section becomes active
+  */
   const [log, setLog] = React.useState([]);
 
-
-
-
+  /*
+      State array for keeping track of current section in carousel nav
+      top level, so it's maintained across pages
+  */
+  const [navOptions, setNavOptions] = React.useState([
+    {name: "Social", active: false, key: 1},
+    {name: "User", active: true, key: 2}, //middle is default
+    {name: "Macros", active: false, key: 3},
+  ]);
   
+
   return(
         <Routes>
 
@@ -469,6 +482,9 @@ export default function Main() {
 
                   log={log}
                   setLog={setLog}
+
+                  navOptions={navOptions}
+                  setNavOptions={setNavOptions}
                 />
               </HomeOrEntry>
             }>
@@ -499,11 +515,15 @@ export default function Main() {
                   setCurrent={setCurrent}
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
+
                   mapData={mapData}
                   setMapData={setMapData}
 
                   log={log}
                   setLog={setLog}
+
+                  navOptions={navOptions}
+                  setNavOptions={setNavOptions}
                 />
               </HomeOrEntry>
             }>
@@ -590,6 +610,16 @@ export default function Main() {
               <HomeOrEntry>
                 <UserSettings
                   setSocketMessage={setSocketMessage}
+                  socketURL={socketURL}
+                  socketMessage={socketMessage}
+                  sendMessage={sendMessage}
+                  isActive={isActive}
+                  setActive={setActive}
+                  setAccessID={setAccessID}
+                  accessID={accessID}
+                  getUnreadCount={getUnreadCount}
+                  current={current}
+                  setCurrent={setCurrent}
                 />
               </HomeOrEntry>
             }
