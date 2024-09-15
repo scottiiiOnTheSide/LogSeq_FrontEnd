@@ -122,7 +122,7 @@ export default function Macrospage({
 				
 				<div id="pageHeader">
 					
-					{macroInfo.type == 'tag' &&
+					{/*{macroInfo.type == 'tag' &&
 						<button className={`buttonDefault`} 
 								id="addRemoveRequest"
 								onClick={()=> {
@@ -145,10 +145,15 @@ export default function Macrospage({
 										set_addRemoveRequest('Remove')
 									}
 								}}>{addRemoveRequest}</button>
-					}
+					}*/}
 				
 					<h3 id="subHeading">
-						{`${macroInfo.isMacroPrivate == true ? macroInfo.ownerUsername : 'PUBLIC'}`} / {macroInfo.type} /
+						{/*	
+							topic: public
+							Tag and Private or Not: username
+							collection: username
+						*/}
+						{`${macroInfo.type == 'tag' && macroInfo.isPrivate == false ? 'PUBLIC' : macroInfo.ownerUsername ? macroInfo.ownerUsername : 'PUBLIC' }`} / {macroInfo.type} /
 					</h3>
 
 					<h2 id="macroName">{macroInfo.name}</h2>

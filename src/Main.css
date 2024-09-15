@@ -39,7 +39,7 @@ section#BASE {
   /** Greyscale Theme **/
   --greyscale-background: rgba(236, 236, 236, 1);
   --greyscale-background-2: rgba(236, 236, 236, 1);
-  --greyscale-text: rgba(0, 0, 0, 0.5);
+/*  --greyscale-text: rgba(0, 0, 0, 0.5);*/
   --greyscale-accent: rgba(0, 0, 0, 0.2);
   --greyscale-elements: rgba(31, 31, 31, 0.1);
   
@@ -50,17 +50,57 @@ section#BASE {
   --greyscale-elements: rgba(31, 31, 31, 0.1);
   --greyscale-accent: rgba(0, 0, 0, 0.2);
   --greyscale-details: rgba(0, 0, 0, 1);
+  --greyscale-text: rgba(0, 0, 0, 0.5);
+  --greyscale-icons: rgba(112, 112, 112, 0.25);
 }
 
 ::-webkit-scrollbar {
     width: 4px;
-    height: 8px;
+    height: 3px;
   }
  
 ::-webkit-scrollbar-thumb {
     border-radius: 8px;
     background: #c2c9d2;
 }
+
+/* * * *
+		F o r  S V G   I C O N s 
+* * * */
+
+svg#return {
+	width: 50px;
+	position: relative;
+	top: 4px;
+	transition: all 0.3s ease-in-out;
+	margin-right: -240px;
+}
+
+svg#return polyline {
+	fill: rgba(255, 255, 255, 0);
+	stroke-width: 8px;
+}
+
+svg#return polyline#top {
+    stroke: rgba(0, 0, 0, 0.75);
+}
+
+svg#return polyline#bottom {
+	stroke: rgba(0, 0, 0, 0.1);
+}
+
+	svg#return.leave {
+		animation: leave 0.5s ease-in-out forwards;
+	}
+
+	@keyframes leave {
+		0% {
+			right: 0%;
+		}
+		100% {
+			right: 50px;
+		}
+	}
 
 
 

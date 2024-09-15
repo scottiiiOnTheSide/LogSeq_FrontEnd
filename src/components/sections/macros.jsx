@@ -630,15 +630,17 @@ export default function Macros({active, current, setCurrent}) {
 
 	let goToMacrosPage = async(tag) => {
 
+		let tagInfo = await accessAPI.getTagData(tag._id, tag.name);
 		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: tag._id, groupName: tag.name});
 		let postsCount = posts.length;
 
 		let doesHaveAccess;
-		if(tag.hasAccess) {
-			doesHaveAccess = tag.hasAccess.filter(el => el == userID);
+		if(tagInfo.hasAccess) {
+			doesHaveAccess = tagInfo.hasAccess.filter(el => el == userID);
 			doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
 		}
 		
+		console.log(tagInfo);
 									
 		setTimeout(()=> {
 			navigate(`/macros/${tag.name}`, {
@@ -646,11 +648,11 @@ export default function Macros({active, current, setCurrent}) {
 						name: tag.name,
 						posts: posts,
 						macroID: tag._id,
-						isPrivate: tag.isPrivate,
+						isPrivate: tagInfo.isPrivate,
 						hasAccess: doesHaveAccess,
-						ownerUsername: tag.ownerUsername,
-						type: tag.type,
-						userCount: tag.hasAccess ? tag.hasAccess.length : null,
+						ownerUsername: tagInfo.ownerUsername,
+						type: tagInfo.type == undefined ? 'topic' : tagInfo.type,
+						userCount: tagInfo.hasAccess ? tagInfo.hasAccess.length : null,
 						postCount: postsCount ? postsCount : 0
 					}
 				})

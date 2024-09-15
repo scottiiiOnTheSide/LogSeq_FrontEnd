@@ -68,15 +68,15 @@ section#MACROS div#pageHeader h3#subHeading {
 section#MACROS div#pageHeader h2#macroName {
 	font-family: "Raleway";
 	font-weight: 400;
-	font-size: 2.75em;
+	font-size: 2.5em;
 	letter-spacing: 4px;
 	color: var(--greyscale-elements);
 	margin-bottom: 8px;
 	text-transform: capitalize;
 
-	margin-top: 16px;
+	margin-top: 24px;
 	margin-left: -4px;
-	max-width: 90%;
+	max-width: 100%;
 	word-wrap: break-word;
 }
 

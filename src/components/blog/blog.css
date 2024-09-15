@@ -366,6 +366,7 @@ section#POST article ul#tagsList {
 	height: 36px;
 	margin: 36px auto;
 	overflow-x: scroll;
+	scrollbar-width: none;
 }
 
 section#POST article ul#tagsList.alot {

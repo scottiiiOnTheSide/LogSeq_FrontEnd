@@ -928,16 +928,26 @@ export default function Instants({
 				type: 1
 			});
 		}
-		else if(socketMessage.type == 'markRead') {
-			makeNotif_markNotifRead(socketMessage);
-		}
-		else if(socketMessage.type == 'error') {
+		else if (socketMessage.confirm === 'postDrafted') {
+			setSocketMessage({
+				type: 'draft',
+				message: 'post'
+			})
 			setActive({
 				state: true,
 				type: 1
 			});
 		}
-		else if(socketMessage.type == 'simpleNotif') {
+		else if(socketMessage.type == 'markRead') {
+			makeNotif_markNotifRead(socketMessage);
+		}
+		else if(socketMessage.type == 'error') { //set socketMessage.message wherever useing this call
+			setActive({
+				state: true,
+				type: 1
+			});
+		}
+		else if(socketMessage.type == 'simpleNotif') { //set socketMessage.message wherever useing this call
 			setActive({
 				state: true,
 				type: 1
@@ -1013,6 +1023,9 @@ export default function Instants({
 				}
 				{(message.type == 'confirmation' && message.message == 'post') &&
 					<p>Post Uploaded !</p>
+				}
+				{(message.type == 'draft' && message.message == 'post') &&
+					<p>Post Drafted!</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'tagAdd') &&
 					<p>You've added <span>"{message.groupName}"</span> to your tags</p>

@@ -54,14 +54,28 @@ section#HOME div#createPost._fade {
 
 
 
-section#HOME div#createPost div#titleWrapper {
+section#HOME div#createPost div#headerWrapper {
+	display: flex;
 	width: 97%;
 	margin: 16px 0 24px;
 	margin-left: auto;
 }
 
-section#HOME div#createPost div#titleWrapper h3,
-section#HOME div#createPost div#titleWrapper h2 {
+
+section#HOME div#createPost div#headerWrapper svg {
+	display: inline-block;
+	margin-right: 0;
+}
+
+section#HOME div#createPost div#headerWrapper div#dateSetter {
+	display: inline-block;
+	position: relative;
+	margin-left: 20px;
+	top: -8px;
+}
+
+section#HOME div#createPost div#headerWrapper div#dateSetter h3,
+section#HOME div#createPost div#headerWrapper div#dateSetter h2 {
 	font-family: 'Raleway';
 	font-weight: 600;
 	font-size: 1em;
@@ -71,10 +85,30 @@ section#HOME div#createPost div#titleWrapper h2 {
 	margin: 12px 0 4px;
 }
 
-section#HOME div#createPost div#titleWrapper h2 {
+section#HOME div#createPost div#headerWrapper div#dateSetter h2 {
 	font-size: 2em;
-	color: var(--greyscale-text);
+	color: var(--greyscale-details);
 	margin: 8px 0 0;
+}
+
+
+section#HOME div#createPost div#headerWrapper svg#draftIcon {
+	position: absolute;
+    right: 0;
+    margin-right: 20px;
+    margin-top: 4px;
+    padding: 8px 8px 9px 10px;
+    transition: all ease-in-out 0.2s;
+}
+
+section#HOME div#createPost div#headerWrapper svg#draftIcon.hover {
+    background-color: var(--greyscale-backdrop);
+    border-radius: 8px;
+}
+
+section#HOME div#createPost div#headerWrapper svg#draftIcon path, 
+section#HOME div#createPost div#headerWrapper svg#draftIcon rect {
+	fill: var(--greyscale-icons);
 }
 
 
@@ -111,6 +145,14 @@ div#createPost textarea {
 	line-height: 22px;
 }
 
+div#createPost div button.remove {
+	display: block;
+	margin: 0;
+	font-size: 0.8em;
+	width: fit-content;
+	margin-left: auto;
+}
+
 div#createPost input::placeholder,
 div#createPost textarea::placeholder  {
 	color: var(--greyscale-accent);
@@ -135,7 +177,7 @@ div#createPost fieldset.textareaImageAdd {
 
 div#createPost fieldset img {
 	width: 100%;
-	margin-bottom: 24px;
+	margin: 24px 0;
 	border-radius: 8px;
 }
 

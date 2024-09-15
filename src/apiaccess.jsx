@@ -129,7 +129,7 @@ export default function APIaccess(key) {
 
 			//?pull=${pull}?lastID=${lastID} for future update
 			let userKey = sessionStorage.getItem('userKey');
-			let log = await fetch(`${apiAddr}/posts/log?social=false`, {
+			let log = await fetch(`${apiAddr}/posts/log?type=user`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ export default function APIaccess(key) {
 			//?pull=${pull}?lastID=${lastID} for future update
 
 			let userKey = sessionStorage.getItem('userKey');
-			let log = await fetch(`${apiAddr}/posts/log?social=true`, {
+			let log = await fetch(`${apiAddr}/posts/log?type=social`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -202,6 +202,22 @@ export default function APIaccess(key) {
 
 				return request;
 			}
+		},
+
+		async getDrafts() {
+			let userKey = sessionStorage.getItem('userKey');
+			let log = await fetch(`${apiAddr}/posts/log?type=drafts`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Content-Length': 0,
+					'Accept': 'application/json',
+					'Host': apiAddr,
+					'auth-token': userKey
+				}
+			}).then(data => data.json());
+
+			return log;
 		},
 
 		async getBlogPost(postID) {

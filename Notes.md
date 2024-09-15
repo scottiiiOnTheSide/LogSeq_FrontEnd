@@ -3,8 +3,81 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 09. 15. 2024
+@1350 working on functionality to populate createPost with selected option from fullList
+	drafts
+
+@1140 Would like to repurpose the api funcs to mirror the backend subroute layout.
+so, e.i apiaccess.posts.getPost()
+
+****To Fix:
+	- one or another opening for <Macros> section settings 
+
+### 09. 13. 2024
+@1855 Next, 
+- create backend subroute for getting drafts ✅
+- add <fullList> to <CreatePost> ✅
+	- make necessary changes to 'draft' option ✅
+- repopulate function for <CreatePost> when draft selected
+
+@0920 need to change 'Home.css' to 'Base.css'
+
+### 09. 11. 2024
+@2200 For Drafts:
+- draft button at bottom bar ✅
+- drafts button at top w/ info button ✅
+- adjust frontend and backend for drafts ✅ 
+  - all getDocs funcs for posts to include filter for type: drafts ✅
+  - subroute for user's drafts (next)
+- draft list is <FullList> with extra rows for deets 
+- selecting a draft should populate <CreatePost> accordingly
+	- add postContent per each item
+	- preselect users and tags
+	- location data
+	- private or not
+
+
+### 09. 07. 2024
+@1600 Removing post content should work now. Do a test to make sure
+
+@1550 Working on making content within <CreatePost> removable. Necessary for when editting
+	  drafts.
+Currently having issue with adding images. 
+
+@0835 Will add draft functionality as final addition for 1.0A
+implement removing text boxes and images
+should be able to remove any item without affecting entire order
+- add 'remove' button to lower right corner
+
+Clicking button in Macros section should trigger page leave animation
+get from <Log>
+
+
+@0810 Fixed some issues with <Macrospage>
+Will forego adding topics selection to signup process for now...
+
+@0745 in Macrospage,
+user's username should be link to their page
+
+for private tags and collections,
+posts can be viewed ONLY by users with access.
+
+private tags with same name can exist.
+
+Simple Process: 
+ - request access from <macrospage>
+ - owner confirms of ignores via notifsList
+
+Order:
+- requester sends request notif,
+- owner sends confirm notf
+
+
 ### 09. 02. 2024
-@0720 selecting topics in signup sequence SHOULD be last addition for 1.0A
+@0735 add social links & picture to developers in About page
+make list of all future planned additions
+
+@0720 selecting topics in signup sequence & about / changelog SHOULD be last addition for 1.0A
 
 @0700 Continue working on CSS refinement
 

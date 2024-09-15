@@ -149,41 +149,7 @@ section#HOME.return {
 		}
 
 
-	header svg#return {
-	/*	transform: scale(0.6);*/
-		width: 50px;
-		position: relative;
-		top: 4px;
-		transition: all 0.3s ease-in-out;
-		margin-right: -240px;
-	}
-
-	header svg#return.leave {
-		animation: leave 0.5s ease-in-out forwards;
-	}
-
-	@keyframes leave {
-		0% {
-			right: 0%;
-		}
-		100% {
-			right: 50px;
-		}
-	}
-
-	svg#return polyline {
-		fill: rgba(255, 255, 255, 0);
-	    stroke-width: 8px;
-	}
-
-		svg#return polyline#top {
-		    stroke: rgba(0, 0, 0, 0.5);
-	/*		stroke: red;*/
-		}
-
-		svg#return polyline#bottom {
-			stroke: rgba(0, 0, 0, 0.1);
-		}
+	
 
 
 
@@ -912,6 +878,30 @@ div#FullList ul#dataList li button img {
 }
 
 
+div#FullList ul#dataList li.view {
+	width: 90%;
+	margin: 16px auto;
+	padding: 8px 12px;
+	border-radius: 8px;
+	transition: all ease-in-out 0.2s;
+}
+
+div#FullList ul#dataList li.view:hover {
+	background-color: var(--greyscale-backdrop);
+}
+
+div#FullList ul#dataList li.view h3 {
+	font-size: 1.5em;
+	margin: 4px auto 12px;
+}
+
+div#FullList ul#dataList li.view p {
+	margin: 12px auto 12px;
+}
+
+
+
+
 div#FullList ul.optionsMenu {
 	width: 100%;
     background-color: white;
@@ -931,6 +921,20 @@ div#FullList ul.optionsMenu li button {
 	font-size: 1.4em;
 }
 
+div#FullList div#exitWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background-color: transparent;
+}
+
+div#FullList div#exitWrapper button {
+	margin: 24px 0;
+}
 
 
 

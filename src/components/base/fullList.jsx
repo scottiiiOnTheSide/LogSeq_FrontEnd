@@ -7,10 +7,25 @@ import './home.css';
 let accessAPI = APIaccess();
 
 
-export default function FullList({ data, mode, source, setSocketMessage, socketMessage, setFullList, groupID }) {
+export default function FullList({ 
+	data, 
+	mode, 
+	source, 
+	setSocketMessage, 
+	socketMessage, 
+	setFullList, 
+	groupID,
+	setPostContent,
+	postContent,
+	setLocationData,
+	setIsPrivate,
+	suggestions,
+	setSuggestions
+}) {
 
 	const [dataList, setDataList] = React.useState([]);
 	const [selection, setSelection] = React.useState([]);
+	const el = React.useRef();
 
 	const handleSubmit = (event) => {
 
@@ -127,10 +142,29 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 		}
 	}
 
+	const setAsPost = (postID) => {
+		let post = data.find(post => post._id == postID)
+
+		//content layout
+		//{
+		//	content: '',
+		//	type: type,
+		//	index: postContent.length
+		//}
+
+		//then
+		let fullList = document.getElementById('FullList');
+		fullList.classList.add('leave')
+
+		let second = setTimeout(()=> {
+			setFullList();	
+		}, 200)
+	}
+
 	/* For adjusting data before putting in dataList variable */
 	React.useEffect(()=> {	
 
-		if(mode == 'remove' || mode == 'view') {
+		if(mode == 'remove' || mode.includes('view')) {
 			let newData = data.map(post => {
 
 				let content;
@@ -229,13 +263,19 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 		}
 	}, [socketMessage])
 
-	// console.log(dataList)
+	//Enter animation
+	React.useEffect(()=> {
+		let elCurrent = el.current;
+		let delay = setTimeout(()=> {
+			elCurrent.classList.remove('_enter');	
+		}, 200)
+	}, [])
 
 	return (
-		<div id="FullList">
+		<div id="FullList" ref={el}>
 			
 			<h2 id="title">
-				{`${mode == 'view' ? "Viewing" : '' }`}
+				{`${mode.includes('view') ? "Viewing" : '' }`}
 				{`${mode == 'remove' ? "Removing From" : '' }`}
 				{`${mode == 'remove_pinnedMedia' ? "Removing From" : '' }`}
 				{`${mode == 'remove_pinnedPosts' ? "Removing From" : '' }`}
@@ -303,11 +343,13 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 						</li>
 					))
 				}
-				{/*{mode == 'view' &&
+				{mode.includes('view') &&
 					dataList.map(entry => (
-						<li>
+						<li key={entry._id} className={`view`} onClick={()=> {
+							setAsPost(entry.id);
+						}}>
 							<h3>{entry.title}</h3>
-							<p>{entry.excerpt}</p>
+							<p>{entry.content}</p>
 
 							{entry.images.length > 0 &&
 								<ul className='images'>
@@ -320,15 +362,28 @@ export default function FullList({ data, mode, source, setSocketMessage, socketM
 							}
 						</li>
 					))
-				}*/}
+				}
 				{/*may have to use log here*/}
 			</ul>
 
 
-			{mode == 'view' &&
-				<button>Exit</button>
-			}
+			{/*
+				O P T I O N S  o r  E X I T 
+			*/}
+			{mode.includes('view') &&
+				<div id="exitWrapper">
+					<button className={`buttonDefault`}
+							onClick={()=> {
 
+								let fullList = document.getElementById('FullList');
+								fullList.classList.add('leave')
+
+								let second = setTimeout(()=> {
+									setFullList();	
+								}, 200)
+							}}>Exit</button>	
+				</div>
+			}
 			{mode.includes('remove') &&
 				<ul className="optionsMenu" id="deleteMenu">
 				

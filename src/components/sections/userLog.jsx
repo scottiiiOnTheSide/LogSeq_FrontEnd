@@ -4,9 +4,86 @@ import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
 import './sections.css';
 import './userLog.css';
+import FullList from '../../components/base/fullList';
 
 let accessAPI = APIaccess();
 
+function ReturnElement ({el, setCurrent, current}) {
+
+	let [ifLeave, setLeave] = React.useState(false);
+	
+	let goBack = () => {
+		setLeave(true)
+
+		let second = setTimeout(()=> {
+			let elCurrent = el.current;
+			elCurrent.classList.add('_enter');
+		}, 300)
+		
+		let third = setTimeout(()=> {
+			setCurrent({
+				...current,
+				modal: false
+			})
+		}, 500)
+	}
+
+	return (
+		<svg 
+			xml version="1.0"
+			viewBox="109.21 220.42 140.874 69.937" 
+			xmlns="http://www.w3.org/2000/svg"
+			id="return"
+			className={ifLeave ? "leave" : ""}
+			onClick={goBack}>
+	  		<polyline 
+	  			id="top"
+	  			points="249.644 250.369 109.21 250.393 159.165 220.42" 
+	  			transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, 0, 1.4210854715202004e-14)"/>
+	  		<polyline 
+	  			id="bottom"
+	  			points="250.084 260.408 109.65 260.384 159.605 290.357" 
+	  			transform="matrix(0.9999999999999999, 0, 0, 0.9999999999999999, 0, 1.4210854715202004e-14)"/>
+		</svg>
+	)
+}
+
+function DraftIcon ({toggleDrafts}) {
+
+	/* 
+		09. 13. 2024
+		opens FullList 
+		which should be -within- userlog 
+		(though this may not be optimal)
+	*/
+
+	const [ifHover, setHover] = React.useReducer(state => !state, false);
+	const handleClick = () => {
+		setHover();
+		let delay = setTimeout(()=> {
+			toggleDrafts();
+			setHover();
+		}, 200)
+	}
+
+	return (
+		<svg 
+			id="draftIcon"
+			xmlns="http://www.w3.org/2000/svg" 
+			width="33.049" 
+			height="40.075" 
+			viewBox="0 0 33.049 40.075"
+			onClick={handleClick}
+			className={ifHover ? "hover" : ""}>
+		  <g transform="translate(-259 -13.925)">
+		    <path class="a" d="M267 20a6.007 6.007 0 0 0-6 6v20a6.007 6.007 0 0 0 6 6h14a6.007 6.007 0 0 0 6-6V26a6.007 6.007 0 0 0-6-6zm0-2h14a8 8 0 0 1 8 8v20a8 8 0 0 1-8 8h-14a8 8 0 0 1-8-8V26a8 8 0 0 1 8-8"/>
+		    <path class="a" d="M278.25 28.5h-12v-1h12Zm3.5 4h-15.5v-1h15.5Zm0 4h-15.5v-1h15.5Zm-3 4h-12.5v-1h12.5Zm3 4h-15.5v-1h15.5Z"/>
+		    <rect width="3" height="20" rx="1.5" transform="rotate(30 118.741 547.085)"/>
+		    <path d="M1.5 0A1.5 1.5 0 0 1 3 1.5v17a1.5 1.5 0 0 1-3 0v-17A1.5 1.5 0 0 1 1.5 0" transform="rotate(30 118.741 547.085)"/>
+		  </g>
+		</svg>
+	)
+}
 
 function DropSelect({tagged, setTagged}) {
 
@@ -245,18 +322,25 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
 	const privacySetting = sessionStorage.getItem('privacySetting');
+	const [drafts, setDrafts] = React.useState([]);
 	const [formData, setFormData] = React.useState({});
 	const [suggestions, setSuggestions] = React.useState([]);
 	const [isPrivate, setPrivate] = React.useReducer(state => !state, false);
 	const [contentCount, setContentCount] = React.useState(['text']);
-	const [postContent, setPostContent] = React.useState([]);
-	const [images, setImages] = React.useState([]);
-	let count = 0;
-	// console.log(postContent);
+	// const [postContent, setPostContent] = React.useState([]);
+	const [postContent, setPostContent] = React.useState([
+		{
+			content: '',
+			type: 'text',
+			index: 0
+		}
+	]);
+	//this is set to user's current coordinates when they first toggle 'Pin Location'
 	const [locationData, setLocationData] = React.useState({ //values are null until user initially selects pinLocation 
 		lon: null, //40.6569 
 		lat: null //-73.9605
-	}); //this is set to user's current coordinates when they first toggle 'Pin Location'
+	}); 
+	const [draftList, setDraftList] = React.useReducer(state => !state, false);
 	const el = React.useRef();
 	const element = el.current;
 
@@ -271,21 +355,15 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			})
 		} 
 		else if(event.target.name == 'image') {
-			newContent('media');
 			setPostContent([
 				...postContent,
 				{ 
 					content: event.target.files[0],
-					type: event.target.name, 
-					index: contentCount.length + 0.5
-				}		
-			])
-			setImages([...images, 
-				{
+					type: 'media', 
+					index: postContent.length - 0.5,
 					url: URL.createObjectURL(event.target.files[0]),
-					index: contentCount.length + 0.5
-				}
-			]);
+				}		
+			])	
 		} 
 		else if(event.target.name == 'content') {
 
@@ -326,7 +404,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 						content: event.target.value,
 						type: "text", 
 						index: event.target.dataset.index 
-
 					}		
 				])
 			}
@@ -346,12 +423,12 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		if(!formData.title) {
 				setSocketMessage({
 					type: 'error',
-					message: 'Both a Title and Content are needed to make a post!'
+					message: 'Atleast a Title, Text or Media is needed to make a post!'
 				})
 		} else if (postContent.length < 1) {
 			setSocketMessage({
 					type: 'error',
-					message: 'Both a Title and Content are needed to make a post!'
+					message: 'Atleast a Title, Text or Media is needed to make a post!'
 				})
 		}  
 		else {
@@ -359,6 +436,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			element.classList.add('_loading');
 			let submission = new FormData();
 
+			submission.append('type', 'entry');
 			submission.append('title', formData.title);
 			submission.append('isPrivate', isPrivate);
 			submission.append('privacyTogglable', sessionStorage.getItem('privacySetting'));
@@ -426,9 +504,13 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				}, 300)
 				 //closes the createPost component - should change name within component
 
-			} else if(submit.confirm == false) {
-				element.classList.remove('_loading');
-				console.log('Issue with post submission');
+			} else if(submit.message) {
+					element.classList.remove('_loading');
+					console.log('Issue with post submission');
+					setSocketMessage({
+						type: 'error',
+						message: submit.message
+					})
 			}
 			/**
 			 * 10. 27. 2023
@@ -457,18 +539,125 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		}
 	}
 
+	const draftPost = async(event) => {
+
+			event.preventDefault();
+			console.log(postContent);
+
+			if(!formData.title) {
+					setSocketMessage({
+						type: 'error',
+						message: 'Atleast a Title, Text or Media is needed to make a post!'
+					})
+			} else if (postContent.length < 1) {
+				setSocketMessage({
+						type: 'error',
+						message: 'Atleast a Title, Text or Media is needed to make a post!'
+					})
+			}
+			else {
+				element.classList.add('_loading');
+				let submission = new FormData();
+
+				submission.append('type', 'draft');
+				submission.append('title', formData.title);
+				submission.append('isPrivate', isPrivate);
+				submission.append('privacyTogglable', sessionStorage.getItem('privacySetting'));
+				submission.append('profilePhoto', sessionStorage.getItem('profilePhoto'));
+
+				for(let i=0; i < postContent.length; i++){
+					if(postContent[i].type == 'text') {
+						if(postContent[i].content === '') {
+							return null;
+						} else {
+							let content = postContent[i].content;
+							submission.append(`${postContent[i].index}`, content)
+						}
+						
+					} else if(postContent[i].type == 'image') {
+						let content = postContent[i].content;
+						submission.append(`${postContent[i].index}`, content)
+					}
+				}
+
+				let tags = suggestions.filter(el => el.selected == true).map(el => el.name);
+				if(tags.length > 0) {
+					submission.append('tags', tags);	
+				} 
+				
+				let taggedUsers = tagged.filter(user => user.selected == true).map(user => {
+					return {
+						_id: user._id, 
+						username: user.userName
+					}
+				});
+				if(taggedUsers.length > 0) {
+					submission.append('taggedUsers', JSON.stringify(taggedUsers));
+				}
+				console.log(taggedUsers);
+
+				if(selectedDate.day != null) {
+					submission.append('usePostedByDate', false);
+					submission.append('postedOn_month', selectedDate.month);
+					submission.append('postedOn_day', selectedDate.day);
+					submission.append('postedOn_year', selectedDate.year);
+				} else {
+					submission.append('usePostedByDate', true);
+				}
+
+				if(pinLocation.open) {
+					submission.append('geoLon', pinLocation.lon);
+					submission.append('geoLat', pinLocation.lat);
+				}	
+				console.log(submission);
+				console.log(tags);
+
+				let submit = await accessAPI.createPost(submission);
+
+				if(submit.confirm == true) {
+					console.log(submit);
+					element.classList.remove('_enter');
+					element.classList.add('_fade');
+					let second = setTimeout(()=> {
+						setCurrent({
+							...current,
+							modal: false
+						})
+					}, 300)
+
+					let third = setTimeout(()=> {
+						setSocketMessage({
+							confirm: 'postDrafted'
+						})
+					}, 300)
+				} else if(submit.message) {
+					element.classList.remove('_loading');
+					console.log('Issue with post submission');
+					setSocketMessage({
+						type: 'error',
+						message: submit.message
+					})
+				}
+			}
+	}
+
 	const newContent = (type) => {
-		setContentCount([
-			...contentCount,
-			`${type}`
+		setPostContent([
+			...postContent,
+			{
+				content: '',
+				type: type,
+				index: postContent.length
+			}
 		])
 	}
 
-	const textareaImageAdd = (index, type) => {
+	const textareaImageAdd = (index, type, info) => {
 
 		if(type == 'text') {
 				return	(
-					<textarea 
+					<div >
+						<textarea 
 							key={index}
 							className={"textareaImageAdd"}
 							name="content" 
@@ -478,12 +667,38 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 							rows="8"
 							cols="30"
 						/>
+						{index > 0 &&
+							<button className={`buttonDefault remove`}
+									onClick={(e)=> {
+										e.preventDefault();
+										console.log(index);
+										let copy2 = postContent.filter(post => post.index != index);
+										setPostContent(copy2);
+									}}>
+								Remove
+							</button>
+						}
+						
+					</div>
 				)
 		}
 		else if(type == 'media') {
-			let link = images.find(element => element.index == index);
+
+			// let link = images.find(element => element.index == index);
 			return (
-				<img key={index} src={link.url}/> 
+				<div >
+					<img key={index} src={info}/> 
+
+					<button className={`buttonDefault remove`}
+							onClick={(e)=> {
+								e.preventDefault();
+								let copy2 = postContent.filter(post => post.index != index);
+								setPostContent(copy2);
+							}}>
+						Remove
+					</button>
+				</div>
+				
 			)
 		}
 	}
@@ -522,6 +737,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		}
 		console.log(results)
 		setSuggestions(results);
+	}
+
+	const getDrafts = async() => {
+		let request = await accessAPI.getDrafts();
+		setDrafts(request);
 	}
 	
 	const [tagged, setTagged] = React.useState([]);
@@ -635,10 +855,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		}
 	}, [pinLocation.open])
 
-	//update main data on every reload
+	//update main data: connections, topics and tags, drafted posts
 	React.useEffect(()=> {
 		getConnections();
 		getSuggestions();
+		getDrafts();
 	}, []);
 
 	//update tags on new tag creation
@@ -650,7 +871,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		}
 	}, [socketMessage]);
 
-	//Enter / Exit animation
+	//Enter animation
 	React.useEffect(()=> {
 		let elCurrent = el.current;
 		let delay = setTimeout(()=> {
@@ -660,28 +881,56 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	
 
 	return (
+
 		<div id="createPost" ref={el} className={`_enter`}>
-			<div id="titleWrapper">
-				<h3>Creating Entry for</h3>
-				{current.monthChart &&
-					<h2>{writtenDate}</h2>
-				}
-				{!current.monthChart &&
-					<h2>Today</h2>
-				}
+
+			{/*
+				H E A D E R
+			*/}
+			<div id="headerWrapper">
+
+				<ReturnElement el={el} current={current} setCurrent={setCurrent}/>
+
+				<div id="dateSetter">
+					<h3>Creating Entry for</h3>
+					{current.monthChart &&
+						<h2>{writtenDate}</h2>
+					}
+					{!current.monthChart &&
+						<h2>Today</h2>
+					}
+				</div>
+
+				<DraftIcon toggleDrafts={setDraftList}/>
 			</div>
 
+
+			{/*
+				F O R M
+						B O D Y
+			*/}
 			<form onSubmit={handleSubmit} encType='multipart/form-data'>
 				<fieldset>
 					<input name="title" id="title" placeholder="Title" onChange={handleChange}/>
-					{contentCount.map((element, index) => {
-						if(element == 'text') {
-							return textareaImageAdd(index, element)
-						}
-						else if(element == 'media') {
-							return textareaImageAdd(index + 0.5, element)
-						}	
-					})}
+					<div id="contentWrapper">
+						{/*{contentCount.map((element, index) => {
+							if(element == 'text') {
+								return textareaImageAdd(index, element)
+							}
+							else if(element == 'media') {
+								return textareaImageAdd(index + 0.5, element)
+							}	
+						})}*/}
+						{postContent.map((element) => {
+							if(element.type == 'text') {
+								return textareaImageAdd(element.index, element.type)
+							}
+							else if(element.type == 'media') {
+								return textareaImageAdd(element.index, element.type, element.url)
+							}	
+						})}
+					</div>
+					
 
 					<div id="moreContent">
 						<button className={'buttonDefault'} 
@@ -692,7 +941,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 								Add Text
 						</button>
 
-						<label className="imageAdd" onChange={handleChange} htmlFor="addImage" onClick={()=> {
+						<label className="imageAdd" onChange={handleChange} htmlFor="addImage" onClick={(e)=> {
 							document.getElementById('addImage').click();							
 						}}>
 							<input hidden
@@ -762,21 +1011,9 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			</form>
 			
 			<div id="options">
-				<button className={"buttonDefault"} onClick={(e)=> {
-					e.preventDefault();
-					
-					let elCurrent = el.current;
-					elCurrent.classList.add('_enter');
+				<button className={"buttonDefault"} onClick={draftPost}>Draft</button>
 
-					let delay = setTimeout(()=> {
-						setCurrent({
-							...current,
-							modal: false
-						})
-					}, 300)
-				}}>Close</button>
-
-				<button className={"buttonDefault"} onClick={handleSubmit}>Submit</button>
+				<button className={"buttonDefault"} onClick={handleSubmit}>Post</button>
 			</div>
 
 			{modal &&
@@ -806,6 +1043,24 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 					</div>
 				</div>
 			}
+
+			{draftList &&
+				<FullList 
+					data={drafts}
+					mode={'viewDrafts'}
+					source={`${username}'s Drafts`}
+					socketMessage={socketMessage}
+					setSocketMessage={setSocketMessage}
+					setFullList={setDraftList}
+					postContent={postContent}
+					groupID={''}
+					setLocationData={setLocationData}
+					setPrivate={setPrivate}	
+					suggestions={suggestions}
+					setSuggestions={setSuggestions}
+				/>
+			}	
+
 		</div>
 	)
 }

@@ -39,7 +39,7 @@ import { ManageConnections } from './components/sections/socialLog';
 import { ManageMacros } from './components/sections/macros';
 import MonthChart from './components/monthChart/monthChart';
 import MapComponent from './components/map/map';
-import {MapPage} from './components/map/map';
+import { MapPage } from './components/map/map';
 import './components/sections/sections.css';
 
 
