@@ -4,6 +4,16 @@
 -----------------------------------------------------------------------------------------
 
 ### 09. 15. 2024
+@2145 Issues with:
+		- tags and tagged users not showing up
+			- very long list added for users?
+
+had to add 'onChange' to textarea. Had switched to onBlur in order to deal with an issue
+will test to see whether i can leave both, or only onChange if there's already a value
+
+@1840 may have to save info for current section and place in log into sessionStorage,
+as refreshing on a <Post> removes that info
+
 @1350 working on functionality to populate createPost with selected option from fullList
 	drafts
 
@@ -12,6 +22,10 @@ so, e.i apiaccess.posts.getPost()
 
 ****To Fix:
 	- one or another opening for <Macros> section settings 
+	- have current.section and current.scrollTo be in sessionStorage
+	- set chosen draft with a 'selected: true' field
+		- upon submission, check for it and have it deleted
+			- need api subroute for deleting drafts
 
 ### 09. 13. 2024
 @1855 Next, 

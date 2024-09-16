@@ -451,7 +451,7 @@ export default function Post({
 						<button className={`toProfile`} onClick={()=> {goToProfile(postData.owner)}}>
 							<img src={postData.profilePhoto}/>
 							<span>&#64;{postData.author} 
-							{postData.taggedUsers &&
+							{postData.taggedUsers.length > 0 &&
 								<span>{` with ${postData.taggedUsers.length} other ${postData.length > 1 ? 's' : ''}`}</span>
 							}
 							</span>

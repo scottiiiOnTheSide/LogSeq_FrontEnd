@@ -325,8 +325,9 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const [drafts, setDrafts] = React.useState([]);
 	const [formData, setFormData] = React.useState({});
 	const [suggestions, setSuggestions] = React.useState([]);
+	const [tagged, setTagged] = React.useState([]); //user's connections
 	const [isPrivate, setPrivate] = React.useReducer(state => !state, false);
-	const [contentCount, setContentCount] = React.useState(['text']);
+	// const [contentCount, setContentCount] = React.useState(['text']);
 	// const [postContent, setPostContent] = React.useState([]);
 	const [postContent, setPostContent] = React.useState([
 		{
@@ -419,17 +420,13 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const handleSubmit = async(event) => {
 		event.preventDefault();
 		console.log(postContent);
+		let title = document.getElementById('title');
 
-		if(!formData.title) {
-				setSocketMessage({
-					type: 'error',
-					message: 'Atleast a Title, Text or Media is needed to make a post!'
-				})
-		} else if (postContent.length < 1) {
+		if(postContent[0].content.length < 1 || title.value == '') {
 			setSocketMessage({
-					type: 'error',
-					message: 'Atleast a Title, Text or Media is needed to make a post!'
-				})
+				type: 'error',
+				message: 'Atleast a Title, Text or Media is needed to make a post!'
+			})
 		}  
 		else {
 			
@@ -437,7 +434,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			let submission = new FormData();
 
 			submission.append('type', 'entry');
-			submission.append('title', formData.title);
+			submission.append('title', formData.title ? formData.title : title.value);
 			submission.append('isPrivate', isPrivate);
 			submission.append('privacyTogglable', sessionStorage.getItem('privacySetting'));
 			submission.append('profilePhoto', sessionStorage.getItem('profilePhoto'));
@@ -663,9 +660,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 							name="content" 
 							placeholder="Content" 
 							onBlur={handleChange}
+							onChange={handleChange}
 							data-index={index}
 							rows="8"
 							cols="30"
+							value={info ? info : undefined}
 						/>
 						{index > 0 &&
 							<button className={`buttonDefault remove`}
@@ -744,7 +743,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		setDrafts(request);
 	}
 	
-	const [tagged, setTagged] = React.useState([]);
+
 	const [enter, setEnter] = React.useReducer(state => !state, true);
 	const [modal, setModal] = React.useReducer(state => !state, false);
 	const [isPrivate_2, setIsPrivate_2] = React.useReducer(state => !state, false);
@@ -923,7 +922,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 						})}*/}
 						{postContent.map((element) => {
 							if(element.type == 'text') {
-								return textareaImageAdd(element.index, element.type)
+								return textareaImageAdd(element.index, element.type, element.content)
 							}
 							else if(element.type == 'media') {
 								return textareaImageAdd(element.index, element.type, element.url)
@@ -1053,11 +1052,14 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 					setSocketMessage={setSocketMessage}
 					setFullList={setDraftList}
 					postContent={postContent}
+					setPostContent={setPostContent}
 					groupID={''}
 					setLocationData={setLocationData}
 					setPrivate={setPrivate}	
 					suggestions={suggestions}
 					setSuggestions={setSuggestions}
+					tagged={tagged}
+					setTagged={setTagged}
 				/>
 			}	
 

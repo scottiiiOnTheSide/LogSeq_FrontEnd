@@ -17,10 +17,12 @@ export default function FullList({
 	groupID,
 	setPostContent,
 	postContent,
-	setLocationData,
-	setIsPrivate,
+	setPinLocation,
+	setPrivate,
 	suggestions,
-	setSuggestions
+	setSuggestions,
+	tagged,
+	setTagged
 }) {
 
 	const [dataList, setDataList] = React.useState([]);
@@ -143,22 +145,71 @@ export default function FullList({
 	}
 
 	const setAsPost = (postID) => {
-		let post = data.find(post => post._id == postID)
+		let post = data.find(post => post._id == postID);
+		console.log(post);
 
-		//content layout
-		//{
-		//	content: '',
-		//	type: type,
-		//	index: postContent.length
-		//}
+		/* Setting Post Content */
+		let title = document.getElementById('title');
+		title.value = post.title;
 
-		//then
+		if(post.content.length > 0) {
+			post.content.forEach((piece, index) => {
+				if(index == 0) {
+					setPostContent([
+						{
+							content: piece.content,
+							type: piece.type,
+							index: piece.place
+						}
+					])
+				}
+				else {
+					setPostContent([
+						...postContent,
+						{
+							content: piece.content,
+							type: piece.type,
+							index: piece.place	
+						}
+					])
+				}
+			})
+		}
+
+		let updatedTagged = tagged.map(user1 => {
+			let user2 = post.taggedUsers.find(user => user._id == user1._id);
+			if(user2 && user2.selected) {
+				return { ...user1, selected: true};
+			}
+			else return user1;
+		});
+		setTagged(updatedTagged);
+
+		let updatedSuggestions = suggestions.map(tag1 => {
+			let tag2 = post.tags.find(tag => tag._id == tag1._id);
+			if(tag2 && tag2.selected) {
+				return { ...tag1, selected: true};
+			}
+			else return tag1;
+		});
+		setTagged(updatedSuggestions); 
+
+		if(post.isPrivate == true) {
+			setPrivate();
+		}
+		if(post.location) {
+			setPinLocation({
+				lon: post.location.lon, 
+				lat: post.location.lat,
+			});
+		}
+
 		let fullList = document.getElementById('FullList');
 		fullList.classList.add('leave')
 
 		let second = setTimeout(()=> {
 			setFullList();	
-		}, 200)
+		}, 500)
 	}
 
 	/* For adjusting data before putting in dataList variable */
@@ -346,7 +397,9 @@ export default function FullList({
 				{mode.includes('view') &&
 					dataList.map(entry => (
 						<li key={entry._id} className={`view`} onClick={()=> {
-							setAsPost(entry.id);
+							if(mode == 'viewDrafts') {
+								setAsPost(entry.id);	
+							}
 						}}>
 							<h3>{entry.title}</h3>
 							<p>{entry.content}</p>
