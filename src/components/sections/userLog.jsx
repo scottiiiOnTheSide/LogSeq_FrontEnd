@@ -336,10 +336,11 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			index: 0
 		}
 	]);
+
 	//this is set to user's current coordinates when they first toggle 'Pin Location'
 	const [locationData, setLocationData] = React.useState({ //values are null until user initially selects pinLocation 
-		lon: null, //40.6569 
-		lat: null //-73.9605
+		lon: undefined, //40.6569 
+		lat: undefined //-73.9605
 	}); 
 	const [draftList, setDraftList] = React.useReducer(state => !state, false);
 	const el = React.useRef();
@@ -375,9 +376,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				}
 			}
 
-			if(event.target.value == '') {
-				return
-			} else if (copy == true) {
+			 if (copy == true) {
 				if(postContent.length == 1) {
 					setPostContent([
 						{ 
@@ -490,7 +489,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 			if(submit.confirm == true) {
 				console.log("Post submission successful");
-				console.log(submit);
+				// console.log(submit);
 				element.classList.remove('_enter');
 				element.classList.add('_fade');
 				let delay = setTimeout(()=> {
@@ -499,8 +498,12 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 						modal: false
 					})
 				}, 300)
-				 //closes the createPost component - should change name within component
 
+				let utilizedDraft = drafts.find(post => post.selected == true);
+				if(utilizedDraft) {
+					await accessAPI.deleteDraft(utilizedDraft._id)	
+				}
+				
 			} else if(submit.message) {
 					element.classList.remove('_loading');
 					console.log('Issue with post submission');
@@ -525,7 +528,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 					url: submit.postURL,
 					message: 'sent',
 					recipients: recips,
-					details: JSON.stringify({postTitle: submit.postTitle})
+					postTitle: title.value
 				})
 
 			} else {
@@ -755,8 +758,8 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	//these values are added to post submission
 	const [pinLocation, setPinLocation] = React.useState({
 		open: false,
-		lon: locationData.lon, 
-		lat: locationData.lat
+		lon: undefined, 
+		lat: undefined
 	});
 
 	let writtenDate;
@@ -811,10 +814,10 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	};
 
 	const getGeoInfo_success = (pos) => {
-		setLocationData({
-			lon: pos.longitude,
-			lat: pos.latitude
-		})
+		// setLocationData({
+		// 	lon: pos.longitude,
+		// 	lat: pos.latitude
+		// })
 		setPinLocation({
 			...pinLocation,
 			lon: pos.longitude,
@@ -829,6 +832,9 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 	//for getting user location details upon toggling 'pinLocation'
 	React.useEffect(()=> {
+		if(pinLocation.lon) {
+			return;
+		}
 
 		if(navigator.geolocation) {
 			navigator.permissions.query({name: "geolocation"}).then((result)=> {
@@ -842,9 +848,14 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				}
 				else if(result.state == "denied") {
 					//can utilize the popUpNotif to instruct user on how to activate location permissions
-					setLocationData({
-						lon: null,
-						lat: null
+					// setLocationData({
+					// 	lon: undefined,
+					// 	lat: undefined
+					// })
+					setPinLocation({
+						...pinLocation,
+						lon: undefined,
+						lat: undefined
 					})
 				}
 			})
@@ -993,14 +1004,14 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 								<input type="number"
 										name="lon"
 										onChange={onChange}
-										placeholder={locationData.lon}/>
+										placeholder={pinLocation.lon}/>
 							</div>
 							<div id="latWrap" className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>
 								<p className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>LAT</p>
 								<input type="number"
 										name="lat"
 										onChange={onChange}
-										placeholder={locationData.lat}/>
+										placeholder={pinLocation.lat}/>
 							</div>
 						</div>
 					}
@@ -1054,12 +1065,14 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 					postContent={postContent}
 					setPostContent={setPostContent}
 					groupID={''}
+					setPinLocation={setPinLocation}
 					setLocationData={setLocationData}
 					setPrivate={setPrivate}	
 					suggestions={suggestions}
 					setSuggestions={setSuggestions}
 					tagged={tagged}
 					setTagged={setTagged}
+					setDrafts={setDrafts}
 				/>
 			}	
 

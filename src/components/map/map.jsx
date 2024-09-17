@@ -94,7 +94,7 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 				return {
 					id: num,
 					// coords: points,
-					coords: [parseFloat(entry.location.lat), parseFloat(entry.location.lon)],
+					coords: [parseFloat(entry.location.lon), parseFloat(entry.location.lat)],
 					title: entry.title,
 					text: entry.content[0].content,
 					tags: entry.tags ? entry.tags.length : null,

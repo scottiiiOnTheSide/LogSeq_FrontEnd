@@ -18,11 +18,13 @@ export default function FullList({
 	setPostContent,
 	postContent,
 	setPinLocation,
+	setLocationData,
 	setPrivate,
 	suggestions,
 	setSuggestions,
 	tagged,
-	setTagged
+	setTagged,
+	setDrafts
 }) {
 
 	const [dataList, setDataList] = React.useState([]);
@@ -146,7 +148,17 @@ export default function FullList({
 
 	const setAsPost = (postID) => {
 		let post = data.find(post => post._id == postID);
-		console.log(post);
+		
+		let updatedDrafts = data.map(original => {
+			if(original._id == post._id) {
+				return {
+					...original,
+					selected: true
+				}
+			}
+			else return original	
+		})
+		setDrafts(updatedDrafts);
 
 		/* Setting Post Content */
 		let title = document.getElementById('title');
@@ -178,31 +190,45 @@ export default function FullList({
 
 		let updatedTagged = tagged.map(user1 => {
 			let user2 = post.taggedUsers.find(user => user._id == user1._id);
-			if(user2 && user2.selected) {
+			if(user2) {
 				return { ...user1, selected: true};
 			}
 			else return user1;
 		});
 		setTagged(updatedTagged);
+		// console.log(updatedTagged);
 
 		let updatedSuggestions = suggestions.map(tag1 => {
-			let tag2 = post.tags.find(tag => tag._id == tag1._id);
-			if(tag2 && tag2.selected) {
+			let tag2 = post.tags.find(tag => tag.name == tag1.name);
+			if(tag2) {
 				return { ...tag1, selected: true};
 			}
 			else return tag1;
 		});
-		setTagged(updatedSuggestions); 
+		setSuggestions(updatedSuggestions);
+		// console.log(updatedSuggestions); 
 
 		if(post.isPrivate == true) {
 			setPrivate();
 		}
-		if(post.location) {
+
+		if(post.location) {	
 			setPinLocation({
+				open: true,
 				lon: post.location.lon, 
 				lat: post.location.lat,
 			});
 		}
+
+		/*if(post.location) {	
+			setLocationData({
+				lon: post.location.lon, 
+				lat: post.location.lat,
+			})
+		}*/
+
+		// document.getElementsByName('lon')[0].value = post.location.lon;
+		// document.getElementsByName('lat')[0].value = post.location.lat;
 
 		let fullList = document.getElementById('FullList');
 		fullList.classList.add('leave')

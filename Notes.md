@@ -2,6 +2,36 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 09. 17. 2024
+@0235 drafting posts functionality has been added. tests seems to be fine
+
+Fixed an issue within the <NotifList> concerning postTitles...
+
+- implementing saving topics
+	- macros section shows user's saved topics + recently used tags
+- add topic selection to signup process
+- finish <About> page and changelog 
+- <MonthChart> to <Calendar> and style update
+
+- final clean up and all functionality testing
+	- will probably have to list all of the current possible operations T- T
+
+
+### 09. 16. 2024
+@2330 rearranging the lon and lat in <Maps> has displaced old posts, so we'll make new ones
+	  to ensure it is all good . . .
+
+@2210 locationData issue fixed, but location still ending up in antartica ...
+
+@2200 Gotta remove old notifs so that the change can be seen
+
+@2145 current issue: location data not filled in when selecting draft
+	  one state call after another doesnt seem to be working...
+
+@2045 draft is deleted when utlitized as post 
+
+@1955 issue with the tags and tagged users not showing up is fixed ✅
+
 
 ### 09. 15. 2024
 @2145 Issues with:
@@ -25,6 +55,7 @@ so, e.i apiaccess.posts.getPost()
 	- have current.section and current.scrollTo be in sessionStorage
 	- set chosen draft with a 'selected: true' field
 		- upon submission, check for it and have it deleted
+
 			- need api subroute for deleting drafts
 
 ### 09. 13. 2024
@@ -37,7 +68,7 @@ so, e.i apiaccess.posts.getPost()
 @0920 need to change 'Home.css' to 'Base.css'
 
 ### 09. 11. 2024
-@2200 For Drafts:
+@2200 For Drafts: (drafting done 09.17.2024)
 - draft button at bottom bar ✅
 - drafts button at top w/ info button ✅
 - adjust frontend and backend for drafts ✅ 
@@ -155,7 +186,7 @@ and then, UPLOAD !!!
 @1400 As part of CSS update, will like to change <CreatePost> so that it only says
 'add Image' or 'add Text' (done) ✅
 
-Map should also triangulate on user's location, and just the default if there's no location
+Map should also triangulate on user's location, and adjust the default if there's no location
 access
 
 @1355 changed privacySetting functionality

@@ -220,6 +220,23 @@ export default function APIaccess(key) {
 			return log;
 		},
 
+		async deleteDraft(draftID) {
+
+			let userKey = sessionStorage.getItem('userKey');
+			let request = await fetch(`${apiAddr}/posts/log?type=deleteDraft&postID=${draftID}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Content-Length': 0,
+					'Accept': 'application/json',
+					'Host': apiAddr,
+					'auth-token': userKey
+				}
+			}).then(data => data.json());
+
+			return request;
+		},
+
 		async getBlogPost(postID) {
 
 			let userKey = sessionStorage.getItem('userKey');

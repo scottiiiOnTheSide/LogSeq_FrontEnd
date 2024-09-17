@@ -133,10 +133,11 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 
 	let returnNotifType = (notif) => {
 
-		let details
-		if(notif.details) {
-			details = JSON.parse(notif.details);	
+		let postTitle;
+		if(!notif.details) {
+			postTitle = undefined; 
 		}
+		else postTitle = notif.details.postTitle 
 		
 		// save notif._id as key
 		return <li className="notif" key={notif._id}>
@@ -155,13 +156,13 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 						<p>You and {notif.recipientUsername} are now connected!</p>
 					}
 					{(notif.type == 'comment' && notif.message == 'initial') &&
-						<p>{notif.senderUsername} left a comment on your post "{details.postTitle}"</p>
+						<p>{notif.senderUsername} left a comment on your post "{postTitle}"</p>
 					}
 					{(notif.type == 'comment' && notif.message == 'response') &&
-						<p>{notif.senderUsername} responded to your comment on "{details.postTitle}"</p>
+						<p>{notif.senderUsername} responded to your comment on "{postTitle}"</p>
 					}
 					{(notif.type == 'tagging' && notif.message == 'recieved') &&
-						<p>{notif.senderUsername} tagged you in a post {details.postTitle}</p>
+						<p>{notif.senderUsername} tagged you in a post "{postTitle}"</p>
 					}
 
 					{notif.type == 'comment' && 
