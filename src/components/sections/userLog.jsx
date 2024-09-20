@@ -327,8 +327,6 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 	const [suggestions, setSuggestions] = React.useState([]);
 	const [tagged, setTagged] = React.useState([]); //user's connections
 	const [isPrivate, setPrivate] = React.useReducer(state => !state, false);
-	// const [contentCount, setContentCount] = React.useState(['text']);
-	// const [postContent, setPostContent] = React.useState([]);
 	const [postContent, setPostContent] = React.useState([
 		{
 			content: '',
@@ -764,7 +762,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 	let writtenDate;
 	if(selectedDate.day) {
-		writtenDate = `${selectedDate.month}. ${selectedDate.day}. ${selectedDate.year}`;
+		writtenDate = `${selectedDate.month + 1}. ${selectedDate.day}. ${selectedDate.year}`;
 	}
 
 	let newTag_onChange = (e) => {
@@ -1130,7 +1128,6 @@ export default function UserLog({active, setCurrent, current, log, setLog}) {
 
 	return (
 		<div id="userLog" className={place}>
-
 			<Log data={log} 
 				 section={"user"} 
 				 noHeading={noHeading} 

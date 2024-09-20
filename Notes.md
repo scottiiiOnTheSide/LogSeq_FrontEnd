@@ -2,19 +2,58 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 09. 20. 2024
+@1210 
+*** having trouble getting posts for topics while on a post ✅
+*** fix 'About Project' button in <UserSettings>
+*** need to test if adding and removing tags and public topics works
+*** rename macrosPage to macrosPage
+
+add check in macrospage in ARRD setter for whether the topic name is included in user's settings
+
+in postupload route, check if used topics are in user's settings. 
+if not, add
+
+for request:
+Simple Process: 
+ - request access from <macrospage>
+ - owner confirms of ignores via notifsList
+
+Order:
+- requester sends request notif,
+- owner sends confirm notif
+
+!!! posts in private tags macrospage CANNOT be seen if user does not have access
+
+
+### 09. 19. 2024
+@1535 need to modify addRequestRemoveDelete function in <Macrospage> to discern whether
+	  its tag, topic or collection
+	  +
+	  add backend route for adding and removing topics from user's settings
+
 ### 09. 17. 2024
 @0235 drafting posts functionality has been added. tests seems to be fine
 
 Fixed an issue within the <NotifList> concerning postTitles...
 
+- there's an issue with selecting a user within <ManageConnections> ✅
+- enter Macros sections needs an animation ✅
+- username in <Macros> needs to be link to user profile
 - implementing saving topics
 	- macros section shows user's saved topics + recently used tags
 - add topic selection to signup process
 - finish <About> page and changelog 
 - <MonthChart> to <Calendar> and style update
+	- adjust the animation in the changing of the months. 
+	- timing of when postCount gets updated
+	- an extra 6th row is being added to the calendar? gotta remove
+
 
 - final clean up and all functionality testing
 	- will probably have to list all of the current possible operations T- T
+
+- A list of all things I'd like to add AFTER 1.0A, small and large
 
 
 ### 09. 16. 2024

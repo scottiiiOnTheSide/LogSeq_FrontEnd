@@ -15,24 +15,6 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 
 	const navigate = useNavigate();
 	const _id = sessionStorage.getItem('userID');
-	// const [data, setData] = React.useState([]);
-
-	// function ifAnyPostsFromToday (posts) {
-	// 	let fromToday,
-	// 		today = new Date().getDate(),
-	// 		month = new Date().getMonth();
-
-	// 	for(let i = 0; i < posts.length; i++) {
-	// 		if(posts[i].postedOn_day == today && posts[i].postedOn_month == month) {
-	// 			fromToday = true;
-	// 			break;
-	// 		} else {
-	// 			fromToday = false;
-	// 		}
-	// 	}
-
-	// 	return fromToday;
-	// }
 
 	let goToProfile = async(userid) => {
 		
@@ -227,19 +209,9 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 		// }
 	}, [data])
 
-	// React.useEffect(()=> {
-	// 	getPosts();
-	// }, [])
-
-	// React.useEffect(()=> {
-	// 	getPosts();
-	// }, [updateLog])
 
 	return (
 		<div className={"log"} ref={logRef}>
-			{/*{((ifAnyPostsFromToday(log) !== true) && noHeading == false) &&
-				<h2 className="noPostsToday">No Posts Today</h2>
-			}*/}
 			{(data && data.length > 0) &&
 				data.map((post, index) => returnPostItem(post, index, _id))
 			}

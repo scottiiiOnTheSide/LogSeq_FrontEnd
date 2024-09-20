@@ -228,38 +228,73 @@ export default function Post({
 		}, 150)
 	}
 
-	let goToMacrosPage = async(groupName, groupID) => {
+	// let goToMacrosPage = async(groupName, groupID) => {
 
-		let isTopic = false;
-		let tagData = await accessAPI.getTagData(groupID, groupName);
-		if(tagData.response == 'topic') {
-			isTopic = true;
-		}
-		let tagPosts = await accessAPI.groupPosts({action: 'getPosts', groupID: groupID, groupName: groupName});
-		let postsCount = tagPosts.length;
+	// 	let tagData;
+	// 	if(!groupID) {
+	// 		tagData = null;
+	// 	}
+	// 	else {
+	// 		tagData = await accessAPI.getTagData(groupID, groupName);
+	// 	}
+
+	// 	let tagPosts = await accessAPI.groupPosts({action: 'getPosts', groupName: groupName});
+	// 	let postsCount = tagPosts.length;
+
+	// 	let doesHaveAccess;
+	// 	if(tagData) {
+	// 		doesHaveAccess = tagData.hasAccess.filter(el => el == userID);
+	// 		doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
+	// 	}
+		
+									
+	// 	setTimeout(()=> {
+	// 		navigate(`/macros/${groupName}`, {
+	// 				state: {
+	// 					name: groupName,
+	// 					posts: tagPosts,
+	// 					macroID: groupID ? groupID : null,
+	// 					isPrivate: tagData ? tagData.isPrivate : false,
+	// 					hasAccess: tagData ? doesHaveAccess : true,
+	// 					ownerUsername: tagData ? tagData.ownerUsername[0] : 'public',
+	// 					type: tagData ? tagData.type : 'topic',
+	// 					userCount: tagData ? tagData.hasAccess.length : null,
+	// 					postCount: postsCount ? postsCount : 0
+	// 				}
+	// 			})
+	// 	}, 300)
+	// }
+
+	let goToMacrosPage = async(tag) => {
+
+		let tagInfo = await accessAPI.getTagData(tag._id, tag.name);
+		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: tag._id, groupName: tag.name});
+		let postsCount = posts.length;
 
 		let doesHaveAccess;
-		if(tagData.hasAccess) {
-			doesHaveAccess = tagData.hasAccess.filter(el => el == userID);
+		if(tagInfo.hasAccess) {
+			doesHaveAccess = tagInfo.hasAccess.filter(el => el == userID);
 			doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
 		}
 		
+		console.log(tagInfo);
 									
 		setTimeout(()=> {
-			navigate(`/macros/${tagData.name}`, {
+			navigate(`/macros/${tag.name}`, {
 					state: {
-						name: isTopic ? groupName : tagData.name,
-						posts: tagPosts,
-						macroID: isTopic ? null : tagData._id,
-						isPrivate: isTopic ? false : tagData.isPrivate,
+						name: tag.name,
+						posts: posts,
+						macroID: tag._id,
+						isPrivate: tagInfo.isPrivate,
 						hasAccess: doesHaveAccess,
-						ownerUsername: isTopic ? 'Public' : tagData.ownerUsername,
-						type: isTopic ? 'topic' : tagData.type,
-						userCount: tagData.hasAccess ? tagData.hasAccess.length : null,
+						ownerUsername: tagInfo.adminUsernames ? tagInfo.adminUsernames[0] : null,
+						ownerID: tagInfo.admins ? tagInfo.admins[0] : null,
+						type: tagInfo.type == undefined ? 'topic' : tagInfo.type,
+						userCount: tagInfo.hasAccess ? tagInfo.hasAccess.length : null,
 						postCount: postsCount ? postsCount : 0
 					}
 				})
-		}, 300)
+		}, 200)
 	}
 
 	React.useEffect(()=> {
@@ -505,7 +540,7 @@ export default function Post({
 							<button className={`buttonDefault ${tag._id ? 'tag' : ''} ${tag.isPrivate == true ? 'private' : ''}`}
 									onClick={(e)=> {
 										e.preventDefault()
-										goToMacrosPage(tag.name, tag._id);
+										goToMacrosPage(tag);
 									}}>
 								{tag.name}
 							</button>

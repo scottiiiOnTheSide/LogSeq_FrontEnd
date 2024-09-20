@@ -90,9 +90,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		let body = {
 			 type: "tag",
 			 name: newTag_value.name,
-			 owner: newTag_value.isPrivate == true ? userID : null,
-			 admins: [`${newTag_value.isPrivate == true ? userID : null}`],
-			 hasAccess: [userID],
 			 isPrivate: newTag_value.isPrivate == true ? true : false,
 			 action: 'newTag'
 		}
@@ -162,8 +159,6 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 		let body = {
 			type: 'collection',
             name: newCollection.name,
-            owner: userID,
-            ownerUsername: username,
             isPrivate: newCollection.isPrivate == true ? true : false,
             details: newCollection.description,
             action: 'newCollection'
@@ -650,13 +645,14 @@ export default function Macros({active, current, setCurrent}) {
 						macroID: tag._id,
 						isPrivate: tagInfo.isPrivate,
 						hasAccess: doesHaveAccess,
-						ownerUsername: tagInfo.ownerUsername,
+						ownerUsername: tagInfo.adminUsernames ? tagInfo.adminUsernames[0] : null,
+						ownerID: tagInfo.admins ? tagInfo.admins[0] : null,
 						type: tagInfo.type == undefined ? 'topic' : tagInfo.type,
 						userCount: tagInfo.hasAccess ? tagInfo.hasAccess.length : null,
 						postCount: postsCount ? postsCount : 0
 					}
 				})
-		}, 300)
+		}, 200)
 	}
 
 	let goToPost = async(postData) => {

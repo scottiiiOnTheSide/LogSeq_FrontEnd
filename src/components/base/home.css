@@ -418,7 +418,7 @@ div#userSettings ul#mainMenu {
 
 div#userSettings ul#mainMenu li {
 	width: 100%;
-    margin: 24px 0;
+    margin: 28px 0;
     transition: all ease-in-out 0.2s;
     overflow-y: hidden;
 }

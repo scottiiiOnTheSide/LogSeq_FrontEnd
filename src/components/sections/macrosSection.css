@@ -113,6 +113,13 @@ section#HOME div#macros div#userTags ul.tagsWrapper li button {
     letter-spacing: 2px;
     color: var(--greyscale-details);
     background-color: transparent;
+    transition: all ease-in-out 0.3s;
+}
+
+section#HOME div#macros div#userTags ul.tagsWrapper li button:hover {
+	background-color: var(--greyscale-icons);
+    transform: scale(1.2);
+    margin: 0 4px;
 }
 
 section#HOME div#macros div#userTags ul.tagsWrapper li button.topic {

@@ -89,7 +89,7 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 	let selectConnection = (id) => {
 
 		let newList = connections.map(user => {
-			if(user.id == id) {
+			if(user._id == id) {
 
 				return {
 					...user,
@@ -219,22 +219,22 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 					<ul>
 						{connections.map((user, i) => (
 							<li key={i} 
-								data-id={user.id} 
+								data-id={user._id} 
 								className={`${user.selected == true ? 'selected' : ''}`}
 								onClick={(e)=> {
 									e.preventDefault()
-									selectConnection(user.id)
+									selectConnection(user._id)
 								}}>
 
 								<p>{user.userName} <span>{user.fullName}</span></p>
 								
 								<div id="optionsWrapper">
 									<button className={`buttonDefault`}
-											onClick={()=> {goToProfile(user.id)}}>
+											onClick={()=> {goToProfile(user._id)}}>
 										Profile
 									</button>
 									<button className={`buttonDefault`}
-											onClick={()=> {removeConnection(user.id, user.userName)}}>
+											onClick={()=> {removeConnection(user._id, user.userName)}}>
 										Remove
 									</button>
 								</div>

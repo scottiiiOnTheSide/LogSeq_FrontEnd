@@ -22,7 +22,7 @@ section#MACROS::after {
 		z-index: -1;
 	}
 
-	section#MACROS_enter::after {
+	section#MACROS._enter::after {
 		transition: all ease-in-out 0.2s;
 		z-index: 20;
 		opacity: 1;
@@ -38,6 +38,7 @@ section#MACROS div#mainWrapper {
 	margin-top: 80px;
 	overflow-y: scroll;
 }
+
 section#MACROS div#pageHeader {
 	position: relative;
 	width: 90%;
@@ -46,6 +47,12 @@ section#MACROS div#pageHeader {
 	padding: 16px 16px 8px;
 	background-color: var(--greyscale-backdrop);
 	border-radius: 8px;
+}
+
+section#MACROS div#pageHeader h3#subHeading {}
+
+section#MACROS div#pageHeader h3#subHeading span.toUserProfile {
+	color: black;
 }
 
 section#MACROS div#pageHeader button#addRemoveRequest {

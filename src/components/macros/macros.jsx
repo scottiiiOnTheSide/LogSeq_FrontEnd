@@ -44,10 +44,12 @@ export default function Macrospage({
 	const navigate = useNavigate();
 	const [postData, setPostData] = React.useState(location.state.posts);
 	const [macroInfo, setMacroInfo] = React.useState({
+		_id: location.state.macroID,
 		userHasAccess: location.state.hasAccess, //boolean
 		userCount: location.state.hasAccess ? location.state.hasAccess.length : undefined,
 		isMacroPrivate: location.state.isPrivate,
 		ownerUsername: location.state.ownerUsername,
+		ownerID: location.state.ownerID,
 		name: location.state.name,
 		type: location.state.type,
 		userCount: location.state.userCount,
@@ -58,11 +60,21 @@ export default function Macrospage({
 	console.log(macroInfo)
 	console.log(postData)
 
+	let goToProfile = async(userid) => {
 
-	let removeThyself = async(groupID) => {
-	}
+		let elCurrent = el.current;
+		elCurrent.classList.add('_enter');
 
-	let addThyself = async(groupID) => {
+		let data = await accessAPI.getSingleUser(userid);
+
+		let delay = setTimeout(()=> {
+			navigate(`/user/${macroInfo.ownerUsername}`, {
+				state: {
+					user: data.user,
+					pinnedPosts: data.pinnedPosts
+				}
+			})
+		}, 200)
 	}
 	
 	let updatePosts = async() => {
@@ -76,33 +88,129 @@ export default function Macrospage({
 		}
 	}
 
+	let addRemoveRequestDelete = async() => {
+		if(ARRD == 'delete') {
+			let request = await accessAPI.manageGroup('deleteGroup', {
+				type: 'tag',
+				groupID: macroInfo._id,
+			});
+
+			if(request.confirmation) {
+				navigate(-1);
+				let delay = setTimeout(()=> {
+					setSocketMessage({
+						type: 'simpleNotif',
+						message: `Deleted "${macroInfo.name}"`
+					})
+				}, 200)
+			}
+		}
+
+
+		else if(ARRD == 'remove') {
+
+			if(macroInfo.type == 'topic') {
+
+				let request = await accessAPI.manageGroup('removeUser', {
+					topic: macroInfo.name
+				})
+
+				if(request.confirmation) {
+					setSocketMessage({
+						type: 'simpleNotif',
+						message: `Removed "${macroInfo.name}"`
+					})
+				}
+			}
+			else {
+				let request = await accessAPI.manageGroup('removeUser', {
+					groupID: macroInfo._id,
+				})
+
+				if(request == true) {
+					setSocketMessage({
+						type: 'simpleNotif',
+						message: `Removed "${macroInfo.name}" from your tags`
+					})
+
+					if(macroInfo.isMacroPrivate) {
+						setARRD('request')
+					}
+					else {
+						setARRD('add')
+					}
+				}
+			}
+		}
+
+		else if(ARRD == 'request') {
+
+		}
+
+		else if(ARRD == 'add') {
+			if(macroInfo.type == 'topic') {
+				let request = await accessAPI.manageGroup('addUser', {
+					topic: macroInfo.name
+				})
+
+				if(request.confirmation) {
+					setSocketMessage({
+						type: 'simpleNotif',
+						message: `Added "${macroInfo.name}"`
+					})
+				}
+			}
+			else {
+				let request = accessAPI.manageGroup('addUser', {
+					groupID: macroInfo._id,
+				})
+
+				if(request == true) {
+					setSocketMessage({
+						type: 1,
+						message: `Added "${macroInfo.name}" from your tags`
+					})
+					setARRD('remove')
+				}
+			}
+		}
+	}
+
 	/* Element Related */
 	const [notifList, setNotifList] = React.useReducer(state => !state, false);
 	const [menu, toggleMenu] = React.useReducer(state => !state, false);
 	/* For addRemoveRequest Button atop the page */
-	let [addRemoveRequest, set_addRemoveRequest] = React.useState("")
+	// let [addRemoveRequest, set_addRemoveRequest] = React.useState("")
 	const [fullList, toggleFullList] = React.useReducer(state => !state, false);
 	const source = macroInfo.name == 'BOOKMARKS' ? `${macroInfo.ownerUsername}'s ${macroInfo.name}` : macroInfo.name;
+	let [ARRD, setARRD] = React.useState();
 
 	let el = React.useRef();
 	React.useEffect(()=> {
 		let elCurrent = el.current;
 		let delay = setTimeout(()=> {
 			elCurrent.classList.remove('_enter');	
-		}, 200)
+		}, 300)
 
-		if(macroInfo.userHasAccess == true) {
-			set_addRemoveRequest('Remove')
+		// if owner, arrd -> delete
+		if(macroInfo.ownerID == userID) { 
+			setARRD('delete')
 		}
-		if(macroInfo.isMacroPrivate == false && macroInfo.userHasAccess == false) {
-			set_addRemoveRequest("Add To Macros")
-		}	
-		if(macroInfo.isMacroPrivate == true && macroInfo.userHasAccess == false) {
-			set_addRemoveRequest('Request')
+		// if hasAccess and not owner -> remove
+		else if(macroInfo.userHasAccess) {
+			setARRD('remove')
+		}
+		// if noaccess and is not private -> add
+		else if(!macroInfo.userHasAccess && macroInfo.isMacroPrivate) {
+			setARRD('request')
+		}
+		// if no access and is private -> request
+		else if(!macroInfo.userHasAccess && !macroInfo.isMacroPrivate) {
+			setARRD('add')
 		}
 	}, []);
 
-	console.log(macroInfo)
+
 	// Update posts when fullList is closed
 	React.useEffect(()=> {
 		updatePosts()
@@ -121,39 +229,29 @@ export default function Macrospage({
 			<div id="mainWrapper">
 				
 				<div id="pageHeader">
-					
-					{/*{macroInfo.type == 'tag' &&
-						<button className={`buttonDefault`} 
-								id="addRemoveRequest"
-								onClick={()=> {
-									if(addRemoveRequest == 'Remove') {
-										let body = {
-											type: macroInfo.type,
-											groupID: macroID,
-											action: 'deleteTag'
-										}
-										setSocketMessage(body);
-										set_addRemoveRequest("Add To Macros")
-									}
-									else if(addRemoveRequest == 'Add To Macros') {
-										let body = {
-											type: macroInfo.type,
-											groupID: macroID,
-											action: 'addTag'
-										}
-										setSocketMessage(body);
-										set_addRemoveRequest('Remove')
-									}
-								}}>{addRemoveRequest}</button>
-					}*/}
+
+					<button className={`buttonDefault`}
+							id="addRemoveRequest"
+							onClick={addRemoveRequestDelete}>
+						{ARRD}
+					</button>
 				
 					<h3 id="subHeading">
 						{/*	
-							topic: public
-							Tag and Private or Not: username
-							collection: username
+							Topic: public
+							Tag, Private or Not: username
+							Collection: username
 						*/}
-						{`${macroInfo.type == 'tag' && macroInfo.isPrivate == false ? 'PUBLIC' : macroInfo.ownerUsername ? macroInfo.ownerUsername : 'PUBLIC' }`} / {macroInfo.type} /
+						<span className={`${macroInfo.type != 'topic' ? "toUserProfile" : ''}`}
+							  onClick={()=> {
+							  	if(macroInfo.type != 'topic') {
+							  		goToProfile(macroInfo.ownerID)	
+							  	}
+							  	else return;
+							  }}>
+							{macroInfo.type == 'tag' ? '@' : null}
+							{macroInfo.type == 'tag' ? macroInfo.ownerUsername : 'PUBLIC'}
+						</span> / {macroInfo.type} /
 					</h3>
 
 					<h2 id="macroName">{macroInfo.name}</h2>
@@ -190,7 +288,7 @@ export default function Macrospage({
 								setTimeout(()=> {
 									navigate(-1)
 								}, 300);
-							}}>EXIT</button>
+							}}>return</button>
 				}
 				{macroInfo.type == 'collection' &&
 					<button className="buttonDefault" onClick={toggleMenu}>MENU</button>
