@@ -52,7 +52,8 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 				message: 'accept'
 			};
 			setSocketMessage(notif);
-		} else if(arg == 'ignore') {
+		} 
+		else if(arg == 'ignore') {
 
 			let notif = {
 				type: 'request',
@@ -62,7 +63,8 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 				message: 'ignore'
 			};
 			setSocketMessage(notif);
-		} else if(arg == 'markRead') {
+		} 
+		else if(arg == 'markRead') {
 
 				let notif = {
 					type: 'markRead',
@@ -76,6 +78,34 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					updateList()
 				}, 200)
 		}
+		else if(arg == 'accessGranted') {
+
+			let accessGrantedNotif = await accessAPI.newInteraction({
+				type: 'request',
+				message: 'accessGranted',
+				senderID: userID,
+				recipients: [notif.sender],
+				recipientUsernames: notif.senderUsername,
+				groupName: notif.details.groupName,
+				groupID: notif.details.groupID,
+				originalID: notif._id
+			}).then(data=> {
+				if(data.confirmation) {
+					updateList();
+					setSocketMessage({
+						// message: `Access granted to @${macroInfo.ownerUsername}`,
+						recipients: [notif.sender],
+						action: 'updateNotifs'
+					})
+				}
+			})
+
+			// let request = await accessAPI.manageGroup('addUser', {
+			// 	userID: notif.sender,
+			// 	groupID: notif.details.groupID
+			// })
+		}
+
 	}
 
 	let goToUserProfile = async() => {
@@ -86,7 +116,8 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 			navigate(`/user/${username}`, {
 				state: {
 					user: data.user,
-					pinnedPosts: data.pinnedPosts
+					pinnedPosts: data.pinnedPosts,
+					collections: data.collections
 				}
 			})
 		}, 150)
@@ -121,6 +152,38 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 		}, 300)
 	}
 
+	let goToMacrosPage = async(macroID, macroName) => {
+
+		let tagInfo = await accessAPI.getTagData(macroID, macroName);
+		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: macroID, groupName: macroName});
+		let postsCount = posts.length;
+
+		let doesHaveAccess;
+		if(tagInfo.hasAccess) {
+			doesHaveAccess = tagInfo.hasAccess.filter(el => el == userID);
+			doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
+		}
+		
+		console.log(tagInfo);
+									
+		setTimeout(()=> {
+			navigate(`/macros/${macroName}`, {
+					state: {
+						name: macroName,
+						posts: posts,
+						macroID: macroID,
+						isPrivate: tagInfo.isPrivate,
+						hasAccess: doesHaveAccess,
+						ownerUsername: tagInfo.adminUsernames ? tagInfo.adminUsernames[0] : null,
+						ownerID: tagInfo.admins ? tagInfo.admins[0] : null,
+						type: tagInfo.type == undefined ? 'topic' : tagInfo.type,
+						userCount: tagInfo.hasAccess ? tagInfo.hasAccess.length : null,
+						postCount: postsCount ? postsCount : 0
+					}
+				})
+		}, 200)
+	}
+
 	React.useEffect(()=> {
 		updateList();
 	}, [])
@@ -150,7 +213,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 						<p>You sent {notif.recipientUsername} a request</p>
 					}
 					{(notif.type == 'request' && notif.message == 'recieved') &&
-						<p>You recieved a request from {notif.senderUsername}</p>
+						<p>You recieved a connection request from {notif.senderUsername}</p>
 					}
 					{(notif.type == 'request' && notif.message == 'accept') &&
 						<p>You and {notif.recipientUsername} are now connected!</p>
@@ -163,6 +226,12 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					}
 					{(notif.type == 'tagging' && notif.message == 'recieved') &&
 						<p>{notif.senderUsername} tagged you in a post "{postTitle}"</p>
+					}
+					{(notif.type == 'request' && notif.message == 'accessRequested') &&
+						<p>{notif.senderUsername} is requesting access to "{notif.details.groupName}"</p>
+					}
+					{(notif.type == 'request' && notif.message == 'accessGranted') &&
+						<p>{notif.senderUsername} has granted you access to "{notif.details.groupName}"</p>
 					}
 
 					{notif.type == 'comment' && 
@@ -208,17 +277,38 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					}
 					{(notif.type == 'request' && notif.message == 'accept') &&
 						<div className="options">
-							<button className="buttonDefault" 
-									onClick={()=> {interact('accept', notif.sender, notif.senderUsername)}}>
-								Accept
-							</button>
-							<button className="buttonDefault" 
-									onClick={()=> {interact('ignore', notif.sender, notif.senderUsername)}}>
-								Ignore
-							</button>
 							<button className="buttonDefault"
 									onClick={()=> {interact('markRead', notif._id )}}>
 								Mark Read
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'accessGranted') &&
+						<div className="options">
+							<button className="buttonDefault"
+									onClick={()=> {goToMacrosPage(notif.details.groupID, notif.details.groupName)}}>
+								Go To Macro
+							</button>
+							<button className="buttonDefault"
+									onClick={()=> {interact('', notif._id )}}>
+								Mark Read
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'accessRequested') &&
+						<div className="options">
+							<button className="buttonDefault" 
+									onClick={()=> {
+										console.log(notif)
+										interact('accessGranted', undefined, undefined, undefined, notif)}}>
+								Give Access
+							</button>
+							<button className="buttonDefault" 
+									onClick={()=> {
+										console.log(notif)
+										interact('markRead', notif._id)
+									}}>
+								Ignore
 							</button>
 						</div>
 					}

@@ -236,6 +236,16 @@ export default function Instants({
 				type: 1
 			})
 		}
+		else if(request.message) {
+			setSocketMessage({
+				type: 'error',
+				message: request.message
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+		}
 	}
 
 	let action_renameCollection = async(data) => {
@@ -649,6 +659,10 @@ export default function Instants({
 		}
 	}
 
+	let action_updateNotifs = async(data) => {
+		sendMessage(JSON.stringify(data));
+	}
+
 
 	/*** 
 		Response functions to alerts recieved by user
@@ -795,7 +809,16 @@ export default function Instants({
 	useEffect(()=> {
 
 		/* U S E R   S E T T I N G S */
-		if(socketMessage.action == 'profilePhoto') {
+		if(socketMessage.action == 'updateNotifs') {
+			action_updateNotifs(socketMessage);
+			if(socketMessage.message) {
+				setActive({
+					state: true,
+					type: 1
+				});
+			}
+		}
+		else if(socketMessage.action == 'profilePhoto') {
 			action_profilePhoto(socketMessage);
 		}
 
@@ -1090,6 +1113,9 @@ export default function Instants({
 				}
 				{(message.type == 'response' && message.message == 'alreadyExists') &&
 					<p>This {message.groupType} already exists. Would you like to join?</p>
+				}
+				{(message.action == 'updateNotifs' && message.message) &&
+					<p>{message.message}</p>
 				}
 						
 				{/*<p>This is some demo text</p>*/}

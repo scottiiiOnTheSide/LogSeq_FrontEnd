@@ -596,7 +596,7 @@ export function ManageMacros({current, setCurrent, setSocketMessage, socketMessa
 }
 
 
-export default function Macros({active, current, setCurrent}) {
+export default function Macros({active, current, setCurrent, tags, setTags}) {
 
 	const userID = sessionStorage.getItem('userID');
 	const navigate = useNavigate();
@@ -605,14 +605,13 @@ export default function Macros({active, current, setCurrent}) {
 	let [tagsSection, toggleTags] = React.useReducer(state => !state, false);
 	let [privatePostsSection, togglePrivatePosts] = React.useReducer(state => !state, false);
 	let [collectionsSection, toggleCollections] = React.useReducer(state => !state, false);
-	let [tags, setTags] = React.useState([]);
 	let [privatePosts, setPrivatePosts] = React.useState([]);
 	let [collections, setCollections] = React.useState([])
 
-	//03. 16. 2024 Have BOOKMARKS rearranged to the top 
+
 	let updateMacros = async() => {
 
-		let tags = await accessAPI.getMacros('tags');
+		let tags = await accessAPI.getMacros('tags'); //allTagsUsed
 		tags = tags.filter(e => e);
 		console.log(tags)
 		let userPrivatePosts = await accessAPI.getMacros('private');
@@ -629,6 +628,11 @@ export default function Macros({active, current, setCurrent}) {
 		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: tag._id, groupName: tag.name});
 		let postsCount = posts.length;
 
+		/* 09. 22. 2024
+			This check should always be done when going to a macro,
+			but is unnecessary here - as user does have access to
+			their own recently used tags
+		*/
 		let doesHaveAccess;
 		if(tagInfo.hasAccess) {
 			doesHaveAccess = tagInfo.hasAccess.filter(el => el == userID);
@@ -644,7 +648,7 @@ export default function Macros({active, current, setCurrent}) {
 						posts: posts,
 						macroID: tag._id,
 						isPrivate: tagInfo.isPrivate,
-						hasAccess: doesHaveAccess,
+						hasAccess: tagInfo.hasAccess ? doesHaveAccess : true,
 						ownerUsername: tagInfo.adminUsernames ? tagInfo.adminUsernames[0] : null,
 						ownerID: tagInfo.admins ? tagInfo.admins[0] : null,
 						type: tagInfo.type == undefined ? 'topic' : tagInfo.type,
@@ -744,7 +748,6 @@ export default function Macros({active, current, setCurrent}) {
 						})
 					}
 				</ul>
-
 			</div>
 
 

@@ -99,15 +99,16 @@ export default function APIaccess(key) {
 
 			if(request.confirm == true) {
 
-				let userToken = request.payload;
+				let userToken = request.JWT;
 
-				let userInfo = parseJwt(request.payload);
+				let userInfo = parseJwt(request.JWT);
 
 				sessionStorage.setItem('userKey', userToken);
 				sessionStorage.setItem('userID', userInfo._id);
 				sessionStorage.setItem('userName', userInfo._username);
-				sessionStorage.setItem('profilePhoto', userInfo._profilePhoto);
-				sessionStorage.setItem('privacySetting', userInfo.privacySetting);
+				sessionStorage.setItem('profilePhoto', request.profilePhoto);
+				sessionStorage.setItem('privacySetting', request.privacySetting);
+				// sessionStorage.setItem('settings', request.settings.topics);
 
 				return true;
 

@@ -60,6 +60,7 @@ section#MACROS div#pageHeader button#addRemoveRequest {
 	position: relative;
 	margin-left: auto;
 	font-size: 1em;
+	left: 12px;
 }
 
 section#MACROS div#pageHeader h3#subHeading {
@@ -133,7 +134,18 @@ section#MACROS div#pageHeader h4#userCount span {
 
 
 
-
+section#MACROS h2#noAccess {
+	position: relative;
+	width: 70%;
+	margin: 128px auto;
+	text-align: center;
+	font-family: 'Raleway';
+	font-weight: 600;
+	font-size: 2.5em;
+	letter-spacing: 2px;
+	line-height: 52px;
+	color: var(--greyscale-accent);
+}
 
 
 

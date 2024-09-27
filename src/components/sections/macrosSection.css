@@ -40,7 +40,7 @@ section#HOME div#macros div#userTags.close,
 section#HOME div#macros div#privatePosts.close,
 section#HOME div#macros div#collections.close {
 	overflow-y: hidden;
-	max-height: 370px;
+	max-height: 380px;
 }
 
 section#HOME div#macros div div.headerWrapper {

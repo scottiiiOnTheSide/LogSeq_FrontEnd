@@ -1064,12 +1064,14 @@ div#main div#stats p span {
 
 
 div#main div#pinnedMedia,
-div#main div#pinnedPosts {
+div#main div#pinnedPosts,
+div#main div#collections {
 	text-align: right;
 }
 
 div#main div#pinnedMedia h2,
-div#main div#pinnedPosts h2 {
+div#main div#pinnedPosts h2,
+div#main div#collections h2 {
 	font-size: 2em;
 	margin-right: 16px;
 	letter-spacing: 2px;
@@ -1077,7 +1079,8 @@ div#main div#pinnedPosts h2 {
 }
 
 div#main div#pinnedMedia h2.none,
-div#main div#pinnedPosts h2.none {
+div#main div#pinnedPosts h2.none,
+div#main div#collections h2.none {
 	text-align: left;
 	margin: 32px 16px 64px;
 	color: var(--greyscale-elements);
@@ -1125,19 +1128,22 @@ div#main div#pinnedPosts {
 	margin-bottom: 64px;
 }
 
-div#main div#pinnedPosts ul {
+div#main div#pinnedPosts ul,
+div#main div#collections ul {
 	margin: 24px 0;
 	padding: 0;
 	list-style-type: none;
 }
 
-div#main div#pinnedPosts ul li {
+div#main div#pinnedPosts ul li,
+div#main div#collections ul li {
 	text-align: left;
 	margin-left: 24px;
 	margin-bottom: 36px;
 }
 
-div#main div#pinnedPosts ul li h3 {
+div#main div#pinnedPosts ul li h3,
+div#main div#collections ul li h3 {
 	font-size: 1.5em;
 	font-weight: 400;
 	margin: 8px 0;

@@ -2,28 +2,105 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 09. 25. 2024
+@2130 ****Moving Forward...
+The next addition is to add the topics selector to the signUp process
+The calendar still needs to be redesigned
+And i need to overhaul React.router so that it works properly...
+
+@2125 Granting access to collections now works: adding user, correct notifications and
+	  and websockets to update the notifCount
+	  Should add button to view the new collection
+
+@1755 webSocket now successfully updating recieving user's notifs and popUp!
+
+@1655 Working to send a webSocket message when user requests access. 
+	  Should be a simple prompt which updates the recieving user's notification count
+	  and prompts a popUpNotif
+
+
+@0830 finished accessGranted interaction option in notifs.
+		should send notif and run add user
+
+@0810 issue fixed with the goToProfile functions :D
+privateCollections now show alert if user doesnt have access
+
+### 09. 24. 2024
+@1850 for some reason, all goToProfile functions are going to the user's own profile, instead of the targets...
+
+@1700 Due to my adding React.router improperly, links around the site that require more data
+dont really work xD...
+There currently isn't a way to view a user's collections either xD
+For now, i'll add a section underneath pinnedPosts on UserProfiles
+
+@1235 
+****To Do Next:
+	- gotta parse message.request type notifs in <NotifList>
+	- interact function to approve invites
+		- one sending the notif
+		- another to add the user
+
+@1145 Added bookmarks for sanbanbaka and fixed the adding issue...
+
+
+### 09. 23. 2024
+@1215 
+****Next Steps
+	- for request:
+		Simple Process: 
+		 - request access from <macrospage>
+		 - owner confirms of ignores via notifsList
+		Order:
+		- requester sends request notif,
+		- owner sends confirm notif
+	- posts in private tags macrospage CANNOT be seen if user does not have access
+	- create bookmarks for Sanbanbaka, ensure current issue alleviated ✅
+
+@0950 it works now t-t switching the ARRD and the notifs 
+
+@0145 try changing only arrd on confirmation...
+	  might not be necessary to update the state, as it would do so when back in the section
+
+@1210 scrollTo needs to be disabled when on Macrospage...?
+need more robust solution...
+Can possibly add a section field to current to discern the previous log
+
+the rest of the confirming script for adding a tag -isnt working-
+currently cant spot why
+but the tag does get added
+
+!!! trying to bookmark another accounts post resulted in a 'do not have access'
+	- sanbanbaka is actually gettting admin's bookmarks and collections...
+		why, how??
+		doesnt have it's own, but still shouldnt be getting another's ?!
+
+!!! trying to get tags for admin is now causing error on backend
+	- fixed this: but now the tag orders are rearranged t- t
+
+### 09. 22. 2024
+@2340 Doesnt make sense to have topics be removal, 
+
+@1420 Adding and removing topics from user settings works. 
+
+As of rn - Macros section is 'RecentTags' instead of 'User Tags'
+Should this section be all of a user's tags and topics?
+...probably
+
+move tags to topLevel
+set and reader to be passed down to home and Macrospage
+
 ### 09. 20. 2024
 @1210 
 *** having trouble getting posts for topics while on a post ✅
 *** fix 'About Project' button in <UserSettings>
-*** need to test if adding and removing tags and public topics works
+*** need to test if adding and removing tags and public topics works ✅
 *** rename macrosPage to macrosPage
 
-add check in macrospage in ARRD setter for whether the topic name is included in user's settings
+add check in macrospage in ARRD setter for whether the topic name is included in user's settings ✅
+! from macrosSection, simply marked topics as hasAccess, as it wouldnt be there if user didnt have access
 
 in postupload route, check if used topics are in user's settings. 
 if not, add
-
-for request:
-Simple Process: 
- - request access from <macrospage>
- - owner confirms of ignores via notifsList
-
-Order:
-- requester sends request notif,
-- owner sends confirm notif
-
-!!! posts in private tags macrospage CANNOT be seen if user does not have access
 
 
 ### 09. 19. 2024

@@ -213,16 +213,16 @@ export default function Post({
 		}
 	}
 
-	let goToProfile = async(userid) => {
-		
-		let data = await accessAPI.getSingleUser(userid);
-		console.log(data.user._id)
+	let goToProfile = async(userID) => {
 
+		let data = await accessAPI.getSingleUser(userID);
+		
 		let delay = setTimeout(()=> {
 			navigate(`/user/${data.user.userName}`, {
 				state: {
 					user: data.user,
-					pinnedPosts: data.pinnedPosts
+					pinnedPosts: data.pinnedPosts,
+					collections: data.collections
 				}
 			})
 		}, 150)

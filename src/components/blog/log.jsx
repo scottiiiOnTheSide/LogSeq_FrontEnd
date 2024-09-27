@@ -16,16 +16,17 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 	const navigate = useNavigate();
 	const _id = sessionStorage.getItem('userID');
 
-	let goToProfile = async(userid) => {
+	let goToProfile = async(usersid) => {
+		// console.log(usersid)
+		let data = await accessAPI.getSingleUser(usersid);
+		// console.log(data);
 		
-		let data = await accessAPI.getSingleUser(userid);
-		console.log(data.user._id)
-
 		let delay = setTimeout(()=> {
 			navigate(`/user/${data.user.userName}`, {
 				state: {
 					user: data.user,
-					pinnedPosts: data.pinnedPosts
+					pinnedPosts: data.pinnedPosts,
+					collections: data.collections
 				}
 			})
 		}, 150)
@@ -84,7 +85,6 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 				}
 				<div className={`entry ${rightAlign == true ? 'right' : ''}`} id={id} key={post._id}>
 					{(userID != post.owner) &&  
-						// <span id="username">&#64;{post.author}</span>
 						<button className={`toProfile`} onClick={()=> {goToProfile(post.owner)}}>
 							<img src={post.profilePhoto}/>
 							<span>&#64;{post.author}</span>

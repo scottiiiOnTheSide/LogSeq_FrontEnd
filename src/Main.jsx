@@ -81,7 +81,9 @@ function Home({
   log,
   setLog,
   navOptions,
-  setNavOptions
+  setNavOptions,
+  tags,
+  setTags
 }) {
 
   const navigate = useNavigate();
@@ -168,7 +170,9 @@ function Home({
         <SectionsWrapper current={current} 
                          setCurrent={setCurrent} 
                          log={log} 
-                         setLog={setLog} />
+                         setLog={setLog}
+                         tags={tags}
+                         setTags={setTags} />
 
         {(current.modal && current.section == 1) &&
           <CreatePost setCurrent={setCurrent}
@@ -373,6 +377,14 @@ export default function Main() {
         })
         setAccessID({ postURL: data.url, notifID: data._id });
       }
+      else if(data.type == 'updateNotifs') {
+        getUnreadCount();
+
+        setSocketMessage({
+          type: 'simpleNotif',
+          message: `New notifications!`
+        })
+      }
     },
     shouldReconnect: (event) => true,
     reconnectAttempts: 10,
@@ -440,6 +452,10 @@ export default function Main() {
   */
   const [log, setLog] = React.useState([]);
 
+
+  /* Top Level state for tags */
+  const [tags, setTags] = React.useState([]);
+
   /*
       State array for keeping track of current section in carousel nav
       top level, so it's maintained across pages
@@ -482,6 +498,8 @@ export default function Main() {
 
                   log={log}
                   setLog={setLog}
+                  tags={tags}
+                  setTags={setTags}
 
                   navOptions={navOptions}
                   setNavOptions={setNavOptions}
@@ -521,6 +539,8 @@ export default function Main() {
 
                   log={log}
                   setLog={setLog}
+                  tags={tags}
+                  setTags={setTags}
 
                   navOptions={navOptions}
                   setNavOptions={setNavOptions}
@@ -576,6 +596,8 @@ export default function Main() {
                   // socket stuff
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
+                  tags={tags}
+                  setTags={setTags}
                 />
               </HomeOrEntry>
             } 
