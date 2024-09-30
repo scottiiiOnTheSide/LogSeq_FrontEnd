@@ -12,7 +12,7 @@ const accessAPI = APIaccess();
 	A function which houses other values and functions 
 	to operate within the context
 */
-function useUIC() {
+export function useUIC() {
 
 	const [authed, setAuth] = React.useState(()=> {
 		if(sessionStorage.getItem('userKey')) {
@@ -46,8 +46,10 @@ function useUIC() {
 				sessionStorage.removeItem('userKey');
 				sessionStorage.removeItem('userName');
 				sessionStorage.removeItem('userID');
+				sessionStorage.removeItem('privacySetting');
+				sessionStorage.removeItem('profilePhoto');
 				setAuth(false);
-				if(sessionStorage.length == 0) {
+				if(sessionStorage.length == 1) {
 					res()
 				}
 			})

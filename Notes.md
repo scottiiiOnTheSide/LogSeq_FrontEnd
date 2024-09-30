@@ -2,6 +2,62 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 09. 30. 2024
+@0240
+****To Do Next:
+		- <Calendar>style update
+			- adjust the animation in the changing of the months. 
+			- timing of when postCount gets updated
+			- an extra 6th row is being added to the calendar? gotta remove
+		- popUp in <Map> needs an update as well
+		- <Map> also needs a recentering button...
+		- <About> page and changelog
+
+****After,
+		- rundown of all functions
+		- further codeclean up and organization
+		- planning future additions
+
+I hope that the production version fixes the multiple calling of functions...
+
+
+@0200 topicSelection addition to signup process successful!
+
+### 09. 28. 2024
+@2355 merging seems to have gone through well enough ...
+			onto adding topics selection section for signup!
+
+### 09. 28. 2024 - branch:BrowserRouterUpdate
+@1310 createBrowserRouter update is complete. to be merged with main branch!
+
+@0130 IT WORKS :D ! Fixed the issue with failure to go to <Post> page on first click - had
+			to do with changing the 'current' state
+			Moved that to the <post> page instead in the initialLoad useEffect
+
+**** To Do Next
+			- need to change all instances of navigate to updated version ✅
+**** After
+			- fix 'aboutProject' button option ✅
+			- topicsSelector addition to signUp process ✅
+			- calendar style update
+			- popUp in <Map> needs an update as well
+			- <Map> also needs a recentering button...
+
+### 09. 27. 2024 - branch:BrowserRouterUpdate
+@1650 for the most part, the update is successful. Have to change every navigate instance
+		  to the updated version of the route
+		  also need to change the component data to draw from the loader data
+		  rather than the state data
+right now tho, having issue loading <Post> page on first click. Every other page works
+	first click
+
+@0855 Seems like <RouterProvider router={routerObj} /> will replace the <Main> object
+the <UiContextProvider> should then go around router provider
+this is all exported as the main app
+
+@0835 Working updating browserRouter to CreateBrowserRouter. 
+Creating new branch...
+
 ### 09. 25. 2024
 @2130 ****Moving Forward...
 The next addition is to add the topics selector to the signUp process

@@ -1,7 +1,7 @@
 
 import React, {useRef} from 'react';
 
-export default function Calendar() {
+export default function CalInfo() {
 
   const d = new Date(); //initial get date
   const date = useRef(d); //set reference for date

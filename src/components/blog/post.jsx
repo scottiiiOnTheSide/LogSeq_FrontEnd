@@ -1,7 +1,7 @@
 /* * * V I T A L S * * */
 import * as React from 'react';
-import {useParams, useLocation, useNavigate} from 'react-router-dom';
-import Calendar from '../calendar'
+import {useParams, useLocation, useNavigate, useLoaderData} from 'react-router-dom';
+import CalInfo from '../calInfo'
 import APIaccess from '../../apiaccess';
 import bodyParse from '../bodyParse';
 import './blog.css';
@@ -43,10 +43,13 @@ export default function Post({
 	current
 }) {
 	const userID = sessionStorage.getItem('userID');
+	const data = useLoaderData();
+	// console.log(data);
 	const { postID } = useParams();
 	const location = useLocation();
 	const navigate = useNavigate();
-	const [postData, setPostData] = React.useState(location.state.post);
+	// const [postData, setPostData] = React.useState(location.state.post);
+	const [postData, setPostData] = React.useState(data);
 	const [comments, setComments] = React.useState([]);
 	const [commentCount, setCommentCount] = React.useState('');
 
@@ -228,43 +231,6 @@ export default function Post({
 		}, 150)
 	}
 
-	// let goToMacrosPage = async(groupName, groupID) => {
-
-	// 	let tagData;
-	// 	if(!groupID) {
-	// 		tagData = null;
-	// 	}
-	// 	else {
-	// 		tagData = await accessAPI.getTagData(groupID, groupName);
-	// 	}
-
-	// 	let tagPosts = await accessAPI.groupPosts({action: 'getPosts', groupName: groupName});
-	// 	let postsCount = tagPosts.length;
-
-	// 	let doesHaveAccess;
-	// 	if(tagData) {
-	// 		doesHaveAccess = tagData.hasAccess.filter(el => el == userID);
-	// 		doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
-	// 	}
-		
-									
-	// 	setTimeout(()=> {
-	// 		navigate(`/macros/${groupName}`, {
-	// 				state: {
-	// 					name: groupName,
-	// 					posts: tagPosts,
-	// 					macroID: groupID ? groupID : null,
-	// 					isPrivate: tagData ? tagData.isPrivate : false,
-	// 					hasAccess: tagData ? doesHaveAccess : true,
-	// 					ownerUsername: tagData ? tagData.ownerUsername[0] : 'public',
-	// 					type: tagData ? tagData.type : 'topic',
-	// 					userCount: tagData ? tagData.hasAccess.length : null,
-	// 					postCount: postsCount ? postsCount : 0
-	// 				}
-	// 			})
-	// 	}, 300)
-	// }
-
 	let goToMacrosPage = async(tag) => {
 
 		let tagInfo = await accessAPI.getTagData(tag._id, tag.name);
@@ -300,12 +266,16 @@ export default function Post({
 	React.useEffect(()=> {
 		refreshPost()
 		pinPost('check')
+		setCurrent({
+			...current,
+			scrollTo: postData._id
+		})
 	}, [])
 
 	/***
 	 	P o s t D e t a i l s
 	***/
-	let cal = Calendar();
+	let cal = CalInfo();
 		let dateInfo = new Date(postData.createdAt.slice(0, -1));
 		let date = dateInfo.toString().slice(4, 15);
 		let hour = dateInfo.toString().slice(16, 18);
@@ -465,8 +435,7 @@ export default function Post({
 		getCollections();
 	}, [element]);
 
-	console.log(postData)
-	// console.log(split);
+	console.log(postData);
 
 	return (
 		<section id="POST" ref={el} className={`${enter == true ? '_enter' : ''}`}>

@@ -6,7 +6,7 @@ import './monthChart.css';
 
 let accessAPI = APIaccess();
 
-export default function MonthChart ({current, setCurrent, cal, set_dateInView, selectedDate, setSelectedDate}) {
+export default function Calendar ({current, setCurrent, cal, set_dateInView, selectedDate, setSelectedDate}) {
 
 	const [tallyPerDate, set_tallyPerDate] = React.useState({});
 	const [postsPerDate, set_postsPerDate] = React.useState([]);

@@ -113,7 +113,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 		let data = await accessAPI.getSingleUser(userID);
 		
 		let delay = setTimeout(()=> {
-			navigate(`/user/${username}`, {
+			navigate(`/user/${username}/${userID}`, {
 				state: {
 					user: data.user,
 					pinnedPosts: data.pinnedPosts,
@@ -128,7 +128,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 		let settings = await accessAPI.userSettings({option: 'getUserSettings'});
 
 		let delay = setTimeout(()=> {
-			navigate(`/settings`, {
+			navigate(`/${username}/settings`, {
 				state: {
 					data: settings
 				}

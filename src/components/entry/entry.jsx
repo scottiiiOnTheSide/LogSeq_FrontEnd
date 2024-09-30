@@ -35,7 +35,9 @@ function UserSignUp({
 	privacyOption,
 	setPrivacyOption,
 	profilePhoto,
-	setProfilePhoto
+	setProfilePhoto,
+	topics,
+	setTopics
 }) {
 
 	/**
@@ -46,6 +48,41 @@ function UserSignUp({
 	 */
 	let form = React.useRef();
 	let thisForm = form.current;
+	// const [topics, setTopics] = React.useState();
+
+	const getTopics = async() => {
+		let body = new FormData();
+		body.append('action', 'getTopics');
+		let request = await accessAPI.signupUser(body);
+		request = request.sort().map(topic => {
+			return {
+				name: topic,
+				selected: false
+			}
+		})
+		setTopics(request);
+	}
+
+	const selectTopic = async(topic) => {
+		console.log(topic)
+		let setter = topics.map(item => {
+			if(topic.name == item.name) {
+				if(topic.selected == true) {
+					return {
+						name: topic.name,
+						selected: false
+					}
+				} else {
+					return {
+						name: topic.name,
+						selected: true
+					}
+				}
+			}
+			else return item;
+		})
+		setTopics(setter);
+	}
 
 	const handleChange = (event) => {
 		if(event.target.name == 'image') {
@@ -60,12 +97,13 @@ function UserSignUp({
 		}
 		
 	}
-	console.log(profilePhoto);
 
 	/* 
 		Animation sequence on mount 
 	*/
 	React.useEffect(()=> {
+		getTopics();
+
 		if(thisForm) {
 			if(signup == false) {
 				thisForm.classList.remove('_active');
@@ -209,6 +247,25 @@ function UserSignUp({
 					</label>
 
 				</fieldset>
+			}
+
+			{signupSequence == 4 &&
+				<div id="topicSelection">
+					
+					<h2>Save some topics to easily find others posting about similar interests</h2>
+
+					<ul id="topicsList">
+						{topics.map(topic => (
+							<li key={topic.name}>
+								<button className={`buttonDefault ${topic.selected == true ? 'selected' : ''}`} 
+										onClick={(e)=> {e.preventDefault(); selectTopic(topic)}}>
+									{topic.name}
+								</button>
+							</li>
+						))}
+					</ul>
+
+				</div>
 			}
 			
 			<div id="transition"></div>
@@ -520,6 +577,18 @@ export default function Entry({useAuth, setUserID}) {
 		lastName: '',
 		_id: ''
 	})
+	const [topics, setTopics] = React.useState();
+
+	// const getTopics = async() => {
+	// 	let request = await accessAPI.signupUser({action: 'getTopics'});
+	// 	request = request.map(topic => {
+	// 		return {
+	// 			name: topic,
+	// 			selected: false
+	// 		}
+	// 	})
+	// 	setTopics(request);
+	// }
 
 	const formValidation = (formData) => {
 		const {emailAddr, password, firstName, lastName, userName} = formData;
@@ -568,6 +637,8 @@ export default function Entry({useAuth, setUserID}) {
 				submission.append('profilePhoto', profilePhoto);
 				submission.append('referrer', referee._id);
 				submission.append('action', 'create');
+				let selectedTopics = topics.filter(el => el.selected == true).map(el => el.name);
+				submission.append('topics', selectedTopics);
 				
 				console.log(submission);
 
@@ -610,6 +681,7 @@ export default function Entry({useAuth, setUserID}) {
 		let signupForm = document.getElementById('signupForm');
 		let privacyOptions = document.getElementById('privacyOptions');
 		let profilePhoto = document.getElementById('profilePhoto');
+		let topicSelection = document.getElementById('topicSelection');
 		
 
 		if(signupIsReady && signupSequence == 1) {
@@ -657,7 +729,16 @@ export default function Entry({useAuth, setUserID}) {
 		}
 		else if(signupSequence == 3) {
 
+			// getTopics();
 			profilePhoto.classList.add('_leave');
+
+			let delay = setTimeout(()=> {
+				setSignupSequence(4)
+			}, 550);
+		}
+		else if(signupSequence == 4) {
+
+			topicSelection.classList.add('_leave');
 
 			let delay = setTimeout(()=> {
 				signupSubmit();
@@ -696,7 +777,9 @@ export default function Entry({useAuth, setUserID}) {
 		}, 550)
 	}
 
-	console.log(profilePhoto)
+	// React.useEffect(()=> {
+	// 	getTopics();
+	// }, [])
 
 	return (
 		<section id="entry" ref={el} className={`${enter == true ? '_enter' : ''}
@@ -748,7 +831,9 @@ export default function Entry({useAuth, setUserID}) {
 						privacyOption={privacyOption}
 						setPrivacyOption={setPrivacyOption}
 						profilePhoto={profilePhoto}
-						setProfilePhoto={setProfilePhoto}/>
+						setProfilePhoto={setProfilePhoto}
+						topics={topics}
+						setTopics={setTopics}/>
 
 			{/*elements stating successful signup*/}
 			{signUpSuccess &&

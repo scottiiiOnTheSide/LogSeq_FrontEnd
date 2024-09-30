@@ -443,7 +443,12 @@ div#userSettings ul#mainMenu li button svg {
 	width: 44px;
 	margin-left: 12px;
 	position: relative;
-	top: 2px;
+	top: 28px;
+}
+
+div#userSettings ul#mainMenu li button#aboutProject {
+	margin: -20px 0;
+	display: flex;
 }
 
 

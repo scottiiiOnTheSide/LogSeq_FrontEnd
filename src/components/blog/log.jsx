@@ -22,12 +22,12 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 		// console.log(data);
 		
 		let delay = setTimeout(()=> {
-			navigate(`/user/${data.user.userName}`, {
-				state: {
-					user: data.user,
-					pinnedPosts: data.pinnedPosts,
-					collections: data.collections
-				}
+			navigate(`/user/${data.user.userName}/${data.user._id}`, {
+				// state: {
+				// 	user: data.user,
+				// 	pinnedPosts: data.pinnedPosts,
+				// 	collections: data.collections
+				// }
 			})
 		}, 150)
 	}
@@ -91,17 +91,18 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 						</button>
 					}	
 
-					<div className="textWrapper" onClick={()=> {
+					<div className="textWrapper" onClick={(e)=> {
+						e.preventDefault();
 						console.log(post)
 
-						setCurrent({
-							...current,
-							scrollTo: id
-						})
+						// setCurrent({
+						// 	...current,
+						// 	scrollTo: id
+						// })
 
 						setTimeout(()=> {
 							navigate(`/post/${post._id}`, {
-								state: {post: post}
+								// state: {post: post}
 							});
 						}, 600)
 					}}>

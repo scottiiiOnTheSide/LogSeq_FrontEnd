@@ -3,18 +3,15 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import {useNavigate} from 'react-router-dom';
 import {
-  Routes,
-  Route,
-  Outlet,
   createBrowserRouter,
   RouterProvider,
   Navigate,
   useLocation
 } from "react-router-dom";
 import useWebSocket, {ReadyState} from 'react-use-websocket';
+import { UIContextProvider, useUIC } from './UIcontext';
 import APIaccess from './apiaccess';
-import useUIC from "./UIcontext";
-import Calendar from './components/calendar'
+import CalInfo from './components/calInfo'
 // import {UIContextProvider, UIContext} from './UIcontext';
 
 import './Main.css';
@@ -27,7 +24,7 @@ import NotificationList from './components/notifs/notifsList';
 import CarouselNav from './components/base/carouselNav';
 import ButtonBar from './components/base/buttonBar';
 import SectionsWrapper from './components/sections/sectionsWrapper';
-import Macrospage from './components/macros/macros';
+import Macrospage from './components/macrospage/macrospage';
 import Post from './components/blog/post';
 import Instant from './components/notifs/instant';
 import UserSettings from './components/base/userSettings';
@@ -37,7 +34,7 @@ import UserProfile from './components/base/userProfile';
 import { CreatePost } from './components/sections/userLog';
 import { ManageConnections } from './components/sections/socialLog';
 import { ManageMacros } from './components/sections/macros';
-import MonthChart from './components/monthChart/monthChart';
+import Calendar from './components/calendar/calendar';
 import MapComponent from './components/map/map';
 import { MapPage } from './components/map/map';
 import './components/sections/sections.css';
@@ -104,6 +101,7 @@ function Home({
   let element = el.current
 
   React.useEffect(()=> {
+    getUnreadCount();
     if(element) {
       setEnter();
     }
@@ -148,25 +146,6 @@ function Home({
             setUserSettings={setUserSettings}/>
         }
 
-        {/*{isLogout &&
-          <div id="logoutModal" className={``}>
-            
-            <div id="wrapper">
-              <span id="exclaimation">!</span>
-              <h2>Are you sure you wish to log out?</h2>
-
-              <div id="options">
-                <button className={`buttonDefault`} onClick={setLogout}>Cancel</button>
-                <button className={`buttonDefault`} onClick={async()=> {
-                  await logout().then(()=> {
-                    navigate('/entry');
-                  })
-                }}>Log Out</button>
-              </div>
-              </div>
-          </div>
-        }*/}
-
         <SectionsWrapper current={current} 
                          setCurrent={setCurrent} 
                          log={log} 
@@ -206,8 +185,8 @@ function Home({
                    mapData={mapData}
                    setMapData={setMapData}/>
 
-        {current.monthChart &&
-          <MonthChart 
+        {current.calendar &&
+          <Calendar 
             setCurrent={setCurrent} 
             current={current}
             cal={cal} 
@@ -283,10 +262,6 @@ export default function Main() {
       getUnreadCount();
     }
   }, [authed])
-
-  React.useEffect(()=> {
-    getUnreadCount();
-  }, [socketMessage])
 
 
   // need to implement reconnect redundancy here
@@ -390,14 +365,13 @@ export default function Main() {
     reconnectAttempts: 10,
   })
 
-
   
-  const cal = Calendar();
+  const cal = CalInfo();
   const [current, setCurrent] = React.useState({
     home: true,
     section: null, //0, 1, 2, 3, 4
     social: false, //true, false or social
-    monthChart: false, //true or false
+    calendar: false, //true or false
     map: false,
     scrollTo: null,
     transition: false //for components mounted dependant on this stateVar, indicates before unmount
@@ -428,8 +402,6 @@ export default function Main() {
     setInitialLogin(false);
   }
 
-  
-
   const [unreadCount, setUnreadCount] = React.useState('');
   /**
    * Fetches unread count of interactions on initial load
@@ -445,6 +417,9 @@ export default function Main() {
     setUnreadCount(count);
   }
 
+  React.useEffect(()=> {
+    getUnreadCount();
+  }, [socketMessage])
 
   /*
     Top level state array to house log of posts
@@ -467,12 +442,19 @@ export default function Main() {
   ]);
   
 
-  return(
-        <Routes>
-
-          <Route path="/" element={
-              <HomeOrEntry>
-                <Home 
+  const routerObject = createBrowserRouter([
+    
+    // E N T R Y 
+    { 
+      path: "/entry",
+      element: <Entry />
+    },
+    // R O O T
+    {
+      path: "/",
+      element:
+        <HomeOrEntry>
+          <Home 
                   // socket & notif stuff 
                   socketURL={socketURL}
                   socketMessage={socketMessage}
@@ -503,17 +485,16 @@ export default function Main() {
 
                   navOptions={navOptions}
                   setNavOptions={setNavOptions}
-                />
-              </HomeOrEntry>
-            }>
-          </Route>
-
-          <Route path="/entry" element={<Entry />} 
           />
-
-          <Route path="/home" element={
-              <HomeOrEntry>
-                <Home 
+        </HomeOrEntry>
+      ,
+    },
+    // H O M E
+    {
+      path: '/home',
+      element:
+        <HomeOrEntry>
+            <Home 
                   // socket & notif stuff
                   socketURL={socketURL}
                   socketMessage={socketMessage}
@@ -544,15 +525,20 @@ export default function Main() {
 
                   navOptions={navOptions}
                   setNavOptions={setNavOptions}
-                />
-              </HomeOrEntry>
-            }>
-          </Route>
-
-          <Route path="/post/:postID" element={
-              <HomeOrEntry>
-                <Post 
-                  // socket stuff
+            />
+        </HomeOrEntry>
+    },
+    // P O S T
+    {
+      path: '/post/:postID',
+      loader: async({ params }) => {
+        let request = await accessAPI.getBlogPost(params.postID);
+        return request;
+      },
+      element:
+        <HomeOrEntry>
+          <Post 
+            // socket stuff
                   socketURL={socketURL}
                   socketMessage={socketMessage}
                   setSocketMessage={setSocketMessage}
@@ -570,14 +556,34 @@ export default function Main() {
                  
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
-                />
-              </HomeOrEntry>
-            } 
           />
+        </HomeOrEntry>
+    },
+    //M A C R O S P A G E
+    {
+      path: '/macros/:macroname/:macroid',
+      loader: async({ params }) => {
+        let macroInfo = await accessAPI.getTagData(params.macroid, params.macroname);
+        let macroPosts = await accessAPI.groupPosts({action: 'getPosts', groupID: params.macroid, groupName: params.macroname});
+         
+        let doesHaveAccess;
+        if(macroInfo.hasAccess) {
+          doesHaveAccess = macroInfo.hasAccess.filter(el => el == userID);
+          doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
+          macroInfo.userHasAccess = doesHaveAccess;
+        } 
+        macroInfo.name = macroInfo.name ? macroInfo.name : params.macroname;
+        macroInfo.ownerUsername = macroInfo.adminUsernames ? macroInfo.adminUsernames[0] : null;
+        macroInfo.ownerID = macroInfo.admins ? macroInfo.admins[0] : null;
+        macroInfo.type = macroInfo.type == undefined ? 'topic' : macroInfo.type;
+        macroInfo.userCount = macroInfo.hasAccess ? macroInfo.hasAccess.length : null;
+        macroInfo.postCount = macroPosts.length ? macroPosts.length : 0
 
-          <Route path="/macros/:name" element={
-              <HomeOrEntry>
-                <Macrospage
+        return {macroInfo, macroPosts}
+      },
+      element: 
+        <HomeOrEntry>
+          <Macrospage
                   // socket stuff
                   socketURL={socketURL}
                   socketMessage={socketMessage}
@@ -598,13 +604,19 @@ export default function Main() {
                   setSelectedDate={setSelectedDate}
                   tags={tags}
                   setTags={setTags}
-                />
-              </HomeOrEntry>
-            } 
           />
-          <Route path="/user/:username" element={
-            <HomeOrEntry>
-              <UserProfile
+        </HomeOrEntry>
+    },
+    //U S E R  P R O F I L E
+    {
+      path: '/user/:username/:userid',
+      loader: async({ params }) => {
+        let data = await accessAPI.getSingleUser(params.userid);
+        return data;
+      },
+      element: 
+        <HomeOrEntry>
+          <UserProfile
                   // socket stuff
                   socketURL={socketURL}
                   socketMessage={socketMessage}
@@ -623,14 +635,19 @@ export default function Main() {
                   // socket stuff
                   selectedDate={selectedDate}
                   setSelectedDate={setSelectedDate}
-              />
-            </HomeOrEntry>
-            }
           />
-
-          <Route path="/settings" element={
-              <HomeOrEntry>
-                <UserSettings
+        </HomeOrEntry>
+    },
+    //U S E R  S E T T I N G S
+    {
+      path: '/:username/settings',
+      loader: async({ params }) => {
+        let data = await accessAPI.userSettings({option: 'getUserSettings'});
+        return data;
+      },
+      element: 
+        <HomeOrEntry>
+          <UserSettings
                   setSocketMessage={setSocketMessage}
                   socketURL={socketURL}
                   socketMessage={socketMessage}
@@ -642,12 +659,204 @@ export default function Main() {
                   getUnreadCount={getUnreadCount}
                   current={current}
                   setCurrent={setCurrent}
-                />
-              </HomeOrEntry>
-            }
           />
-        </Routes>
-  )
+        </HomeOrEntry>
+    }
+  ])
+
+  return (
+      <UIContextProvider>
+        <RouterProvider router={routerObject} />
+      </UIContextProvider>
+    )
+    
+
+  // return(
+  //       <Routes>
+
+  //         <Route path="/" element={
+  //             <HomeOrEntry>
+  //               <Home 
+  //                 // socket & notif stuff 
+  //                 socketURL={socketURL}
+  //                 socketMessage={socketMessage}
+  //                 setSocketMessage={setSocketMessage}
+  //                 sendMessage={sendMessage}
+  //                 isActive={isActive}
+  //                 setActive={setActive}
+  //                 accessID={accessID}
+  //                 setAccessID={setAccessID}
+  //                 unreadCount={unreadCount}
+  //                 setUnreadCount={setUnreadCount}
+  //                 getUnreadCount={getUnreadCount}
+  //                 lastMessage={lastMessage}
+  //                 // socket & notif stuff
+  //                 cal={cal}
+  //                 current={current}
+  //                 setCurrent={setCurrent}
+  //                 selectedDate={selectedDate}
+  //                 setSelectedDate={setSelectedDate}
+
+  //                 mapData={mapData}
+  //                 setMapData={setMapData}
+
+  //                 log={log}
+  //                 setLog={setLog}
+  //                 tags={tags}
+  //                 setTags={setTags}
+
+  //                 navOptions={navOptions}
+  //                 setNavOptions={setNavOptions}
+  //               />
+  //             </HomeOrEntry>
+  //           }>
+  //         </Route>
+
+  //         <Route path="/entry" element={<Entry />} 
+  //         />
+
+  //         <Route path="/home" element={
+  //             <HomeOrEntry>
+  //               <Home 
+  //                 // socket & notif stuff
+  //                 socketURL={socketURL}
+  //                 socketMessage={socketMessage}
+  //                 setSocketMessage={setSocketMessage}
+  //                 sendMessage={sendMessage}
+  //                 isActive={isActive}
+  //                 setActive={setActive}
+  //                 accessID={accessID}
+  //                 setAccessID={setAccessID}
+  //                 unreadCount={unreadCount}
+  //                 setUnreadCount={setUnreadCount}
+  //                 getUnreadCount={getUnreadCount}
+  //                 lastMessage={lastMessage}
+  //                 // socket & notif stuff
+  //                 cal={cal}
+  //                 current={current}
+  //                 setCurrent={setCurrent}
+  //                 selectedDate={selectedDate}
+  //                 setSelectedDate={setSelectedDate}
+
+  //                 mapData={mapData}
+  //                 setMapData={setMapData}
+
+  //                 log={log}
+  //                 setLog={setLog}
+  //                 tags={tags}
+  //                 setTags={setTags}
+
+  //                 navOptions={navOptions}
+  //                 setNavOptions={setNavOptions}
+  //               />
+  //             </HomeOrEntry>
+  //           }>
+  //         </Route>
+
+  //         <Route 
+  //           path="/post/:postID" 
+  //           loader={async()=> {
+              
+  //           }}
+  //           element={
+  //             <HomeOrEntry>
+  //               <Post 
+  //                 // socket stuff
+  //                 socketURL={socketURL}
+  //                 socketMessage={socketMessage}
+  //                 setSocketMessage={setSocketMessage}
+  //                 sendMessage={sendMessage}
+  //                 isActive={isActive}
+  //                 setActive={setActive}
+  //                 accessID={accessID}
+  //                 setAccessID={setAccessID}
+  //                 unreadCount={unreadCount}
+  //                 setUnreadCount={setUnreadCount}
+  //                 getUnreadCount={getUnreadCount}
+  //                 lastMessage={lastMessage}
+  //                 current={current}
+  //                 setCurrent={setCurrent}
+                 
+  //                 selectedDate={selectedDate}
+  //                 setSelectedDate={setSelectedDate}
+  //               />
+  //             </HomeOrEntry>
+  //           } 
+  //         />
+
+  //         <Route path="/macros/:name" element={
+  //             <HomeOrEntry>
+  //               <Macrospage
+  //                 // socket stuff
+  //                 socketURL={socketURL}
+  //                 socketMessage={socketMessage}
+  //                 setSocketMessage={setSocketMessage}
+  //                 sendMessage={sendMessage}
+  //                 isActive={isActive}
+  //                 setActive={setActive}
+  //                 accessID={accessID}
+  //                 setAccessID={setAccessID}
+  //                 unreadCount={unreadCount}
+  //                 setUnreadCount={setUnreadCount}
+  //                 getUnreadCount={getUnreadCount}
+  //                 lastMessage={lastMessage}
+  //                 current={current}
+  //                 setCurrent={setCurrent}
+  //                 // socket stuff
+  //                 selectedDate={selectedDate}
+  //                 setSelectedDate={setSelectedDate}
+  //                 tags={tags}
+  //                 setTags={setTags}
+  //               />
+  //             </HomeOrEntry>
+  //           } 
+  //         />
+  //         <Route path="/user/:username" element={
+  //           <HomeOrEntry>
+  //             <UserProfile
+  //                 // socket stuff
+  //                 socketURL={socketURL}
+  //                 socketMessage={socketMessage}
+  //                 setSocketMessage={setSocketMessage}
+  //                 sendMessage={sendMessage}
+  //                 isActive={isActive}
+  //                 setActive={setActive}
+  //                 accessID={accessID}
+  //                 setAccessID={setAccessID}
+  //                 unreadCount={unreadCount}
+  //                 setUnreadCount={setUnreadCount}
+  //                 getUnreadCount={getUnreadCount}
+  //                 lastMessage={lastMessage}
+  //                 current={current}
+  //                 setCurrent={setCurrent}
+  //                 // socket stuff
+  //                 selectedDate={selectedDate}
+  //                 setSelectedDate={setSelectedDate}
+  //             />
+  //           </HomeOrEntry>
+  //           }
+  //         />
+
+  //         <Route path="/settings" element={
+  //             <HomeOrEntry>
+  //               <UserSettings
+  //                 setSocketMessage={setSocketMessage}
+  //                 socketURL={socketURL}
+  //                 socketMessage={socketMessage}
+  //                 sendMessage={sendMessage}
+  //                 isActive={isActive}
+  //                 setActive={setActive}
+  //                 setAccessID={setAccessID}
+  //                 accessID={accessID}
+  //                 getUnreadCount={getUnreadCount}
+  //                 current={current}
+  //                 setCurrent={setCurrent}
+  //               />
+  //             </HomeOrEntry>
+  //           }
+  //         />
+  //       </Routes>
+  // )
 }
 
 // const router = createBrowserRouter([

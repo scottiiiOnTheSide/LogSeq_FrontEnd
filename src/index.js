@@ -13,17 +13,12 @@ const root = ReactDOM.createRoot(body);
 root.render(
   <React.StrictMode>
 
-{/*  <Router> 
-    <AuthProvider>
-      <Main />
-    </AuthProvider> 
-  </Router>*/}
-
-    <Router> 
+    {/*<Router> 
       <UIContextProvider>
         <Main />
       </UIContextProvider> 
-    </Router>
+    </Router>*/}
+    <Main />
 
   </React.StrictMode>
 );

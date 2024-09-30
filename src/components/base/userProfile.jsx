@@ -1,7 +1,7 @@
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
-import Calendar from '../calendar'
-import {useNavigate, useLocation} from 'react-router-dom';
+import CalInfo from '../calInfo'
+import {useNavigate, useLocation, useLoaderData} from 'react-router-dom';
 
 
 import Header from '../../components/base/header';
@@ -33,13 +33,14 @@ export default function UserProfile({
 	/* Component Function Related*/
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
-	const location = useLocation();
+	// const location = useLocation();
+	const data = useLoaderData();
 	const navigate = useNavigate();
-	const cal = Calendar();
-	const isOwner = location.state.user._id == userID ? true : false;
-	const [userInfo, setUserInfo] = React.useState(location.state.user);
-	const [pinnedPosts, setPinnedPosts] = React.useState(location.state.pinnedPosts)
-	const [collections, setCollections] = React.useState(location.state.collections)
+	const cal = CalInfo();
+	const isOwner = data.user._id == userID ? true : false;
+	const [userInfo, setUserInfo] = React.useState(data.user);
+	const [pinnedPosts, setPinnedPosts] = React.useState(data.pinnedPosts)
+	const [collections, setCollections] = React.useState(data.collections)
 
 	const updateProfilePage = async() => {
 		let data = await accessAPI.getSingleUser(userInfo._id);

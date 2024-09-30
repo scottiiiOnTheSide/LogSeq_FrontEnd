@@ -625,7 +625,11 @@ export default function Macros({active, current, setCurrent, tags, setTags}) {
 	let goToMacrosPage = async(tag) => {
 
 		let tagInfo = await accessAPI.getTagData(tag._id, tag.name);
-		let posts = await accessAPI.groupPosts({action: 'getPosts', groupID: tag._id, groupName: tag.name});
+		let posts = await accessAPI.groupPosts({
+			action: 'getPosts', 
+			groupID: tag._id, 
+			groupName: tag.name
+		});
 		let postsCount = posts.length;
 
 		/* 09. 22. 2024
@@ -642,19 +646,19 @@ export default function Macros({active, current, setCurrent, tags, setTags}) {
 		console.log(tagInfo);
 									
 		setTimeout(()=> {
-			navigate(`/macros/${tag.name}`, {
-					state: {
-						name: tag.name,
-						posts: posts,
-						macroID: tag._id,
-						isPrivate: tagInfo.isPrivate,
-						hasAccess: tagInfo.hasAccess ? doesHaveAccess : true,
-						ownerUsername: tagInfo.adminUsernames ? tagInfo.adminUsernames[0] : null,
-						ownerID: tagInfo.admins ? tagInfo.admins[0] : null,
-						type: tagInfo.type == undefined ? 'topic' : tagInfo.type,
-						userCount: tagInfo.hasAccess ? tagInfo.hasAccess.length : null,
-						postCount: postsCount ? postsCount : 0
-					}
+			navigate(`/macros/${tag.name}/${tag._id}`, {
+					// state: {
+					// 	name: tag.name,
+					// 	posts: posts,
+					// 	macroID: tag._id,
+					// 	isPrivate: tagInfo.isPrivate,
+					// 	hasAccess: tagInfo.hasAccess ? doesHaveAccess : true,
+					// 	ownerUsername: tagInfo.adminUsernames ? tagInfo.adminUsernames[0] : null,
+					// 	ownerID: tagInfo.admins ? tagInfo.admins[0] : null,
+					// 	type: tagInfo.type == undefined ? 'topic' : tagInfo.type,
+					// 	userCount: tagInfo.hasAccess ? tagInfo.hasAccess.length : null,
+					// 	postCount: postsCount ? postsCount : 0
+					// }
 				})
 		}, 200)
 	}

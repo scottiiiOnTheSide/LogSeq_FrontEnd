@@ -1,6 +1,7 @@
 import * as React from 'react';
-import {useNavigate, useLocation} from 'react-router-dom';
+import {useNavigate, useLocation, useLoaderData} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
+// import { UIContextProvider, useUIC } from './UIcontext';
 import useUIC from '../../UIcontext';
 import Instant from '../../components/notifs/instant';
 
@@ -26,10 +27,11 @@ export default function UserSettings({
 
 	let navigate = useNavigate();
 	const location = useLocation();
+	const data = useLoaderData();
 	const { logout } = useUIC();
 	const username = sessionStorage.getItem('userName');
-	const [currentSettings, setCurrentSettings] = React.useState(location.state.data);
-	const [privacyOption, setPrivacyOption] = React.useState(location.state.data.privacy);
+	const [currentSettings, setCurrentSettings] = React.useState(data);
+	const [privacyOption, setPrivacyOption] = React.useState(data.privacy);
 
 	const [exit, setExit] = React.useReducer(state => !state, false)
 	const [section, setSection] = React.useState([
@@ -586,8 +588,10 @@ export default function UserSettings({
 					</div>
 				</li>
 
+				{/*A B O U T  P R O J E C T*/}
 				<li>
-					<button className={`buttonDefault`}>About Project
+					<button className={`buttonDefault`} id="aboutProject">
+						<p>About Project</p>
 						<svg 
 							xml version="1.0"
 							viewBox="109.21 220.42 140.874 69.937" 

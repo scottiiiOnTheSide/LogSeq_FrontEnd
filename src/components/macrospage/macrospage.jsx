@@ -1,7 +1,7 @@
 /* * * V I T A L S * * */
 import * as React from 'react';
-import {useParams, useLocation} from 'react-router-dom';
-import Calendar from '../calendar'
+import {useParams, useLocation, useLoaderData} from 'react-router-dom';
+import CalInfo from '../calInfo'
 import APIaccess from '../../apiaccess';
 import {useNavigate} from 'react-router-dom';
 
@@ -43,23 +43,12 @@ export default function Macrospage({
 
 	const userID = sessionStorage.getItem('userID');
 	let userSettings = sessionStorage.getItem('settings');
-	const location = useLocation();
+	const data = useLoaderData();
 	const navigate = useNavigate();
-	const [postData, setPostData] = React.useState(location.state.posts);
-	const [macroInfo, setMacroInfo] = React.useState({
-		_id: location.state.macroID,
-		userHasAccess: location.state.hasAccess, //boolean
-		userCount: location.state.hasAccess ? location.state.hasAccess.length : undefined,
-		isMacroPrivate: location.state.isPrivate,
-		ownerUsername: location.state.ownerUsername,
-		ownerID: location.state.ownerID,
-		name: location.state.name,
-		type: location.state.type,
-		userCount: location.state.userCount,
-		postCount: location.state.postCount
-	})
-	const macroID = location.state.macroID;;
-	const cal = Calendar();
+	const [postData, setPostData] = React.useState(data.macroPosts);
+	const [macroInfo, setMacroInfo] = React.useState(data.macroInfo);
+	const macroID = macroInfo._id;
+	const cal = CalInfo();
 	console.log(macroInfo)
 	console.log(postData)
 

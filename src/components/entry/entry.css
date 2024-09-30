@@ -406,6 +406,69 @@ section#entry form fieldset#profilePhoto img {
 
 
 
+section#entry form div#topicSelection {
+	height: 60vh;
+	animation: 0.5s ease-in-out forwards _enter;
+}
+
+section#entry form div#topicSelection._leave {
+	animation: 0.5s ease-in-out forwards _leave;
+}
+
+section#entry form div#topicSelection h2 {
+	width: 90%;
+	font-family: 'Raleway';
+	font-weight: 400;
+	color: var(--greyscale-accent);
+	text-align: left;
+	letter-spacing: 2px;
+	margin: 32px auto;
+}
+
+section#entry form div#topicSelection ul {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: center;
+	list-style-type: none;
+	padding-left: 0px;
+	width: 100%;
+	margin-left: auto;
+	margin-bottom: 0;
+	height: 58%;
+	overflow-y: scroll;
+}
+
+section#entry form div#topicSelection ul li {
+	display: block;
+    position: relative;
+    /* top: 7px; */
+    margin: 4px;
+    margin-top: 10px;
+}
+
+section#entry form div#topicSelection ul li button {
+	border: 2px solid var(--greyscale-text);
+    border-radius: 12px;
+    padding: 8px 10px;
+
+    font-family: "Raleway";
+    font-weight: 400;
+    font-size: 1em;
+    letter-spacing: 2px;
+    color: var(--greyscale-text);
+    background-color: transparent;
+    transition: all ease-in-out 0.3s;
+    text-transform: capitalize;
+}
+
+section#entry form div#topicSelection ul li button.selected {
+	border-color: 2px solid var(--greyscale-details);
+	color: var(--greyscale-details);
+}
+
+	
+
+
 
 
 section#entry div#referralPanel {
