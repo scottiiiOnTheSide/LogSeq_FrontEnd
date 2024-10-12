@@ -73,7 +73,7 @@ export default function ButtonBar({
 								})
 							}, 300)
 						}
-						else if(!current.map && !current.monthChart) {
+						else if(!current.map && !current.calendar) {
 							const hajime = new Date();
 						
 							setSelectedDate({
@@ -96,7 +96,7 @@ export default function ButtonBar({
 			{/*C A L E N D A R*/}
 			<button id="monthChartToggle" 
 					className={`buttonDefault`} onClick={()=> {
-				if(current.monthChart) {
+				if(current.calendar) {
 					setCurrent({
 						...current,
 						transition: true
@@ -104,7 +104,7 @@ export default function ButtonBar({
 					let delay = setTimeout(()=> {
 						setCurrent({
 							...current,
-							monthChart: false,
+							calendar: false,
 						})
 						
 						setSelectedDate({
@@ -113,7 +113,7 @@ export default function ButtonBar({
 							year: hajime.getFullYear()
 						})
 					}, 300)
-				} else if(!current.monthChart && !current.map) {
+				} else if(!current.calendar && !current.map) {
 
 					setSelectedDate({
 						day: hajime.getDate(),
@@ -123,7 +123,7 @@ export default function ButtonBar({
 
 					setCurrent({
 						...current,
-						monthChart: true
+						calendar: true
 					})
 				}
 
@@ -136,7 +136,7 @@ export default function ButtonBar({
 					})
 				}
 			}}>				
-				{!current.monthChart &&
+				{!current.calendar &&
 					<div id="day">
 						<p>Day</p>
 						<span>{cal.dayOfTheYear}</span>
@@ -144,7 +144,7 @@ export default function ButtonBar({
 						<span>{cal.amountOfDays}</span>
 					</div>
 				}
-				{current.monthChart &&
+				{current.calendar &&
 					<div id="month">
 						<p>Month</p>
 						<span>{cal.monthInNum}</span>

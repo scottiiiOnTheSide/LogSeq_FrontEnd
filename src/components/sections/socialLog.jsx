@@ -50,13 +50,14 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 		}
 	}
 
-	const requestConnection = async(recipientID) => {
+	const requestConnection = async(recipientID, username) => {
 		let notif = {
 			type: 'request',
 			senderID: userID,
 			senderUsername: userName,
 			recipients: [recipientID],
-			message: 'sent'
+			message: 'sent',
+			recipientUsername: username
 		}
 		setSocketMessage(notif);
 	}
@@ -133,7 +134,7 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 		let data = await accessAPI.getSingleUser(userid);
 
 		let delay = setTimeout(()=> {
-			navigate(`/user/${data.user.userName}`, {
+			navigate(`/user/${data.user.userName}/${data.user._id}`, {
 				state: {
 					user: data.user,
 					pinnedPosts: data.pinnedPosts
@@ -265,7 +266,7 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 										Profile
 									</button>
 									<button className={`buttonDefault`}
-											onClick={()=> {requestConnection(user.id)}}>
+											onClick={()=> {requestConnection(user.id, user.username)}}>
 										Request
 									</button>
 								</div>

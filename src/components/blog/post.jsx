@@ -68,7 +68,7 @@ export default function Post({
 	let handleSubmit = async(e) => {
 		e.preventDefault();
 		let date = new Date();
-		let body = {
+		let body = { //comment body
 			ownerUsername: userName,
 			ownerID: userID,
 			content: messageContent,
@@ -77,16 +77,19 @@ export default function Post({
 			postedOn_day: date.getDate(),
 			postedOn_year: date.getFullYear(),
 			commentNumber: access.commentNumber,
-			profilePhoto: sessionStorage.getItem('profilePhoto')
+			profilePhoto: sessionStorage.getItem('profilePhoto'),
+			respondeeId: access.commentOwner,
+			postOwner: postData.owner
 		}
-		let notif = {
+		let notif = { //notification body
 				type: 'comment',
 				isRead: false,
 				senderID: userID,
 				senderUsername: userName,
 				postURL: postID,
 				recipients: [postData.owner],
-				details: JSON.stringify({postTitle: postData.title})
+				postTitle: postData.title,
+				postOwner: postData.owner
 		}
 
 		if(access.type == 'initial') {
@@ -109,10 +112,7 @@ export default function Post({
 
 		let request = await accessAPI.postComment(access.type, postID, body).then(res => {
 			console.log(res)
-			notif.details = JSON.stringify({
-				postTitle: postData.title,
-				commentID: res
-			});
+			notif.commentID = res;
 
 			setSocketMessage(notif);
 			console.log(notif)
@@ -151,8 +151,9 @@ export default function Post({
 		let body = {
 			groupID: collectionID == undefined ? collections[0]._id : collectionID,
       		postID: postID,
+      		action: 'addToCollection',
       		type: 'collection',
-      		action: 'addToCollection'
+      		postOwner: postData.owner
 		}
 		setSocketMessage(body);
 	}
@@ -221,7 +222,7 @@ export default function Post({
 		let data = await accessAPI.getSingleUser(userID);
 		
 		let delay = setTimeout(()=> {
-			navigate(`/user/${data.user.userName}`, {
+			navigate(`/user/${data.user.userName}/${data.user._id}`, {
 				state: {
 					user: data.user,
 					pinnedPosts: data.pinnedPosts,
@@ -246,7 +247,7 @@ export default function Post({
 		console.log(tagInfo);
 									
 		setTimeout(()=> {
-			navigate(`/macros/${tag.name}`, {
+			navigate(`/macros/${tag.name}/${tag._id}`, {
 					state: {
 						name: tag.name,
 						posts: posts,
@@ -266,10 +267,10 @@ export default function Post({
 	React.useEffect(()=> {
 		refreshPost()
 		pinPost('check')
-		setCurrent({
-			...current,
-			scrollTo: postData._id
-		})
+		// setCurrent({
+		// 	...current,
+		// 	scrollTo: postData._id
+		// })
 	}, [])
 
 	/***
@@ -389,7 +390,7 @@ export default function Post({
 		or response */
 	React.useEffect(()=> {
 		if(access.type == 'response') {
-			setCommentHeader(`Replying to ${access.commentUsername}`)
+			setCommentHeader(`Replying to @${access.commentUsername}`)
 		}
 		else {
 			setCommentHeader('Your Comment');	
@@ -402,15 +403,21 @@ export default function Post({
 	let commentsRef = React.useRef()
 	let commentsCurrent = commentsRef.current;
 	React.useEffect(()=> {
-		if(commentsCurrent) {
-			if(accessID.commentID) {
-				let comment = document.getElementById(accessID.commentID);
+
+		let goToComment = location.state.commentID ? location.state.commentID : null;
+
+		if(goToComment != null) {
+
+			console.log('we has comment');
+
+			if(commentsCurrent) {
+				let comment = document.getElementById(location.state.commentID);
 				console.log(comment);
 				comment.scrollIntoView({behavior: "smooth"});
 				/* can add class to comment to make it stand out...*/
 			}
 		}	
-	}, [comments, commentsCurrent]);
+	}, [comments]);
 
 
 	/*
@@ -433,9 +440,10 @@ export default function Post({
 		}
 
 		getCollections();
+		console.log(postData);
 	}, [element]);
 
-	console.log(postData);
+	// console.log(postData);
 
 	return (
 		<section id="POST" ref={el} className={`${enter == true ? '_enter' : ''}`}>
@@ -746,7 +754,9 @@ export default function Post({
 	            setNotifList={setNotifList} 
 	            unreadCount={unreadCount}
 	            setUnreadCount={setUnreadCount}
-	            setSocketMessage={setSocketMessage}/>
+	            setSocketMessage={setSocketMessage}
+	            accessID={accessID}
+	            setAccessID={setAccessID}/>
 	        }
 			<Instant 
 				socketURL={socketURL}

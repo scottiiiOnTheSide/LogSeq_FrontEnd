@@ -9,7 +9,7 @@ import GroupsList from './groupsList';
 import Macros from './macros';
 import HomeLog from './homeLog';
 
-export default function SectionsWrapper({ current, setCurrent, log, setLog, tags, setTags }) {
+export default function SectionsWrapper({ current, setCurrent, log, setLog, tags, setTags, userTopics, setUserTopics }) {
 
 	/*** Set Wrapper Height ***/
 	let wrapper = React.useRef()
@@ -146,7 +146,9 @@ export default function SectionsWrapper({ current, setCurrent, log, setLog, tags
 						current={current} 
 						setCurrent={setCurrent}
 						tags={tags}
-						setTags={setTags} />
+						setTags={setTags} 
+						userTopics={userTopics}
+                  		setUserTopics={setUserTopics}/>
 			}
 			{panes.groups &&
 				<GroupsList active={active} />

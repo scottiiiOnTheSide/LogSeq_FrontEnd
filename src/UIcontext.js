@@ -49,7 +49,7 @@ export function useUIC() {
 				sessionStorage.removeItem('privacySetting');
 				sessionStorage.removeItem('profilePhoto');
 				setAuth(false);
-				if(sessionStorage.length == 1) {
+				if(!sessionStorage.userKey) {
 					res()
 				}
 			})

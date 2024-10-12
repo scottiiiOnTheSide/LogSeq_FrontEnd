@@ -38,7 +38,9 @@ export default function Macrospage({
     current,
     setCurrent,
     tags,
-    setTags
+    setTags,
+    userTopics,
+    setUserTopics
 }) {
 
 	const userID = sessionStorage.getItem('userID');
@@ -51,6 +53,7 @@ export default function Macrospage({
 	const cal = CalInfo();
 	console.log(macroInfo)
 	console.log(postData)
+	console.log(userTopics)
 
 	let goToProfile = async(userID) => {
 
@@ -204,6 +207,18 @@ export default function Macrospage({
 		}
 	}
 
+	React.useEffect(()=> {
+		console.log(macroInfo.name)
+		console.log(userTopics.includes(macroInfo.mame))
+		if(userTopics.includes(macroInfo.mame)) {
+			setMacroInfo({
+				...macroInfo,
+				userHasAccess: true
+			})
+		}
+		console.log(macroInfo)
+	}, [])
+
 	let el = React.useRef();
 	React.useEffect(()=> {
 		let elCurrent = el.current;
@@ -216,12 +231,12 @@ export default function Macrospage({
 			// ARRD = 'delete'
 		}
 		// if hasAccess and not owner -> remove
-		else if(macroInfo.userHasAccess) {
+		else if(macroInfo.userHasAccess == true) {
 			setARRD('remove')
 			// ARRD = 'remove'
 		}
 		// if noaccess and is not private -> add
-		else if(!macroInfo.userHasAccess && macroInfo.isMacroPrivate) {
+		else if(!macroInfo.userHasAccess && macroInfo.admins) {
 			setARRD('request')
 			// ARRD = 'request'
 		}

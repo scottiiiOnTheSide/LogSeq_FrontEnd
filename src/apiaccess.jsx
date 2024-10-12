@@ -13,6 +13,18 @@ export default function APIaccess(key) {
 
 	return {
 
+		async getProjectPublicStats() {
+			let request = await fetch(`${apiAddr}/publicStats`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+					'Accept':'application/json'
+				}
+			}).then(data => data.json());
+
+			return request
+		},
+
 		async signupUser(signupCredentials) {
 			/**
 			 * Form Requirements:
@@ -108,7 +120,10 @@ export default function APIaccess(key) {
 				sessionStorage.setItem('userName', userInfo._username);
 				sessionStorage.setItem('profilePhoto', request.profilePhoto);
 				sessionStorage.setItem('privacySetting', request.privacySetting);
-				// sessionStorage.setItem('settings', request.settings.topics);
+
+				let topicsAsString = request.settings.topics.join(', ');
+				console.log(topicsAsString);
+				sessionStorage.setItem('topicsAsString', topicsAsString);
 
 				return true;
 

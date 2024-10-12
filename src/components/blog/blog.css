@@ -268,7 +268,7 @@ section#POST header {
 }
 
 section#POST article {
-	width: 94%;
+	width: 90%;
 	position: fixed;
 	left: 50%;
 	transform: translateX(-50%);;
@@ -614,19 +614,22 @@ div#optionsBar form h3 {
 	font-weight: 600;
     letter-spacing: 1px;
     color: var(--greyscale-accent);
-    margin: 12px 0px 8px 8px;
+    margin: 24px 16px;
+    font-family: 'Raleway';
+    font-weight: 400;
+    letter-spacing: 2px;
 }
 
 div#optionsBar form textarea {
-	width: 94%;
+	width: 92%;
 	position: relative;
 	left: 50%;
 	transform: translateX(-50%);
 
 	font-family: 'Raleway';
-    font-weight: 400;
+    font-weight: 300;
     font-size: 0.9em;
-    color: var(--greyscale-text);
+    color: var(--greyscale-details);
     letter-spacing: 2px;
     line-height: 22px;
 

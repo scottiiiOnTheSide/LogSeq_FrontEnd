@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {useNavigate, useLocation, useLoaderData} from 'react-router-dom';
 import APIaccess from '../../apiaccess';
-// import { UIContextProvider, useUIC } from './UIcontext';
 import useUIC from '../../UIcontext';
 import Instant from '../../components/notifs/instant';
 
@@ -590,7 +589,15 @@ export default function UserSettings({
 
 				{/*A B O U T  P R O J E C T*/}
 				<li>
-					<button className={`buttonDefault`} id="aboutProject">
+					<button className={`buttonDefault`} 
+							id="aboutProject"
+							onClick={(e)=> {
+								e.preventDefault();
+								setExit()
+								let delay = setTimeout(()=> {
+									navigate('/about')
+								}, 500)
+							}}>
 						<p>About Project</p>
 						<svg 
 							xml version="1.0"

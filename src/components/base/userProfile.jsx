@@ -190,7 +190,8 @@ export default function UserProfile({
 
 				<div id="stats">
 					<p>
-						9
+						{/*9*/}
+						{data.postCount}
 						<span>Posts</span>
 					</p>
 					<p>
@@ -198,7 +199,7 @@ export default function UserProfile({
 						<span>Connections</span>
 					</p>
 					<p>
-						0
+						{userInfo.interactionCount}
 						<span>Actions</span>
 					</p>
 				</div>

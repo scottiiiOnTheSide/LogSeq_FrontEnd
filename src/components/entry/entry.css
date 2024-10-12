@@ -425,6 +425,17 @@ section#entry form div#topicSelection h2 {
 	margin: 32px auto;
 }
 
+section#entry form div#topicSelection p {
+	width: 90%;
+	font-family: 'Raleway';
+	font-weight: 100;
+	color: var(--greyscale-text);
+	text-align: center;
+	letter-spacing: 2px;
+	margin: 48px auto;
+	line-height: 24px;
+}
+
 section#entry form div#topicSelection ul {
 	display: flex;
 	flex-wrap: wrap;

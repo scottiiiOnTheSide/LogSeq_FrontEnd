@@ -2,15 +2,165 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 10. 12. 2024
+@1305 
+****To Do Next
+		- original sender of connection request should recieve popUp notif
+		- multiple posts per point in <Map>
+		- overlay for comments (deleting, replying) 
+			- does it need an indicator tho?
+		- filter by tag for map
+		- list of posts on <UserProfile>
+			- fullList, it's own page
+		- fullScreen imageslider for a post's image
+			- clicking on image thumbnail triggers this
+		- 'Start' page
+				- header, notifs, list of home tabs, settings and profile
+		- add subscriptions
+		- differentiation connections and subscriptions in <ManageConnections> with oneWay and twoWay
+			arrows
+### 10. 09. 2024
+@1100 
+AS OF NOW ....
+- need way of checking whether a user has topic saved. ✅
+- adding another's post to collections adds point for adder, but not post author. working sometimes ✅
+- original sender of connection request should recieve popUp notif
+- accept connection route needs to check whether users are already connected ✅
+- entire notification process for requesting access to a tag worked beautifully ✅
+	I believe that the points increased adequatedly as well, but i'll check again
+@0845 requestCheck now works for connectionRequests!
+would like to change ignore path...
+
+For now, ignoring a request simply marks it read. request check is really for sender not
+to overflow reciever with requests if they've already been sent...
+
+
+
+@0210 Request check for requests and access keeps returning a doc with a message value that
+			doesnt match what im looking for ('sent' and 'accessRequested')
+
+			the check is passing, but the rest of the code is also running as well
+
+### 10. 07. 2024
+@2315 adding a connection does increase the count for both users tho 
+****To Be Fixed
+ 		- original sender doesnt get popUp notif on connection confirmation ✅
+ 		- original sender confirm notification is missing recipients name ✅
+ 		- accepting a connectionRequest via notification should mark the original one 
+ 		  as read ✅
+ 		- make check for previously sent request, send 'ignored' notif type to requester via
+ 			popUps stating theyve already sent a request ✅
+ 			- add this for collection requests as well
+ 		- connectionRequest notifs need link to requester's profile
+
+
+
+@1435 need to be able to unselect option in <ManageConnections>, searching for new users
+
+@0845 can now go to comment from <NotifsList>
+issue when returning to Home from post, leaving from NotifsList
+
+within <Post>, the post id is set to current.scrollTo
+
+removed for now, 
+
+Need to change so that scrollTo tracks where the postID came from...
+
+### 10. 06. 2024
+@1400 makesure all listed functions update users' interactionCount
+
+### 10. 05. 2024
+@1340 Add social buttons underneath name credit in <About>
+
+****List of Subroute operations 
+	  that need to increment interactionCount
+	  - posting ✅✅
+	  - commenting ✅✅
+	  	- responding to a comment ✅✅
+	  - adding connection (both users) ✅✅
+	  - adding others to collection, tag (both users) ✅
+	  - adding post to collections (both users) ✅✅
+	  - tagging others in a post
+
+
+@0415 Changelog styling complete!
+
+### 10. 03. 2024
+@1435 Need an MD file for releaseChangelog. How to convert it to HTML...
+Maybe in the future I can create an algo to parse an MD file from the backend to
+html elements....
+changeLog will be hardcoded for now...
+
+li
+	span - version title
+	h2 - title
+	li - top level note
+		li - details
+
+@1145 Elements, styling and functionality done for first part of <About> page
+****To Do Next
+		- need to trim the text in <About> page
+		- need to create <Changelog>
+		- adding interaction incrementer to all applicable functions 
+
+### 10. 02. 2024
+@1425 All elements and styling done for <About> page
+****To Do Next:
+		- need to trim the text in <About> page
+		- need to create <Changelog> ✅
+
+@1035 close menu on comment submit...
+
+### 10. 01. 2024
+@2000 fixed the issue with the calendar! turns out the necessary code to remove that extra
+			row with nothing but blanks was there, but had an error
+
+@1635 recenter button added for <Map> and zoom buttons restyled
+
+****To Do Next:
+		- implement new algo for <Calendar> ✅
+		- <About> page and <Changelog>
+
+****After,
+		- rundown of all functions
+		- further codeclean up and organization
+		- planning future additions
+
+!!! Options for messages: Reply, Profile, Report
+		for user's own messages: Reply, Edit?, Delete
+User profiles should also have 'report' option, but further down the line perhaps...
+
+@0720 rough implementation added of recentering button for <Map>
+			will use chatGPT to replace zooms with buttons at bottom corners
+
+Need to replace algorithm for <Calendar>
+all request routes need checks for whether users already sent them
+will return notifying message if recipient has ignored them
+
+@0540 March and Jun 2025 render incorrectly in <Calendar> Will need to replace the algorithm
+
 ### 09. 30. 2024
+@1600 march 2025 has 6 weeks slots D: The horror...
+would like to make the months transition smoother
+theres overlap when the selectedMonth switched positions to the center
+
+@1520 had to change <calendar> back to using selectedDate for the setup. I believe it was changed
+			due to the date sticking when I would change from map to calendar, but that doesn't seem to 
+			be the case anymore...
+
+using css, i've set the 6th row in the calendar to simply not appear should it load.
+it should always be empty, thus will discern at some point whether this affects functionality
+
 @0240
 ****To Do Next:
 		- <Calendar>style update
-			- adjust the animation in the changing of the months. 
-			- timing of when postCount gets updated
-			- an extra 6th row is being added to the calendar? gotta remove
+			- adjust the animation in the changing of the months. 1/2
+			- timing of when postCount gets updated ✅
+			- an extra 6th row is being added to the calendar? gotta remove 
+				- write script to remove row if all divs are empty
 		- popUp in <Map> needs an update as well
-		- <Map> also needs a recentering button...
+		- <Map> also needs a recentering button... ✅
+				- styling for zoom buttons changed as well
 		- <About> page and changelog
 
 ****After,

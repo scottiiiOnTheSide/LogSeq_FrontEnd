@@ -38,7 +38,13 @@ export default function Instants({
 	***/
 	let makeNotif_sendInitialRequest = async (notif) => {
 		await accessAPI.newInteraction(notif).then((data) => {
-			if(data) {
+			if(data.confirmation == false) {
+				setSocketMessage({
+					type: 'simpleNotif',
+					message: `You have already sent @${notif.recipientUsername} a request`
+				})
+			}
+			else {
 				console.log(data);
 				setSocketMessage({
 					type: 'confirmation',
@@ -58,23 +64,28 @@ export default function Instants({
 	}
 
 	let makeNotif_sendAcceptRequest = async (notif) => {
-		let request = await accessAPI.newInteraction(notif);
+		await accessAPI.newInteraction(notif).then((data) => {
+			if(data.confirmation == false) {
+				setSocketMessage({
+					type: 'simpleNotif',
+					message: `You and ${notif.senderUsername} are already connected`
+				})
+			}
 
-		if (request == true) {
-			let pause = setTimeout(()=> {
+			if(data == true) {
+
 				sendMessage(JSON.stringify(notif));
-			}, 1000)
-		}
-		let pause = setTimeout(()=> {
-			setSocketMessage({
-				type: 'confirmation',
-				message: 'accepted'
-			})
-			setActive({
-				state: true,
-				type: 1
-			})
-		}, 2000)
+
+				setSocketMessage({
+					type: 'confirmation',
+					message: 'accepted'
+				})
+				setActive({
+					state: true,
+					type: 1
+				})
+			}
+		})
 	}
 
 	let makeNotif_sendCommentNotif = async (notif) => {
@@ -341,7 +352,8 @@ export default function Instants({
 		let request = await accessAPI.groupPosts({
 			action: 'addPost', 
 			groupID: data.groupID, 
-			postID: data.postID
+			postID: data.postID,
+			postOwner: data.postOwner
 		});
 
 		if(request.confirmation == true) {

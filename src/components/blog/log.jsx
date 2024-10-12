@@ -95,14 +95,9 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 						e.preventDefault();
 						console.log(post)
 
-						// setCurrent({
-						// 	...current,
-						// 	scrollTo: id
-						// })
-
 						setTimeout(()=> {
 							navigate(`/post/${post._id}`, {
-								// state: {post: post}
+								state: {post: post}
 							});
 						}, 600)
 					}}>

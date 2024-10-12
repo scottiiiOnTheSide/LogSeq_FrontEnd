@@ -252,7 +252,7 @@ function UserSignUp({
 			{signupSequence == 4 &&
 				<div id="topicSelection">
 					
-					<h2>Save some topics to easily find others posting about similar interests</h2>
+					<h2>Choose a few topics to easily find others posting about similar interests</h2>
 
 					<ul id="topicsList">
 						{topics.map(topic => (
@@ -264,6 +264,8 @@ function UserSignUp({
 							</li>
 						))}
 					</ul>
+
+					<p>Later you can create custom tags and add those from other users!</p>
 
 				</div>
 			}
@@ -428,7 +430,6 @@ function ReferralPanel({
 
 		if(buttonMode == 'close') {
 			
-
 			setPanelStates({
 				...panelStates,
 				panel: '_leave'

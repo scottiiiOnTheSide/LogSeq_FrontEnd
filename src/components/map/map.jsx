@@ -1,5 +1,6 @@
 /* V I T A L S */
 import * as React from 'react';
+import ReactDOM from 'react-dom';
 import { Map, View } from 'ol';
 import TileLayer from 'ol/layer/Tile';
 import OSM from 'ol/source/OSM';
@@ -9,6 +10,7 @@ import VectorSource from 'ol/source/Vector';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
 import { Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
+import Control from 'ol/control/Control';
 
 import Header from '../../components/base/header';
 
@@ -20,6 +22,27 @@ import './map.css';
 
 let accessAPI = APIaccess();
 
+function CenterIcon({}) {
+
+	return (
+		<svg 
+			xmlns="http://www.w3.org/2000/svg" 
+			width="20.5" 
+			height="21.11" 
+			viewBox="0 0 20.706 21.11">
+		  <g id="Group_343" data-name="Group 343" transform="translate(1584 -5877)">
+		    <g id="Ellipse_27" data-name="Ellipse 27" transform="translate(-1580.482 5880.519)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2">
+		      <circle cx="7.037" cy="7.037" r="7.037" stroke="none" />
+		      <circle cx="7.037" cy="7.037" r="6.037" fill="none" />
+		    </g>
+		    <line id="Line_206" data-name="Line 206" y1="3.518" transform="translate(-1573.445 5877)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" />
+    		<line id="Line_207" data-name="Line 207" y1="3.451" transform="translate(-1563.294 5887.354) rotate(90)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" />
+    		<line id="Line_208" data-name="Line 208" y1="3.451" transform="translate(-1580.549 5887.354) rotate(90)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" />
+    		<line id="Line_209" data-name="Line 209" y1="3.518" transform="translate(-1573.445 5894.592)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" />
+		  </g>
+		</svg>
+	)
+}
 
 export default function MapComponent ({ current, log, setLog, selectedDate, setSelectedDate, cal }) {
 
@@ -168,6 +191,105 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 			source: vectorSource
 		})
 
+		// Create a custom Zoom In button control
+		class ZoomInControl extends Control {
+	      constructor(opt_options) {
+	        const options = opt_options || {};
+
+	        // Create a button element
+	        const button = document.createElement('button');
+	        button.id = 'zoomIn';
+	        button.innerHTML = '+';
+
+	        // Create a div element to wrap the button
+	        const element = document.createElement('div');
+	        element.className = 'zoom-in-button ol-unselectable ol-control';
+	        element.appendChild(button);
+
+	        super({
+	          element: element,
+	          target: options.target
+	        });
+
+	        button.addEventListener('click', () => {
+	          const view = initialMap.getView();
+	          const zoom = view.getZoom();
+	          view.animate({
+	          	zoom: zoom + 1,
+	          	duration: 500
+	          });
+	        });
+	      }
+	    }
+
+	    // Create a custom Zoom Out button control (bottom-left)
+	    class ZoomOutControl extends Control {
+	      constructor(opt_options) {
+	        const options = opt_options || {};
+
+	        // Create a button element
+	        const button = document.createElement('button');
+	        button.id = 'zoomOut';
+	        button.innerHTML = '-';
+
+	        // Create a div element to wrap the button
+	        const element = document.createElement('div');
+	        element.className = 'zoom-out-button ol-unselectable ol-control';
+	         // Position it at the bottom-left
+	        element.appendChild(button);
+
+	        super({
+	          element: element,
+	          target: options.target
+	        });
+
+	        button.addEventListener('click', () => {
+	          const view = initialMap.getView();
+	          const zoom = view.getZoom();
+	          view.animate({
+	          	zoom: zoom - 1,
+	          	duration: 500
+	          }); 
+	        });
+	      }
+	    }
+
+		// Create a custom "Recenter" button control
+	    class RecenterControl extends Control {
+	      constructor(opt_options) {
+	        const options = opt_options || {};
+
+	        // Create a button element
+	        const button = document.createElement('button');
+	        button.id = 'recenter';
+
+	        // Create a div element to wrap the button
+	        const element = document.createElement('div');
+	        element.className = 'recenter-button ol-unselectable ol-control';
+	        element.appendChild(button);
+
+	        super({
+	          element: element,
+	          target: options.target
+	        });
+
+	        ReactDOM.render(<CenterIcon />, button);
+
+	        // Handle the button click event
+	        button.addEventListener('click', this.handleRecenter.bind(this), false);
+	      }
+
+	      handleRecenter() {
+	        // Animate the map to recenter on the initial coordinates
+	        const view = initialMap.getView();
+	        view.animate({
+	          center: fromLonLat(currentCenter),
+	          zoom: 11,
+	          duration: 500
+	        });
+	      }
+	    }
+
 		//create OSM / Tile layer
 		const osmLayer = new TileLayer({
 			preload: Infinity,
@@ -211,6 +333,10 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 				});
 			});
 		});
+
+		initialMap.addControl(new RecenterControl());
+		initialMap.addControl(new ZoomInControl());
+    	initialMap.addControl(new ZoomOutControl());
 
 		setMapState(initialMap)
 

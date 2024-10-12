@@ -2,7 +2,7 @@
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import Log from '../blog/log';
-import './monthChart.css';
+import './calendar.css';
 
 let accessAPI = APIaccess();
 
@@ -41,24 +41,24 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 	let [calClass, set_calClass] = React.useState('');
 	let drawCalendar = () => {
 
-		let daysInMonth = new Date(kotoshi, kongetsu+1, 0).getDate(), //number of days in current/selected month
-			startDay = new Date(kotoshi, kongetsu, 1).getDay(), //first day of the month,
-			endDay = new Date(kotoshi, kongetsu, daysInMonth).getDay(), //last day of the month
+		let daysInMonth = new Date(selectedDate.year, selectedDate.month+1, 0).getDate(), //number of days in current/selected month
+			startDay = new Date(selectedDate.year, selectedDate.month, 1).getDay(), //first day of the month,
+			endDay = new Date(selectedDate.year, selectedDate.month, daysInMonth).getDay(), //last day of the month
 			now = new Date(),
 			currentMonth = now.getMonth(),
 			currentYear = now.getFullYear(),
-			currentDay = kongetsu == currentMonth && kotoshi == currentYear ? now.getDate() : null,
+			currentDay = selectedDate.month == currentMonth && selectedDate.Year == currentYear ? now.getDate() : null,
 			months = cal.monthsAbrv,
 			dayInitials = cal.dayInitials,
 			squares = [];
 
-		if(kongetsu && startDay !=1 )	{
+		if(selectedDate.month && startDay !=1 )	{
   			let blanks = startDay == 0 ? 7 : startDay ;
   			for(let i = 0; i < blanks; i++) {
   				squares.push("b");
   			}
   		}
-  		if(!kongetsu && startDay != 0) {
+  		if(!selectedDate.month && startDay != 0) {
   			for(let i = 0; i < startDay; i++) {
   				squares.push("b");
   			}
@@ -84,6 +84,11 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
     		}
   		}
 
+  		// Limit the total number of squares to 35 (5 rows of 7 days)
+		// if (squares.length > 35) {
+		//     squares = squares.slice(0, 35); // Remove any extra days beyond the 5th week
+		// }
+
   		let weeksInMonth;
 	  	if(squares.length / 7 < 5) {
 	  		weeksInMonth = 5;
@@ -91,6 +96,10 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 	  		weeksInMonth = squares.length / 7;
 	  		weeksInMonth = Math.floor(weeksInMonth);
 	  	}
+	  	// let weeksInMonth = Math.floor(squares.length / 7);
+	  	// if(weeksInMonth < 5) {
+	  	// 	weeksInMonth = 5;
+	  	// }
 
 	  	let daysInWeek = [];
 	  	let days = JSON.parse(JSON.stringify(squares))
@@ -110,6 +119,8 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 				daysInWeek.shift()
 			}
 		}
+
+		console.log(daysInWeek);
 		
 		let calendar = 
 		<div id="calendar" className={calClass}>
@@ -125,6 +136,7 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 
 					return <div key={e} className='row' id={`row${e}`}>
 						       {daysInWeek[e].map((s, index) => {
+
 						       		let date = daysInWeek[e][index],
 						       			value = tallyPerDate[parseInt(date)];
 
@@ -139,27 +151,24 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 							       							year: selectedDate.year,
 							       						})
 							       						getPostsPerDate(selectedDate.month, daysInWeek[e][index], selectedDate.year);
-							       						// console.log(selectedDate.month + '. ' +daysInWeek[e][index] + '. '  +selectedDate.year);
-							       						// let itemNum = parseInt(daysInWeek[e][index]),
-							       						// 	item = 'cell' + itemNum;
-							       						// document.getElementById(item).classList.add('selected');
-						       						// }
 						       					}}>
-
-						       					<div className={`${date == 'b' ? 'hidden' : 'tallyWrapper'}`}>
-						  							<span className={`tally` + `${value >= 1 ? ' on' : ''}`}></span>
-						  							<span className={`tally` + `${value >= 3 ? ' on' : ''}`}></span>
-						  							<span className={`tally` + `${value >= 5 ? ' on' : ''}`}></span>
-						  							<span className={`tally` + `${value >= 7 ? ' on' : ''}`}></span>
-						  							<span className={`tally` + `${value >= 9 ? ' on' : ''}`}></span>
-					  							</div>
-
+						       					{value > 0 &&
+						       						<div className={`${date == 'b' ? 'hidden' : 'tallyWrapper'}`}>
+							  							<span className={`tally` + `${value >= 1 ? ' on' : ''}`}></span>
+							  							<span className={`tally` + `${value >= 3 ? ' on' : ''}`}></span>
+							  							<span className={`tally` + `${value >= 5 ? ' on' : ''}`}></span>
+							  							<span className={`tally` + `${value >= 7 ? ' on' : ''}`}></span>
+							  							<span className={`tally` + `${value >= 9 ? ' on' : ''}`}></span>
+						  							</div>
+						       					}
+						       					
 					  							<div key={index} className="cellDate">
 							  						<p>{daysInWeek[e][index]}</p>
 							  					</div>
 						       			   </button>
 						       })}
 						   </div>
+					// }
 				})}
 			</div>
 		</div>
@@ -206,8 +215,10 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 
 		set_postsPerDate([]);
 		set_nextClass('nextStart');
-		set_prevClass('off');
+		set_currentClass('off');
+		
 
+		/* if year changes */
 		if(selectedDate.month + 1 > 11) {
 			setTimeout(() => {
 				set_yearClass('off');
@@ -216,8 +227,8 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 				set_yearClass('');
 			}, 1200)
 		}
-		set_currentClass('off');
-
+		set_prevClass('off');
+		
 		/*Initiate calendar leaving animation*/
 		set_calClass('leave');
 
@@ -266,9 +277,10 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 			set_calClass('return');
 		}, 700)
 		setTimeout(() => {
+			set_currentClass('');
 			set_nextClass('nextEnd');
 			set_prevClass('')
-		}, 1300)
+		}, 1000)
 	}
 
 	let backwardMonth = () => {
@@ -337,6 +349,7 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 			set_calClass('return');
 		}, 700)
 		setTimeout(() => {
+			set_currentClass('');
 			set_prevClass('prevEnd');
 			set_nextClass('')
 		}, 1000)
@@ -389,20 +402,23 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 			<div id="header">
 				
 				<span id="prev" className={prevClass} onClick={ async()=> {
-					if(selectedDate.month - 1 < 0) {
-						await getTallyPerDate('11', selectedDate.year - 1);
-						console.log('one one')
-					} else if (selectedDate.month - 1 == 0) {
-						await getTallyPerDate('0', selectedDate.year);
-						console.log('one two')
-					} else {
-						await getTallyPerDate(selectedDate.month - 1, selectedDate.year)
-						console.log('one three')
-					}
+					set_tallyPerDate('');
+					let delay = setTimeout(async()=> {
+						if(selectedDate.month - 1 < 0) {
+							await getTallyPerDate('11', selectedDate.year - 1);
+							console.log('one one')
+						} else if (selectedDate.month - 1 == 0) {
+							await getTallyPerDate('0', selectedDate.year);
+							console.log('one two')
+						} else {
+							await getTallyPerDate(selectedDate.month - 1, selectedDate.year)
+							console.log('one three')
+						}
+					}, 1500)
 					backwardMonth();
 				}}>{prevMonth}</span>
 
-				<div id="current" className={currentClass} onClick={(e)=> {
+				<div id="current" onClick={(e)=> {
 					setDateSelect({
 						...dateSelect,
 						open: true
@@ -411,24 +427,27 @@ export default function Calendar ({current, setCurrent, cal, set_dateInView, sel
 						document.getElementById('dateSelection').classList.remove('_enter');				
 					}, 200)
 				}}>
-					{currentMonth}
+					<p id="month" className={currentClass}>{currentMonth}</p>
 					<span id="year" className={yearClass}>{selectedDate.year}</span>
 				</div>
 
 				<span id="next" className={nextClass} onClick={	async()=> {
-					if(selectedDate.month + 1 > 11) {
-						await getTallyPerDate('0', selectedDate.year + 1);
-						console.log('one')
-					} else if (selectedDate.month + 1 == 1){
-						await getTallyPerDate('1', selectedDate.year);
-						console.log('two')
-					} else if (selectedDate.month + 1 == 11) {
-						await getTallyPerDate(11, selectedDate.year);
-						console.log('three-ish')
-					} else {
-						await getTallyPerDate(selectedDate.month + 1, selectedDate.year);
-						console.log('three')
-					}
+					set_tallyPerDate('');
+					let delay = setTimeout(async()=> {
+						if(selectedDate.month + 1 > 11) {
+							await getTallyPerDate('0', selectedDate.year + 1);
+							console.log('one')
+						} else if (selectedDate.month + 1 == 1){
+							await getTallyPerDate('1', selectedDate.year);
+							console.log('two')
+						} else if (selectedDate.month + 1 == 11) {
+							await getTallyPerDate(11, selectedDate.year);
+							console.log('three-ish')
+						} else {
+							await getTallyPerDate(selectedDate.month + 1, selectedDate.year);
+							console.log('three')
+						}
+					}, 1500 )
 					forwardMonth();
 				}}>{nextMonth}</span>
 			</div>

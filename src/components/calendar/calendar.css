@@ -76,6 +76,7 @@ div#monthChart div#header span#prev {
 		animation-fill-mode: forwards;
 		animation-duration: 1s;
 		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
+		animation-timing-function: ease-in-out;
 	}
 
 		@keyframes prevStart {
@@ -104,6 +105,7 @@ div#monthChart div#header span#prev {
 		animation-fill-mode: forwards;
 		animation-duration: 0.5s;
 		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
+		animation-timing-function: ease-in-out;
 	}
 
 		@keyframes prevEnd {
@@ -140,11 +142,28 @@ div#monthChart div#header div#current {
 	font-size: 3em;
 	color: var(--greyscale-text);
 	text-transform: uppercase;
+	transition: all 0.1s ease-in-out;
 }
+
+/*div#monthChart div#header div#current.off {
+	opacity: 0;
+}*/
 
 	div#monthChart div#header span#current.switch {
 		opacity: 0;
 	}
+
+div#monthChart div#header div#current p#month {
+	margin: 0 auto;
+	color: var(--greyscale-text);
+	text-transform: uppercase;
+	transition-delay: 100ms;
+	transition: all 1s ease-in-out;
+} 
+
+div#monthChart div#header div#current p#month.off {
+	opacity: 0;
+}
 
 div#monthChart div#header div#current span#year {
 	letter-spacing: 10px;
@@ -153,7 +172,7 @@ div#monthChart div#header div#current span#year {
 	left: 50%;
 	transform: translate(-50%, -50%);
 	padding-left: 10px;
-	transition: all 0.5s ease-in-out;
+	transition: all 0.2s ease-in-out;
 	font-size: 0.75em;
 }
 
@@ -181,6 +200,8 @@ div#monthChart div#header span#next {
 		animation-name: nextStart;
 		animation-fill-mode: forwards;
 		animation-duration: 1s;
+/*		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);*/
+/*		animation-timing-function: ease-in-out;*/
 		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
 	}
 
@@ -209,7 +230,9 @@ div#monthChart div#header span#next {
 	div#monthChart div#header span#next.nextEnd {
 		animation-name: nextEnd;
 		animation-fill-mode: forwards;
-		animation-duration: 0.5s;
+		animation-duration: 0.5s;	
+/*		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);*/
+/*		animation-timing-function: ease-in-out;*/
 		animation-timing-function: cubic-bezier(0.6, -0.28, 0.74, 0.05);
 	}
 
@@ -303,8 +326,12 @@ div#monthChart div#calendar div#dates div.row {
 	display: flex;
 	justify-content: space-evenly;
 	position: relative;
-	margin: 4px 0;
+	margin: -2px 0;
 }
+
+/*div#monthChart div#calendar div#dates div.row:nth-child(6) {
+	display: none;
+}*/
 
 div#monthChart div#calendar div#dates div.row button.cell {
 	font-family: "Open Sans";
@@ -313,6 +340,8 @@ div#monthChart div#calendar div#dates div.row button.cell {
 
 	background-color: transparent;
 	border: none;
+	border: 2px solid transparent;
+	border-radius: 8px;
 	width: calc(100% / 7);
 	margin: 0;
 	position: relative;
@@ -320,14 +349,20 @@ div#monthChart div#calendar div#dates div.row button.cell {
 	border-bottom: 2px solid transparent;
 }
 
+div#monthChart div#calendar div#dates div.row button.cell.today {
+	border: 2px solid black;
+}
+
 div#monthChart div#calendar div#dates div.row button.cell:hover {
-	border-bottom-color: var(--greyscale-accent);
+	border: 2px solid black;
 }
 
 div#monthChart div#calendar div#dates div.row button.cell:focused {}
 
 div#monthChart div#calendar div#dates div.row button.cell p {
-		margin: 24px 0 12px;
+/*		margin: 24px 0 12px;*/
+		font-family: 'Open Sans';
+		color: black;
 		text-align: center;
 		color: var(--site-gray-dark);
 }

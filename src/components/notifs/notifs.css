@@ -46,11 +46,11 @@ div#interactionsList div#header {
 
 	div#interactionsList div#header h2 {
 		position: relative;
-/*		top: 4px;*/
 		left: 10px;
+		font-size: 1.75em;
 		font-weight: 400;
 		letter-spacing: 5px;
-		color: var(--greyscale-elements);
+		color: var(--greyscale-accent);
 		text-transform: uppercase;
 	}
 
@@ -86,7 +86,7 @@ div#interactionsList div#header button p {
 
 div#interactionsList div#header button span {
 	position: absolute;
-	top: 5px;
+	top: 12px;
 	left: 14px;
 	font-family: 'Open Sans';
 	font-size: 3em;
@@ -143,9 +143,11 @@ div#interactionsList ul#notifList li span.unread{
 }
 
 div#interactionsList ul#notifList li p {
+	font-family: 'Open Sans';
 	width: 96%;
 	margin: 16px auto;
 	color: var(--greyscale-text);
+	line-height: 24px;
 }
 
 div#interactionsList ul#notifList li div.options {

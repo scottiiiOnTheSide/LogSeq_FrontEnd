@@ -9,7 +9,7 @@ import './notifs.css';
 let accessAPI = APIaccess();
 
 
-export default function NotificationList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage, accessID, setAccessID, setUserSettings}) {
+export default function NotificationList({setNotifList, unreadCount, setUnreadCount, setSocketMessage, socketMessage, accessID, setAccessID}) {
 
 	let [notifs, setNotifs] = React.useState([]);
 	let username = sessionStorage.getItem('userName');
@@ -44,35 +44,25 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 
 		if(arg == 'accept') {
 
-			let notif = {
+			let sm = {
 				type: 'request',
 				recipients: [userID],
 				senderID: ID,
 				senderUsername: username,
-				message: 'accept'
+				message: 'accept',
+				originalNotif: notif._id
 			};
-			setSocketMessage(notif);
-		} 
-		else if(arg == 'ignore') {
-
-			let notif = {
-				type: 'request',
-				recipients: [userID],
-				senderID: ID,
-				senderUsername: username,
-				message: 'ignore'
-			};
-			setSocketMessage(notif);
+			setSocketMessage(sm);
 		} 
 		else if(arg == 'markRead') {
 
-				let notif = {
+				let sm = {
 					type: 'markRead',
 					notifID: ID,
 					userID: userID,
 					senderUsername: username
 				};
-				let request = await accessAPI.newInteraction(notif);
+				let request = await accessAPI.newInteraction(sm);
 
 				let delay = setTimeout(()=> {
 					updateList()
@@ -105,7 +95,6 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 			// 	groupID: notif.details.groupID
 			// })
 		}
-
 	}
 
 	let goToUserProfile = async() => {
@@ -136,18 +125,12 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 		}, 150)
 	}
 
-	let goToPost = async(postID) => {
+	let goToPost = async(postID, commentID) => {
 
 		let post = await accessAPI.getBlogPost(postID);
-		// let details = JSON.parse(notif.details);
-		// if(notif.commentID) {
-		// 	setAccessID({
-		// 		commentID: details.commentID
-		// 	})
-		// }
 		setTimeout(()=> {
 			navigate(`/post/${postID}`, {
-					state: {post: post}
+					state: {commentID: commentID}
 				})
 		}, 300)
 	}
@@ -216,7 +199,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 						<p>You recieved a connection request from {notif.senderUsername}</p>
 					}
 					{(notif.type == 'request' && notif.message == 'accept') &&
-						<p>You and {notif.recipientUsername} are now connected!</p>
+						<p>You and {notif.recipientUsernames[0]} are now connected!</p>
 					}
 					{(notif.type == 'comment' && notif.message == 'initial') &&
 						<p>{notif.senderUsername} left a comment on your post "{postTitle}"</p>
@@ -236,7 +219,10 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 
 					{notif.type == 'comment' && 
 						<div className="options">
-							<button className="buttonDefault">See Comment</button>
+							<button className="buttonDefault" onClick={(e)=> {
+								e.preventDefault()
+								goToPost(notif.url, notif.details.commentID)
+							}}>See Comment</button>
 							<button className="buttonDefault"
 									onClick={()=> {interact('markRead', notif._id, username )}}>
 								Mark Read
@@ -262,16 +248,15 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					{(notif.type == 'request' && notif.message == 'recieved') &&
 						<div className="options">
 							<button className="buttonDefault" 
-									onClick={()=> {interact('accept', notif.sender, notif.senderUsername)}}>
+									onClick={()=> {
+										interact('accept', notif.sender, notif.senderUsername, undefined, notif)
+										interact('markRead', notif._id )
+									}}>
 								Accept
 							</button>
 							<button className="buttonDefault" 
-									onClick={()=> {interact('ignore', notif.sender, notif.senderUsername)}}>
+									onClick={()=> {interact('markRead', notif._id)}}>
 								Ignore
-							</button>
-							<button className="buttonDefault"
-									onClick={()=> {interact('markRead', notif._id )}}>
-								Mark Read
 							</button>
 						</div>
 					}
@@ -290,7 +275,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 								Go To Macro
 							</button>
 							<button className="buttonDefault"
-									onClick={()=> {interact('', notif._id )}}>
+									onClick={()=> {interact('markRead', notif._id )}}>
 								Mark Read
 							</button>
 						</div>
