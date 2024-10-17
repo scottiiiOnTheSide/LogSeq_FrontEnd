@@ -208,6 +208,9 @@ export default function Macrospage({
 	}
 
 	React.useEffect(()=> {
+
+		document.title = 'Syncseq.xyz/macro'
+
 		console.log(macroInfo.name)
 		console.log(userTopics.includes(macroInfo.mame))
 		if(userTopics.includes(macroInfo.mame)) {

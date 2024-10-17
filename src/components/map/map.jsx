@@ -9,7 +9,8 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import { Point } from 'ol/geom';
 import { Feature } from 'ol';
-import { Circle as CircleStyle, Fill, Stroke, Style} from 'ol/style';
+import Cluster from 'ol/source/Cluster';
+import { Circle as CircleStyle, Fill, Stroke, Style, Text} from 'ol/style';
 import Control from 'ol/control/Control';
 
 import Header from '../../components/base/header';
@@ -39,6 +40,22 @@ function CenterIcon({}) {
     		<line id="Line_207" data-name="Line 207" y1="3.451" transform="translate(-1563.294 5887.354) rotate(90)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" />
     		<line id="Line_208" data-name="Line 208" y1="3.451" transform="translate(-1580.549 5887.354) rotate(90)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" />
     		<line id="Line_209" data-name="Line 209" y1="3.518" transform="translate(-1573.445 5894.592)" fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" />
+		  </g>
+		</svg>
+	)
+}
+
+function ArrowIcon({classname}) {
+	return (
+		<svg 
+			xmlns="http://www.w3.org/2000/svg" 
+			width="25.624" 
+			height="7.866" 
+			viewBox="0 0 25.624 7.866"
+			className={`${classname}`}>
+		  <g id="Group_224" data-name="Group 224" transform="translate(-22 -25.634)">
+		    <line fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" id="Line_146" data-name="Line 146" class="cls-1" x2="25" transform="translate(22.624 32.5)"/>
+		    <line fill="none" stroke="rgba(0,0,0,0.4)" stroke-width="2" id="Line_148" data-name="Line 148" class="cls-1" x2="12" transform="translate(22.5 32.5) rotate(-30)"/>
 		  </g>
 		</svg>
 	)
@@ -159,13 +176,56 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 	}, [headerState, dateSelect, ])
 
 
-	/* Renders Open Layers Map on Component Mount */
+	/*  T H E   M A P
+		Renders Open Layers Map on Component Mount */
 	React.useEffect(()=> {
 
 		let centerCoordinates = fromLonLat(currentCenter);
 
 		//Creates necessary layer for adding circle spots on map
 		const vectorSource = new VectorSource();
+
+		//create vector layer with vectorSource
+		const vectorLayer = new VectorLayer({
+			source: vectorSource
+		})
+
+		const clusterSource = new Cluster({
+			distance: 40,
+			source: vectorSource
+		})
+
+		const clusterLayer = new VectorLayer({
+			source: clusterSource,
+			style: (feature) => {
+				const size = feature.get('features').length;
+
+				if(size > 1) {
+					return new Style({
+				      image: new CircleStyle({
+				        radius: 18, // larger radius for clusters
+				        fill: new Fill({ color: 'rgba(0, 82, 255, 0.5)' }),
+				        stroke: new Stroke({ color: 'white', width: 2 }),
+				      }),
+				      text: new Text({
+				        text: size > 1 ? size.toString(): '', // show the number of posts in the cluster
+				        font: '300 16px Raleway',
+				        fill: new Fill({ color: 'transparent' }),
+				        stroke: new Stroke({ color: 'white', width: 2 }),
+				      }),
+				    });
+				}
+				else {
+					return new Style({
+				      image: new CircleStyle({
+				        radius: 10,
+				        fill: new Fill({ color: 'rgba(0, 82, 255, 0.5)' }),
+				        stroke: new Stroke({ color: 'white', width: 2 }),
+				      }),
+				    });
+				}
+			}
+		})
 
 		//creates markers from coordinates, adds them to VectorSource
 		markers.forEach(marker => {
@@ -177,18 +237,14 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 
 			spot.setStyle(new Style({
 				image: new CircleStyle({
-					radius: 10,
+					radius: 8,
 					fill: new Fill({ color: 'grey' }),
 					stroke: new Stroke({ color: 'white', width: 2 })
 				})
 			}));
 
 			vectorSource.addFeature(spot);
-		})
-
-		//create vector layer with vectorSource
-		const vectorLayer = new VectorLayer({
-			source: vectorSource
+			clusterSource.addFeature(spot);
 		})
 
 		// Create a custom Zoom In button control
@@ -298,7 +354,7 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 
 		const initialMap = new Map({
 			target: mapRef.current,
-			layers: [osmLayer, vectorLayer],
+			layers: [osmLayer, clusterLayer],
 			view: new View({
 				center: centerCoordinates, //lat n lng
 				zoom: 11,
@@ -310,17 +366,24 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 			initialMap.forEachFeatureAtPixel(event.pixel, (feature) => {
 				const clickedCoords = feature.getGeometry().getCoordinates();
 
-				let data = feature.get('data');
+				// let data = feature.get('data');
+
+				const features = feature.get('features');
+
+				if (features.length > 1) { //if multiple posts
+					const postData = features.map(f => f.get('data'));
+					setPostInfo(postData)
+				}
+				else {
+					const data = features[0].get('data');
+					setPostInfo([data]);
+				}
 
 				setPostBoardClass('down')
 
-				let secondStep = setTimeout(()=> {
-					// setPostBoardInfo({
-					// 	title: data.title,
-					// 	text: data.text
-					// })
-					setPostBoardInfo(data)
-				}, 600);
+				// let secondStep = setTimeout(()=> {
+				// 	setPostBoardInfo(data)
+				// }, 600);
 					
 				let thirdStep = setTimeout(()=> {
 					setPostBoardClass('up')
@@ -334,6 +397,24 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 			});
 		});
 
+		// initialMap.on('click', (event) => {
+		//     initialMap.forEachFeatureAtPixel(event.pixel, (feature) => {
+		//       const features = feature.get('features');
+
+		//       if (features.length > 1) {
+		//         // Handle cluster (multiple posts)
+		//         const postData = features.map(f => f.get('data'));
+		//         openPopupWithPosts(postData);  // Implement the popup to show multiple posts
+		//       } 
+
+		//       else {
+		//         // Handle single post
+		//         const data = features[0].get('data');
+		//         openPopupWithSinglePost(data);  // Implement the popup for single post
+		//       }
+		//     });
+		//   });
+
 		initialMap.addControl(new RecenterControl());
 		initialMap.addControl(new ZoomInControl());
     	initialMap.addControl(new ZoomOutControl());
@@ -341,9 +422,52 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 		setMapState(initialMap)
 
 		//Removes map on unmount
-		return ()=> initialMap.setTarget(null);
+		return ()=> {
+			// if(initialMap) {
+
+				initialMap.setTarget(null);
+
+				 // Remove event listeners
+				// initialMap.un('click', clickListener);
+
+				// Remove controls (if dynamically added)
+				// initialMap.getControls().clear();
+
+				//Detachs map from the DOM
+				// initialMap.setTarget(null);
+
+				//Clears the vector layer
+				// vectorSource.clear()
+			// }
+				
+		}
 	}, [currentCenter, markers, isMapMounted]) 
 
+	function openPopupWithPosts(posts) {
+		setPostInfo(posts);
+		setCurrentPostIndex(0);
+		setPostBoardClass('down');
+		setTimeout(() => setPostBoardClass('up'), 1000);
+	}
+
+	function openPopupWithSinglePost(post) {
+		setPostInfo([post]);
+		setCurrentPostIndex(0);
+		setPostBoardClass('down');
+		setTimeout(() => setPostBoardClass('up'), 1000);
+	}
+
+	function handleNextPost() {
+		setCurrentPostIndex((prevIndex) => (prevIndex + 1) % postInfo.length);
+	}
+
+	function handlePrevPost() {
+		setCurrentPostIndex((prevIndex) => (prevIndex - 1 + postInfo.length) % postInfo.length);
+	}
+
+	const [cyclePosts, setCyclePosts] = React.useReducer(state => !state, false);
+	const [currentPostIndex, setCurrentPostIndex] = React.useState(0);
+	const [postInfo, setPostInfo] = React.useState([]);
 
 	return (
 		<div id="MAP" className={`${current.transition == true ? 'leave' : ''}`}>
@@ -380,6 +504,7 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 			{/*P O S T  P A N E L  W R A P P E R*/}
 			<div id="popUpPost" className={`${postBoardClass}`}>
 				
+				{/* E X I T  B U T T O N */}
 				<div id="exitButtonWrapper">
 					<button className={`buttonDefault`}
 							onClick={()=> {
@@ -387,29 +512,52 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 							}}>×</button>
 				</div>
 
-				<div id="text" onClick={()=> {
-					setTimeout(()=> {
-						navigate(`/post/${postBoardInfo.postData._id}`, {
-							state: {post: postBoardInfo.postData}
-						});
-					}, 600)
-				}}>
-					<h2>{postBoardInfo.title}</h2>
-					<p>{postBoardInfo.text}</p>
+				{/*T E X T   W R A P P E R*/}
+				{postInfo.length > 0 &&
 
-					<ul>
-						{postBoardInfo.tags > 0 &&
-							<li>{postBoardInfo.tags} tags</li>
-						}
-						{postBoardInfo.comments > 0 &&
-							<li>{postBoardInfo.comments} comments</li>
-						}
-						{postBoardInfo.taggedUsers > 0 &&
-							<li>{postBoardInfo.taggedUsers} users tagged</li>
-						}
+					<div id="text" onClick={()=> {
+						setTimeout(()=> {
+							navigate(`/post/${postInfo[currentPostIndex].postData._id}`, {
+								state: {
+									location: null
+								}
+							});
+						}, 600)
+					}}>
+						<h2>{postInfo[currentPostIndex].title}</h2>
+						<p>{postInfo[currentPostIndex].text}</p>
+
+						<ul>
+							{postInfo[currentPostIndex].tags > 0 &&
+								<li>{postInfo[currentPostIndex].tags} tags</li>
+							}
+							{postInfo[currentPostIndex].comments > 0 &&
+								<li>{postInfo[currentPostIndex].comments} comments</li>
+							}
+							{postInfo[currentPostIndex].taggedUsers > 0 &&
+								<li>{postInfo[currentPostIndex].taggedUsers} users tagged</li>
+							}
+						</ul>
+					</div>	
+
+				}
+
+				{/*C Y C L E  P O S T S*/}
+				{postInfo.length > 1 &&
+					<ul id="arrowsWrapper">
+					
+						<li onClick={handlePrevPost}>
+							<ArrowIcon classname={''} />
+						</li>
+						<li onClick={handleNextPost}>
+							<ArrowIcon classname={'left'} />
+						</li>
+
 					</ul>
-				</div>
+				}
 			</div>
+
+			
 
 			{/* F I L T E R S*/}
 			<div id="filters"> 
@@ -507,3 +655,23 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 		</div>
 	)
 }
+
+
+			// {/*ChatGPT recommended change*/}
+			//  <div className={`post-popup ${postBoardClass}`}>
+			//     {popupPosts.length > 1 && (
+			// 	    <div className="post-navigation">
+			// 	    	<button onClick={handlePrevPost}>&lt;</button>
+			// 	    	<button onClick={handleNextPost}>&gt;</button>
+			// 	    </div>
+			//     )}
+			//     <div className="post-content">
+			//       {popupPosts[currentPostIndex] && (
+			//         	<div>
+			//           		<h3>{popupPosts[currentPostIndex].title}</h3>
+			//           		<p>{popupPosts[currentPostIndex].description}</p>
+			//           		{/* Render other post details */}
+			//         	</div>
+			//        )}
+			//     </div>
+		  	// </div>

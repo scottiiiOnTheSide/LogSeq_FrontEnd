@@ -114,6 +114,8 @@ function Home({
       let topics = sessionStorage.getItem('topicsAsString');
       topics = topics.split(', ');
       setUserTopics(topics);
+
+      document.title = 'Syncseq.xyz/home'
   }, [])
 
 
@@ -314,7 +316,7 @@ export default function Main() {
         console.log(data);
         console.log(accessID);
       }
-      else if (data.type == 'request' && data.message == 'accept') {
+      else if (data.type == 'request' && data.message == 'accepted') {
         setSocketMessage({
           senderUsername: data.senderUsername,
           type: 'request',
@@ -379,12 +381,13 @@ export default function Main() {
   
   const cal = CalInfo();
   const [current, setCurrent] = React.useState({
-    home: true,
     section: null, //0, 1, 2, 3, 4
     social: false, //true, false or social
     calendar: false, //true or false
     map: false,
     scrollTo: null,
+    currentLog: null,
+    modal: false, //for <UserProfile>, when user leaves page via a fullList, ensures modal is still up
     transition: false //for components mounted dependant on this stateVar, indicates before unmount
   });
   const hajime = new Date(),

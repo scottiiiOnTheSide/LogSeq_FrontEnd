@@ -252,6 +252,75 @@ div#MAP div#popUpPost div#text ul li {
 
 
 
+
+
+div#MAP .post-popup {
+  position: fixed;
+  bottom: 10px;
+  left: 10px;
+  background: white;
+  border: 1px solid #ccc;
+  padding: 10px;
+  width: 300px;
+  transition: transform 0.5s;
+}
+div#MAP .post-navigation {
+  display: flex;
+  justify-content: space-between;
+}
+div#MAP .post-content {
+  padding: 10px;
+}
+div#MAP .post-popup.down {
+  transform: translateY(100%);
+}
+div#MAP .post-popup.up {
+  transform: translateY(0);
+}
+
+
+
+div#MAP div#popUpPost ul#arrowsWrapper {
+	margin: 36px 0 20px;
+	padding: 0;
+	list-style-type: none;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+}
+
+div#MAP div#popUpPost ul#arrowsWrapper li {
+	margin: 0 36px;
+}
+
+div#MAP div#popUpPost ul#arrowsWrapper li svg {
+	width: 42px;
+	height: 15px;
+	transition: all ease-in-out 0.3s;
+}
+
+div#MAP div#popUpPost ul#arrowsWrapper li svg:hover {
+	transform: scale(1.5);
+}
+
+div#MAP div#popUpPost ul#arrowsWrapper li svg.left{
+	transform: rotate(180deg);
+}
+
+div#MAP div#popUpPost ul#arrowsWrapper li svg.left:hover {
+	transform: rotate(180deg) scale(1.25);
+}
+
+div#MAP div#popUpPost ul#arrowsWrapper li svg line {
+	stroke: var(--greyscale-details);
+	stroke-width: 1.5;
+}
+
+
+
+
+
+
 div#MAP div#filters {}
 
 div#MAP div#filters p {

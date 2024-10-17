@@ -2,16 +2,144 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 10. 16. 2024
+@2200
+for <ManageConnections> and <UserProfile> fullList
+connections are twoWay arrow
+subscriptions have arrow indictating who's what 
+	-inward means listed user is subscribed to
+
+order list
+	- mutuals (of any sort)
+	- connections
+	- subscriptions
+	- subscribers
+
+a filter button to switch what appears first, or alphabetical order
+
+I need a 'check' to differentiate current or previously accessed logs...
+for each page that has a log, 
+log should only 'scrollTo' if it is current.currentLog
+
+current.currentLog would be set anytime a post is viewed from a log...
+
+explore chatGPT suggestions for fixing issue of going to another userProfile
+while on userprofile 
+
+
+
+
+@1710 
+****To Work on Next
+	- fullScreen imageslider for a post's image (use @bushblade from gitHub)
+		- clicking on image thumbnail triggers this
+	- list of posts & connections on <UserProfile>
+		- fullList, it's own page
+	- differentiate connection vs subscription with arrow icons in <userProfile>
+	  and <ManageConnections>
+		- can indicate mutual connections
+		- should add profilePhoto for connections...
+
+@1435 arrows now work. need to add counter in between
+May leave lack of animation...
+
+all links to <Post> may need to have an empty state object...
+
+Would like cluster markers to be larger 
+
+@0400 can now see post info in clusters. 
+****To Do Next
+		- reverse class for arrows and further styling
+		- post cycling functionality
+
+### 10. 15. 2024
+@2010 singular post will show up with popUpPost in <Map>, but initial post in a cluster
+	is not yet so
+
+@1245 multiple posts per marker updated code more or less working. Need to implement the 
+necessary working code into my own designs.
+
+Plan is to have text within a wrapper,
+it moves when clicking 'prev' and 'next' buttons
+sequence
+ - move wrapper left or right
+ - update info
+ - move wrapper back, starting from opposite direction
+
+ quick and sharp movement
+ text should be replaced during slight break between animations...
+
+moveToRight {
+	0% 
+		right: 0
+		opacity 1
+	100%
+		right 25
+		opacity 0
+} 
+
+moveToLeft {
+	0% 
+		left: 0
+		opacity: 1
+	100%
+		left: 25
+		opacity: 0
+}
+
+moveFromLeft {
+	0%
+		left: -25%
+		opacity: 0
+	100%
+		left: 0%
+		opacity: 1
+}
+
+moveFromRight {
+	0%
+		right: -25%
+		opacity: 0
+	100%
+		right: 0%
+		opacity: 1
+}
+
+### 10. 13. 2024
+@1645 currently implementing cluster markers for <Map> with aid of ChatGPT
+
+@1530 round up to 10,000ths place (4th decimal) for similar locations
+lat(y) lon(x)
+
+@2130 have ChatGPT analyze <Map> code as basis to have it assist me in adding multiple posts
+	per point
+
+twoWay arrow icon for <ManageConnections> added to resources folder
+
+@1340 search results for users needs to be much more precise...
+
+@1300 exit button in <ManageConnections> needs to have a wrapping div
+
+@0120 for group admin system, some bare basic
+if a group has less than 5 admins - originalCreator (always admin0) - has sole authority
+to remove and invite other admins. If a group has 5 or more, 5 votes are required for
+removal.
+- Admins can highlight posts, remove them, add and remove members, remove posts from group.
+- Their posts and comments are highlighted within <Log> and in <Post>
+- voting required to change groupName, bio, headerImage if over 5 admins
+
 ### 10. 12. 2024
 @1305 
 ****To Do Next
-		- original sender of connection request should recieve popUp notif
-		- multiple posts per point in <Map>
+		- original sender of connection request should recieve popUp notif ✅
+		- multiple posts per point in <Map> ✅
 		- overlay for comments (deleting, replying) 
 			- does it need an indicator tho?
-		- filter by tag for map
-		- list of posts on <UserProfile>
+		- filter by tag for <Map>
+		- list of posts & connections on <UserProfile>
 			- fullList, it's own page
+			- differentiate connection vs subscription with arrow icons
+				- can indicate mutual connections
 		- fullScreen imageslider for a post's image
 			- clicking on image thumbnail triggers this
 		- 'Start' page
@@ -19,6 +147,33 @@
 		- add subscriptions
 		- differentiation connections and subscriptions in <ManageConnections> with oneWay and twoWay
 			arrows
+		- editting posts
+		- color theming
+		- video upload & backend compression
+
+ideas for Social section overhaul
+- list of groups
+- tagged posts
+- connections
+
+connectionsList is option within <ManageConnections> 
+opening it closes manageConnections
+
+for groups, 
+would need to implement voting mechanics...?
+for removing admins, i guess...
+only 5 votes needed in total to remove an admin, regardless of amount
+
+any admin can accept user
+all admins get notif request
+
+need new sub sub routes in user/notifications for group requests?
+or modify check in accept route
+
+Should probably clean up site ALOT before adding groups.
+
+
+
 ### 10. 09. 2024
 @1100 
 AS OF NOW ....

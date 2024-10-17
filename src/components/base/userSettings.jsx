@@ -325,6 +325,9 @@ export default function UserSettings({
 	}
 
 	React.useEffect(()=> {
+
+		document.title = 'Syncseq.xyz/settings'
+
 		getUserSettings();
 	}, [])
 

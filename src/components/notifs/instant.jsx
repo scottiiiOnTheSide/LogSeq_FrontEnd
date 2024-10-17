@@ -690,7 +690,7 @@ export default function Instants({
 				recipients: [accessID.accept],
 				senderID: userID,
 				senderUsername: username,
-				message: 'accept'
+				message: 'accepted'
 			};
 			setSocketMessage(notif);
 			setActive({
@@ -700,25 +700,14 @@ export default function Instants({
 			console.log(accessID);
 			console.log(notif);
 		}
+
 		else if(arg == 'ignore') {
-			console.log(socketMessage);
-			(async()=> {
-				let ignore = await accessAPI.newInteraction({
-					originalID: accessID.ignore, 
-					message: 'ignore',
-					type: 'request',
-					senderID: socketMessage.senderID,
-					recipients: [socketMessage.recipient]
-				})
-			})();
-			setSocketMessage({
-				type:'confirmation',
-				message: 'ignore'
-			})
-			setActive({
-				type: 1,
-				state: true
-			})
+			let notif = {
+				type: 'markRead',
+				notifID: accessID.notifID,
+				userID: userID,
+			};
+			makeNotif_markNotifRead(notif);
 		} 
 
 		else if(arg == 'markRead') {
@@ -916,7 +905,7 @@ export default function Instants({
 		/*
 			I N T E R A C T I O N S 
 		*/
-		else if(socketMessage.type == 'request' && socketMessage.message == 'accept') {
+		else if(socketMessage.type == 'request' && socketMessage.message == 'accepted') {
 			makeNotif_sendAcceptRequest(socketMessage);
 		}
 		else if (socketMessage.type == 'request' && socketMessage.message == 'sent') {

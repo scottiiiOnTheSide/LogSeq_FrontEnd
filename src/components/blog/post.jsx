@@ -267,10 +267,8 @@ export default function Post({
 	React.useEffect(()=> {
 		refreshPost()
 		pinPost('check')
-		// setCurrent({
-		// 	...current,
-		// 	scrollTo: postData._id
-		// })
+		
+		document.title = 'Syncseq.xyz/post'
 	}, [])
 
 	/***

@@ -49,7 +49,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 				recipients: [userID],
 				senderID: ID,
 				senderUsername: username,
-				message: 'accept',
+				message: 'accepted',
 				originalNotif: notif._id
 			};
 			setSocketMessage(sm);
@@ -193,7 +193,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 
 				<div id="body">
 					{(notif.type == 'request' && notif.message == 'sent') &&
-						<p>You sent {notif.recipientUsername} a request</p>
+						<p>You sent {notif.recipientUsernames[0]} a request !</p>
 					}
 					{(notif.type == 'request' && notif.message == 'recieved') &&
 						<p>You recieved a connection request from {notif.senderUsername}</p>

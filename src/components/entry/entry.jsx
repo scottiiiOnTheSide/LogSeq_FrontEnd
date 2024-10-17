@@ -778,9 +778,9 @@ export default function Entry({useAuth, setUserID}) {
 		}, 550)
 	}
 
-	// React.useEffect(()=> {
-	// 	getTopics();
-	// }, [])
+	React.useEffect(()=> {
+		document.title = 'Syncseq.xyz/entry'
+	}, [])
 
 	return (
 		<section id="entry" ref={el} className={`${enter == true ? '_enter' : ''}
