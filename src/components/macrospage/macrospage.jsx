@@ -13,6 +13,7 @@ import Instant from '../../components/notifs/instant';
 import NotificationsList from '../../components/notifs/notifsList';
 import Log from '../../components/blog/log';
 import FullList from '../../components/base/fullList';
+import DragSlider from '../../components/base/dragSlider';
 
 
 const accessAPI = APIaccess(); 
@@ -51,9 +52,9 @@ export default function Macrospage({
 	const [macroInfo, setMacroInfo] = React.useState(data.macroInfo);
 	const macroID = macroInfo._id;
 	const cal = CalInfo();
-	console.log(macroInfo)
-	console.log(postData)
-	console.log(userTopics)
+	// console.log(macroInfo)
+	// console.log(postData)
+	// console.log(userTopics)
 
 	let goToProfile = async(userID) => {
 
@@ -63,7 +64,7 @@ export default function Macrospage({
 		let data = await accessAPI.getSingleUser(userID);
 		
 		let delay = setTimeout(()=> {
-			navigate(`/user/${data.user.userName}`, {
+			navigate(`/user/${data.user.userName}/${data.user._id}`, {
 				state: {
 					user: data.user,
 					pinnedPosts: data.pinnedPosts,
@@ -250,7 +251,6 @@ export default function Macrospage({
 		}
 	}, []);
 
-
 	// Update posts when fullList is closed
 	React.useEffect(()=> {
 		updatePosts()
@@ -380,6 +380,9 @@ export default function Macrospage({
 				}					
 			</div>
 
+			{current.gallery.length > 0 &&
+	          <DragSlider current={current} setCurrent={setCurrent} siteLocation={'home'}/>
+	        }
 			{fullList &&
 				<FullList 
 					mode={'remove'}

@@ -91,7 +91,18 @@ export default function ButtonBar({
 			</button>
 
 			{/* C E N T E R  F U N C T I O N */}
-			<button id="main" onClick={()=> {setCurrent({...current, modal: true})}}>{functionName}</button>
+			<button id="main" onClick={(e)=> {
+				e.preventDefault();
+
+				let delay = setTimeout(()=> {
+					setCurrent({
+						...current, 
+						modal: true
+					})
+				}, 225)	
+			}
+			}>{functionName}
+			</button>
 
 			{/*C A L E N D A R*/}
 			<button id="monthChartToggle" 

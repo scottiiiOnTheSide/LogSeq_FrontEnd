@@ -82,7 +82,7 @@ svg#return polyline {
 }
 
 svg#return polyline#top {
-    stroke: rgba(0, 0, 0, 0.75);
+    stroke: rgba(0, 0, 0, 1);
 }
 
 svg#return polyline#bottom {
@@ -121,6 +121,14 @@ button.buttonDefault {
 	background-color: transparent;
 	border: none;
 	cursor: pointer;
+	transition: all 0.2s ease-in-out;
+	padding: 6px 8px;
+}
+
+button.buttonDefault:hover {
+		background-color: var(--greyscale-backdrop);
+		color: var(--greyscale-icons);
+/*		color: white;*/
 }
 
 button.buttonDefault._inactive {

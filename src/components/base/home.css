@@ -262,8 +262,13 @@ section#HOME.return {
 	/*	border-bottom: 1px solid blue;*/
 	}
 
-nav ul li button {
+nav ul li button.navButton {
 	padding: 0;
+}
+
+nav ul li button.navButton:hover {
+	color: inherit;
+	background-color: inherit;
 }
 
 nav ul li.active button {
@@ -280,7 +285,7 @@ nav ul li.not button {
 * * */
 
 div#buttonBar {
-	width: 96%;
+	width: 100%;
 	position: fixed;
 	left: 50%;
 	transform: translateX(-50%);
@@ -307,8 +312,19 @@ div#buttonBar {
 		border: none;
 		outline: none;
 
-		padding: 28px 0;
+/*		padding: 28px 0;*/
+		margin: 16px auto;
+		padding: 12px 8px;
+/*		border: 1px solid black;*/
+		border-radius: 8px;
 		z-index: 10;
+		transition: all 0.2s ease-in-out;
+	}
+
+	div#buttonBar button#main:hover {
+		background-color: var(--greyscale-backdrop);
+		color: var(--greyscale-icons);
+/*		color: white;*/
 	}
 
 
@@ -789,18 +805,25 @@ div#FullList {
     background-color: white;
     z-index: 22;
     transition: all 0.2s ease-in-out;
-    animation: 0.2s ease-in-out forwards _enter
+    animation: 0.2s ease-in-out forwards _enter;
+    overflow-y: scroll;
 }
 
 	div#FullList.leave {
 		animation: _leave ease-in-out forwards 0.1s;
 	}
 
-div#FullList h2 {
+div#FullList h2#title {
+	position: fixed;
+	width: 100%;
+	background-color: white;
+	z-index: 26;
 	color: var(--greyscale-accent);
 	font-size: 2.5em;
-	margin-left: 12px;
-	margin-top: 8px;
+/*	margin-left: 12px;*/
+/*	margin-top: 8px;*/
+	margin-top: 0px;
+	padding: 16px 0 24px 12px;
 }
 
 
@@ -812,6 +835,7 @@ div#FullList h2 span {
 
 
 div#FullList ul#dataList {
+	margin-top: 96px;
 	height: calc(100% - 300px);
 	overflow-y: scroll;
 	list-style-type: none;
@@ -931,14 +955,72 @@ div#FullList div#exitWrapper {
 	flex-direction: row;
 	justify-content: center;
 
-	position: absolute;
+	position: fixed;
 	bottom: 0;
 	width: 100%;
-	background-color: transparent;
+	background-color: white;
+	z-index: 26;
 }
 
 div#FullList div#exitWrapper button {
 	margin: 24px 0;
+}
+
+
+
+
+div#FullList div.log {
+	position: relative;
+	overflow-y: scroll;
+	z-index: 24;
+	height: calc(100vh - 180px);
+	margin: 108px auto 0;
+	width: 96%;
+}
+
+
+
+div#FullList ul#connections {
+	margin: 96px auto 0;
+    height: calc(100% - 300px);
+    overflow-y: scroll;
+    list-style-type: none;
+    padding: 0;
+    width: 96%;
+}
+
+div#FullList ul#connections li {
+	position: relative;
+    display: flex;
+	display: block;
+	flex-direction: row;
+    width: 100%;
+    margin: 16px 0;
+}
+
+div#FullList ul#connections img {
+	width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    opacity: 0.5;
+    display: inline-block;
+    margin: 0px 8px;
+}
+
+div#FullList ul#connections li div.text {
+	display: inline-block;
+}
+
+div#FullList ul#connections li div.text h4 {
+	font-family: "Raleway";
+    font-size: 1.5em;
+    margin: 16px 0 8px;
+}
+
+div#FullList ul#connections li div.text span {
+	display: block;
+    color: var(--greyscale-text);
+    margin-top: 4px;
 }
 
 
@@ -975,7 +1057,7 @@ div#main {
 
 div#main img#userPhoto {
 	display: block;
-	width: 50%;
+	width: 44%;
 /*	margin: 96px 0 36px;*/
 /*	margin-left: 16px;*/
 	margin: 48px auto 36px;
@@ -1016,13 +1098,15 @@ div#main div#bio {
 }
 
 div#main div#bio p {
+	font-size: 1.25em;
+	letter-spacing: 1px;
 	line-height: 28px;
 }
 
 div#main div#bio svg {
 	width: 32px;
 	position: absolute;
-/*	transform: scale(0.1);*/
+	transform: scale(0.75);
 	margin: -20px 0;
 }
 
@@ -1047,7 +1131,8 @@ div#main div#stats {
 	margin-top: -16px;
 }
 
-div#main div#stats p {
+div#main div#stats p, 
+div#main div#stats button {
 	display: inline-block;
 	font-size: 48px;
 	font-weight: 600;
@@ -1055,7 +1140,9 @@ div#main div#stats p {
 	color: var(--greyscale-elements);
 }
 
-div#main div#stats p span {
+
+div#main div#stats p span,
+div#main div#stats button span {
 	display: block;
 	top: 0px;
 	position: relative;
@@ -1063,6 +1150,11 @@ div#main div#stats p span {
 	font-size: 20px;
 	letter-spacing: 2px;
 	color: var(--greyscale-text);
+}
+
+div#main div#stats button span {
+	color: black;
+	margin-top: 8px;
 }
 
 
@@ -1077,10 +1169,10 @@ div#main div#collections {
 div#main div#pinnedMedia h2,
 div#main div#pinnedPosts h2,
 div#main div#collections h2 {
-	font-size: 2em;
+	font-size: 2.5em;
 	margin-right: 16px;
 	letter-spacing: 2px;
-	color: var(--greyscale-text);
+	color: var(--greyscale-accent);
 }
 
 div#main div#pinnedMedia h2.none,
@@ -1100,13 +1192,14 @@ div#main div#pinnedPosts {}
 
 div#main div#pinnedMedia ul {
 	list-style-type: none;
-/*	display: flex;*/
-/*	flex-direction: row;*/
-	display: block;
+	display: flex;
+	flex-direction: row;
+/*	display: block;*/
 	margin: 36px auto 64px;
 	overflow-x: scroll;
 	white-space: nowrap;
 	scrollbar-width: none;
+	padding-left: 8px;
 }
 
 div#main div#pinnedMedia ul li {
@@ -1211,6 +1304,9 @@ section#USERPROFILE ul#profileOptions li button {
 	margin: 24px auto;
 }
 
+section#USERPROFILE div#dragSlider {
+	position: absolute;
+}
 
 
 
@@ -1504,3 +1600,39 @@ section#CHANGELOG div#menuBar button {
 
 
 
+div#dragSlider {
+	width: 101%;
+	position: relative;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	height: 101vh;
+	background-color: var(--greyscale-text);
+	z-index: 30;
+	animation: _scaleFadeIn ease-in-out forwards 0.3s;
+}
+
+
+	div#dragSlider._leave {
+		animation: _scaleFadeOut ease-in-out forwards 0.3s;
+	}
+
+div#dragSlider div#buttonWrapper {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-around;
+	position: absolute;
+	bottom: 0;
+	width: 100%;
+	background-color: var(--greyscale-text);
+	padding: 12px 0;
+}
+
+div#dragSlider div#buttonWrapper button {
+/*	height: 100%;*/
+    position: relative;
+    padding: 28px 0;
+    color: white;
+    width: 20%;
+    padding: 12px 8px;
+}

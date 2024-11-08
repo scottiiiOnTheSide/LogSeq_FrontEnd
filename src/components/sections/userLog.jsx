@@ -365,46 +365,60 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 				}		
 			])	
 		} 
-		else if(event.target.name == 'content') {
+		// else if(event.target.name == 'content') {
 
-			let copy;
-			for(let i = 0; i < postContent.length; i++) {
-				if(postContent[i].index == event.target.dataset.index) {
-					copy = true;
-				}
-			}
+		// 	let copy;
+		// 	for(let i = 0; i < postContent.length; i++) {
+		// 		if(postContent[i].index == event.target.dataset.index) {
+		// 			copy = true;
+		// 		}
+		// 	}
 
-			 if (copy == true) {
-				if(postContent.length == 1) {
-					setPostContent([
-						{ 
-							content: event.target.value,
-							type: "text", 
-							index: event.target.dataset.index 
-						}		
-					])
-				} else {
-					let _postContent = JSON.parse(JSON.stringify(postContent));
-					_postContent.pop();
-					setPostContent([
-						..._postContent,
-						{
-							content: event.target.value,
-							type: "text", 
-							index: event.target.dataset.index
-						}
-					])
-				}
-			} else {
-				setPostContent([
-					...postContent,
-					{ 
-						content: event.target.value,
-						type: "text", 
-						index: event.target.dataset.index 
-					}		
-				])
-			}
+		// 	 if (copy == true) {
+		// 		if(postContent.length == 1) {
+		// 			setPostContent([
+		// 				{ 
+		// 					content: event.target.value,
+		// 					type: "text", 
+		// 					index: event.target.dataset.index 
+		// 				}		
+		// 			])
+		// 		} else {
+		// 			let _postContent = JSON.parse(JSON.stringify(postContent));
+		// 			_postContent.pop();
+		// 			setPostContent([
+		// 				..._postContent,
+		// 				{
+		// 					content: event.target.value,
+		// 					type: "text", 
+		// 					index: event.target.dataset.index
+		// 				}
+		// 			])
+		// 		}
+		// 	} 
+		//chatGPT recommended update
+		else if (event.target.name == 'content') {
+		  let existingItem = postContent.find(item => item.index == event.target.dataset.index);
+
+		  if (existingItem) {
+		    // Update existing content
+		    setPostContent(postContent.map(item => 
+		      item.index == event.target.dataset.index 
+		        ? { ...item, content: event.target.value }
+		        : item
+		    ));
+		  } 
+		  else {
+		    // Add new content
+		    setPostContent([
+		      ...postContent,
+		      {
+		        content: event.target.value,
+		        type: 'text',
+		        index: event.target.dataset.index
+		      }
+		    ]);
+		  }
 		} 
 		else {
 			setFormData({
@@ -414,16 +428,26 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 		}
 	}
 
+	//older submitPost function
 	const handleSubmit = async(event) => {
 		event.preventDefault();
 		console.log(postContent);
 		let title = document.getElementById('title');
 
-		if(postContent[0].content.length < 1 || title.value == '') {
-			setSocketMessage({
-				type: 'error',
-				message: 'Atleast a Title, Text or Media is needed to make a post!'
-			})
+		if (!title.value.trim() || !postContent.some(content => {
+		  if (content.type === 'text') {
+		    // Only apply trim to text content
+		    return typeof content.content === 'string' && content.content.trim() !== '';
+		  } else if (content.type === 'media') {
+		    // Check if media content is a valid File object
+		    return content.content instanceof File;
+		  }
+		})) {
+		setSocketMessage({
+		    type: 'error',
+		    message: 'At least a Title, Text, or Media is needed to make a post!'
+		  });
+		  return;  // Stop the form submission if validation fails
 		}  
 		else {
 			
@@ -436,18 +460,21 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 			submission.append('privacyTogglable', sessionStorage.getItem('privacySetting'));
 			submission.append('profilePhoto', sessionStorage.getItem('profilePhoto'));
 
-			for(let i=0; i < postContent.length; i++){
-				if(postContent[i].type == 'text') {
-					if(postContent[i].content === '') {
-						return null;
-					} else {
+			for(let i=0; i < postContent.length; i++) {
+
+				const {type, content, index} = postContent[i];
+
+				if(type == 'text') {
+					if (typeof content === 'string' && content.trim() === '') {
+				      continue;  // Skip empty text content
+				    }
+					else {
 						let content = postContent[i].content;
-						submission.append(`${postContent[i].index}`, content)
+						submission.append(`${index}`, content)
 					}
-					
-				} else if(postContent[i].type == 'image') {
+				} else if(type == 'media') {
 					let content = postContent[i].content;
-					submission.append(`${postContent[i].index}`, content)
+					submission.append(`${index}`, content)
 				}
 			}
 
@@ -901,10 +928,10 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 				<div id="dateSetter">
 					<h3>Creating Entry for</h3>
-					{current.monthChart &&
+					{current.calendar &&
 						<h2>{writtenDate}</h2>
 					}
-					{!current.monthChart &&
+					{!current.calendar &&
 						<h2>Today</h2>
 					}
 				</div>
@@ -996,7 +1023,7 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 
 					{pinLocation.open &&
 						<div id="coordinatesWrapper">
-						
+							
 							<div id="lonWrap" className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>
 								<p className={`${pinLocation.lon != locationData.lon ? 'active' : 'inactive'}`}>LON</p>
 								<input type="number"
@@ -1011,6 +1038,8 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 										onChange={onChange}
 										placeholder={pinLocation.lat}/>
 							</div>
+							
+							
 						</div>
 					}
 					
@@ -1137,3 +1166,126 @@ export default function UserLog({active, setCurrent, current, log, setLog}) {
 		</div>
 	)
 }
+
+// const handleSubmit = async(event) => {
+// 		event.preventDefault();
+// 		console.log(postContent);
+// 		let title = document.getElementById('title');
+
+// 		if(postContent.length < 1 || title.value == '') {
+// 			setSocketMessage({
+// 				type: 'error',
+// 				message: 'Atleast a Title, Text or Media is needed to make a post!'
+// 			})
+// 		}  
+// 		else {
+			
+// 			element.classList.add('_loading');
+// 			let submission = new FormData();
+
+// 			submission.append('type', 'entry');
+// 			submission.append('title', formData.title ? formData.title : title.value);
+// 			submission.append('isPrivate', isPrivate);
+// 			submission.append('privacyTogglable', sessionStorage.getItem('privacySetting'));
+// 			submission.append('profilePhoto', sessionStorage.getItem('profilePhoto'));
+
+// 			for(let i=0; i < postContent.length; i++){
+// 				if(postContent[i].type == 'text') {
+// 					if(postContent[i].content === '') {
+// 						return null;
+// 					} else {
+// 						let content = postContent[i].content;
+// 						submission.append(`${postContent[i].index}`, content)
+// 					}
+					
+// 				} else if(postContent[i].type == 'image') {
+// 					let content = postContent[i].content;
+// 					submission.append(`${postContent[i].index}`, content)
+// 				}
+// 			}
+
+// 			let tags = suggestions.filter(el => el.selected == true).map(el => el.name);
+// 			if(tags.length > 0) {
+// 				submission.append('tags', tags);	
+// 			} 
+			
+// 			let taggedUsers = tagged.filter(user => user.selected == true).map(user => {
+// 				return {
+// 					_id: user._id, 
+// 					username: user.userName
+// 				}
+// 			});
+// 			if(taggedUsers.length > 0) {
+// 				submission.append('taggedUsers', JSON.stringify(taggedUsers));
+// 			}
+// 			console.log(taggedUsers);
+
+// 			if(selectedDate.day != null) {
+// 				submission.append('usePostedByDate', false);
+// 				submission.append('postedOn_month', selectedDate.month);
+// 				submission.append('postedOn_day', selectedDate.day);
+// 				submission.append('postedOn_year', selectedDate.year);
+// 			} else {
+// 				submission.append('usePostedByDate', true);
+// 			}
+
+// 			if(pinLocation.open) {
+// 				submission.append('geoLon', pinLocation.lon);
+// 				submission.append('geoLat', pinLocation.lat);
+// 			}	
+// 			console.log(submission);
+// 			console.log(tags);
+
+// 			let submit = await accessAPI.createPost(submission);
+
+// 			if(submit.confirm == true) {
+// 				console.log("Post submission successful");
+// 				// console.log(submit);
+// 				element.classList.remove('_enter');
+// 				element.classList.add('_fade');
+// 				let delay = setTimeout(()=> {
+// 					setCurrent({
+// 						...current,
+// 						modal: false
+// 					})
+// 				}, 300)
+
+// 				let utilizedDraft = drafts.find(post => post.selected == true);
+// 				if(utilizedDraft) {
+// 					await accessAPI.deleteDraft(utilizedDraft._id)	
+// 				}
+				
+// 			} else if(submit.message) {
+// 					element.classList.remove('_loading');
+// 					console.log('Issue with post submission');
+// 					setSocketMessage({
+// 						type: 'error',
+// 						message: submit.message
+// 					})
+// 			}
+// 			/**
+// 			 * 10. 27. 2023
+// 			 * setSocketMessage here with info for making notif for tagged users
+// 			 */
+// 			if(tagged.some(user => user.selected == true)) {
+
+// 				let recips = tagged.filter(user => user.selected == true).map(user => {return user._id});
+
+// 				setSocketMessage({
+// 					type: 'tagging',
+// 					isRead: false,
+// 					senderID: userID,
+// 					senderUsername: username,
+// 					url: submit.postURL,
+// 					message: 'sent',
+// 					recipients: recips,
+// 					postTitle: title.value
+// 				})
+
+// 			} else {
+// 				setSocketMessage({
+// 					confirm: 'postUpload'
+// 				})
+// 			}
+// 		}
+// 	}

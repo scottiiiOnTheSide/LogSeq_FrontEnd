@@ -1,13 +1,14 @@
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import CalInfo from '../calInfo'
-import {useNavigate, useLocation, useLoaderData} from 'react-router-dom';
+import {useNavigate, useLocation, useLoaderData, useParams } from 'react-router-dom';
 
 
 import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
 import NotificationList from '../../components/notifs/notifsList';
 import FullList from '../../components/base/fullList';
+import DragSlider from '../../components/base/dragSlider';
 import './home.css';
 
 let accessAPI = APIaccess();
@@ -36,6 +37,8 @@ export default function UserProfile({
 	// const location = useLocation();
 	const data = useLoaderData();
 	const navigate = useNavigate();
+	const location = useLocation();
+	const { userid } = useParams();
 	const cal = CalInfo();
 	const isOwner = data.user._id == userID ? true : false;
 	const [userInfo, setUserInfo] = React.useState(data.user);
@@ -46,6 +49,7 @@ export default function UserProfile({
 		let data = await accessAPI.getSingleUser(userInfo._id);
 		setUserInfo(data.user);
 		setPinnedPosts(data.pinnedPosts);
+		setCollections(data.collections);
 	}
 
 	const goToUserSettings = async() => {
@@ -53,7 +57,7 @@ export default function UserProfile({
 		let settings = await accessAPI.userSettings({option: 'getUserSettings'});
 
 		let delay = setTimeout(()=> {
-			navigate(`/settings`, {
+			navigate(`/${userInfo.userName}/settings`, {
 				state: {
 					data: settings
 				}
@@ -95,7 +99,7 @@ export default function UserProfile({
 		console.log(tagInfo);
 									
 		setTimeout(()=> {
-			navigate(`/macros/${tag.name}`, {
+			navigate(`/macros/${tag.name}/${tag._id}`, {
 					state: {
 						name: tag.name,
 						posts: posts,
@@ -122,6 +126,81 @@ export default function UserProfile({
 		}
 		setSocketMessage(notif);
 	}
+
+	const removeConnection = async(userID, username) => {
+		let remove = await accessAPI.removeConnection(userID);
+		if(remove == true) {
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'removal',
+				username: username,
+			})
+			updateProfilePage();
+		}
+	}
+
+	const requestSubscription = async(recipientID) => {
+		let notif = {
+			type: 'request',
+			senderID: userID,
+			senderUsername: username,
+			recipients: [recipientID],
+			recipientUsername: userInfo.userName,
+			message: userInfo.privacySetting == 'Half' || 'On' ? 'subscriptionRequested' : 'subscribed'
+		}
+
+		setSocketMessage(notif);
+
+		// await accessAPI.newInteraction(notif).then((data) => {
+			
+		// 	if(data.confirmation == false) {
+		// 		setSocketMessage({
+		// 			type: 'simpleNotif',
+		// 			message: `You have already sent @${notif.recipientUsername} a request`
+		// 		})
+		// 	}
+		// 	else if(data.message == 'subscribed') {
+		// 		console.log(data);
+		// 		setSocketMessage({
+		// 			type: 'confirmation',
+		// 			message: data.message
+		// 		})
+		// 		setActive({
+		// 			state: true,
+		// 			type: 1
+		// 		})
+		// 		notif.originalID = data._id;
+		// 	}
+		// 	else if(data.message == 'requestRecieved') {
+		// 		console.log(data);
+		// 		setSocketMessage({
+		// 			type: 'confirmation',
+		// 			message: data.message
+		// 		})
+		// 		setActive({
+		// 			state: true,
+		// 			type: 1
+		// 		})
+		// 		notif.originalID = data._id;
+		// 	}
+		// })
+	}
+
+	const removeSubscription = async(userID) => {
+		let remove = await accessAPI.removeSubscription(userID).then(data => {
+			if(data == true) {
+				updateProfilePage();
+				let delay = setTimeout(()=> {
+					setSocketMessage({
+						type: 'confirmation',
+						message: 'removal',
+						username: username,
+					})
+				}, 300)
+			}
+		})
+		
+	}
 	
 	/* UI Element Related */
 	const [exit, setExit] = React.useReducer(state => !state, false);
@@ -139,6 +218,13 @@ export default function UserProfile({
 	}, [fullList])
 
 	React.useEffect(()=> {
+		updateProfilePage();
+		if(userInfo._id != userid) {
+			navigate(0)
+		}
+	}, [userid ])
+
+	React.useEffect(()=> {
 
 		document.title = 'Syncseq.xyz/user'
 
@@ -146,9 +232,9 @@ export default function UserProfile({
 	}, [])
 
 	return (
-		<section id="USERPROFILE" className={`${exit == true ? '_exit' : ''}`}>
+		<section id="USERPROFILE" key={userid} className={`${exit == true ? '_exit' : ''}`}>
 
-			<Header cal={cal} 
+			<Header 
 					isReturnable={true} 
 					setNotifList={setNotifList} 
 					unreadCount={unreadCount}
@@ -192,19 +278,41 @@ export default function UserProfile({
 				}
 
 				<div id="stats">
-					<p>
+					<button className={`buttonDefault`} onClick={async(e)=> {
+						let data = await accessAPI.pullUserLog(undefined, undefined, userInfo._id);
+
+						setFullListData({
+							data: data,
+							mode: 'allPosts',
+							source: `from @${userInfo.userName}` 
+						});
+
+						setFullList();
+					}}>
 						{/*9*/}
 						{data.postCount}
 						<span>Posts</span>
-					</p>
-					<p>
-						{userInfo.connections.length}
-						<span>Connections</span>
-					</p>
+					</button>
+
 					<p>
 						{userInfo.interactionCount}
 						<span>Actions</span>
 					</p>
+
+					<button className={`buttonDefault`} onClick={async(e)=> {
+						let data = await accessAPI.getConnections(userInfo._id);
+
+						setFullListData({
+							data: data,
+							mode: 'allConnections',
+							source: `@${userInfo.userName}` 
+						});
+
+						setFullList();
+					}}>
+						{userInfo.connections.length}
+						<span>LINKS</span>
+					</button>
 				</div>
 
 				<div id="pinnedMedia">
@@ -218,8 +326,19 @@ export default function UserProfile({
 						<ul>
 							{userInfo.pinnedMedia.map((data, index) => (
 								<li key={index}>
-									<img src={data.url} onClick={()=> {
-										goToPost(data.postID)
+									<img src={data.url} onClick={(e)=> {
+										e.stopPropagation();
+
+										let gallery = userInfo.pinnedMedia.map(data => ({
+		  										content: data.url,
+		  										postID: data.postID,
+		  										type: 'media'
+		  									}));
+
+										setCurrent({
+											...current,
+											gallery: gallery
+										})
 									}}/>
 								</li>	
 							))}
@@ -303,6 +422,7 @@ export default function UserProfile({
 				<button className={`buttonDefault`} onClick={setOptions}>Options</button>
 			</div>
 
+			{/*USER IS OWNER*/}
 			{(options && isOwner) &&
 				<ul id="profileOptions">
 					<li>
@@ -358,11 +478,45 @@ export default function UserProfile({
 					</li>
 				</ul>
 			}
+			{/*USER IS NOT OWNER*/}
 			{(options && !isOwner) &&
 				<ul id="profileOptions">
-					<li>
-						<button className={`buttonDefault`} onClick={()=> {requestConnection(userInfo._id)}}>Connect</button>
-					</li>
+
+					{(!data.isConnected && !data.isSubscribed) &&
+						<li>
+							<button className={`buttonDefault`} 
+							onClick={()=> {requestSubscription(userInfo._id)}}>
+								Request Connection
+							</button>
+						</li>
+					}
+					{data.isConnected &&
+						<li>
+							<button className={`buttonDefault`} 
+							onClick={()=> {removeConnection(userInfo._id, userInfo.userName)}}>
+								Disconnect
+							</button>
+						</li>
+					}
+					
+					{(data.isSubscribed && !data.isConnected) &&
+						<li>
+							<button className={`buttonDefault`} 
+							onClick={()=> {removeSubscription(userInfo._id)}}>
+								Remove Subscription
+							</button>
+						</li>
+					}
+					{(!data.isSubscribed && !data.isConnected) &&
+						<li>
+							<button className={`buttonDefault`} 
+							onClick={()=> {requestSubscription(userInfo._id)}}>
+								{userInfo.privacySetting == 'Half' ? 'Request Subscription' : 'Subscribe'}
+							</button>
+						</li>
+					}
+			
+
 					<li id="close">
 						<button className="buttonDefault" onClick={()=> {
 								let optionsMenu = document.getElementById('profileOptions');
@@ -371,11 +525,15 @@ export default function UserProfile({
 								let delay = setTimeout(()=> {
 									setOptions()
 								}, 150);
-							}}>x</button>
+							}}>⨉</button>
 					</li>
 				</ul>
 			}
 
+
+			{current.gallery.length > 0 &&
+          		<DragSlider current={current} setCurrent={setCurrent} siteLocation={'home'}/>
+        	}
 			{fullList &&
 				<FullList 
 					data={fullListData.data}

@@ -1,6 +1,7 @@
 import * as React from 'react';
 import APIaccess from '../../apiaccess';
 import {useNavigate} from 'react-router-dom';
+import Log from '../blog/log';
 
 import './home.css';
 
@@ -353,6 +354,8 @@ export default function FullList({
 			
 			<h2 id="title">
 				{`${mode.includes('view') ? "Viewing" : '' }`}
+				{`${mode.includes('allPosts') ? "Public Posts" : '' }`}
+				{`${mode.includes('allConnections') ? "Connected To" : '' }`}
 				{`${mode == 'remove' ? "Removing From" : '' }`}
 				{`${mode == 'remove_pinnedMedia' ? "Removing From" : '' }`}
 				{`${mode == 'remove_pinnedPosts' ? "Removing From" : '' }`}
@@ -361,89 +364,113 @@ export default function FullList({
 				<span>{source}</span>
 			</h2>
 
+			{mode == 'allConnections' &&
+				<ul id="connections">
+					{data.map((connect, index)=> (
+						<li key={index} >
+							<img src={connect.profilePhoto} />
+							<div className="text">
+								<h4>{connect.userName}</h4>
+								<span>{`${connect.fullName}`}</span>
+							</div>
+						</li>
+					))}
+				</ul>
+			}
 
-			<ul id="dataList">
-				{(mode == 'pinMedia' || mode.includes('remove')) &&
+			{mode != 'allPosts' &&
+				<ul id="dataList">
+					{(mode == 'pinMedia' || mode.includes('remove')) &&
 
-					dataList.map((entry) => (
-						<li className={`${entry.selected == true ? 'selected' : ''}`} key={entry.place}>
-							<button onClick={()=> {	
+						dataList.map((entry) => (
+							<li className={`${entry.selected == true ? 'selected' : ''}`} key={entry.place}>
+								<button onClick={()=> {	
 
-								let copy;
+									let copy;
 
-								//else if(mode == 'pinMedia' || mode == 'remove_pinnedMedia') {
-								if(mode.includes('edia')) {
-									copy = dataList.map(ele => {
-										if(entry.place == ele.place && ele.selected != true ) {
-											ele.selected = true;
-											return ele;
-										}
-										else if(entry.place == ele.place && ele.selected == true ) {
-											ele.selected = false;
-											return ele;
-										}
-										else {
-											return ele;
-										}
-									});
+									//else if(mode == 'pinMedia' || mode == 'remove_pinnedMedia') {
+									if(mode.includes('edia')) {
+										copy = dataList.map(ele => {
+											if(entry.place == ele.place && ele.selected != true ) {
+												ele.selected = true;
+												return ele;
+											}
+											else if(entry.place == ele.place && ele.selected == true ) {
+												ele.selected = false;
+												return ele;
+											}
+											else {
+												return ele;
+											}
+										});
+									}
+
+									else if(mode.includes('remove')) {
+										copy = dataList.map(ele => {
+
+											if(ele.title == entry.title && ele.selected != true ) {
+												ele.selected = true;
+												return ele;
+											}
+											else if(ele.title == entry.title && ele.selected == true ) {
+												ele.selected = false;
+												return ele;
+											}
+											else {
+												return ele;
+											}
+										})
+									}
+
+									setDataList(copy)
+								}}>
+									<span className={`bullet ${entry.selected == true ? 'selected' : ''} ${mode.includes('edia') ? 'media' : ''}`}>
+									</span>
+
+									{(mode == 'remove' || mode == 'remove_pinnedPosts') &&
+										<p>{entry.title}</p>
+									}
+									{(mode == 'pinMedia' || mode == 'remove_pinnedMedia' ) &&
+										<img src={entry.url}/>
+									}
+								</button>	
+							</li>
+						))
+					}
+					{mode.includes('view') &&
+						dataList.map(entry => (
+							<li key={entry._id} className={`view`} onClick={()=> {
+								if(mode == 'viewDrafts') {
+									setAsPost(entry.id);	
 								}
-
-								else if(mode.includes('remove')) {
-									copy = dataList.map(ele => {
-
-										if(ele.title == entry.title && ele.selected != true ) {
-											ele.selected = true;
-											return ele;
-										}
-										else if(ele.title == entry.title && ele.selected == true ) {
-											ele.selected = false;
-											return ele;
-										}
-										else {
-											return ele;
-										}
-									})
-								}
-
-								setDataList(copy)
 							}}>
-								<span className={`bullet ${entry.selected == true ? 'selected' : ''} ${mode.includes('edia') ? 'media' : ''}`}>
-								</span>
+								<h3>{entry.title}</h3>
+								<p>{entry.content}</p>
 
-								{(mode == 'remove' || mode == 'remove_pinnedPosts') &&
-									<p>{entry.title}</p>
+								{entry.images.length > 0 &&
+									<ul className='images'>
+										{entry.images.map(img => (
+											<li>
+												<img src={img}/>
+											</li>
+										))}
+									</ul>
 								}
-								{(mode == 'pinMedia' || mode == 'remove_pinnedMedia' ) &&
-									<img src={entry.url}/>
-								}
-							</button>	
-						</li>
-					))
-				}
-				{mode.includes('view') &&
-					dataList.map(entry => (
-						<li key={entry._id} className={`view`} onClick={()=> {
-							if(mode == 'viewDrafts') {
-								setAsPost(entry.id);	
-							}
-						}}>
-							<h3>{entry.title}</h3>
-							<p>{entry.content}</p>
+							</li>
+						))
+					}
+				</ul>
+			}
 
-							{entry.images.length > 0 &&
-								<ul className='images'>
-									{entry.images.map(img => (
-										<li>
-											<img src={img}/>
-										</li>
-									))}
-								</ul>
-							}
-						</li>
-					))
-				}
-				{/*may have to use log here*/}
-			</ul>
+			{mode == 'allPosts' &&
+				<Log data={data} 
+				 		section={"fullList"} 
+				 		// noHeading={noHeading} 
+				 		// current={current} 
+				 		// setCurrent={setCurrent}
+				 		updateLog={setDataList}/>
+			}
+			
 
 
 			{/*
@@ -517,6 +544,34 @@ export default function FullList({
 								}}>Exit</button>
 					</li>
 				</ul>
+			}
+			{mode == 'allPosts' &&
+				<div id="exitWrapper">
+					<button className={`buttonDefault`}
+							onClick={()=> {
+
+								let fullList = document.getElementById('FullList');
+								fullList.classList.add('leave')
+
+								let second = setTimeout(()=> {
+									setFullList();	
+								}, 200)
+							}}>Exit</button>	
+				</div>
+			}
+			{mode == 'allConnections' &&
+				<div id="exitWrapper">
+					<button className={`buttonDefault`}
+							onClick={()=> {
+
+								let fullList = document.getElementById('FullList');
+								fullList.classList.add('leave')
+
+								let second = setTimeout(()=> {
+									setFullList();	
+								}, 200)
+							}}>Exit</button>	
+				</div>
 			}
 		</div>
 	)

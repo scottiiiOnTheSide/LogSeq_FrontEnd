@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {useNavigate} from 'react-router-dom';
+import {useNavigate, Link } from 'react-router-dom';
 import APIaccess from '../../apiaccess';
 import useUIC from '../../UIcontext';
 
@@ -95,6 +95,29 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 			// 	groupID: notif.details.groupID
 			// })
 		}
+		else if(arg == 'subscriptionAccepted') {
+
+			let body = {
+				type: 'request',
+				senderID: userID,
+				senderUsername: username,
+				recipients: [notif.sender],
+				recipientUsername: notif.senderUsername,
+				message: 'subscriptionAccepted'
+			}
+
+			let sm = {
+					type: 'markRead',
+					notifID: notif._id,
+					userID: userID,
+					senderUsername: username
+				};
+				let request = await accessAPI.newInteraction(sm)
+
+			setSocketMessage(body);
+
+			updateList();
+		}
 	}
 
 	let goToUserProfile = async() => {
@@ -102,13 +125,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 		let data = await accessAPI.getSingleUser(userID);
 		
 		let delay = setTimeout(()=> {
-			navigate(`/user/${username}/${userID}`, {
-				state: {
-					user: data.user,
-					pinnedPosts: data.pinnedPosts,
-					collections: data.collections
-				}
-			})
+			navigate(`/user/${username}/${userID}`)
 		}, 150)
 	}
 
@@ -213,6 +230,18 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					{(notif.type == 'request' && notif.message == 'accessRequested') &&
 						<p>{notif.senderUsername} is requesting access to "{notif.details.groupName}"</p>
 					}
+					{(notif.type == 'request' && notif.message == 'subscriptionRequest') &&
+						<p>You requested subscription to @{notif.recipientUsernames[0]}</p>
+					}
+					{(notif.type == 'request' && notif.message == 'subscriptionRequested') &&
+						<p>{notif.senderUsername} wishes to subscribe</p>
+					}
+					{(notif.type == 'request' && notif.message == 'subscriptionAccepted') &&
+						<p>{notif.recipientUsernames[0]} is now a subscriber!</p>
+					}
+					{(notif.type == 'request' && notif.message == 'subscribed') &&
+						<p>You are now subscibed to {notif.senderUsername}</p>
+					}
 					{(notif.type == 'request' && notif.message == 'accessGranted') &&
 						<p>{notif.senderUsername} has granted you access to "{notif.details.groupName}"</p>
 					}
@@ -294,6 +323,34 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 										interact('markRead', notif._id)
 									}}>
 								Ignore
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'subscriptionRequested') &&
+						<div className="options">
+							<button className="buttonDefault" 
+									onClick={()=> {
+										console.log(notif)
+										interact('subscriptionAccepted', notif.recipients[0], undefined, undefined, notif)}}>
+								Accept
+							</button>
+							<button className="buttonDefault" 
+									onClick={()=> {
+										console.log(notif)
+										interact('markRead', notif._id)
+									}}>
+								Ignore
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'subscriptionAccepted') &&
+						<div className="options">
+							<button className="buttonDefault" 
+									onClick={()=> {
+										console.log(notif)
+										interact('markRead', notif._id)
+									}}>
+								Mark Read
 							</button>
 						</div>
 					}

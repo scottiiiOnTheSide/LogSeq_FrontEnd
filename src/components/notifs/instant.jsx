@@ -38,17 +38,68 @@ export default function Instants({
 	***/
 	let makeNotif_sendInitialRequest = async (notif) => {
 		await accessAPI.newInteraction(notif).then((data) => {
+
 			if(data.confirmation == false) {
 				setSocketMessage({
 					type: 'simpleNotif',
 					message: `You have already sent @${notif.recipientUsername} a request`
 				})
 			}
-			else {
+			else if(data.message == 'accepted') { //confirm: true, message: request
 				console.log(data);
 				setSocketMessage({
 					type: 'confirmation',
-					message: 'request'
+					message: data.message
+				})
+				setActive({
+					state: true,
+					type: 1
+				})
+				notif.originalID = data._id;
+
+				if(data.message == 'accepted') {
+
+				sendMessage(JSON.stringify(notif));
+
+				setSocketMessage({
+					type: 'confirmation',
+					message: 'accepted'
+				})
+				setActive({
+					state: true,
+					type: 1
+				})
+			}
+			}
+			else if(data.message == 'subscribed') {
+				console.log(data);
+				setSocketMessage({
+					type: 'confirmation',
+					message: data.message
+				})
+				setActive({
+					state: true,
+					type: 1
+				})
+				notif.originalID = data._id;
+			}
+			else if(data.message == 'requestRecieved') {
+				console.log(data);
+				setSocketMessage({
+					type: 'confirmation',
+					message: data.message
+				})
+				setActive({
+					state: true,
+					type: 1
+				})
+				notif.originalID = data._id;
+			}
+			else if(data.message == 'subscriptionRequested') {
+				console.log(data);
+				setSocketMessage({
+					type: 'confirmation',
+					message: data.message
 				})
 				setActive({
 					state: true,
@@ -64,6 +115,7 @@ export default function Instants({
 	}
 
 	let makeNotif_sendAcceptRequest = async (notif) => {
+
 		await accessAPI.newInteraction(notif).then((data) => {
 			if(data.confirmation == false) {
 				setSocketMessage({
@@ -72,13 +124,40 @@ export default function Instants({
 				})
 			}
 
-			if(data == true) {
+			if(data.message == 'accepted') {
 
 				sendMessage(JSON.stringify(notif));
 
 				setSocketMessage({
 					type: 'confirmation',
-					message: 'accepted'
+					message: 'subscriptionAccepted',
+					person: notif.senderUsername
+				})
+				setActive({
+					state: true,
+					type: 1
+				})
+			}
+		})
+	}
+
+	let makeNotif_subscribed = async (notif) => {
+
+		await accessAPI.newInteraction(notif).then((data) => {
+			if(data.confirmation == false) {
+				setSocketMessage({
+					type: 'simpleNotif',
+					message: `You are already subscribed to ${notif.senderUsername}`
+				})
+			}
+
+			if(data.confirm == true) {
+
+				sendMessage(JSON.stringify(notif));
+
+				setSocketMessage({
+					type: 'confirmation',
+					message: 'subscribed'
 				})
 				setActive({
 					state: true,
@@ -908,7 +987,18 @@ export default function Instants({
 		else if(socketMessage.type == 'request' && socketMessage.message == 'accepted') {
 			makeNotif_sendAcceptRequest(socketMessage);
 		}
+		else if(socketMessage.type == 'request' && socketMessage.message == 'subscribed') {
+			makeNotif_subscribed(socketMessage);
+		}
 		else if (socketMessage.type == 'request' && socketMessage.message == 'sent') {
+			if(!socketMessage.recipients) {
+				return
+			} else {
+				console.log(socketMessage);
+				makeNotif_sendInitialRequest(socketMessage);
+			}
+		}
+		else if (socketMessage.type == 'request' && socketMessage.message.includes('sub')) {
 			if(!socketMessage.recipients) {
 				return
 			} else {
@@ -1023,15 +1113,26 @@ export default function Instants({
 				{(message.type == 'request' && message.message == 'accepted') &&
 					<p>You are connected with {message.senderUsername} !</p>
 				}
-
 				{(message.type == 'confirmation' && message.message == 'accepted') &&
+					<p>You are now connected !</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'subsciptionAccepted') &&
+					<p>{message.person} is now a subscriber!</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'subscribed') &&
+					<p>You have a new subscriber!</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'subscriptionAccepted') &&
 					<p>You are now connected !</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'request') &&
 					<p>Connection Request Sent !</p>
 				}
+				{(message.type == 'confirmation' && message.message == 'requestRecieved') &&
+					<p>Subscription Request Sent !</p>
+				}
 				{(message.type == 'confirmation' && message.message == 'removal') &&
-					<p>Disconnected with {message.username}</p>
+					<p>Disconnected from {message.username}</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'confirm_deletePost') &&
 					<p>You are about to delete this post</p>

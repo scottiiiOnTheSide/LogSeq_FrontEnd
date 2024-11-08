@@ -16,19 +16,12 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 	const navigate = useNavigate();
 	const _id = sessionStorage.getItem('userID');
 
-	let goToProfile = async(usersid) => {
-		// console.log(usersid)
-		let data = await accessAPI.getSingleUser(usersid);
-		// console.log(data);
+	let goToProfile = async(userID) => {
+		console.log(userID)
+		let data = await accessAPI.getSingleUser(userID);
 		
 		let delay = setTimeout(()=> {
-			navigate(`/user/${data.user.userName}/${data.user._id}`, {
-				// state: {
-				// 	user: data.user,
-				// 	pinnedPosts: data.pinnedPosts,
-				// 	collections: data.collections
-				// }
-			})
+			navigate(`/user/${data.user.username}/${userID}`)
 		}, 150)
 	}
 
@@ -85,7 +78,11 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 				}
 				<div className={`entry ${rightAlign == true ? 'right' : ''}`} id={id} key={post._id}>
 					{(userID != post.owner) &&  
-						<button className={`toProfile`} onClick={()=> {goToProfile(post.owner)}}>
+						<button className={`toProfile`} onClick={()=> {
+							let UID = post.owner._id;
+							console.log(UID)
+							goToProfile(UID)
+						}}>
 							<img src={post.profilePhoto}/>
 							<span>&#64;{post.author}</span>
 						</button>
@@ -106,9 +103,21 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 							<p>{content}</p>
 						}
 						
-
 						{post.content.some((data) => data.type == 'media') &&
-							<ul id="thumbnailsWrapper">
+							<ul id="thumbnailsWrapper" onClick={(e)=> {
+								e.stopPropagation();
+
+								let gallery = post.content.filter(data => data.type === 'media')
+  									.map(data => ({
+    									...data,   // Spread existing properties
+    									postID: post._id 
+  									}));
+
+								setCurrent({
+									...current,
+									gallery: gallery
+								})
+							}}>
 								{post.content.filter(data => data.type == 'media').map(data => (
 									<li key={data._id}>
 										<img loading="lazy" src={data.content} />
@@ -117,7 +126,6 @@ export default function Log({data, section, noHeading, current, setCurrent, isUn
 							</ul>
 						}
 						
-
 						<ul id="details">
 							{tags > 0 &&
 								<li>{tags} tags</li>

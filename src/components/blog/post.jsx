@@ -11,6 +11,7 @@ import Header from '../../components/base/header';
 import Instant from '../../components/notifs/instant';
 import NotificationsList from '../../components/notifs/notifsList';
 import FullList from '../../components/base/fullList';
+import DragSlider from '../../components/base/dragSlider';
 
 const accessAPI = APIaccess(); 
 
@@ -264,13 +265,6 @@ export default function Post({
 		}, 200)
 	}
 
-	React.useEffect(()=> {
-		refreshPost()
-		pinPost('check')
-		
-		document.title = 'Syncseq.xyz/post'
-	}, [])
-
 	/***
 	 	P o s t D e t a i l s
 	***/
@@ -441,7 +435,22 @@ export default function Post({
 		console.log(postData);
 	}, [element]);
 
-	// console.log(postData);
+
+	React.useEffect(()=> {
+		refreshPost()
+		pinPost('check')
+		
+		document.title = 'Syncseq.xyz/post';
+
+		if(current.gallery.length > 0) {
+			setCurrent({
+				...current,
+				gallery: []
+			})
+			console.log('true');
+		}
+	}, [])
+
 
 	return (
 		<section id="POST" ref={el} className={`${enter == true ? '_enter' : ''}`}>
@@ -491,17 +500,29 @@ export default function Post({
 					*/}
 					
 					{postData.content.map((data) => {
-								if(data.type == 'text') {
-									if(data.content.match(/\((.*?)\)/g)) {
-										return (<p dangerouslySetInnerHTML={{ __html: bodyParse(data.content)}} key={data.place}></p>)
-									} else {
-										return (<p dangerouslySetInnerHTML={{ __html: data.content}} key={data.place}></p>)
-									}
-								} else if(data.type == 'media') {
-									return <img src={data.content}/>
-								}
+						if(data.type == 'text') {
+							if(data.content.match(/\((.*?)\)/g)) {
+								return (<p dangerouslySetInnerHTML={{ __html: bodyParse(data.content)}} key={data.place}></p>)
+							} else {
+								return (<p dangerouslySetInnerHTML={{ __html: data.content}} key={data.place}></p>)
 							}
-						)}
+						} else if(data.type == 'media') {
+							return <img src={data.content} onClick={(e)=> {
+								e.stopPropagation();
+
+								let gallery = postData.content.filter(data => data.type === 'media')
+  									.map(data => ({
+    									...data,   // Spread existing properties
+    									postID: postData._id 
+  									}));
+
+								setCurrent({
+									...current,
+									gallery: gallery
+								})
+							}}/>
+						}
+					})}
 				</div>
 
 
@@ -736,7 +757,10 @@ export default function Post({
 
 				}
 			</div>
-			
+
+			{current.gallery.length > 0 &&
+				<DragSlider current={current} setCurrent={setCurrent} siteLocation={'post'}/>
+			}
 			{pinnedMedia &&
 				<FullList 
 					data={postData}

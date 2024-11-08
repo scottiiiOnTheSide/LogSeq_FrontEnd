@@ -623,27 +623,6 @@ export default function Macros({active, current, setCurrent, tags, setTags, user
 	}
 
 	let goToMacrosPage = async(tag) => {
-
-		// let tagInfo = await accessAPI.getTagData(tag._id, tag.name);
-		// let posts = await accessAPI.groupPosts({
-		// 	action: 'getPosts', 
-		// 	groupID: tag._id, 
-		// 	groupName: tag.name
-		// });
-		// let postsCount = posts.length;
-
-		// /* 09. 22. 2024
-		// 	This check should always be done when going to a macro,
-		// 	but is unnecessary here - as user does have access to
-		// 	their own recently used tags
-		// */
-		// let doesHaveAccess;
-		// if(tagInfo.hasAccess) {
-		// 	doesHaveAccess = tagInfo.hasAccess.filter(el => el == userID);
-		// 	doesHaveAccess = doesHaveAccess.length > 0 ? true : false;
-		// }
-		
-		// console.log(tagInfo);
 									
 		setTimeout(()=> {
 			navigate(`/macros/${tag.name}/${tag._id}`, {

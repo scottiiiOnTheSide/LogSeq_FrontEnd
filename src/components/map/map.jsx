@@ -61,7 +61,7 @@ function ArrowIcon({classname}) {
 	)
 }
 
-export default function MapComponent ({ current, log, setLog, selectedDate, setSelectedDate, cal }) {
+export default function MapComponent ({ setCurrent, current, log, setLog, selectedDate, setSelectedDate, cal }) {
 
 	const navigate = useNavigate();
 	const [mapState, setMapState] = React.useState(null);
@@ -131,12 +131,17 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 		if(headerState == 'allPosts') {
 			let num = 0;
 			let locations = log.filter(entry => entry.hasOwnProperty('location')).map(entry => {
+
+				let text;
+				if(entry.content.find((data) => data.type == 'text')) {
+					text = entry.content.find((data) => data.type == 'text');
+				}
+
 				return {
 					id: num,
-					// coords: points,
 					coords: [parseFloat(entry.location.lon), parseFloat(entry.location.lat)],
 					title: entry.title,
-					text: entry.content[0].content,
+					text: text != undefined ? text.content : null,
 					tags: entry.tags ? entry.tags.length : null,
 					taggedUsers: entry.taggedUsers ? entry.taggedUsers.length : null,
 					comments: entry.commentCount,
@@ -161,7 +166,7 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 				return {
 					id: num,
 					// coords: points,
-					coords: [parseFloat(entry.location.lat), parseFloat(entry.location.lon)],
+					coords: [parseFloat(entry.location.lon), parseFloat(entry.location.lat)],
 					title: entry.title,
 					text: entry.content[0].content,
 					tags: entry.tags ? entry.tags.length : null,
@@ -179,6 +184,106 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 	/*  T H E   M A P
 		Renders Open Layers Map on Component Mount */
 	React.useEffect(()=> {
+
+		const customStyle = {
+	      'background-color': '#f2efe9',
+	      'roads': {
+	        'major': {
+	          color: '#34495e',
+	          width: 2
+	        },
+	        'minor': {
+	          color: '#7f8c8d',
+	          width: 1
+	        },
+	        'highway': {
+	          color: '#e74c3c',
+	          width: 3
+	        }
+	      },
+	      'water': {
+	        fill: '#3498db',
+	        stroke: '#2980b9'
+	      },
+	      'parks': {
+	        fill: '#2ecc71',
+	        stroke: '#27ae60'
+	      },
+	      'buildings': {
+	        fill: '#95a5a6',
+	        stroke: '#7f8c8d'
+	      },
+	      'labels': {
+	        'city': {
+	          color: '#2c3e50',
+	          size: '14px',
+	          weight: 'bold',
+	          halo: {
+	            color: '#ffffff',
+	            width: 2
+	          }
+	        },
+	        'town': {
+	          color: '#34495e',
+	          size: '12px',
+	          weight: 'normal',
+	          halo: {
+	            color: '#ffffff',
+	            width: 1
+	          }
+	        },
+	        'poi': {
+	          color: '#8e44ad',
+	          size: '11px',
+	          weight: 'normal',
+	          halo: {
+	            color: '#ffffff',
+	            width: 1
+	          }
+	        }
+	      },
+	      'boundaries': {
+	        'administrative': {
+	          color: '#bdc3c7',
+	          width: 1,
+	          dash: [4, 4]  // Creates a dashed line
+	        },
+	        'country': {
+	          color: '#7f8c8d',
+	          width: 2
+	        }
+	      },
+	      'landuse': {
+	        'residential': '#ecf0f1',
+	        'commercial': '#e8e0d8',
+	        'industrial': '#dad5d2',
+	        'agricultural': '#dcedc8'
+	      },
+	      'terrain': {
+	        'contour': '#b39ddb',
+	        'hillshade': '#000000',
+	        'hillshadeOpacity': 0.1
+	      }
+	    };
+
+	    const createTextStyle = (feature) => {
+	      const labelType = feature.get('labelType') || 'city';
+	      const labelStyle = customStyle.labels[labelType];
+	      
+	      return new Text({
+	        text: feature.get('name'),
+	        font: `${labelStyle.weight} ${labelStyle.size} Arial`,
+	        fill: new Fill({
+	          color: labelStyle.color
+	        }),
+	        stroke: new Stroke({
+	          color: labelStyle.halo.color,
+	          width: labelStyle.halo.width
+	        }),
+	        overflow: true,
+	        offsetY: -15
+	      });
+	    };
 
 		let centerCoordinates = fromLonLat(currentCenter);
 
@@ -397,24 +502,6 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 			});
 		});
 
-		// initialMap.on('click', (event) => {
-		//     initialMap.forEachFeatureAtPixel(event.pixel, (feature) => {
-		//       const features = feature.get('features');
-
-		//       if (features.length > 1) {
-		//         // Handle cluster (multiple posts)
-		//         const postData = features.map(f => f.get('data'));
-		//         openPopupWithPosts(postData);  // Implement the popup to show multiple posts
-		//       } 
-
-		//       else {
-		//         // Handle single post
-		//         const data = features[0].get('data');
-		//         openPopupWithSinglePost(data);  // Implement the popup for single post
-		//       }
-		//     });
-		//   });
-
 		initialMap.addControl(new RecenterControl());
 		initialMap.addControl(new ZoomInControl());
     	initialMap.addControl(new ZoomOutControl());
@@ -438,10 +525,10 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 
 				//Clears the vector layer
 				// vectorSource.clear()
-			// }
-				
+			// }		
 		}
 	}, [currentCenter, markers, isMapMounted]) 
+
 
 	function openPopupWithPosts(posts) {
 		setPostInfo(posts);
@@ -525,7 +612,34 @@ export default function MapComponent ({ current, log, setLog, selectedDate, setS
 						}, 600)
 					}}>
 						<h2>{postInfo[currentPostIndex].title}</h2>
-						<p>{postInfo[currentPostIndex].text}</p>
+
+						{postInfo[currentPostIndex].postData.content.some((data) => data.type == 'text') &&
+							<p>{postInfo[currentPostIndex].text}</p>
+						}
+
+						{/* Wrapper for Media Elements */} 
+						{postInfo[currentPostIndex].postData.content.some((data) => data.type == 'media') &&
+							<ul id="thumbnailsWrapper" onClick={(e)=> {
+								e.stopPropagation();
+
+								let gallery = postInfo[currentPostIndex].postData.content.filter(data => data.type === 'media')
+  									.map(data => ({
+    									...data,   // Spread existing properties
+    									postID: postInfo[currentPostIndex].postData._id 
+  									}));
+
+								setCurrent({
+									...current,
+									gallery: gallery
+								})
+							}}>
+								{postInfo[currentPostIndex].postData.content.filter(data => data.type == 'media').map(data => (
+									<li key={data._id}>
+										<img loading="lazy" src={data.content} />
+									</li>
+								))}
+							</ul>
+						}
 
 						<ul>
 							{postInfo[currentPostIndex].tags > 0 &&

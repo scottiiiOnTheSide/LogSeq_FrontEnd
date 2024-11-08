@@ -111,6 +111,7 @@ div.log div.entry p {
 }
 
 div.log div.entry ul#thumbnailsWrapper {
+	width: fit-content;
 	display: flex;
 	flex-direction: row;
 	justify-content: flex-start;
@@ -118,6 +119,7 @@ div.log div.entry ul#thumbnailsWrapper {
 	margin: 24px 0;
 	margin-left: -4px;
 	padding: 0;
+	z-index: 20;
 }
 
 div.log div.entry ul#thumbnailsWrapper li {

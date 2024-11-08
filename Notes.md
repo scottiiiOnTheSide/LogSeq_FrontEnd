@@ -2,6 +2,271 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 11. 08. 2024
+@0740 notification order corrected for subscriptions
+
+****Working On
+	- add popUp for subscriptionRequest on reciever end
+		- add acceptance for subscriptions as option
+	- popup for reciever on acceptance
+	- need to get subscriptions in <ManageConnections> getConnections subroute
+	- need subscriptions posts in socialRoute for <SocialLog>
+	- add svgs to users based on connection status
+	- add 'isConnected', 'isSubscribed', 'isSubscriber' to getAllConnects subroute 
+
+@1220 Subscriptions is still a mess. 
+on requests: sender is sender, recievier is reciever
+on acceptance: sender is new reciever, old reciever is new sender
+
+this order gets mixed up in the notifs and is affecting the subscription notifs too
+on acceptance: (old reciever, new sender) gets 'subAccepted'
+				(old sender, new reciever) get 'subbed'
+
+for now, update subscriptions to reflect proper order
+
+****Working on:
+	- removing subscription sent a request instead. please fix ✅
+		- add popUp for subscriptionRequest on reciever end
+		- add acceptance for subscriptions as option
+	- popup for reciever on acceptance
+	- need to get subscriptions in <ManageConnections> getConnections subroute
+	- need subscriptions posts in socialRoute for <SocialLog>
+
+
+??a subscriptionOwner can subscribe back to subscriber, or connect
+  - connecting changes relation to connection on both ends,
+  	but will add this update later
+
+### 11. 07. 2024 
+@1345 
+****working on
+route all 'request' notifs through makeNotif_initialRequest
+will send user an equivalent popUp notif based on the response
+- acceptance of subscription not working in Notif
+- unsure if recipient recieved popUp
+
+
+@1230 differentiated subscription requests notifs on backend (can update admins in DB if wish so)
+
+****To Do Next:
+	- add 'accept subscription' option to popUp notifs
+		- makesure there is popUp notif for subscription requests
+	- add 'isConnected' and 'isSubscribed' to getAllConnects subroute
+	- navigate(0) to refresh page on subscription to update values
+	- add svgs to users based on connection status 
+	- update UIC to prepare for colorScheme addition
+
+### 11. 05. 2024
+@0745 search needs to be fixed in <manageConnections>
+	exitButton needs a wrapper
+
+@0655 disconnecting from user via <userProfile> seems to work correctly - but no notif popped up
+
+
+### 11. 04. 2024
+@1215 
+****To Do Next:
+	- need to make notif type in <NotifList> for 'subscriptionRequested' and 'subscriptionAccepted' ✅
+	- add 'accept subscription' option to popUp notifs
+		- makesure there is popUp notif for subscription requests
+	- add 'isConnected' and 'isSubscribed' to getAllConnects subroute
+	- navigate(0) to refresh page on subscription to update values
+	- add svgs to users based on connection status 
+	- update UIC to prepare for colorScheme addition
+
+### 11. 03. 2024
+@1200 navigate(0) to refresh page on subscription to update values
+
+@2030 need to make notif type in <NotifList> for 'subscriptionRequested' and 'subscriptionAccepted'
+	  need to make check whether observed user on userProfile is currently connected or not
+	  add isConnected and isSubscribed? check to singleUser subroute
+	  adjust padding for buttons in menus
+
+@0720 working on add subscription functionality
+
+uses same backend subroute as connections and macroRequests
+if reciever is privacySetting half or on: 
+- they recieve request notif, and they have to confirm
+if not, sender automatically subscribes and recipient gets notif
+have to discern on the initial send from frontEnd whether recipient is half or off
+if off, button sends 'subscribed' notif
+if half, button sends 'subscriptionRequest' notif
+
+@0620 issue accessing user's profile page from log in <Social> ✅
+		for some reason, clicking username activates buttonBar mainButton?
+		not reading user info correctly...
+
+### 11. 02. 2024
+@2020 not sure if its these two photos in particular, but images are being rotated on upload
+	  will test others...
+
+Would need to add delay to all buttons in order to truly see effect....
+but it looks good on the buttonBar mainButton
+
+### 11. 01. 2024
+@0750 connections now showing up properly
+		ul#dataList is still showing up, it should only be ul#connections
+	  buttons are also too long for stats
+
+****To Do Next
+	- work on styling for both AllPosts and AllConnections
+	- connections should be links to other user's profiles
+	- add subscription function ✅
+	- differentiate subscriptions from connections in fullList
+	- filter menu section for both sections
+		- date vs activity
+		- mutual, connections, subscription, subscribed ❌
+	- add profile image to <ManageConnections>
+	- add hoverState to all buttons. backgroundColor should be lighter version of
+	  textColor ???1/2
+	- better word for 'links' in <userProfile>
+
+@0720 data is successfully retrieved from route, but not showing up within element.
+		only one ul should be appearing within fullList, but two are?
+
+@0630 modified user/userid route. if provided userid is different from current user's, info
+	  returned is for userID
+
+@1305 basic addition of list of posts on <UserProfile>
+	- should I disable DragSlider for log here?
+	- current styling is meh
+	- need to introduce currentlog tracker so place in log is remembered when post selected
+
+@1225 modified the log subroute so that the pullUserLog function can include a userID
+		  if it's included, the posts recieved will NOT include {isPrivate: true} or drafts
+
+### 10. 30. 2024
+****To Do Next
+	- <Macrospage> for collections needs to include username ✅
+		- fix goToProfile function
+	- Need thumbnail styling for <popUpPost> in <Map> ✅
+	- list of posts <UserProfile> ✅
+	- list of connections on <UserProfile> ✅
+	- add hoverState to all buttons. backgroundColor should be lighter version of
+	  textColor 
+	- differentiate connection vs subscription with arrow icons in <userProfile>
+	  and <ManageConnections>
+		- can indicate mutual connections
+		- should add profilePhoto for connections...
+
+@1100 fixed issue with backend not sending posts for tags or topics in <Macrospage> 
+		Should be working now, but will triple check
+
+@0640 New issue : the back button in the header of <UserProfile> is either going to a post
+	 with an id that doesnt link to a post, or the <Entry> page.... help pls fix ✅
+
+### 10. 24. 2024
+@1630 fixed order for lonLat on <CreatePost>. I was reading and typing it in wrong - plus,
+	  google goes LatLon (y, x)
+Reverted back to LonLat (x, y) :P
+May need to find another UX / UI solution
+
+
+### 10. 23. 2024
+@1355
+****To Do Next
+	- Need thumbnail styling for <popUpPost> in <Map>
+	- order is still incorrect for lonLat ... somewhere ✅
+	- add 'enter' and 'leave' animation classes for <DragSlider> ✅
+	- add it to 
+		<Post>✅ 
+		<Macrospage>✅ 
+		<UserProfile>✅
+	- add 'View Post' button ✅
+	- pinLocation button needs more space underneath - could accidently select Draft button
+	  instead ✅
+
+****Then...
+	- add hoverState to all buttons. backgroundColor should be lighter version of
+	  textColor 
+	- list of posts & connections on <UserProfile>
+	- differentiate connection vs subscription with arrow icons in <userProfile>
+	  and <ManageConnections>
+		- can indicate mutual connections
+		- should add profilePhoto for connections...
+
+@1350 add postIDs to each image object in the <DragSlider> 
+Add 'goToPost' button next to exit
+can do navigate(post/${current.gallery.postID[currentIndex]}) for button function
+
+!!! will need to differentiate between images and video in the future...
+
+@0140 barebones implementation of the slider added :D !
+need to clean it up and add it to <Post> <Macrospage> <UserProfile>
+- may need to add 'go to post' button for <userprofile> version....
+	- could be done later, or just have it by default
+
+!!! ALSO - <userProfile> page takes a while to load???
+	- going from home -> profile -> post -> back to profile -> back to home 
+	  has an issue at last step
+
+
+@0120 got bare minimum done with adding the touch-drag-slider into the project
+		the image currently wont show up
+		and need to prevent going to <Post> after closing the <DragSlider>
+
+### 10. 22. 2024
+@2030 About page should have it's own CSS
+
+
+### 10. 21. 2024
+@0620 pinLocation button needs more space underneath - could accidently select Draft button
+	  instead
+
+### 10. 19. 2024
+@1140
+****To Work on Next
+	- add hoverState to all buttons. backgroundColor should be lighter version of
+	  textColor 
+	- fullScreen imageslider for a post's image (use @bushblade from gitHub)
+		- clicking on image thumbnail triggers this
+	- list of posts & connections on <UserProfile>
+	- differentiate connection vs subscription with arrow icons in <userProfile>
+	  and <ManageConnections>
+		- can indicate mutual connections
+		- should add profilePhoto for connections...
+
+a process: when viewing a user or post from a userProfile fullList,
+setting current.modal = on and current.currentLog to 'usersPosts'
+should have the fullList open still once returning the user's profile +
+should scroll down to the selected entry...
+
+@0905 fixed issue with 'undefined' being in macros url
+
+@0645 subdoc implementation for rePosts 'should' be working...
+	  will develop that later tho
+
+@0350 trying to implement repost functionality on backEnd...
+	  using ChatGPT for ideas
+	  might need to create and export seperate schema for reposts
+
+intention is to have a repost be a subdoc within a user's own log of posts
+ask 'how can i save one user's post as a subdoc with another user's post?'
+
+### 10. 18. 2024
+@0145 make fullpage style component for <SliderViewer> to go in <Home> <Post> <Macrospage>
+	  and <UserProfile>
+
+idea: locations have <Macrospage> just like tags. Header is 'public/location' then 
+	  City, State as the header title
+
+also, would like url for topics macrospage to end in 'topic' rather than 'undefined'
+
+!!! <Macrospage> also needs filter button (date and activity)
+!!! can also have <Calendar> and <Map> as well 
+!!! making a post on <Macrospage> automatically adds it to the post
+	- would need a new location field for city, state
+??? if user makes post with coordinates on place, but listed city and or state is elsewhere,
+	what should be done?
+	!!! pinLocation function should automatically get both coordinates and nearest city / state
+		- can remove either coordinates or city/state field
+		- closing and reopening pinLocation should readd them
+
+
+### 10. 17. 2024
+@0840 fixed issue with being unable to go to user's own profile while on another's profile
+	  may need the same fix on <Post>
+
 ### 10. 16. 2024
 @2200
 for <ManageConnections> and <UserProfile> fullList
@@ -24,17 +289,20 @@ log should only 'scrollTo' if it is current.currentLog
 current.currentLog would be set anytime a post is viewed from a log...
 
 explore chatGPT suggestions for fixing issue of going to another userProfile
-while on userprofile 
+while on userprofile ✅
 
+add privacy check for 'on' and 'half'
 
+filter for posts fuLLlist: date and activity
 
 
 @1710 
 ****To Work on Next
+	- add hoverState to all buttons. backgroundColor should be lighter version of
+	  textColor 
 	- fullScreen imageslider for a post's image (use @bushblade from gitHub)
 		- clicking on image thumbnail triggers this
 	- list of posts & connections on <UserProfile>
-		- fullList, it's own page
 	- differentiate connection vs subscription with arrow icons in <userProfile>
 	  and <ManageConnections>
 		- can indicate mutual connections
@@ -130,7 +398,7 @@ removal.
 
 ### 10. 12. 2024
 @1305 
-****To Do Next
+***To Do Next
 		- original sender of connection request should recieve popUp notif ✅
 		- multiple posts per point in <Map> ✅
 		- overlay for comments (deleting, replying) 
@@ -145,12 +413,13 @@ removal.
 		- 'Start' page
 				- header, notifs, list of home tabs, settings and profile
 		- add subscriptions
-		- differentiation connections and subscriptions in <ManageConnections> with oneWay and twoWay
-			arrows
+		- differentiation connections and subscriptions in <ManageConnections> with oneWay and 
+			twoWay arrows
 		- editting posts
 		- color theming
 		- video upload & backend compression
-
+		- rePost and quotes
+***
 ideas for Social section overhaul
 - list of groups
 - tagged posts

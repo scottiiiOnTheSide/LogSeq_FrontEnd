@@ -89,6 +89,11 @@ section#HOME div#manageConnections p#aboutClearButton {
 }
 
 
+div#manageConnections div#searchResults {
+	max-height: 640px;
+	overflow-y: scroll;
+}
+
 
 div#manageConnections div#currentConnections ul,
 div#manageConnections div#searchResults ul {

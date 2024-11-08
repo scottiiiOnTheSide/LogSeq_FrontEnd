@@ -38,6 +38,7 @@ import { ManageMacros } from './components/sections/macros';
 import Calendar from './components/calendar/calendar';
 import MapComponent from './components/map/map';
 import { MapPage } from './components/map/map';
+import DragSlider from './components/base/dragSlider';
 import './components/sections/sections.css';
 
 
@@ -198,6 +199,12 @@ function Home({
                    mapData={mapData}
                    setMapData={setMapData}/>
 
+        {current.gallery.length > 0 &&
+          <DragSlider current={current} setCurrent={setCurrent} siteLocation={'home'}/>
+        }
+        {/*<DragSlider current={current} setCurrent={setCurrent} />*/}
+
+
         {current.calendar &&
           <Calendar 
             setCurrent={setCurrent} 
@@ -209,6 +216,7 @@ function Home({
         }
         {current.map && 
           <MapComponent 
+            setCurrent={setCurrent}
             current={current}
             log={log}
             selectedDate={selectedDate}
@@ -388,7 +396,8 @@ export default function Main() {
     scrollTo: null,
     currentLog: null,
     modal: false, //for <UserProfile>, when user leaves page via a fullList, ensures modal is still up
-    transition: false //for components mounted dependant on this stateVar, indicates before unmount
+    transition: false, //for components mounted dependant on this stateVar, indicates before unmount
+    gallery: [] //for dragslider. should be an array of links
   });
   const hajime = new Date(),
       kyou = hajime.getDate(),
@@ -591,7 +600,8 @@ export default function Main() {
          
         let doesHaveAccess;
         if(macroInfo.response == 'topic') {
-          macroInfo.userHasAccess = macroInfo.userHasAccess
+          macroInfo.userHasAccess = macroInfo.hasAccess;
+          // macroInfo._id = 'topic';
         }
         // else if(macroInfo.hasAccess) {
         else {

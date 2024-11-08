@@ -22,17 +22,29 @@ export function useUIC() {
 		}
 	});
 	
+	const [colorScheme, setColorScheme] = React.useState({
+		bg: null,
+		headings: null,
+		text: null,
+		buttons: null,
+		submenus: null
+	})
 
 
 	return {
 		authed,
+		colorScheme,
+		setColorScheme,
 
 		async _login(loginCredentials) {
 
 			let request = await APIaccess().logInUser(loginCredentials);
 
-			if(request == true) {
+			if(request.confirm == true) {
 				if(sessionStorage.getItem('userKey')) {
+
+					//setColorScheme to options set in request.settings.colorScheme
+
 					setAuth(true);
 					return true;
 				}

@@ -121,7 +121,7 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 					</li>
 				))}*/}
 				<li className={navOptions[0].active ? "active" : "not"}>
-					<button className={`buttonDefault`} onClick={()=> {
+					<button className={`buttonDefault navButton`} onClick={()=> {
 						selectOption(0);
 					}}>
 						{opts[0].name}
@@ -129,7 +129,7 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 				</li>
 
 				<li className={navOptions[1].active ? "active" : "not"}>
-					<button className={`buttonDefault`} onClick={()=> {
+					<button className={`buttonDefault navButton`} onClick={()=> {
 						// if(opts[0].active) {
 						// 	moveRight()
 						// }
@@ -143,7 +143,7 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 				</li>
 
 				<li className={navOptions[2].active ? "active" : "not"}>
-					<button className={`buttonDefault`} onClick={()=> {
+					<button className={`buttonDefault navButton`} onClick={()=> {
 						// if(opts[1].active || opts[0].active) {
 						// 	moveRight();
 						// }

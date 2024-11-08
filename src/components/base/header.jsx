@@ -36,7 +36,7 @@ function ReturnElement ({}) {
 }
 
 
-export default function Header ({cal, isReturnable, setNotifList, unreadCount, siteLocation}) {
+export default function Header ({ isReturnable, setNotifList, unreadCount, siteLocation}) {
 
 	/**
 	 * 09. 18. 2023

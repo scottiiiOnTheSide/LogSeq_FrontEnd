@@ -125,7 +125,10 @@ export default function APIaccess(key) {
 				console.log(topicsAsString);
 				sessionStorage.setItem('topicsAsString', topicsAsString);
 
-				return true;
+				return {
+					confirm: true,
+					settings: request.settings
+				}
 
 			} else if (request.error == true) {
 				console.log(request);
@@ -133,7 +136,7 @@ export default function APIaccess(key) {
 			}	
 		},	
 
-		async pullUserLog(pull, lastID) {
+		async pullUserLog(pull, lastID, userID) {
 
 			/**
 			 * The 'pull' argument differentiates the kind of request for posts
@@ -145,7 +148,7 @@ export default function APIaccess(key) {
 
 			//?pull=${pull}?lastID=${lastID} for future update
 			let userKey = sessionStorage.getItem('userKey');
-			let log = await fetch(`${apiAddr}/posts/log?type=user`, {
+			let log = await fetch(`${apiAddr}/posts/log?type=user&userID=${userID}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
@@ -279,6 +282,7 @@ export default function APIaccess(key) {
 				method: "POST",
 				headers: {
 					'auth-token': userKey,
+					'Accept': 'application/json'
 				},
 				body: content,
 			}).then(data => data.json())
@@ -475,6 +479,23 @@ export default function APIaccess(key) {
 
 			let userKey = sessionStorage.getItem('userKey');
 			let request = await fetch(`${apiAddr}/users/user/${userID}/?query=removeConnect&remove=${userID}`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+	        		'Content-length': 0,
+	        		'Accept': 'application/json',
+	        		'Host': apiAddr,
+	        		'auth-token': userKey,
+				}
+			}).then(data => data.json());
+
+			return request;
+		},
+
+		async removeSubscription(userID) {
+
+			let userKey = sessionStorage.getItem('userKey');
+			let request = await fetch(`${apiAddr}/users/user/${userID}/?query=removeSub&remove=${userID}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
