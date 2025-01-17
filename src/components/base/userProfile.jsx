@@ -141,49 +141,22 @@ export default function UserProfile({
 
 	const requestSubscription = async(recipientID) => {
 		let notif = {
-			type: 'request',
+			type: 'request', //type is request initially, switches to confirmation
 			senderID: userID,
 			senderUsername: username,
 			recipients: [recipientID],
 			recipientUsername: userInfo.userName,
-			message: userInfo.privacySetting == 'Half' || 'On' ? 'subscriptionRequested' : 'subscribed'
+			message: userInfo.privacySetting == 'Off' ? 'subscribed' : 'subscriptionRequestSent'
 		}
 
 		setSocketMessage(notif);
 
-		// await accessAPI.newInteraction(notif).then((data) => {
-			
-		// 	if(data.confirmation == false) {
-		// 		setSocketMessage({
-		// 			type: 'simpleNotif',
-		// 			message: `You have already sent @${notif.recipientUsername} a request`
-		// 		})
-		// 	}
-		// 	else if(data.message == 'subscribed') {
-		// 		console.log(data);
-		// 		setSocketMessage({
-		// 			type: 'confirmation',
-		// 			message: data.message
-		// 		})
-		// 		setActive({
-		// 			state: true,
-		// 			type: 1
-		// 		})
-		// 		notif.originalID = data._id;
-		// 	}
-		// 	else if(data.message == 'requestRecieved') {
-		// 		console.log(data);
-		// 		setSocketMessage({
-		// 			type: 'confirmation',
-		// 			message: data.message
-		// 		})
-		// 		setActive({
-		// 			state: true,
-		// 			type: 1
-		// 		})
-		// 		notif.originalID = data._id;
-		// 	}
-		// })
+		let optionsMenu = document.getElementById('profileOptions');
+		optionsMenu.classList.add('leave')
+
+		let delay = setTimeout(()=> {
+			setOptions()
+		}, 150);
 	}
 
 	const removeSubscription = async(userID) => {
@@ -311,7 +284,7 @@ export default function UserProfile({
 						setFullList();
 					}}>
 						{userInfo.connections.length}
-						<span>LINKS</span>
+						<span>USER{userInfo.connections.length > 1 ? 'S' : ''}</span>
 					</button>
 				</div>
 
@@ -319,7 +292,7 @@ export default function UserProfile({
 
 					<h2>Pinned Media</h2>
 					{userInfo.pinnedMedia.length < 1 &&
-						<h2 className="none">No Pinned Media</h2>
+						<h2 className="none">None</h2>
 					}
 
 					{userInfo.pinnedMedia.length > 0 && 
@@ -351,7 +324,7 @@ export default function UserProfile({
 					<h2>Pinned Posts</h2>
 
 					{pinnedPosts.length < 1 &&
-						<h2 className="none">No Pinned Posts</h2>
+						<h2 className="none">None</h2>
 					}
 
 					{pinnedPosts.length > 0 &&
@@ -399,7 +372,7 @@ export default function UserProfile({
 					<h2>Collections</h2>
 
 					{collections.length < 1 &&
-						<h2 className="none">No Collections</h2>
+						<h2 className="none">None</h2>
 					}			
 
 					<ul className={`collectionsWrapper`}>

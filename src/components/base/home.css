@@ -1157,6 +1157,11 @@ div#main div#stats button span {
 	margin-top: 8px;
 }
 
+div#main div#stats p span {
+	margin-top: 8px;
+	text-transform: uppercase;
+}
+
 
 
 
@@ -1178,8 +1183,8 @@ div#main div#collections h2 {
 div#main div#pinnedMedia h2.none,
 div#main div#pinnedPosts h2.none,
 div#main div#collections h2.none {
-	text-align: left;
-	margin: 32px 16px 64px;
+	text-align: center;
+	margin: 48px 16px 64px;
 	color: var(--greyscale-elements);
 }
 

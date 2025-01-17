@@ -17,6 +17,8 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 	let navigate = useNavigate();
 	const { logout } = useUIC();
 
+	console.log(username);
+
 	let updateList = async() => {
 		let data = await accessAPI.getInteractions(); 
 
@@ -112,9 +114,10 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					userID: userID,
 					senderUsername: username
 				};
-				let request = await accessAPI.newInteraction(sm)
+			let request = await accessAPI.newInteraction(sm)
 
 			setSocketMessage(body);
+			console.log(body);
 
 			updateList();
 		}
@@ -240,7 +243,10 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 						<p>{notif.recipientUsernames[0]} is now a subscriber!</p>
 					}
 					{(notif.type == 'request' && notif.message == 'subscribed') &&
-						<p>You are now subscibed to {notif.senderUsername}</p>
+						<p>@{notif.senderUsername} is now subscribed to you!</p>
+					}
+					{(notif.type == 'confirmation' && notif.message == 'subscribed') &&
+						<p>You are now subscribed to @{notif.recipientUsernames[0]}</p>
 					}
 					{(notif.type == 'request' && notif.message == 'accessGranted') &&
 						<p>{notif.senderUsername} has granted you access to "{notif.details.groupName}"</p>
@@ -343,7 +349,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 							</button>
 						</div>
 					}
-					{(notif.type == 'request' && notif.message == 'subscriptionAccepted') &&
+					{(notif.message == 'subscribed' || notif.message == 'subscriptionAccepted') &&
 						<div className="options">
 							<button className="buttonDefault" 
 									onClick={()=> {

@@ -2,12 +2,83 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+
+### 01. 16. 2025
+@2150 direct subscription has popUp for both Sender and Reciever
+	  - sender's popUp still missing reciever's username
+	  Would like 'subscribe' button in profile to switch to 'unsubscribe'
+	  need to change data (from loaderData) to state var
+
+Make sure that confirming subscription requests from popUp notifs works
+
+
+### 01. 13. 2025
+@0950 added to scripts concerning Sender recieving popUp notif on automatic subscription
+	  Reciever gets popUp notif as well. 
+	  --Need to test
+
+After adding subs to <Connections> list and <UserProfile>, 
+will add video support,
+removal of comments
+some small additions, but will make move towards uploading project
+
+### 01. 08. 2025
+@1445 Original requester recieves popUp and notif when subscription is confirmed
+	  - missing sender's username still
+
+
+### 12. 29. 2024
+@1540 message now appears correctly for both sender and recipient
+	  recipient username still missing in sender confirmation, but I'll take that L for now
+
+I assume that after subscriptions is all set,
+we'll work on adding differentiation for connections on <UserProfile> and in <ManageConnections>
+
+****Next
+- Need to make sure subscription acceptance works in popUp and Notification
+
+****Issue
+- user's own posts appear in other user's <UserProfile> link to all Posts
+
+****After
+	- add popUp for subscriptionRequest on reciever end (confirm this is all finished)
+		create backend subroute for 'subscriptionAccepted' and 'subscribed'
+		- confirmer SENDS a subscriptionAccepted popUp to REQUESTER when they accept via notifs ✅
+		- requester SENDS a subscriptionAccepted popUP to reciever via notifs when subs without request
+	? remove subscription func in <UserProfile>
+	? popup for reciever on acceptance
+	- need to get subscriptions, subscribers in <ManageConnections> getConnections subroute
+		- if user's privacy is Half or On, this list cannot be seen by others
+	- need subscriptions posts in socialRoute for <SocialLog>
+	- add svgs to users based on connection status
+	- add 'isConnected', 'isSubscribed', 'isSubscriber' to getAllConnects subroute 
+
+
+### 12. 21. 2024
+@1350 sending a subscriptionRequest successfully initiates websocket popUp on reciever's end
+	  however - shikashi - popUp message is missing in both sender's confirm popUp and 
+	  reciever's popUp...
+	  the type and the message is the same for both
+	  there should be a type.confirm message.subReq for sender
+	  and type.request for reciever
+
+### 11. 22. 2024
+@2330
+popUps for subReq:
+	- user's subReq (from <UserProfile>) sends socket to recip via <Instant>
+	- backend subroute for socket discerning subReq
+	- frontEnd discerns subReq socketMessage
+
 ### 11. 08. 2024
 @0740 notification order corrected for subscriptions
 
 ****Working On
 	- add popUp for subscriptionRequest on reciever end
 		- add acceptance for subscriptions as option
+			create backend subroute for 'subscriptionAccepted' and 'subscribed'
+			- confirmer SENDS a subscriptionAccepted popUp to REQUESTER when they accept via notifs
+			- requester SENDS a subscriptionAccepted popUP to reciever via notifs when subs without request
+			create frontEnd subroute for them too
 	- popup for reciever on acceptance
 	- need to get subscriptions in <ManageConnections> getConnections subroute
 	- need subscriptions posts in socialRoute for <SocialLog>

@@ -324,6 +324,7 @@ export default function Main() {
         console.log(data);
         console.log(accessID);
       }
+
       else if (data.type == 'request' && data.message == 'accepted') {
         setSocketMessage({
           senderUsername: data.senderUsername,
@@ -335,6 +336,7 @@ export default function Main() {
           state: true
         })
       }
+
       else if(data.type == 'comment' && data.message == 'initial-recieved') {
         setSocketMessage({
           senderUsername: data.senderUsername,
@@ -350,6 +352,7 @@ export default function Main() {
         setAccessID({ postURL: data.postURL, notifID: data._id });
         console.log(data);
       }
+
       else if(data.type == 'comment' && data.message == 'response-recieved') {
         setSocketMessage({
           senderUsername: data.senderUsername,
@@ -365,6 +368,7 @@ export default function Main() {
         setAccessID({ postURL: data.postURL, notifID: data._id });
         console.log(data);
       }
+
       else if(data.type == 'tagging' && data.message == 'recieved') {
         setSocketMessage(data)
         setActive({
@@ -373,6 +377,70 @@ export default function Main() {
         })
         setAccessID({ postURL: data.url, notifID: data._id });
       }
+
+      else if(data.type == 'request' && data.message == 'subscriptionRequestRecieved') {
+        setSocketMessage({
+          //create text in instants for subscription request notif
+          //need requester username, message type and message...
+          senderUsername: data.senderUsername,
+          message: 'subscriptionRequestRecieved',
+          type: 'request'
+        })
+
+        setAccessID({
+          ...accessID,
+          accept: data.senderID,
+          notifID: data.originalID,
+        });
+
+        setActive({
+          type: 3,
+          state: true
+        })
+      }
+
+      else if(data.type == 'request' && data.message == 'subscriptionAccepted') {
+        setSocketMessage({
+          //create text in instants for subscription request notif
+          //need requester username, message type and message...
+          senderUsername: data.senderUsername,
+          message: 'subscriptionAccepted',
+          type: 'request'
+        })
+
+        setAccessID({
+          ...accessID,
+          accept: data.senderID,
+          notifID: data.originalID,
+        });
+
+        setActive({
+          type: 1,
+          state: true
+        })
+      }
+
+      else if(data.type == 'request' && data.message == 'subscribed') {
+        setSocketMessage({
+          //create text in instants for subscription request notif
+          //need requester username, message type and message...
+          senderUsername: data.senderUsername,
+          message: 'subscribed',
+          type: 'request'
+        })
+
+        setAccessID({
+          ...accessID,
+          accept: data.senderID,
+          notifID: data.originalID,
+        });
+
+        setActive({
+          type: 1,
+          state: true
+        })
+      }
+
       else if(data.type == 'updateNotifs') {
         getUnreadCount();
 
