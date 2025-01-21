@@ -2,6 +2,68 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
+### 01. 21. 2025
+
+@1545 ConnectionAcceptance works from notifs
+
+!!!make sure it works from popUps also
+
+then, reconfirm subscription works
+
+??? there should be a way to resend connection requests after a certain period or so
+
+@1445 
+
+!!! ignore needs to mark connectionRequest as read ✅
+but initial request works as intended: confirm popUp for sender, popUp for reciever. 
+	correct messages also
+
+@1000 Gotta reorganize notifications, specifically popUp notifs and messages, for both
+	  subscriptions and connection requests.
+
+Both of them can go through makeNotif_initialRequest function
+the response if the request type has already been sent would be: 'you already sent this kind of 
+request'
+
+routing all through initialRequest SHOULD make this more simple....
+
+sender's popUps say request, ...sent 
+reciever's also say request, ...recieved
+if auto subscribe, sender's popUp says confirmation
+					reciever's also says confirmation recieved(?)
+acceptance notifs says confirmationSent for accepter/initial reciever
+				  says confirmationReceived for sender
+
+
+### 01. 18. 2025
+@1435 accepting subscription from popUp should close current, then launch another one
+	  - it does indeed work however.
+
+Confirm subscriptions, auto and request, are working all around
+
+then, adding + differentiating subscribers in <ManageConnections> and <UserProfile>
+
+!!! user's log shows up within viewed user's profile list. need to fix
+
+
+### 01. 17. 2025
+@1310
+****To Do Next:
+	- accepting subscription in notifs should reload notifs ✅
+	- accepting subscription in popUp should first close popUp, then initiate (set it to
+		close from within interact function) 
+	- original requester's popUp confirming subscription acceptance is missing sender's username ✅
+	- confirmation notification for requester's subReq is incorrect ✅
+	- unsubscribing refreshes page ✅
+
+***deep sighs***
+
+??? Backend check to prevent multiple subscriptions to same person...
+
+Reciever's popUp for automatic popUp includes subscribers name & notification popsUp as it should
+
+??? Ignoring a subReq marks it read within notifs - but notif unread count doesn't update :/
+
 
 ### 01. 16. 2025
 @2150 direct subscription has popUp for both Sender and Reciever
@@ -44,7 +106,7 @@ we'll work on adding differentiation for connections on <UserProfile> and in <Ma
 	- add popUp for subscriptionRequest on reciever end (confirm this is all finished)
 		create backend subroute for 'subscriptionAccepted' and 'subscribed'
 		- confirmer SENDS a subscriptionAccepted popUp to REQUESTER when they accept via notifs ✅
-		- requester SENDS a subscriptionAccepted popUP to reciever via notifs when subs without request
+		- requester SENDS a subscriptionAccepted popUP to reciever via notifs when subs without request ✅
 	? remove subscription func in <UserProfile>
 	? popup for reciever on acceptance
 	- need to get subscriptions, subscribers in <ManageConnections> getConnections subroute

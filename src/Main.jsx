@@ -310,12 +310,12 @@ export default function Main() {
         //need to implement
       // })
 
-      if(data.type == 'request' && data.message == 'initial') {
+      if(data.type == 'request' && data.message == 'connectionRequestRecieved') {
         setSocketMessage(data);
         setAccessID({
           ...accessID,
           accept: data.senderID,
-          ignore: data.originalID,
+          notifID: data.originalID,
         });
         setActive({
           type: 3,
@@ -325,11 +325,11 @@ export default function Main() {
         console.log(accessID);
       }
 
-      else if (data.type == 'request' && data.message == 'accepted') {
+      else if (data.type == 'request' && data.message == 'connectionAcceptedRecieved') {
         setSocketMessage({
           senderUsername: data.senderUsername,
           type: 'request',
-          message: 'accepted'
+          message: 'connectionAcceptedRecieved'
         });
         setActive({
           type: 1,
@@ -384,7 +384,8 @@ export default function Main() {
           //need requester username, message type and message...
           senderUsername: data.senderUsername,
           message: 'subscriptionRequestRecieved',
-          type: 'request'
+          type: 'request',
+          data: data
         })
 
         setAccessID({

@@ -35,7 +35,8 @@ export default function UserProfile({
 	const userID = sessionStorage.getItem('userID');
 	const username = sessionStorage.getItem('userName');
 	// const location = useLocation();
-	const data = useLoaderData();
+	const dataData = useLoaderData();
+	const [data, setData] = React.useState(dataData);
 	const navigate = useNavigate();
 	const location = useLocation();
 	const { userid } = useParams();
@@ -47,6 +48,7 @@ export default function UserProfile({
 
 	const updateProfilePage = async() => {
 		let data = await accessAPI.getSingleUser(userInfo._id);
+		setData(data);
 		setUserInfo(data.user);
 		setPinnedPosts(data.pinnedPosts);
 		setCollections(data.collections);
@@ -122,9 +124,16 @@ export default function UserProfile({
 			senderID: userID,
 			senderUsername: username,
 			recipients: [recipientID],
-			message: 'sent'
+			recipientUsername: userInfo.userName,
+			message: 'connectionRequestSent'
 		}
 		setSocketMessage(notif);
+
+		let optionsMenu = document.getElementById('profileOptions');
+		optionsMenu.classList.add('leave')
+		let delay = setTimeout(()=> {
+			setOptions()
+		}, 150);
 	}
 
 	const removeConnection = async(userID, username) => {
@@ -150,26 +159,43 @@ export default function UserProfile({
 		}
 
 		setSocketMessage(notif);
+		setData({
+			...data,
+			isSubscribed: false
+		})
+
 
 		let optionsMenu = document.getElementById('profileOptions');
 		optionsMenu.classList.add('leave')
-
 		let delay = setTimeout(()=> {
 			setOptions()
 		}, 150);
 	}
 
 	const removeSubscription = async(userID) => {
+
+		setOptions();
+
 		let remove = await accessAPI.removeSubscription(userID).then(data => {
 			if(data == true) {
-				updateProfilePage();
-				let delay = setTimeout(()=> {
+				
+				//may leave or need to find other way of implementing update
+				// setData({
+				// 	...data,
+				// 	isSubscribed: false
+				// })
+
+				let delayOne = setTimeout(()=> {
+					updateProfilePage();
+				}, 200)
+
+				let delayTwo = setTimeout(()=> {
 					setSocketMessage({
 						type: 'confirmation',
 						message: 'removal',
 						username: username,
 					})
-				}, 300)
+				}, 400)
 			}
 		})
 		
@@ -458,7 +484,7 @@ export default function UserProfile({
 					{(!data.isConnected && !data.isSubscribed) &&
 						<li>
 							<button className={`buttonDefault`} 
-							onClick={()=> {requestSubscription(userInfo._id)}}>
+							onClick={()=> {requestConnection(userInfo._id)}}>
 								Request Connection
 							</button>
 						</li>

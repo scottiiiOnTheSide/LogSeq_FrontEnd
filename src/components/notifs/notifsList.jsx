@@ -51,7 +51,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 				recipients: [userID],
 				senderID: ID,
 				senderUsername: username,
-				message: 'accepted',
+				message: 'connectionAcceptedSent',
 				originalNotif: notif._id
 			};
 			setSocketMessage(sm);
@@ -119,7 +119,9 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 			setSocketMessage(body);
 			console.log(body);
 
-			updateList();
+			let delay = setTimeout(()=> {
+				updateList()
+			}, 200)
 		}
 	}
 
@@ -212,13 +214,16 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 				}
 
 				<div id="body">
-					{(notif.type == 'request' && notif.message == 'sent') &&
+					{(notif.type == 'request' && notif.message == 'connectionRequestSent') &&
 						<p>You sent {notif.recipientUsernames[0]} a request !</p>
 					}
-					{(notif.type == 'request' && notif.message == 'recieved') &&
+					{(notif.type == 'request' && notif.message == 'connectionRequestRecieved') &&
 						<p>You recieved a connection request from {notif.senderUsername}</p>
 					}
-					{(notif.type == 'request' && notif.message == 'accept') &&
+					{(notif.type == 'request' && notif.message == 'connectionAcceptedSent') &&
+						<p>You and {notif.senderUsername} are now connected!</p>
+					}
+					{(notif.type == 'request' && notif.message == 'connectionAcceptedRecieved') &&
 						<p>You and {notif.recipientUsernames[0]} are now connected!</p>
 					}
 					{(notif.type == 'comment' && notif.message == 'initial') &&
@@ -242,11 +247,11 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					{(notif.type == 'request' && notif.message == 'subscriptionAccepted') &&
 						<p>{notif.recipientUsernames[0]} is now a subscriber!</p>
 					}
-					{(notif.type == 'request' && notif.message == 'subscribed') &&
+					{/*{(notif.type == 'request' && notif.message == 'subscribed') &&
 						<p>@{notif.senderUsername} is now subscribed to you!</p>
-					}
+					}*/}
 					{(notif.type == 'confirmation' && notif.message == 'subscribed') &&
-						<p>You are now subscribed to @{notif.recipientUsernames[0]}</p>
+						<p>You are now subscribed to @{notif.senderUsername}</p>
 					}
 					{(notif.type == 'request' && notif.message == 'accessGranted') &&
 						<p>{notif.senderUsername} has granted you access to "{notif.details.groupName}"</p>
@@ -280,7 +285,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 						</div>
 					}
 
-					{(notif.type == 'request' && notif.message == 'recieved') &&
+					{(notif.type == 'request' && notif.message == 'connectionRequestRecieved') &&
 						<div className="options">
 							<button className="buttonDefault" 
 									onClick={()=> {
@@ -292,6 +297,30 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 							<button className="buttonDefault" 
 									onClick={()=> {interact('markRead', notif._id)}}>
 								Ignore
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'connectionRequestSent') &&
+						<div className="options">
+							<button className="buttonDefault"
+									onClick={()=> {interact('markRead', notif._id )}}>
+								Mark Read
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'connectionAcceptedSent') &&
+						<div className="options">
+							<button className="buttonDefault"
+									onClick={()=> {interact('markRead', notif._id )}}>
+								Mark Read
+							</button>
+						</div>
+					}
+					{(notif.type == 'request' && notif.message == 'connectionAcceptedRecieved') &&
+						<div className="options">
+							<button className="buttonDefault"
+									onClick={()=> {interact('markRead', notif._id )}}>
+								Mark Read
 							</button>
 						</div>
 					}
