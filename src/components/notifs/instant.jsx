@@ -58,22 +58,16 @@ export default function Instants({
 				})
 
 				notif.message = 'connectionRequestRecieved';
-				notif.originalID = data.originalID;
-				setSocketMessage({
-					type: 'request',
-					message: 'connectionRequestSent',
-					username: notif.recipientUsername
-				})
-
-				notif.message = 'connectionRequestRecieved';
 				notif.originalID = data.originalID; //for reciever to mark read within popUp
 
+				sendMessage(JSON.stringify(notif));
 			}
 			else if(data.message == 'connectionAcceptedSent') { //confirm: true, message: request
 				console.log(data);
 				setSocketMessage({
 					type: 'request',
-					message: data.message
+					message: data.message,
+					person: notif.recipientUsername
 				})
 				setActive({
 					state: true,
@@ -81,6 +75,8 @@ export default function Instants({
 				})
 				notif.message = 'connectionAcceptedRecieved'
 				notif.originalID = data._id;
+
+				sendMessage(JSON.stringify(notif));
 			}
 			else if(data.message == 'subscribed') {
 				console.log(data);
@@ -94,11 +90,13 @@ export default function Instants({
 					type: 1
 				})
 				notif.originalID = data._id;
-				// notif.message = 'subscribed';
+				
+				sendMessage(JSON.stringify(notif));
 			}
 			else if(data.message == 'subscriptionRequestSent') {
 
 				console.log(data);
+				console.log(notif);
 				setSocketMessage({
 					type: 'request',
 					message: 'subscriptionRequestSent',
@@ -110,13 +108,18 @@ export default function Instants({
 				})
 				notif.originalID = data._id; //for the reciever to mark their notif read
 				notif.message = 'subscriptionRequestRecieved';
+
+				sendMessage(JSON.stringify(notif));
 			}
 			else if(data.message == 'subscriptionAccepted') {
+
+				console.log(socketMessage);
+				console.log(notif)
 
 				setSocketMessage({
 					type: 'confirmation',
 					message: 'subscriptionAccepted',
-					person: data.recipientUsername
+					person: notif.recipientUsername
 				})
 				setActive({
 					state: true,
@@ -124,6 +127,7 @@ export default function Instants({
 				})
 
 				notif.originalID = data._id;
+				notif.senderUsername = username;
 				sendMessage(JSON.stringify(notif));
 				// body = {
 					// 	type: 'request',
@@ -148,9 +152,7 @@ export default function Instants({
 				// }
 		})
 
-		let pause = setTimeout(()=> {
-			sendMessage(JSON.stringify(notif));
-		}, 1000)	
+
 	}
 
 	//for connection and subscription requests
@@ -832,21 +834,22 @@ export default function Instants({
 		/* Sets socketMessage to accept connection request */
 		if(arg == 'accept') {
 
-			let notif = {
+			let notifi = {
 				type: 'request',
 				recipients: [accessID.accept],
+				recipientUsername: notif.senderUsername,
 				senderID: userID,
 				senderUsername: username,
 				message: 'connectionAcceptedSent'
 			};
 
-			setSocketMessage(notif);
+			setSocketMessage(notifi);
 			setActive({
 				type: null,
 				state: false
 			})
 			console.log(accessID);
-			console.log(notif);
+			console.log(notifi);
 
 			// if(notif.message == 'subscriptionRequested') {
 
@@ -1235,7 +1238,7 @@ export default function Instants({
 					<p>You are connected with {message.senderUsername} !</p>
 				}
 				{(message.type == 'request' && message.message == 'connectionAcceptedSent') &&
-					<p>You are connected with {message.senderUsername} !</p>
+					<p>You are connected with {message.person} !</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'accepted') &&
 					<p>You are now connected !</p>
@@ -1253,13 +1256,16 @@ export default function Instants({
 					<p>You are now subscribed to @{message.senderUsername}</p>
 				}*/}
 				{(message.type == 'request' && message.message == 'subscribed') &&
-					<p>{message.senderUsername} is now subscribed to you!</p>
+					<p>@{message.senderUsername} is now subscribed to you!</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'subscriptionAccepted') &&
-					<p>{message.person} is now a subscriber!</p>
+					<p>@{message.person} is now a subscriber!</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'subscribed') &&
 					<p>You've subscribed to {message.recipientUsername}</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'unsubscribed') &&
+					<p>You've unsubscribed from {message.username}</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'request') &&
 					<p>Connection Request Sent !</p>
@@ -1363,7 +1369,7 @@ export default function Instants({
 						<li><button className="buttonDefault" onClick={()=> {setActive({type: null, state: false})}}>Close</button></li>
 						<li><button className="buttonDefault" onClick={()=> {
 
-							if(message.message == 'initial') {
+							if(message.message == 'connectionRequestRecieved') {
 								interact('accept', message)	
 							}
 							else if (message.message == 'subscriptionRequestRecieved') {

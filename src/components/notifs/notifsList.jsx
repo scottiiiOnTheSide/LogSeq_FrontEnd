@@ -112,7 +112,7 @@ export default function NotificationList({setNotifList, unreadCount, setUnreadCo
 					type: 'markRead',
 					notifID: notif._id,
 					userID: userID,
-					senderUsername: username
+					// senderUsername: username
 				};
 			let request = await accessAPI.newInteraction(sm)
 

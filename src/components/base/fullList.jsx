@@ -7,6 +7,49 @@ import './home.css';
 
 let accessAPI = APIaccess();
 
+let twoWaySVG = 
+<svg xmlns="http://www.w3.org/2000/svg" width="30.124" height="21.732" viewBox="0 0 30.124 21.732">
+  {/*<defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: rgba(0,0,0,0.4);
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>*/}
+  <g id="Group_369" data-name="Group 369" transform="translate(-320.376 -352.134)">
+    <g id="Group_367" data-name="Group 367" transform="translate(0 -31.5)">
+      <g id="Group_224" data-name="Group 224" transform="translate(298.376 358)">
+        <line id="Line_146" data-name="Line 146" class="cls-1" x2="25" transform="translate(22.624 32.5)"/>
+        <line id="Line_148" data-name="Line 148" class="cls-1" x2="12" transform="translate(22.5 32.5) rotate(-30)"/>
+      </g>
+      <g id="Group_366" data-name="Group 366" transform="translate(372.5 431) rotate(-180)">
+        <line id="Line_146-2" data-name="Line 146" class="cls-1" x2="25" transform="translate(22.624 32.5)"/>
+        <line id="Line_148-2" data-name="Line 148" class="cls-1" x2="12" transform="translate(22.5 32.5) rotate(-30)"/>
+      </g>
+    </g>
+  </g>
+</svg>
+
+let oneWaySVG = 
+<svg xmlns="http://www.w3.org/2000/svg" width="25.624" height="7.866" viewBox="0 0 25.624 7.866">
+  <defs>
+    {/*<style>
+      .cls-1 {
+        fill: none;
+        stroke: rgba(0,0,0,0.5);
+        stroke-width: 2px;
+      }
+    </style>*/}
+  </defs>
+  <g id="Group_224" data-name="Group 224" transform="translate(-22 -25.634)">
+    <line id="Line_146" data-name="Line 146" class="cls-1" x2="25" transform="translate(22.624 32.5)"/>
+    <line id="Line_148" data-name="Line 148" class="cls-1" x2="12" transform="translate(22.5 32.5) rotate(-30)"/>
+  </g>
+</svg>
+
+
 
 export default function FullList({ 
 	data, 
@@ -369,16 +412,23 @@ export default function FullList({
 					{data.map((connect, index)=> (
 						<li key={index} >
 							<img src={connect.profilePhoto} />
+
 							<div className="text">
 								<h4>{connect.userName}</h4>
 								<span>{`${connect.fullName}`}</span>
+							</div>
+
+							<div id="svgWrapper"
+								className={`${connect.isConnection == true ? 'connection' : ''} ${connect.isSubsciber == true ? 'subscriber' : ''} ${connect.isSubscription == true ? 'subscription' : ''}`}>
+								{connect.isConnection == true ? twoWaySVG : null}
+								{connect.isSubscription || connect.isSubsciber ? oneWaySVG : null}
 							</div>
 						</li>
 					))}
 				</ul>
 			}
 
-			{mode != 'allPosts' &&
+			{(mode != 'allPosts' && mode != 'allConnections') &&
 				<ul id="dataList">
 					{(mode == 'pinMedia' || mode.includes('remove')) &&
 

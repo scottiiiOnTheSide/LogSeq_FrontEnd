@@ -139,12 +139,24 @@ export default function UserProfile({
 	const removeConnection = async(userID, username) => {
 		let remove = await accessAPI.removeConnection(userID);
 		if(remove == true) {
-			setSocketMessage({
-				type: 'confirmation',
-				message: 'removal',
-				username: username,
-			})
+
 			updateProfilePage();
+
+			let optionsMenu = document.getElementById('profileOptions');
+			optionsMenu.classList.add('leave')
+
+			let delay = setTimeout(()=> {
+				setOptions()
+			}, 150);
+
+			let delayTwo = setTimeout(()=> {
+				setSocketMessage({
+					type: 'confirmation',
+					message: 'removal',
+					username: username,
+				})
+			}, 500);
+			
 		}
 	}
 
@@ -177,7 +189,7 @@ export default function UserProfile({
 		setOptions();
 
 		let remove = await accessAPI.removeSubscription(userID).then(data => {
-			if(data == true) {
+			if(data.confirm == true) {
 				
 				//may leave or need to find other way of implementing update
 				// setData({
@@ -185,15 +197,15 @@ export default function UserProfile({
 				// 	isSubscribed: false
 				// })
 
-				let delayOne = setTimeout(()=> {
+				// let delayOne = setTimeout(()=> {
 					updateProfilePage();
-				}, 200)
+				// }, 200)
 
 				let delayTwo = setTimeout(()=> {
 					setSocketMessage({
 						type: 'confirmation',
-						message: 'removal',
-						username: username,
+						message: 'unsubscribed',
+						username: userInfo.userName,
 					})
 				}, 400)
 			}
@@ -237,12 +249,15 @@ export default function UserProfile({
 					isReturnable={true} 
 					setNotifList={setNotifList} 
 					unreadCount={unreadCount}
-					siteLocation={'USER'}/>
+					siteLocation={userInfo._id == userID ? 'PROFILE' : 'USER'}/>
 
 
 			<div id="main">
 				
-				<img id="userPhoto" src={userInfo.profilePhoto}/>
+				<div id="profilePhotoWrapper">
+					<img id="userPhoto" src={userInfo.profilePhoto}/>	
+				</div>
+				
 
 				<div id="title">
 					<h2>{userInfo.userName}</h2>
@@ -276,28 +291,43 @@ export default function UserProfile({
 					</div>
 				}
 
+
+				{/*
+					S T A T S
+				*/}
 				<div id="stats">
+
+					{/*v i e w  P O S T S*/}
 					<button className={`buttonDefault`} onClick={async(e)=> {
-						let data = await accessAPI.pullUserLog(undefined, undefined, userInfo._id);
+						e.preventDefault();
+						console.log(userInfo._id)
+						let data = await accessAPI.pullUserLog(undefined, undefined, userInfo._id).then((data) => {
+									
+							// console.log(data);
 
-						setFullListData({
-							data: data,
-							mode: 'allPosts',
-							source: `from @${userInfo.userName}` 
-						});
+							setFullListData({
+								data: data,
+								mode: 'allPosts',
+								source: `from @${userInfo.userName}` 
+							});
 
-						setFullList();
+							setFullList();
+						})
 					}}>
 						{/*9*/}
 						{data.postCount}
 						<span>Posts</span>
 					</button>
 
+
+					{/* A C T I O N  C O U N T*/}
 					<p>
 						{userInfo.interactionCount}
 						<span>Actions</span>
 					</p>
 
+
+					{/*v i e w  C O N N E C T I O N S*/}
 					<button className={`buttonDefault`} onClick={async(e)=> {
 						let data = await accessAPI.getConnections(userInfo._id);
 

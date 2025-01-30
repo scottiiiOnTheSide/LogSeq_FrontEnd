@@ -1024,7 +1024,26 @@ div#FullList ul#connections li div.text span {
 }
 
 
+div#FullList ul#connections li div#svgWrapper {
+	position: absolute;
+	right: 0;
+	top: 50%;
+	margin-right: 8px;
+}
 
+div#FullList ul#connections li div#svgWrapper.subscription {
+	transform: rotate(180deg);
+}
+
+div#svgWrapper svg {
+	transform: scale(1.2);
+}
+
+div#svgWrapper svg g line.cls-1 {
+	fill: none;
+    stroke: rgba(0,0,0,0.4);
+    stroke-width: 2px;
+}
 
 
 
@@ -1055,13 +1074,29 @@ div#main {
 	overflow-y: scroll;
 }
 
-div#main img#userPhoto {
+div#main div#profilePhotoWrapper {
 	display: block;
 	width: 44%;
+/*	height: 180px;*/
 /*	margin: 96px 0 36px;*/
 /*	margin-left: 16px;*/
 	margin: 48px auto 36px;
 	border-radius: 16px;
+}
+
+div#main img#userPhoto {
+	width: 100%;
+/*	height: auto;*/
+	object-fit: cover;
+	border-radius: 16px;
+	max-height: 180px;
+	/*display: block;
+	width: 44%;
+	max-height: 180px;
+/*	margin: 96px 0 36px;*/
+/*	margin-left: 16px;*/
+/*	margin: 48px auto 36px;*/
+/*	border-radius: 16px;*/
 }
 
 div#main div#title {

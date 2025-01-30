@@ -2,8 +2,78 @@
 ## S y n c S e q . x y z
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
-### 01. 21. 2025
 
+### 01. 30. 2025
+@1500 allConnections on <UserProfile> now shows svg for different types
+
+!!! add it for connections section
+
+****To Do Next, OVERALL
+	- adding subs to <Connections> list and <UserProfile>, 
+	- add video support,
+	- removal of comments
+
+??? color should be different when they user and viewed user have a mutual connection
+
+??? methodology for preventing multiple requests, and being able to send them again after
+	certain time period(?)
+
+@0900 postCount includes private posts. current query SHOULD be excluding them, but doesnt
+	  seem to be working
+
+changed 'getConnects' backEnd subroute to include all 3 types
+
+!!! put all connections in same list, simply state what they are
+
+### 01. 27. 2025
+@0755 spent most of this time fixing some small issues
+
+!!! connection requestion confirm for reciever is missing sender's name
+??? subscription request reciever not getting popUP
+	- websockets seemed to be acting up on backend, but it does work...
+!!! automatic subscription missing reciever's name
+!!! recieving a subscriber has wrong notification in notifList
+
+admin has:
+  - testerTwo as a connection
+  - is subscribed to Sanbanbaka
+  - has testerJoao as a subscriber
+
+Should have some indication that user is looking at their own profile...
+
+@0645 Single arrow pointing towards name indicates a subscriber (info going towards, one way)
+	  Single arrow pointing *away* from name, is a subscription
+
+### 01. 26. 2025
+@1625 Everything is working well and as intended for subscriptions and connections, except
+	  unsubscribing, but that seems to be a purely frontEnd thing
+	  !!! ensure popUp when unsubscribing
+
+****To Do Next, OVERALL
+	- adding subs to <Connections> list and <UserProfile>, 
+	- add video support,
+	- removal of comments
+
+??? methodology for preventing multiple requests, and being able to send them again after
+	certain time period(?)
+
+??? some small additions, but will make move towards uploading project
+
+@1615 accepting subscription from both popUp and notifications works!
+
+@1555 Removing subscription needs to have popUp for remover <UserProfile>
+
+
+### 01. 23. 2025
+@1440 Issue below fixed, now works in it's entirity
+
+!! Now to test acceptance of subscription, auto and request...
+
+@1400 Accepting connectionRequest from popUp works, original requester recieves confirmation
+	  popUp as well - but, backend crashes, stating missing recipient in websocket message...
+
+
+### 01. 21. 2025
 @1545 ConnectionAcceptance works from notifs
 
 !!!make sure it works from popUps also
@@ -51,7 +121,7 @@ then, adding + differentiating subscribers in <ManageConnections> and <UserProfi
 ****To Do Next:
 	- accepting subscription in notifs should reload notifs ✅
 	- accepting subscription in popUp should first close popUp, then initiate (set it to
-		close from within interact function) 
+		close from within interact function) ✅
 	- original requester's popUp confirming subscription acceptance is missing sender's username ✅
 	- confirmation notification for requester's subReq is incorrect ✅
 	- unsubscribing refreshes page ✅
