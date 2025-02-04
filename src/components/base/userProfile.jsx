@@ -52,6 +52,12 @@ export default function UserProfile({
 		setUserInfo(data.user);
 		setPinnedPosts(data.pinnedPosts);
 		setCollections(data.collections);
+
+		let connectedUsers = data.user.connections.length + data.user.subscribers.length + data.user.subscriptions.length;
+		setData({
+			...data,
+			connectedUsers: connectedUsers
+		})
 	}
 
 	const goToUserSettings = async() => {
@@ -188,7 +194,7 @@ export default function UserProfile({
 
 		setOptions();
 
-		let remove = await accessAPI.removeSubscription(userID).then(data => {
+		let remove = await accessAPI.removeSubscription(userID, 'to').then(data => {
 			if(data.confirm == true) {
 				
 				//may leave or need to find other way of implementing update
@@ -339,8 +345,8 @@ export default function UserProfile({
 
 						setFullList();
 					}}>
-						{userInfo.connections.length}
-						<span>USER{userInfo.connections.length > 1 ? 'S' : ''}</span>
+						{data.connectedUsers}
+						<span>USER{data.connectedUsers > 1 ? 'S' : ''}</span>
 					</button>
 				</div>
 

@@ -3,6 +3,31 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 02. 03. 2025
+@2230 Added conditional for different connection types in <ManageConnections> listed 
+	  connections.
+	  Tested and working!
+
+****To Do Next:
+	- Add profile pictures to connected users
+	- remove overlay of options for search results
+		- selecting name goes straight to user's profile
+	- comment removal
+	- video support
+
+
+### 02. 02. 2025
+@0655 added subroute on backEnd for removing subscriber
+
+
+### 02. 01. 2025
+@1415 Added svgs for connections to <ManageConnections>
+
+!!! For connections: can leave options as is
+	For subscriptions & subscribers: 'remove' button needs to unsubscribe said user 
+
+!!! list items also need to include user's profilePhoto
+
 ### 01. 30. 2025
 @1500 allConnections on <UserProfile> now shows svg for different types
 

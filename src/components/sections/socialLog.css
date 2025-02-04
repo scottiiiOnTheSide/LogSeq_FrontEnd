@@ -110,6 +110,27 @@ div#manageConnections div#searchResults ul li  {
 	width: 100%;
 }
 
+div#manageConnections div#currentConnections ul li div#svgWrapper {
+	position: absolute;
+	right: 0;
+	top: 30%;
+	margin-right: 12px;
+}
+
+div#manageConnections div#currentConnections ul li div#svgWrapper.subscription {
+	transform: rotate(180deg);
+}
+
+/*div#manageConnections div#currentConnections ul li div#svgWrapper svg {
+	transform: scale(1.2);
+}
+
+div#manageConnections div#currentConnections ul li div#svgWrapper svg g line.cls-1 {
+	fill: none;
+    stroke: rgba(0,0,0,0.4);
+    stroke-width: 2px;
+}*/
+
 div#manageConnections div#currentConnections ul li div#optionsWrapper,
 div#manageConnections div#searchResults ul li div#optionsWrapper {
 	width: 100%;

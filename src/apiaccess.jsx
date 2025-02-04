@@ -492,10 +492,14 @@ export default function APIaccess(key) {
 			return request;
 		},
 
-		async removeSubscription(userID) {
+		async removeSubscription(userID, toOrFrom) {
+
+			//if toOrFrom == 'to', removing sub TO user
+			//if 'from', removing sub FROM current user
+			let direction = toOrFrom == 'to' ? 'removeSubTo' : 'removeSubFrom';
 
 			let userKey = sessionStorage.getItem('userKey');
-			let request = await fetch(`${apiAddr}/users/user/${userID}/?query=removeSub&remove=${userID}`, {
+			let request = await fetch(`${apiAddr}/users/user/${userID}/?query=${direction}&remove=${userID}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

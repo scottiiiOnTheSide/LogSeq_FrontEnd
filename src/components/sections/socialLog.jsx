@@ -9,6 +9,48 @@ import './socialLog.css';
 
 let accessAPI = APIaccess();
 
+let twoWaySVG = 
+<svg xmlns="http://www.w3.org/2000/svg" width="30.124" height="21.732" viewBox="0 0 30.124 21.732">
+  {/*<defs>
+    <style>
+      .cls-1 {
+        fill: none;
+        stroke: rgba(0,0,0,0.4);
+        stroke-width: 2px;
+      }
+    </style>
+  </defs>*/}
+  <g id="Group_369" data-name="Group 369" transform="translate(-320.376 -352.134)">
+    <g id="Group_367" data-name="Group 367" transform="translate(0 -31.5)">
+      <g id="Group_224" data-name="Group 224" transform="translate(298.376 358)">
+        <line id="Line_146" data-name="Line 146" class="cls-1" x2="25" transform="translate(22.624 32.5)"/>
+        <line id="Line_148" data-name="Line 148" class="cls-1" x2="12" transform="translate(22.5 32.5) rotate(-30)"/>
+      </g>
+      <g id="Group_366" data-name="Group 366" transform="translate(372.5 431) rotate(-180)">
+        <line id="Line_146-2" data-name="Line 146" class="cls-1" x2="25" transform="translate(22.624 32.5)"/>
+        <line id="Line_148-2" data-name="Line 148" class="cls-1" x2="12" transform="translate(22.5 32.5) rotate(-30)"/>
+      </g>
+    </g>
+  </g>
+</svg>
+
+let oneWaySVG = 
+<svg xmlns="http://www.w3.org/2000/svg" width="25.624" height="7.866" viewBox="0 0 25.624 7.866">
+  <defs>
+    {/*<style>
+      .cls-1 {
+        fill: none;
+        stroke: rgba(0,0,0,0.5);
+        stroke-width: 2px;
+      }
+    </style>*/}
+  </defs>
+  <g id="Group_224" data-name="Group 224" transform="translate(-22 -25.634)">
+    <line id="Line_146" data-name="Line 146" class="cls-1" x2="25" transform="translate(22.624 32.5)"/>
+    <line id="Line_148" data-name="Line 148" class="cls-1" x2="12" transform="translate(22.5 32.5) rotate(-30)"/>
+  </g>
+</svg>
+
 
 /**
  * Exported to Main.jsx
@@ -64,14 +106,33 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 
 	const removeConnection = async(userID, username) => {
 		let remove = await accessAPI.removeConnection(userID);
-		if(remove == true) {
-			setSocketMessage({
-				type: 'confirmation',
-				message: 'removal',
-				username: username,
-			})
-		}
+		
 		updateConnections();
+
+		// if(remove == true) {
+		// 	setSocketMessage({
+		// 		type: 'confirmation',
+		// 		message: 'removal',
+		// 		username: username,
+		// 	})
+		// }
+	}
+
+	const removeSubscription = async(userID, username, direction) => {
+		// let removeRequest = await accessAPI.removeSubscription(userID, direction).then((data)=> {
+
+		// })
+		let removeRequest = await accessAPI.removeSubscription(userID, direction);
+
+		updateConnections();
+
+		// if(removeRequest == true) {
+		// 	setSocketMessage({
+		// 		type: 'confirmation',
+		// 		message: 'removal',
+		// 		username: username,
+		// 	})
+		// }
 	}
 
 	const updateConnections = async()=> {
@@ -228,6 +289,12 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 								}}>
 
 								<p>{user.userName} <span>{user.fullName}</span></p>
+
+								<div id="svgWrapper"
+									className={`${user.isConnection == true ? 'connection' : ''} ${user.isSubscriber == true ? 'subscriber' : ''} ${user.isSubscription == true ? 'subscription' : ''}`}>
+									{user.isConnection == true ? twoWaySVG : null}
+									{user.isSubscription || user.isSubscriber ? oneWaySVG : null}
+								</div>
 								
 								<div id="optionsWrapper">
 									<button className={`buttonDefault`}
@@ -235,7 +302,19 @@ export function ManageConnections({setCurrent, current, setSocketMessage}) {
 										Profile
 									</button>
 									<button className={`buttonDefault`}
-											onClick={()=> {removeConnection(user._id, user.userName)}}>
+											onClick={()=> {
+
+												if(user.isConnection == true) {
+													removeConnection(user._id, user.userName);
+												}
+												if(user.isSubscriber == true) {
+													removeSubscription(user._id, user.userName, 'from');
+												}
+												if(user.isSubscription == true) {
+													removeSubscription(user._id, user.userName, 'to');	
+												}
+												
+											}}>
 										Remove
 									</button>
 								</div>
