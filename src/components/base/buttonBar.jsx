@@ -44,11 +44,16 @@ export default function ButtonBar({
 	let [functionName, setFuncName] = React.useState('Create Post');
 
 	React.useEffect(()=> {
-		if(current.section == 1) {
+		if(current.map == true) {
+			setFuncName('Settings');
+		}
+		else if(current.section == 1) {
 			setFuncName('Create Post');
-		} else if (current.section == 0) {
+		} 
+		else if (current.section == 0) {
 			setFuncName('Connections');
-		} else if (current.section == 2) {
+		} 
+		else if (current.section == 2) {
 			setFuncName('Manage');
 		}
 	}, [current])
@@ -95,10 +100,40 @@ export default function ButtonBar({
 				e.preventDefault();
 
 				let delay = setTimeout(()=> {
-					setCurrent({
-						...current, 
-						modal: true
-					})
+					if(!current.modal) {
+
+						setCurrent({
+							...current, 
+							modal: true
+						})
+
+						if(current.map) {
+							let delay = setTimeout(()=> {
+								document.getElementById('mapSettings').classList.remove('_enter');				
+							}, 200)
+						}
+					}
+					else if(current.modal) {
+
+						if(current.map) {
+
+							document.getElementById('mapSettings').classList.add('_enter');
+
+							let delay = setTimeout(()=> {
+								setCurrent({
+									...current, 
+									modal: false
+								})			
+							}, 250)
+						}
+						else {
+							setCurrent({
+								...current, 
+								modal: false
+							})
+						}	
+						
+					}
 				}, 225)	
 			}
 			}>{functionName}

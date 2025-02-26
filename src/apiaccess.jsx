@@ -746,9 +746,11 @@ export default function APIaccess(key) {
 
 			/**
 			 * Necessary Body Values
-			 * option: Profile, Privacy, InvitationCount
-			 * type: username, profilePhoto, bio, changePassword
+			 * option: Profile, Privacy, InvitationCount,
+			 * username, profilePhoto, bio, changePassword,
+			 * updateLocation
 			 * 
+			 * action: addTopics, removeTopics
 			 *
 			 **/
 				let userKey = sessionStorage.getItem('userKey');

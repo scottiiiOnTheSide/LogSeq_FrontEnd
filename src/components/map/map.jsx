@@ -61,7 +61,16 @@ function ArrowIcon({classname}) {
 	)
 }
 
-export default function MapComponent ({ setCurrent, current, log, setLog, selectedDate, setSelectedDate, cal }) {
+export default function MapComponent ({ 
+	setCurrent, 
+	current, 
+	log, 
+	setLog, 
+	selectedDate, 
+	setSelectedDate, 
+	cal,
+	setSocketMessage
+}) {
 
 	const navigate = useNavigate();
 	const [mapState, setMapState] = React.useState(null);
@@ -95,32 +104,7 @@ export default function MapComponent ({ setCurrent, current, log, setLog, select
 		date: null
 	})
 
-	const onChange = (e) => {
 
-		if(e.target.name == 'yearSelect') {
-			setDateSelect({
-				...dateSelect,
-				year: e.target.value
-			})
-			if(e.target.value.length == 4) {
-				setSelectedDate({
-					...selectedDate,
-					year: e.target.value
-				})
-			}
-		}
-		else if(e.target.name == 'dateSelect') {
-			setDateSelect({
-				...dateSelect,
-				date: e.target.value
-			})
-			setSelectedDate({
-				...selectedDate,
-				day: e.target.value
-			})
-		}
-		
-	}
 
 	/* 
 		Extracts data from log for markers and popUpPanel
@@ -552,9 +536,133 @@ export default function MapComponent ({ setCurrent, current, log, setLog, select
 		setCurrentPostIndex((prevIndex) => (prevIndex - 1 + postInfo.length) % postInfo.length);
 	}
 
+	async function updatePreferredLocation(locationName, lonLat) {
+		let request = await accessAPI.userSettings({
+			option: 'updateLocation',
+			name: 'locationName',
+			lonLat: lonLat //is array
+		})
+
+		if(request.confirmation == true) {
+			setSocketMessage({
+				type: 'simpleNotif',
+				message: `Default Location saved to ${locationName}`
+			})
+		}
+	}
+
+	/* For Date Select */
+	const onChange = (e) => {
+
+		if(e.target.name == 'yearSelect') {
+			setDateSelect({
+				...dateSelect,
+				year: e.target.value
+			})
+			if(e.target.value.length == 4) {
+				setSelectedDate({
+					...selectedDate,
+					year: e.target.value
+				})
+			}
+		}
+		else if(e.target.name == 'dateSelect') {
+			setDateSelect({
+				...dateSelect,
+				date: e.target.value
+			})
+			setSelectedDate({
+				...selectedDate,
+				day: e.target.value
+			})
+		}
+	}
+
+
+	/* For Map Settings */
+	const [selectedPlace, setSelectedPlace] = React.useState(null); // Only allow one selection
+  	const [suggestions, setSuggestions] = React.useState([]);
+  	const [searchTerm, setSearchTerm] = React.useState('');
+  	const [loadingResults, setLoadingResults] = React.useState(false);
+  	const inputRef = React.useRef(null);
+  	const autocompleteRef = React.useRef(null);
+
+  	const getLocationSuggestions = async(query) => {
+  		try {
+
+  			if(!query.trim()) {
+  				setSuggestions([]);
+  				return;
+  			}
+
+  			setLoadingResults(true)
+  			const response = await accessAPI.userSettings({
+  				option: 'searchLocation',
+  				query: query
+  			});
+
+  			if(response.length > 0) {
+  				setSuggestions(response);
+  			}
+  			else {
+  				throw new Error('Failed to fetch places');
+  			}
+
+  		}
+  		catch (err) {
+  			console.error('Error fetching suggestions:', err);
+      		// setError(err.message);
+  		}
+  		finally {
+  			setLoadingResults(false);
+  		}
+  	}
+
+
+  	const handleInputChange = (e) => {
+  		const value = e.target.value;
+  		setSearchTerm(value)
+  		getLocationSuggestions(value)
+  	}
+
+  	// const handleSelectSuggestion = (place) => {
+  	// 	setSelectedPlace(place);
+  	// 	setSuggestions([]);
+  	// 	setSearchTerm(place.description)
+  	// }
+
+  	const handleSelectSuggestion = async(place) => {
+
+  		const response = await accessAPI.userSettings({
+  				option: 'searchLocationDetails',
+  				placeID: place.place_id
+  		});
+
+  		setSelectedPlace({
+  			name: place.description,
+  			lonLat: response.lonLat
+  		})
+
+  		setSuggestions([]);
+  		setSearchTerm(place.description);
+  		setSocketMessage({
+  			type: 'simpleNotif',
+  			message: 'Default Location updated!'
+  		})
+  	}
+
+  	const handleClearSelection = () => {
+  		setSelectedPlace(null);
+  		setSearchTerm('');
+  	}
+
+
+
+  	/* For UI / HTML Elements */
 	const [cyclePosts, setCyclePosts] = React.useReducer(state => !state, false);
 	const [currentPostIndex, setCurrentPostIndex] = React.useState(0);
 	const [postInfo, setPostInfo] = React.useState([]);
+
 
 	return (
 		<div id="MAP" className={`${current.transition == true ? 'leave' : ''}`}>
@@ -764,6 +872,50 @@ export default function MapComponent ({ setCurrent, current, log, setLog, select
 							}}>
 						CLOSE
 					</button>
+				</div>
+			}
+
+			{/* S E T T I N G S */}
+			{current.modal == true &&
+				<div id="mapSettings" className={`_enter`}>
+
+					<h2>Map Settings</h2>
+
+					<ul id="settingsOptionsWrapper">
+						
+						<li id="searchOptionWrapper">
+							
+							<h3>Set Default City</h3>
+
+							 <input
+						        type="text"
+						        value={searchTerm}
+						        onChange={handleInputChange}
+						        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2"
+						        placeholder="Search for a city, country, or address..."
+						        // disabled={!!selectedPlace} // Disable search after selection
+						      />
+
+						      {loadingResults && 
+						      	<p className="">Loading...</p>
+						      }
+
+						      <ul className="">
+						          {suggestions.map((place) => (
+						            <li
+						              key={place.place_id}
+						              className=""
+						              onClick={() => handleSelectSuggestion(place)}
+						            >
+						              {place.description}
+						            </li>
+						          ))}
+						       </ul>
+
+						</li>
+
+					</ul>
+
 				</div>
 			}
 		</div>

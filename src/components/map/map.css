@@ -133,6 +133,7 @@ div#MAP div#header h2 {
 	letter-spacing: 2px;
 	color: var(--greyscale-accent);
 	margin: 0;
+	padding: 6px 8px;
 }
 
 div#MAP div#header button {
@@ -508,3 +509,72 @@ div#MAP div#dateSelection button#exit {
 	left: 50%;
 	transform: translateX(-50%);
 }
+
+
+
+
+
+
+
+
+
+div#MAP div#mapSettings {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	z-index: 20;
+	background-color: white;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	box-sizing: border-box;
+	padding: 0 8px;
+}
+
+	div#MAP div#mapSettings::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		background-color: white;
+		opacity: 0;
+		transition: all ease-in-out 0.25s;
+		z-index: -1;
+	}
+
+	div#MAP div#mapSettings._enter::before {
+		transition: all ease-in-out 0.1s;
+		z-index: 21;
+		opacity: 1;
+	}
+
+
+div#MAP div#mapSettings h2 {
+	font-family: 'Raleway';
+  font-weight: 600;
+  font-size: 1.5em;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--greyscale-accent);
+  margin: 36px 0px 0;
+/*  padding: 6px 8px;*/
+/*  text-align: center;*/
+/*  margin-top: 36px;*/
+}
+
+
+
+
+div#MAP div#mapSettings ul#settingsOptionsWrapper {
+	list-style-type: none;
+	padding: 0;
+	margin: 36px 0 auto;
+}
+
+div#MAP div#mapSettings ul#settingsOptionsWrapper li {}
+
+div#MAP div#mapSettings ul#settingsOptionsWrapper li#searchOptionWrapper {}

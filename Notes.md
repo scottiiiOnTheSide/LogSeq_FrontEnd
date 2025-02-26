@@ -3,6 +3,47 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 02. 26. 2025
+
+@1455 Multiple queries for the Autocomplete API have yet to show up on the billing chart,
+	  (i believe it's around $2.83 per 1000 queries, or $0.0028 each)
+
+****To Do Next:
+	- upon selecting option, update user's doc 
+		- rename preferredLocation to defaultLocation
+	- modify input so searches arent made on deletion of text
+	- style suggestion results
+	- update <Map> and sign in process so that component utilizes user's default location
+		if location permissions arent on
+
+Overall:
+- Location Name search option should also be added to 'Create Post'
+- Also add option screen to signUp process
+
+@1320 Fixed the issue with the backend subroute for the Places Autocomplete API
+	  Need to understand how the pricing works so I can properly restrict the searches
+
+### 02. 20. 2025
+@0110 need to restrict API keys in GCS to domain using HTTP Referrer
+
+A L S O
+updated Node.js to v18.20 from 16.14
+
+### 02. 08. 2025
+@0705 Added settings panel in <Map> and functionality for smooth opening & close
+
+****Next
+	- design settings panel in xd 
+
+****to Fix:
+	- <CreatePost> needs to time info upon opening...
+
+Describing Process:
+- frontEnd gets location name using GCS
+	- may have to split the string
+- update user doc on backend
+
+
 ### 02. 03. 2025
 @2230 Added conditional for different connection types in <ManageConnections> listed 
 	  connections.

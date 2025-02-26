@@ -125,7 +125,7 @@ export default function Post({
 		 * These do not toggle when user makes response to their own comment...
 		 */
 		toggleComment();
-		toggleOptions();
+		// toggleOptions();
 	}
 
 	let getCollections = async()=> {

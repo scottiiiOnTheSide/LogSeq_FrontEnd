@@ -167,20 +167,20 @@ function Home({
                          userTopics={userTopics}
                          setUserTopics={setUserTopics} />
 
-        {(current.modal && current.section == 1) &&
+        {(!current.map &&( current.modal && current.section == 1)) &&
           <CreatePost setCurrent={setCurrent}
                       current={current} 
                       socketMessage={socketMessage}
                       setSocketMessage={setSocketMessage} 
                       selectedDate={selectedDate}/>
         }
-        {(current.modal && current.section == 0) &&
+        {(!current.map &&( current.modal && current.section == 0)) &&
           <ManageConnections current={current} 
                              setCurrent={setCurrent} 
                              setSocketMessage={setSocketMessage}/>
         }
 
-        {(current.modal && current.section == 2) &&
+        {(!current.map &&( current.modal && current.section == 2)) &&
           <ManageMacros current={current} 
                         setCurrent={setCurrent} 
                         socketMessage={socketMessage}
@@ -221,7 +221,8 @@ function Home({
             log={log}
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
-            cal={cal}/>
+            cal={cal}
+            setSocketMessage={setSocketMessage}/>
         }
 
           <Instant 
