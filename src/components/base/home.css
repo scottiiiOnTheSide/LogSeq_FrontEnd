@@ -444,7 +444,7 @@ div#userSettings ul#mainMenu li {
 	}
 
 	div#userSettings ul#mainMenu li.close {
-		height: 30px;
+		height: 36px;
 	}
 
 div#userSettings ul#mainMenu li button {
@@ -463,7 +463,7 @@ div#userSettings ul#mainMenu li button svg {
 }
 
 div#userSettings ul#mainMenu li button#aboutProject {
-	margin: -20px 0;
+	margin: -24px 0 -32px;
 	display: flex;
 }
 

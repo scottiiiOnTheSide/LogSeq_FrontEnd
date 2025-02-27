@@ -3,18 +3,40 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
-### 02. 26. 2025
+### 02. 27. 2025
+@1600 <Map> currentCenter draws from lonLat info saved in sessionStorage.
+			In future, will add location permissions check instead
 
+****To Do Next:
+	- style search bar in <Map> settings
+
+****To Do After:
+	- Location Name search option should also be added to 'Create Post'
+	- Also add option screen to signUp process
+
+****Last Touches...?
+	- Design messaging in XD 
+
+Who's Online & Tagged Posts sections on Social side
+USER -> Home, Custom feeds
+Color Scheme Customization
+Video upload
+deleting comments
+
+@0910 Need to update signin process to save preferredLocation Data
+	  it should be made available within <Map> if user's location permissions are off
+
+### 02. 26. 2025
 @1455 Multiple queries for the Autocomplete API have yet to show up on the billing chart,
 	  (i believe it's around $2.83 per 1000 queries, or $0.0028 each)
 
 ****To Do Next:
-	- upon selecting option, update user's doc 
-		- rename preferredLocation to defaultLocation
-	- modify input so searches arent made on deletion of text
+	- upon selecting option, update user's doc ✅
+		- rename preferredLocation to defaultLocation 
+	- modify input so searches arent made on deletion of text ✅
 	- style suggestion results
 	- update <Map> and sign in process so that component utilizes user's default location
-		if location permissions arent on
+		if location permissions arent on ✅
 
 Overall:
 - Location Name search option should also be added to 'Create Post'

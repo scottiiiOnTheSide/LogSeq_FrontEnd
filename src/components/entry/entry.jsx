@@ -284,7 +284,8 @@ function UserLogIn({
 	setPopUp, 
 	exitSequence,
 	setRefPanel,
-	refPanel
+	refPanel,
+	setUserDocumentSettings
 }) {
 
 	/**
@@ -325,7 +326,10 @@ function UserLogIn({
 					password: formData.password
 				});
 
-				if(user == true) {
+				// setUserDocumentSettings(user.settings);
+				// console.log(user)
+
+				if(user.confirm == true) {
 					exitSequence();
 				} else {
 					console.log(user);
@@ -558,7 +562,7 @@ function ReferralPanel({
  * Main component / page: 
  * Houses both forms and confirmation element
  */
-export default function Entry({useAuth, setUserID}) {
+export default function Entry({useAuth, setUserID, userDocumentSettings, setUserDocumentSettings}) {
 
 	const { _login }  = useUIC();
 
@@ -860,6 +864,7 @@ export default function Entry({useAuth, setUserID}) {
 					exitSequence={exitSequence}
 					refPanel={refPanel}
 					setRefPanel={setRefPanel}
+					setUserDocumentSettings={setUserDocumentSettings}
 				/>
 			}
 

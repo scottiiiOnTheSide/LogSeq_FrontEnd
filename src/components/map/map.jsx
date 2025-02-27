@@ -74,7 +74,10 @@ export default function MapComponent ({
 
 	const navigate = useNavigate();
 	const [mapState, setMapState] = React.useState(null);
-	const [currentCenter, setCurrentCenter] = React.useState([-73.9249,  40.6943]);
+	const [currentCenter, setCurrentCenter] = React.useState(
+		[sessionStorage.getItem('settings_preferredLocation_lon'),
+		sessionStorage.getItem('settings_preferredLocation_lat')]
+	);
 	const [markers, setMarkers] = React.useState([
 		// { 
 		// 	id: 1, 
@@ -269,7 +272,9 @@ export default function MapComponent ({
 	      });
 	    };
 
+
 		let centerCoordinates = fromLonLat(currentCenter);
+
 
 		//Creates necessary layer for adding circle spots on map
 		const vectorSource = new VectorSource();
@@ -582,7 +587,9 @@ export default function MapComponent ({
 	/* For Map Settings */
 	const [selectedPlace, setSelectedPlace] = React.useState(null); // Only allow one selection
   	const [suggestions, setSuggestions] = React.useState([]);
-  	const [searchTerm, setSearchTerm] = React.useState('');
+  	const [searchTerm, setSearchTerm] = React.useState(
+  		sessionStorage.getItem('settings_preferredLocation_name') ?
+  		sessionStorage.getItem('settings_preferredLocation_name') : ''  );
   	const [loadingResults, setLoadingResults] = React.useState(false);
   	const inputRef = React.useRef(null);
   	const autocompleteRef = React.useRef(null);
@@ -618,11 +625,14 @@ export default function MapComponent ({
   		}
   	}
 
-
   	const handleInputChange = (e) => {
   		const value = e.target.value;
   		setSearchTerm(value)
-  		getLocationSuggestions(value)
+
+  		if (e.nativeEvent.inputType === "deleteContentBackward") {
+		    return;
+		}	
+		getLocationSuggestions(value)
   	}
 
   	// const handleSelectSuggestion = (place) => {
@@ -645,10 +655,23 @@ export default function MapComponent ({
 
   		setSuggestions([]);
   		setSearchTerm(place.description);
-  		setSocketMessage({
-  			type: 'simpleNotif',
-  			message: 'Default Location updated!'
+
+
+
+  		const update = await accessAPI.userSettings({
+  			option: 'updateLocation',
+  			name: place.description,
+  			lonLat: response.lonLat
   		})
+
+  		sessionStorage.setItem('settings_preferredLocation_lon', response.lonLat[0]);
+  		sessionStorage.setItem('settings_preferredLocation_lat', response.lonLat[1]);
+  		sessionStorage.setItem('settings_preferredLocation_name', place.description);
+
+  		setSocketMessage({
+	  		type: 'simpleNotif',
+	  		message: 'Default Location updated!'
+	  	})	
   	}
 
   	const handleClearSelection = () => {
@@ -662,7 +685,6 @@ export default function MapComponent ({
 	const [cyclePosts, setCyclePosts] = React.useReducer(state => !state, false);
 	const [currentPostIndex, setCurrentPostIndex] = React.useState(0);
 	const [postInfo, setPostInfo] = React.useState([]);
-
 
 	return (
 		<div id="MAP" className={`${current.transition == true ? 'leave' : ''}`}>

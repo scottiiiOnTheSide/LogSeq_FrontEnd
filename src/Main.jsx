@@ -59,6 +59,8 @@ function HomeOrEntry({ children }) {
 
 /* * * H O M E  C o m p o n e n t * * */
 function Home({
+  userDocumentSettings,
+  setUserDocumentSettings,
   socketURL, 
   socketMessage, 
   setSocketMessage, 
@@ -130,7 +132,7 @@ function Home({
   //     setAnimState('return')
   //   }
   // }, [current])
-
+  console.log(userDocumentSettings);
 
   return (
     <section id="HOME" ref={el} className={`${enter == true ? '_enter' : ''}`}>  
@@ -222,7 +224,9 @@ function Home({
             selectedDate={selectedDate}
             setSelectedDate={setSelectedDate}
             cal={cal}
-            setSocketMessage={setSocketMessage}/>
+            setSocketMessage={setSocketMessage}
+            userDocumentSettings={userDocumentSettings}
+            setUserDocumentSettings={setUserDocumentSettings}/>
         }
 
           <Instant 
@@ -255,9 +259,9 @@ export default function Main() {
    * A n d
    * N o t i f i c a t i o n s
    */
-  const { authed } = useUIC();
+  const { authed, userDocumentSettings, setUserDocumentSettings } = useUIC();
   let userID = sessionStorage.getItem('userID');
-
+  
 
 
   /***
@@ -553,6 +557,8 @@ export default function Main() {
       element:
         <HomeOrEntry>
           <Home 
+                  userDocumentSettings={userDocumentSettings}
+                  setUserDocumentSettings={setUserDocumentSettings} 
                   // socket & notif stuff 
                   socketURL={socketURL}
                   socketMessage={socketMessage}

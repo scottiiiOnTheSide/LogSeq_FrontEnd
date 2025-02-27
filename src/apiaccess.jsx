@@ -115,14 +115,19 @@ export default function APIaccess(key) {
 
 				let userInfo = parseJwt(request.JWT);
 
+				sessionStorage.setItem('settings_preferredLocation_name', request.settings.preferredLocation.city);
+				sessionStorage.setItem('settings_preferredLocation_lon', request.settings.preferredLocation.lonLat[0]);
+				sessionStorage.setItem('settings_preferredLocation_lat', request.settings.preferredLocation.lonLat[1]);
 				sessionStorage.setItem('userKey', userToken);
 				sessionStorage.setItem('userID', userInfo._id);
 				sessionStorage.setItem('userName', userInfo._username);
 				sessionStorage.setItem('profilePhoto', request.profilePhoto);
 				sessionStorage.setItem('privacySetting', request.privacySetting);
 
+
 				let topicsAsString = request.settings.topics.join(', ');
 				console.log(topicsAsString);
+				console.log(request.settings);
 				sessionStorage.setItem('topicsAsString', topicsAsString);
 
 				return {
