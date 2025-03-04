@@ -276,6 +276,11 @@ nav ul li.active button {
 	color: var(--greyscale-elements);
 }
 
+nav ul li#home.active button {
+	font-size: 1em;
+	color: black;
+}
+
 nav ul li.not button {
 
 }

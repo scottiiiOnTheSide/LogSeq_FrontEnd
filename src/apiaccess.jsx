@@ -115,9 +115,6 @@ export default function APIaccess(key) {
 
 				let userInfo = parseJwt(request.JWT);
 
-				sessionStorage.setItem('settings_preferredLocation_name', request.settings.preferredLocation.city);
-				sessionStorage.setItem('settings_preferredLocation_lon', request.settings.preferredLocation.lonLat[0]);
-				sessionStorage.setItem('settings_preferredLocation_lat', request.settings.preferredLocation.lonLat[1]);
 				sessionStorage.setItem('userKey', userToken);
 				sessionStorage.setItem('userID', userInfo._id);
 				sessionStorage.setItem('userName', userInfo._username);
@@ -376,6 +373,24 @@ export default function APIaccess(key) {
 
 				return request;
 			}
+		},
+
+		async deleteComment(commentID) {
+
+			let userKey = sessionStorage.getItem('userKey');
+
+			let request = await fetch(`${apiAddr}/posts/comment/delete/?commentID=${commentID}`, {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+		       		'Content-length': 0,
+		       		'Accept': 'application/json',
+		       		'Host': apiAddr,
+		       		'auth-token': userKey,
+				}
+			}).then(data => data.json());
+
+			return request;
 		},
 
 		async updateCommentCount(postID, count) {

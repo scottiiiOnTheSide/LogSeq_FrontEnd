@@ -120,12 +120,17 @@ export default function Post({
 			refreshPost();
 		});
 
-		/***
-		 * 12. 23. 2023
-		 * These do not toggle when user makes response to their own comment...
-		 */
 		toggleComment();
 		// toggleOptions();
+	}
+
+	let deleteComment = async(commentID) => {
+
+		setSocketMessage({
+			action: 'deleteComment',
+			commentID: commentID
+		})
+
 	}
 
 	let getCollections = async()=> {
@@ -342,18 +347,25 @@ export default function Post({
 			AoP = 'am';
 		}
 		let timeStamp = hour+ ":" +minute+ " " +AoP;
+		// let timeStamp;
+		let deleted = comment.ownerID == '' ? true : false;
 
 
 		return <li className="comment" key={comment._id} id={comment._id}>
 
 					<button className={`toProfile`} onClick={()=> {goToProfile(comment.ownerID)}}>
-						<img src={comment.profilePhoto}/>
-						<span>&#64;{comment.ownerUsername}</span>
+						{!deleted &&
+							<img src={comment.profilePhoto}/>
+						}
+						{!deleted &&
+							<span>&#64;{comment.ownerUsername}</span>
+						}
 					</button>
 					<h4>{date} @ {timeStamp}</h4>
 					<p>{comment.content}</p>
 
-					<button className="buttonDefault"
+					<div id="optionsWrapper">
+						<button className="buttonDefault"
 							onClick={()=> {
 
 								setAccess({
@@ -365,8 +377,16 @@ export default function Post({
 								});
 
 								toggleComment()
-					}}>Reply</button>
+						}}>Reply</button>
 
+						{comment.ownerID == userID &&
+							<button className="buttonDefault" onClick={()=> {deleteComment(comment._id)}}>
+								Delete	
+							</button>
+						}
+
+					</div>
+					
 					{comment.replies &&
 						<ul id="replies">
 							{comment.replies.map(comment => (
@@ -374,7 +394,6 @@ export default function Post({
 							))}
 						</ul>
 					}
-
 			</li>
 	}
 
@@ -388,6 +407,12 @@ export default function Post({
 			setCommentHeader('Your Comment');	
 		} 
 	}, [access])
+
+	React.useEffect(()=> {
+		if(socketMessage.message == 'deletedComment') {
+			refreshPost();
+		}
+	}, [socketMessage])
 
 	/*
 		If user visits page via notif concerning comment

@@ -45,9 +45,9 @@ export function useUIC() {
 
 					//setColorScheme to options set in request.settings.colorScheme
 
-					sessionStorage.setItem('settings_preferredLocation_name', request.settings.preferredLocation.city);
-					sessionStorage.setItem('settings_preferredLocation_lon', request.settings.preferredLocation.lonLat[0]);
-					sessionStorage.setItem('settings_preferredLocation_lat', request.settings.preferredLocation.lonLat[1]);
+					sessionStorage.setItem('settings_preferredLocation_name', request.settings.preferredLocation.city ? request.settings.preferredLocation.city : null);
+					sessionStorage.setItem('settings_preferredLocation_lon', request.settings.preferredLocation.lonLat[0] ? request.settings.preferredLocation.lonLat[0] : null);
+					sessionStorage.setItem('settings_preferredLocation_lat', request.settings.preferredLocation.lonLat[1] ? request.settings.preferredLocation.lonLat[1] : null);
 
 					setAuth(true);
 					return {

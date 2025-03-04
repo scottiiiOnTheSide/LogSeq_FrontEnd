@@ -75,6 +75,7 @@ export default function ButtonBar({
 								setCurrent({
 									...current,
 									map: false,
+									transition: false
 								})
 							}, 300)
 						}

@@ -495,7 +495,9 @@ div#commentsWrapper ul#commentBox li p {
 	margin: 20px 0 28px;
 }
 
-
+div#commentsWrapper ul#commentBox li div#optionsWrapper {
+	
+}
 
 
 /* * * O P T I O N S * * */

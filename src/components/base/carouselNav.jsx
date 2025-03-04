@@ -6,7 +6,7 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 	const opts = [
 		// {name: "Groups", active: false, key: 0},
 		{name: "Social", active: false, key: 1},
-		{name: "User", active: true, key: 2}, //middle is default
+		{name: "Home", active: true, key: 2}, //middle is default
 		{name: "Macros", active: false, key: 3},
 		// {name: "Home", active: false, key: 4}
 	]
@@ -74,7 +74,7 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 			opts[1].active = false;
 		}
 		opts[option].active = true;
-		console.log(opts)
+		// console.log(opts)
 		setNavOptions(opts);
 
 		setCurrent({
@@ -104,22 +104,12 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 	}
 
 	// console.log(options)
-	console.log(current.section)
+	// console.log(current.section)
 
 	return (
 		<nav>
-			{/*<button id="leftToggle" onClick={moveLeft}></button>*/}
-
+			
 			<ul ref={list}>
-				{/*{options.map((opt) => (
-					<li className={opt.active ? "active" : "not"} key={opt.key}>
-						<button className={`buttonDefault`} onClick={()=> {
-
-						}}>
-							{opt.name}
-						</button>
-					</li>
-				))}*/}
 				<li className={navOptions[0].active ? "active" : "not"}>
 					<button className={`buttonDefault navButton`} onClick={()=> {
 						selectOption(0);
@@ -128,15 +118,33 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 					</button>
 				</li>
 
-				<li className={navOptions[1].active ? "active" : "not"}>
+				<li className={navOptions[1].active ? "active" : "not"} id="home">
 					<button className={`buttonDefault navButton`} onClick={()=> {
-						// if(opts[0].active) {
-						// 	moveRight()
-						// }
-						// else if(opts[2].active) {
-						// 	moveLeft()
-						// }
 						selectOption(1);
+
+						if(opts[1].active == true && current.customizer == false) {
+							setCurrent({
+								...current,
+								customizer: true
+							})
+						}
+						else if(opts[1].active == true && current.customizer == true) {
+							// setCurrent({
+							// 	...current,
+							// 	customizer: false
+							// })
+							setCurrent({
+								...current,
+								transition: true
+							})
+							let delay = setTimeout(()=> {
+								setCurrent({
+									...current,
+									customizer: false,
+									transition: false
+								})
+							}, 300)
+						}
 					}}>
 						{opts[1].name}
 					</button>
@@ -144,18 +152,12 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 
 				<li className={navOptions[2].active ? "active" : "not"}>
 					<button className={`buttonDefault navButton`} onClick={()=> {
-						// if(opts[1].active || opts[0].active) {
-						// 	moveRight();
-						// }
-
 						selectOption(2);
 					}}>
 						{opts[2].name}
 					</button>
 				</li>
 			</ul>
-
-			{/*<button id="rightToggle" onClick={moveRight}></button>*/}
 		</nav>
 	)
 }

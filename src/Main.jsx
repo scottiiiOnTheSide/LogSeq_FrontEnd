@@ -40,6 +40,7 @@ import MapComponent from './components/map/map';
 import { MapPage } from './components/map/map';
 import DragSlider from './components/base/dragSlider';
 import './components/sections/sections.css';
+import CustomLogEditor from './components/base/customLogEditor/customLogEditor';
 
 
 /* * * I n i t i a l i z e * * */
@@ -132,7 +133,7 @@ function Home({
   //     setAnimState('return')
   //   }
   // }, [current])
-  console.log(userDocumentSettings);
+  // console.log(userDocumentSettings);
 
   return (
     <section id="HOME" ref={el} className={`${enter == true ? '_enter' : ''}`}>  
@@ -227,6 +228,12 @@ function Home({
             setSocketMessage={setSocketMessage}
             userDocumentSettings={userDocumentSettings}
             setUserDocumentSettings={setUserDocumentSettings}/>
+        }
+        {current.customizer &&
+          <CustomLogEditor
+            current={current}
+            setCurrent={setCurrent} 
+          />
         }
 
           <Instant 
@@ -470,6 +477,7 @@ export default function Main() {
     scrollTo: null,
     currentLog: null,
     modal: false, //for <UserProfile>, when user leaves page via a fullList, ensures modal is still up
+    customizer: false,
     transition: false, //for components mounted dependant on this stateVar, indicates before unmount
     gallery: [] //for dragslider. should be an array of links
   });

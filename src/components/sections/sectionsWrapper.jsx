@@ -15,7 +15,7 @@ export default function SectionsWrapper({ current, setCurrent, log, setLog, tags
 	let wrapper = React.useRef()
 	React.useEffect(()=> {
 		let viewportHeight = window.innerHeight;
-		let maxHeight = viewportHeight - 215;
+		let maxHeight = viewportHeight - 220;
 		wrapper.current.style.height = `${maxHeight}px`;
 	}, [])
 

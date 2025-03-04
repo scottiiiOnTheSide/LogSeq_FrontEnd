@@ -151,8 +151,6 @@ export default function Instants({
 				// 	notif.originalID = data._id;
 				// }
 		})
-
-
 	}
 
 	//for connection and subscription requests
@@ -235,6 +233,22 @@ export default function Instants({
 	// }
 
 	let makeNotif_sendCommentNotif = async (notif) => {
+
+		if(socketMessage.message == 'response' && userID == socketMessage.respondeeId) {
+
+			console.log('true');
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'comment'
+			})
+			setActive({
+				state: true,
+				type: 1
+			})
+
+			return;
+		}
+
 		await accessAPI.newInteraction(notif).then((data)=> {
 			if(data) {
 				setSocketMessage({
@@ -960,6 +974,22 @@ export default function Instants({
 			} //remove post
 		}
 
+		else if (arg == 'deleteComment') {
+
+			let request = await accessAPI.deleteComment(accessID.remove).then((data)=> {
+					if(data.confirm) {
+						setSocketMessage({
+							type: 'confirmation',
+							message: 'deletedComment'
+						})
+						setActive({
+							state: true,
+							type: 1
+						})
+					}
+				})
+		}
+
 		else if(arg == 'joinGroup') {
 			setActive({
 				type: null,
@@ -1060,6 +1090,20 @@ export default function Instants({
 				state: true,
 				type: 22
 			});
+		}
+
+		else if(socketMessage.action == 'deleteComment') {
+			setAccessID({
+				remove: socketMessage.commentID
+			})
+			setSocketMessage({
+				type: 'confirmation',
+				message: 'confirm_deleteComment'
+			})
+			setActive({
+				state: true,
+				type: 22
+			})
 		}
 
 
@@ -1279,8 +1323,14 @@ export default function Instants({
 				{(message.type == 'confirmation' && message.message == 'confirm_deletePost') &&
 					<p>You are about to delete this post</p>
 				}
+				{(message.type == 'confirmation' && message.message == 'confirm_deleteComment') &&
+					<p>Are you sure you wish to delete this comment?</p>
+				}
 				{(message.type == 'confirmation' && message.message == 'deletedPost') &&
 					<p>Post deleted!</p>
+				}
+				{(message.type == 'confirmation' && message.message == 'deletedComment') &&
+					<p>Comment deleted!</p>
 				}
 				{(message.type == 'confirmation' && message.message == 'ignore') &&
 					<p>Request Ignored</p>
@@ -1418,8 +1468,11 @@ export default function Instants({
 															}}>Cancel</button></li>
 						<li><button className="buttonDefault" onClick={()=> {
 																setActive({type: null, state: false});
-																if(accessID.remove) {
+																if(accessID.remove && socketMessage.message == 'confirm_deletePost') {
 																	interact('remove');	
+																}
+																else if(accessID.remove && socketMessage.message == 'confirm_deleteComment') {
+																	interact('deleteComment');	
 																}
 															}}>Delete</button></li> 
 						{/*has button who's function changes based on */}

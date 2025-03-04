@@ -590,6 +590,7 @@ export default function MapComponent ({
   	const [searchTerm, setSearchTerm] = React.useState(
   		sessionStorage.getItem('settings_preferredLocation_name') ?
   		sessionStorage.getItem('settings_preferredLocation_name') : ''  );
+  	const [inputType, setInputType] = React.useState("");
   	const [loadingResults, setLoadingResults] = React.useState(false);
   	const inputRef = React.useRef(null);
   	const autocompleteRef = React.useRef(null);
@@ -627,19 +628,39 @@ export default function MapComponent ({
 
   	const handleInputChange = (e) => {
   		const value = e.target.value;
+  		setInputType(e.nativeEvent.inputType);
   		setSearchTerm(value)
 
-  		if (e.nativeEvent.inputType === "deleteContentBackward") {
-		    return;
-		}	
-		getLocationSuggestions(value)
+  		// if (e.nativeEvent.inputType === "deleteContentBackward") {
+		//     return;
+		// }
   	}
 
-  	// const handleSelectSuggestion = (place) => {
-  	// 	setSelectedPlace(place);
-  	// 	setSuggestions([]);
-  	// 	setSearchTerm(place.description)
-  	// }
+  	React.useEffect(()=> {
+
+  		console.log(searchTerm.length);
+
+  		if(searchTerm == sessionStorage.getItem('settings_preferredLocation_name')) {
+  			return;
+  		}
+
+  		if (inputType === "deleteContentBackward") {
+	      	return;
+	    }
+
+  		if(searchTerm.length < 2) {
+  			console.log('empty')
+  			setSuggestions([]);
+  			return;
+  		}
+
+  		// if(selectedPlace.name == searchTerm) {
+  		// 	return;
+  		// }
+
+  		getLocationSuggestions(searchTerm)
+  	}, [searchTerm])
+
 
   	const handleSelectSuggestion = async(place) => {
 
@@ -656,9 +677,7 @@ export default function MapComponent ({
   		setSuggestions([]);
   		setSearchTerm(place.description);
 
-
-
-  		const update = await accessAPI.userSettings({
+		const update = await accessAPI.userSettings({
   			option: 'updateLocation',
   			name: place.description,
   			lonLat: response.lonLat
@@ -909,20 +928,22 @@ export default function MapComponent ({
 							
 							<h3>Set Default City</h3>
 
-							 <input
-						        type="text"
-						        value={searchTerm}
-						        onChange={handleInputChange}
-						        className="w-full p-2 border rounded-md focus:outline-none focus:ring-2"
-						        placeholder="Search for a city, country, or address..."
-						        // disabled={!!selectedPlace} // Disable search after selection
-						      />
+							<div id="inputWrapper">	
+								<input
+							        type="text"
+							        value={searchTerm}
+							        onChange={handleInputChange}
+							        placeholder="Search for a city or country"
+							        // disabled={!!selectedPlace} // Disable search after selection
+							    />
+							</div>
+							
 
 						      {loadingResults && 
 						      	<p className="">Loading...</p>
 						      }
 
-						      <ul className="">
+						      <ul id="suggestions">
 						          {suggestions.map((place) => (
 						            <li
 						              key={place.place_id}
