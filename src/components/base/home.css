@@ -237,7 +237,7 @@ section#HOME.return {
 			color: var(--greyscale-details);
 		}
 
-	nav button#leftToggle {
+	/*nav button#leftToggle {
 		position: absolute;
 		display: block;
 		height: 90%;
@@ -246,10 +246,9 @@ section#HOME.return {
 		z-index: 6;
 		background-color: transparent;
 		border: none;
-	/*	border-bottom: 1px solid blue;*/
 	}
 
-	nav button#rightToggle {
+	/*nav button#rightToggle {
 		position: absolute;
 		display: block;
 		width: 146px;
@@ -259,8 +258,7 @@ section#HOME.return {
 
 		background-color: transparent;
 		border: none;
-	/*	border-bottom: 1px solid blue;*/
-	}
+	}*/
 
 nav ul li button.navButton {
 	padding: 0;
@@ -274,11 +272,19 @@ nav ul li button.navButton:hover {
 nav ul li.active button {
 	font-size: 1em;
 	color: var(--greyscale-elements);
+	padding: 4px 12px;
+	transition: all ease-in-out 0.25s;
+	border-radius: 4px;
 }
 
 nav ul li#home.active button {
 	font-size: 1em;
 	color: black;
+}
+
+nav ul li#home.active.customizer button {
+	color: white;
+	background-color: var(--greyscale-elements);
 }
 
 nav ul li.not button {

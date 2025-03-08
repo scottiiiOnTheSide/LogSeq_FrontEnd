@@ -112,27 +112,27 @@ export default function CarouselNav({current, setCurrent, navOptions, setNavOpti
 			<ul ref={list}>
 				<li className={navOptions[0].active ? "active" : "not"}>
 					<button className={`buttonDefault navButton`} onClick={()=> {
+						console.log(opts);
 						selectOption(0);
 					}}>
 						{opts[0].name}
 					</button>
 				</li>
 
-				<li className={navOptions[1].active ? "active" : "not"} id="home">
+				<li className={`${navOptions[1].active ? "active" : "not"} ${current.customizer ? "customizer" : ""}`} id="home">
 					<button className={`buttonDefault navButton`} onClick={()=> {
-						selectOption(1);
 
-						if(opts[1].active == true && current.customizer == false) {
+						if(navOptions[1].active == false) {
+							selectOption(1);
+						}
+						
+						else if(opts[1].active == true && current.customizer == false) {
 							setCurrent({
 								...current,
 								customizer: true
 							})
 						}
 						else if(opts[1].active == true && current.customizer == true) {
-							// setCurrent({
-							// 	...current,
-							// 	customizer: false
-							// })
 							setCurrent({
 								...current,
 								transition: true

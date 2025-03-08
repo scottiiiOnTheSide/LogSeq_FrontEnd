@@ -233,6 +233,8 @@ function Home({
           <CustomLogEditor
             current={current}
             setCurrent={setCurrent} 
+            setSocketMessage={setSocketMessage}
+            socketMessage={setSocketMessage}
           />
         }
 
@@ -479,7 +481,8 @@ export default function Main() {
     modal: false, //for <UserProfile>, when user leaves page via a fullList, ensures modal is still up
     customizer: false,
     transition: false, //for components mounted dependant on this stateVar, indicates before unmount
-    gallery: [] //for dragslider. should be an array of links
+    gallery: [], //for dragslider. should be an array of links
+    log: 0
   });
   const hajime = new Date(),
       kyou = hajime.getDate(),
