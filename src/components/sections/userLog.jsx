@@ -1112,19 +1112,23 @@ export function CreatePost({setCurrent, current, socketMessage, setSocketMessage
 export default function UserLog({active, setCurrent, current, log, setLog}) {
 
 	let [place, setPlace] = React.useState(active == 1 || active == null ? '' : 'not');
-	// let [log, setLog] = React.useState([]);
 	let userID = sessionStorage.getItem('userID');
 	let [isModal, openModal] = React.useReducer(state => !state, false);
-	// let [updateLog, setUpdateLog] = React.useReducer(state => !state, false);
 
 	/**
 	 * For now, get userLog on mount
 	 * log.jsx exports component and necessary functions
 	 * function to open independant post within log.jsx
 	 */
+	// let updateLog = async() => {
+	// 	let data = await accessAPI.pullUserLog();
+	// 	setLog(data);
+	// }
+
 	let updateLog = async() => {
-		let data = await accessAPI.pullUserLog();
-		setLog(data);
+
+		let posts = await accessAPI.pullUserLog({type: 'customLog', logNumber: current.log})
+		setLog(posts);
 	} 
 
 	React.useEffect(()=> {
@@ -1137,7 +1141,7 @@ export default function UserLog({active, setCurrent, current, log, setLog}) {
 
 	React.useEffect(()=> {
 		updateLog()
-	}, [current.modal])
+	}, [current.modal, current.customizer])
 
 
 	/* change userLog class based on state from Home component in Main.jsx */
@@ -1166,126 +1170,3 @@ export default function UserLog({active, setCurrent, current, log, setLog}) {
 		</div>
 	)
 }
-
-// const handleSubmit = async(event) => {
-// 		event.preventDefault();
-// 		console.log(postContent);
-// 		let title = document.getElementById('title');
-
-// 		if(postContent.length < 1 || title.value == '') {
-// 			setSocketMessage({
-// 				type: 'error',
-// 				message: 'Atleast a Title, Text or Media is needed to make a post!'
-// 			})
-// 		}  
-// 		else {
-			
-// 			element.classList.add('_loading');
-// 			let submission = new FormData();
-
-// 			submission.append('type', 'entry');
-// 			submission.append('title', formData.title ? formData.title : title.value);
-// 			submission.append('isPrivate', isPrivate);
-// 			submission.append('privacyTogglable', sessionStorage.getItem('privacySetting'));
-// 			submission.append('profilePhoto', sessionStorage.getItem('profilePhoto'));
-
-// 			for(let i=0; i < postContent.length; i++){
-// 				if(postContent[i].type == 'text') {
-// 					if(postContent[i].content === '') {
-// 						return null;
-// 					} else {
-// 						let content = postContent[i].content;
-// 						submission.append(`${postContent[i].index}`, content)
-// 					}
-					
-// 				} else if(postContent[i].type == 'image') {
-// 					let content = postContent[i].content;
-// 					submission.append(`${postContent[i].index}`, content)
-// 				}
-// 			}
-
-// 			let tags = suggestions.filter(el => el.selected == true).map(el => el.name);
-// 			if(tags.length > 0) {
-// 				submission.append('tags', tags);	
-// 			} 
-			
-// 			let taggedUsers = tagged.filter(user => user.selected == true).map(user => {
-// 				return {
-// 					_id: user._id, 
-// 					username: user.userName
-// 				}
-// 			});
-// 			if(taggedUsers.length > 0) {
-// 				submission.append('taggedUsers', JSON.stringify(taggedUsers));
-// 			}
-// 			console.log(taggedUsers);
-
-// 			if(selectedDate.day != null) {
-// 				submission.append('usePostedByDate', false);
-// 				submission.append('postedOn_month', selectedDate.month);
-// 				submission.append('postedOn_day', selectedDate.day);
-// 				submission.append('postedOn_year', selectedDate.year);
-// 			} else {
-// 				submission.append('usePostedByDate', true);
-// 			}
-
-// 			if(pinLocation.open) {
-// 				submission.append('geoLon', pinLocation.lon);
-// 				submission.append('geoLat', pinLocation.lat);
-// 			}	
-// 			console.log(submission);
-// 			console.log(tags);
-
-// 			let submit = await accessAPI.createPost(submission);
-
-// 			if(submit.confirm == true) {
-// 				console.log("Post submission successful");
-// 				// console.log(submit);
-// 				element.classList.remove('_enter');
-// 				element.classList.add('_fade');
-// 				let delay = setTimeout(()=> {
-// 					setCurrent({
-// 						...current,
-// 						modal: false
-// 					})
-// 				}, 300)
-
-// 				let utilizedDraft = drafts.find(post => post.selected == true);
-// 				if(utilizedDraft) {
-// 					await accessAPI.deleteDraft(utilizedDraft._id)	
-// 				}
-				
-// 			} else if(submit.message) {
-// 					element.classList.remove('_loading');
-// 					console.log('Issue with post submission');
-// 					setSocketMessage({
-// 						type: 'error',
-// 						message: submit.message
-// 					})
-// 			}
-// 			/**
-// 			 * 10. 27. 2023
-// 			 * setSocketMessage here with info for making notif for tagged users
-// 			 */
-// 			if(tagged.some(user => user.selected == true)) {
-
-// 				let recips = tagged.filter(user => user.selected == true).map(user => {return user._id});
-
-// 				setSocketMessage({
-// 					type: 'tagging',
-// 					isRead: false,
-// 					senderID: userID,
-// 					senderUsername: username,
-// 					url: submit.postURL,
-// 					message: 'sent',
-// 					recipients: recips,
-// 					postTitle: title.value
-// 				})
-
-// 			} else {
-// 				setSocketMessage({
-// 					confirm: 'postUpload'
-// 				})
-// 			}
-// 		}
-// 	}

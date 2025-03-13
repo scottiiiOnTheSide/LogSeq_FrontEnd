@@ -138,7 +138,7 @@ export default function APIaccess(key) {
 			}	
 		},	
 
-		async pullUserLog(pull, lastID, userID) {
+		async pullUserLog(data) {
 
 			/**
 			 * The 'pull' argument differentiates the kind of request for posts
@@ -150,7 +150,7 @@ export default function APIaccess(key) {
 
 			//?pull=${pull}?lastID=${lastID} for future update
 			let userKey = sessionStorage.getItem('userKey');
-			let log = await fetch(`${apiAddr}/posts/log?type=user&userID=${userID}`, {
+			let log = await fetch(`${apiAddr}/posts/log?type=${data.type}&userID=${data.userID}&logNumber=${data.logNumber}`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',

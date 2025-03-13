@@ -16,3 +16,128 @@ div#customLogEditor {
 	div#customLogEditor.leave {
 		animation: 0.25s ease-in-out forwards _scaleFadeOut_offset;
 	}
+
+
+div#customLogEditor div#logListWrapper {
+	width: 100%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 16px;
+}
+
+div#customLogEditor div#logListWrapper ul#logList {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: row;
+}
+
+div#customLogEditor div#logListWrapper ul#logList li {
+	font-family: 'Raleway';
+	padding: 4px 4px 0px;
+	font-size: 1.25rem;
+	transition: all ease-in-out 0.25s;
+	margin: 0 8px;
+	font-size: 2rem;
+}
+
+div#customLogEditor div#logListWrapper ul#logList li.selected {
+	border-bottom: 2px solid black;
+}
+
+div#customLogEditor div#logListWrapper ul#logList li:first-child {
+	padding: 12px 4px 8px;
+	font-size: 1.25rem;
+	margin-left: 12px;
+}
+
+div#customLogEditor div#logListWrapper button {
+	font-size: 2rem;
+	border-radius: 25px;
+	padding: 0 10px;
+	border: 3px solid var(--greyscale-accent);
+	outline-color: transparent;
+	color: var(--greyscale-accent);
+	margin-right: 8px;
+	background-color: transparent;
+	max-height: 44px;
+}
+
+
+
+div#customLogEditor div#userOnlyNotice {
+	font-family: 'Raleway';
+	font-size: 1.5rem;
+	line-height: 36px;
+	text-align: center;
+	width: 60%;
+
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+}
+
+
+
+
+div#customLogEditor div#fieldsWrapper {}
+
+div#customLogEditor div#fieldsWrapper input#title {
+	display: block;
+	width: 92%;
+	margin: 36px auto;
+    border: none;
+    border-bottom: 2px solid var(--greyscale-elements);
+    padding: 8px 2px 12px;
+    background-color: transparent;
+
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+div#customLogEditor div#fieldsWrapper input#title::placeholder {
+	color: var(--greyscale-accent);
+}
+
+div#customLogEditor div#fieldsWrapper input#title:focus-visible {
+	border-color: black;
+	outline: none;
+}
+
+
+div#customLogEditor div#fieldsWrapper label {
+	display: block;
+	width: 100%;
+}
+
+div#customLogEditor div#fieldsWrapper button.listToggle {
+	display: block;
+}
+
+div#customLogEditor div#fieldsWrapper ul.dropdown {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+div#customLogEditor div#fieldsWrapper ul li.header {
+	
+}
+
+div#customLogEditor div#fieldsWrapper ul.rows {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+
+	max-width: 96%;
+}
