@@ -26,6 +26,7 @@ export default function CustomLogEditor({current, setCurrent, setSocketMessage, 
 	    connections: false,
 	    subscriptions: false
 	});
+	const searchInputRef = React.useRef(null);
 
   	const getDataForSelections = async() => {
   		//happens whenever component appears
@@ -255,7 +256,7 @@ export default function CustomLogEditor({current, setCurrent, setSocketMessage, 
   	const handleSearch = (e) => {
   		setInputType(e.nativeEvent.inputType);
   		setSearchTerm(e.target.value)
-  		setIsSearchFocused(true);
+  		// setIsSearchFocused(true);
   	}
 
   	const selectLocation = (location) => {
@@ -365,7 +366,7 @@ export default function CustomLogEditor({current, setCurrent, setSocketMessage, 
 				   	<label onClick={() => toggleDropdown("subscriptions")}>
 				        Subscriptions: {subscriptions.filter(item => item.selected).length} selected 
 				        {showDropdown.subscriptions ? <span>▲</span> : <span>▼</span>}
-				      </label>
+				    </label>
 				      {showDropdown.subscriptions && (
 				        <ul className="dropdown">
 				          {subscriptions.map(item => (
@@ -409,21 +410,37 @@ export default function CustomLogEditor({current, setCurrent, setSocketMessage, 
 				          ))}
 				        </ul>
 				    )}
+
+
 				    {/* Location Search */}
-				    <label>
-				        Locations: {selectedLocations.length} selected
-				    </label>
-				    <input
-				        type="text"
-				        value={searchTerm}
-				        onChange={handleSearch}
-				        placeholder="Search City or Country"
-				        onBlur={()=> {
-				        	setTimeout(()=> {
-				        		setIsSearchFocused(false)
-				        	}, 500)
-				        }}
-				    />
+
+				    <div id="searchWrapper">
+					    {!isSearchFocused ? (
+					    	<label onClick={() => {
+					    		setIsSearchFocused(true)
+					    		setTimeout(()=> {
+					    			searchInputRef.current?.focus()
+					    		}, 0)
+					    	}}>
+						        Locations: {selectedLocations.length} selected
+						    </label>
+
+					    ) : (
+					    	<input
+					    		ref={searchInputRef}
+						        type="text"
+						        value={searchTerm}
+						        onChange={handleSearch}
+						        placeholder="Search City or Country"
+						        onBlur={()=> {
+						        	setTimeout(()=> {
+						        		setIsSearchFocused(false)
+						        		setSearchResults([]);
+						        	}, 500)
+						        }}
+						    />
+					   	)}
+				   	</div>
 				    {(isSearchFocused && searchResults.length > 0) && 
 				        <ul className="dropdown">
 
@@ -447,7 +464,10 @@ export default function CustomLogEditor({current, setCurrent, setSocketMessage, 
 				    }
 
 
-
+				    <div id="buttonWrapper">
+				    	<button className={`buttonDefault`}>Delete</button>
+				    	<button className={`buttonDefault`}>Save & Exit</button>
+				    </div>
 				</div>
 			}
 

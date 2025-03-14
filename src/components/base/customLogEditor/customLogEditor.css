@@ -67,6 +67,23 @@ div#customLogEditor div#logListWrapper button {
 
 
 
+div#customLogEditor div#buttonWrapper {
+	position: sticky;
+	width: 100%;
+	bottom: 0%;
+	display: flex;
+	flex-direction: row;
+	justify-content: space-evenly;
+/*	margin: 16px 0;*/
+	padding: 16px 0;
+	background-color: white;
+}
+
+div#customLogEditor div#buttonWrapper button {
+	padding: 8px 10px;
+}
+
+
 div#customLogEditor div#userOnlyNotice {
 	font-family: 'Raleway';
 	font-size: 1.5rem;
@@ -112,13 +129,75 @@ div#customLogEditor div#fieldsWrapper input#title:focus-visible {
 }
 
 
-div#customLogEditor div#fieldsWrapper label {
-	display: block;
-	width: 100%;
+div#customLogEditor div#fieldsWrapper label,
+div#customLogEditor div#fieldsWrapper button.listToggle {
+	display: flex;
+	justify-content: space-between;
+	width: 92%;
+	border: none;
+	border-bottom: 1px solid var(--greyscale-accent);
+	padding: 0;
+	padding-bottom: 8px;
+	margin: 48px auto;
+
+	font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+
+    background-color: transparent;
+    outline: none;
+    text-align: left;
+}
+
+div#customLogEditor div#fieldsWrapper label span {
+	display: inline-block;
 }
 
 div#customLogEditor div#fieldsWrapper button.listToggle {
 	display: block;
+}
+
+
+div#customLogEditor div#fieldsWrapper div#searchWrapper {
+	padding-bottom: 4px;
+	border-bottom: 2px solid var(--greyscale-elements);
+	width: 92%;
+	margin: 36px auto 0;
+}
+
+div#customLogEditor div#fieldsWrapper div#searchWrapper label {
+	border-bottom: none;
+	margin-bottom: 0;
+	margin: 0;
+}
+
+div#customLogEditor div#fieldsWrapper div#searchWrapper input {
+	display: block;
+	width: 92%;
+/*	margin: 36px auto 0;*/
+	margin-bottom: 0;
+    border: none;
+    background-color: transparent;
+    padding-bottom: 8px;
+
+    font-family: 'Raleway';
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--greyscale-text);
+    letter-spacing: 2px;
+    line-height: 22px;
+}
+
+div#customLogEditor div#fieldsWrapper div#searchWrapper input::placeholder {
+	color: var(--greyscale-accent);
+}
+
+div#customLogEditor div#fieldsWrapper div#searchWrapper input:focus-visible {
+/*	border-color: black;*/
+	outline: none;
 }
 
 div#customLogEditor div#fieldsWrapper ul.dropdown {
@@ -128,7 +207,7 @@ div#customLogEditor div#fieldsWrapper ul.dropdown {
 }
 
 div#customLogEditor div#fieldsWrapper ul li.header {
-	
+
 }
 
 div#customLogEditor div#fieldsWrapper ul.rows {
