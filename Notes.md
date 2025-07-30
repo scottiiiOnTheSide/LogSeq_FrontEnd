@@ -3,12 +3,203 @@
 #### Project Notes & Planning
 -----------------------------------------------------------------------------------------
 
+### 03. 13. 2025
+
+@2355 buttonWrapper for save and delete buttons not staying at bottom of element whenever 
+	  it becomes scrollable due to list showing up
+	  This may be due to the list not existing, then causing the issue when it does appear....
+
+!!! find issue for above
+!!! change tags and topics so the option's border's change to black when selected
+
+@2325 updated functionality so clicking on the label for searchLocations reveals the search
+	  bar
+
+@0835 functionality for all the fields seems to be set.
+For the searchBar, results disappear after it's unfocused for 500ms
+
+To Do Next:
+  - add styling 3/4
+  - add save func
+  - add delete func
+  - test customLogs
+
+front end algo for deleting logs is tricky, as it would rearrange the order
+thinking the component should close after a deletion?
+or go back to userOnly, then get the reset data (probably this one)
+
+****To Do Next:
+	- USER -> Home, Custom feeds
+	- Social Side to have 'Who's Online' and "tagged posts"
+	   - availability switch in <ManageConnections>
+	- Location selection in signup process
+	- Video upload
+	- Color Scheme Customization
+
+would like to make option for vlogs in creating post - singular video only upload
+
+
+### 03. 12. 2025
+@1905 Added all the fields, bare functionality works.
+Really need to work on the search results disappearing if the bar unfocused, or onBlur...
+
+### 03. 10. 2025
+@1320 
+
+??? if <Map> is closed while settings are still up, then the <CreatePost> automatically opens
+
+@1145 <UserLog> modified to get customLog based on current.log
+
+@0840 created the 'customLogs' subroute and added conditional for customLog 0
+the $or operator in the query ensures posts match atleast ONE of the conditions,
+which I believe is fine...
+
+Next,
+modify 'userLog' so that it gets and updates post based on what current.currentLog is set to
+
+
+### 03. 09. 2024
+@1540 Added the listOfLogs + addButton to top of <CustomLogEditor>
+
+Next logical thing (that makes sense to me rn) is to modify the log subroute so that
+it checks for which customLog to use and then filters results based off that
+&
+then to add the selection fields and notice for 'user only'
+
+@1135 'saveCustomLog', 'getCustomLog' & 'setCurrentLog' all created in backend sub sub route
+
+
+### 03. 08. 2024
+@0910 Wrote function for getting and setting data in <CustomLogEditor> and for sending
+	that data to the backEnd
+
+Should write the 'saveCustomLog' sub-subroute next,
+then 'getcustomLog'
+
+would like to set up app so that customLog.log[0] (userOnly) is set upon login and when
+user toggles open <CustomLogEditor>
+
+also need to add horizontal list for each log + the add button
+!! might need to do this first
+
+@0830 Maps need redundancy when there's no lonLat data from either user settings or location
+permissions
+
+!!! Sent a subReq to an account that doesnt have a privacy option set...
+maybe that's why?
+It should be off by default...
+
+!!! disable 'Social' and 'Macros' button if current.customizer is true.
+Just add 'return' statement
+
+
+### 03. 06. 2025
+@0730 Start by writing functions on front and then backend (or according to logic, whats needed)
+
+@0645 should set up for customLogs by updating logIn process:
+customLog.log[0] is 'user only'
+retrieving logs on backend with /log subroute needs to be updated to:
+check user's currentLog and retrieve that object
+	if 0, just get their own (use current query)
+	else, make query(s) using the selections from that log
+
+currentLog should be 0 by default, set that within signup
+
+currentLog should be saved to sessionStorage, updated upon selection
+
+upon closing <CustomLogEditor>, make api call with for new log, update top level state
+for log
+
+maybe a state value for selectedLog and the sessionStorage ??
+
+in <UserLog> have useEffect that watches current state var.
+if current.customizer changes to false and current.log is not the same as sessionStorage currentLog,
+update with new sessionStorage currentLog then update current.log
+
+
+@0525 
+??? Returning to <Post> from <macros> page took quite a while??? 
+??? <Macros> for topics doesnt load from <Post>
+
+
+### 03. 05. 2025
+@0110 Styled Home button when customizer is active
+
+
+### 03. 04. 2025
+@1045 have styling for 'Home' when it's <CustomLogEditor> is active
+
+!!! Made modal for <CustomLogEditor>
+
+Have to make algo for process for saving selected customFeed and implementing it
+
+@0825 Working on Custom Feeds - need to update 'User' to 'Home', and is button which toggles
+the <CustomLogEditor> modal
+
+
+### 03. 03. 2025
+@1400
+
+****To Do Next:
+	- USER -> Home, Custom feeds
+	- Social Side to have 'Who's Online' and "tagged posts"
+	   - availability switch in <ManageConnections>
+	- Location selection in signup process
+	- Video upload
+	- Color Scheme Customization
+
+****Issues to Fix
+	for Searchbar in <Map> 
+	- need solution for removing suggestions upon emptied search...
+	- selecting a suggestion changes all the suggestions to that option D:
+
+
+@0940 if a comment has replies, it's replaced with 'this comment was deleted',
+username info removed
+
+Still need to fix popUp notif not showing when user replies to their own comment
+
+Fixed an issue where there was a retrieval depth of 2 for comments on backend
+
+
+### 03. 02. 2025
+@1720 Finally, comments can be deleted :D !
+Gotta decide what happens when a parent comment is deleted, however.
+Maybe i'll have that overwritten? 
+As for now, it'd just be gone, children comments would need to be dealt with
+
+****To Do...
+	- decide on what to do with parentComments, and child comments thereafter
+
+### 02. 28. 2025
+@1740
+****To Do Next:
+	- work on issues listed below
+	- design messaging in XD
+	- deleting comments
+
+@1730 Searchbar in <Map> and suggestions have been styled, but need solution for removing
+	  suggestions upon emptied search...
+	  Also, selecting a suggestion changes all the suggestions to that option D:
+
+@1525 One of these recent changes is preventing me from signing in with the @sanbanbaka account
+	  rather than figure out what the issue is, I may simply delete all the accounts other than
+	  @admin, and make some new ones
+
+I can log in twice with @admin, but I would need to come up with a safegaurd for that in the future:
+
+Added an 'isOnline' field to the user doc schema,
+will update user doc upon sign in and upon log out
+- added a 'logout' subroute to 'settings' subroute for user
+
+
+
 ### 02. 27. 2025
 @1600 <Map> currentCenter draws from lonLat info saved in sessionStorage.
 			In future, will add location permissions check instead
 
 ****To Do Next:
-	- style search bar in <Map> settings
+	- style search bar in <Map> settings ✅
 
 ****To Do After:
 	- Location Name search option should also be added to 'Create Post'
@@ -21,7 +212,7 @@ Who's Online & Tagged Posts sections on Social side
 USER -> Home, Custom feeds
 Color Scheme Customization
 Video upload
-deleting comments
+deleting comments ✅
 
 @0910 Need to update signin process to save preferredLocation Data
 	  it should be made available within <Map> if user's location permissions are off
@@ -34,7 +225,7 @@ deleting comments
 	- upon selecting option, update user's doc ✅
 		- rename preferredLocation to defaultLocation 
 	- modify input so searches arent made on deletion of text ✅
-	- style suggestion results
+	- style suggestion results ✅
 	- update <Map> and sign in process so that component utilizes user's default location
 		if location permissions arent on ✅
 
